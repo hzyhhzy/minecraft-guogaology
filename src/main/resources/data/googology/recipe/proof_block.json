@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "googology:proof_block",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    },
+    {
+      "item": "googology:proof_material"
+    }
+  ]
+}

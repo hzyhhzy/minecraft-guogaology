@@ -1,0 +1,106 @@
+{
+  "variants": {
+    "digit=0": {
+      "model": "googology:block/christmas_digit_4_0"
+    },
+    "digit=1": {
+      "model": "googology:block/christmas_digit_4_1"
+    },
+    "digit=2": {
+      "model": "googology:block/christmas_digit_4_2"
+    },
+    "digit=3": {
+      "model": "googology:block/christmas_digit_4_3"
+    },
+    "digit=4": {
+      "model": "googology:block/christmas_digit_4_4"
+    },
+    "digit=5": {
+      "model": "googology:block/christmas_digit_4_5"
+    },
+    "digit=6": {
+      "model": "googology:block/christmas_digit_4_6"
+    },
+    "digit=7": {
+      "model": "googology:block/christmas_digit_4_7"
+    },
+    "digit=8": {
+      "model": "googology:block/christmas_digit_4_8"
+    },
+    "digit=9": {
+      "model": "googology:block/christmas_digit_4_9"
+    },
+    "digit=10": {
+      "model": "googology:block/christmas_digit_4_10"
+    },
+    "digit=11": {
+      "model": "googology:block/christmas_digit_4_11"
+    },
+    "digit=12": {
+      "model": "googology:block/christmas_digit_4_12"
+    },
+    "digit=13": {
+      "model": "googology:block/christmas_digit_4_13"
+    },
+    "digit=14": {
+      "model": "googology:block/christmas_digit_4_14"
+    },
+    "digit=15": {
+      "model": "googology:block/christmas_digit_4_15"
+    },
+    "digit=16": {
+      "model": "googology:block/christmas_digit_4_16"
+    },
+    "digit=17": {
+      "model": "googology:block/christmas_digit_4_17"
+    },
+    "digit=18": {
+      "model": "googology:block/christmas_digit_4_18"
+    },
+    "digit=19": {
+      "model": "googology:block/christmas_digit_4_19"
+    },
+    "digit=20": {
+      "model": "googology:block/christmas_digit_4_20"
+    },
+    "digit=21": {
+      "model": "googology:block/christmas_digit_4_21"
+    },
+    "digit=22": {
+      "model": "googology:block/christmas_digit_4_22"
+    },
+    "digit=23": {
+      "model": "googology:block/christmas_digit_4_23"
+    },
+    "digit=24": {
+      "model": "googology:block/christmas_digit_4_24"
+    },
+    "digit=25": {
+      "model": "googology:block/christmas_digit_4_25"
+    },
+    "digit=26": {
+      "model": "googology:block/christmas_digit_4_26"
+    },
+    "digit=27": {
+      "model": "googology:block/christmas_digit_4_27"
+    },
+    "digit=28": {
+      "model": "googology:block/christmas_digit_4_28"
+    },
+    "digit=29": {
+      "model": "googology:block/christmas_digit_4_29"
+    },
+    "digit=30": {
+      "model": "googology:block/christmas_digit_4_30"
+    },
+    "digit=31": {
+      "model": "googology:block/christmas_digit_4_31"
+    },
+    "digit=32": {
+      "model": "googology:block/christmas_digit_4_32"
+    },
+    "digit=33": {
+      "model": "googology:block/sequence_light_4"
+    }
+  }
+}

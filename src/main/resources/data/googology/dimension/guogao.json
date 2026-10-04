@@ -1,0 +1,11 @@
+{
+  "type": "googology:guogao",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "googology:guogao",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "googology:guogao_forest"
+    }
+  }
+}

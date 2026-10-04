@@ -1,0 +1,101 @@
+{
+  "parent": "googology:block/mosaic_light_0",
+  "overrides": [
+    {
+      "predicate": {
+        "googology:appearance": 0.0
+      },
+      "model": "googology:block/mosaic_light_0"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.00390625
+      },
+      "model": "googology:block/mosaic_light_1"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0078125
+      },
+      "model": "googology:block/mosaic_light_2"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.01171875
+      },
+      "model": "googology:block/mosaic_light_3"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.015625
+      },
+      "model": "googology:block/mosaic_light_4"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.01953125
+      },
+      "model": "googology:block/mosaic_light_5"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0234375
+      },
+      "model": "googology:block/mosaic_light_6"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.02734375
+      },
+      "model": "googology:block/mosaic_light_7"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.03125
+      },
+      "model": "googology:block/mosaic_light_8"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.03515625
+      },
+      "model": "googology:block/mosaic_light_9"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0390625
+      },
+      "model": "googology:block/mosaic_light_10"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.04296875
+      },
+      "model": "googology:block/mosaic_light_11"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.046875
+      },
+      "model": "googology:block/mosaic_light_12"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.05078125
+      },
+      "model": "googology:block/mosaic_light_13"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0546875
+      },
+      "model": "googology:block/mosaic_light_14"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.05859375
+      },
+      "model": "googology:block/mosaic_light_15"
+    }
+  ]
+}

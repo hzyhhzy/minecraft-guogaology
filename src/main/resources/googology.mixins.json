@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "dev.googology.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AppleRitualMixin",
+    "GuogaoGravityMixin",
+    "GuogaoFallMixin",
+    "RegionalWaterMixin",
+    "SanctuaryGenerationMixin",
+    "PlacedRelicHarvestMixin",
+    "EquipmentDefenseMixin",
+    "EquipmentBreakMixin",
+    "MiningExperienceMixin",
+    "EquipmentRepairRecipeMixin",
+    "AnvilCoreRepairMixin",
+    "GrindstoneCoreRepairMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

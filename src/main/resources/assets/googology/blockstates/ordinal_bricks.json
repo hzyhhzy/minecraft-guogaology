@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "number=0": {
+      "model": "googology:block/matrix_zero"
+    },
+    "number=1": {
+      "model": "googology:block/matrix_one"
+    },
+    "number=2": {
+      "model": "googology:block/matrix_two"
+    },
+    "number=3": {
+      "model": "googology:block/matrix_three"
+    },
+    "number=4": {
+      "model": "googology:block/matrix_four"
+    },
+    "number=5": {
+      "model": "googology:block/matrix_five"
+    },
+    "number=6": {
+      "model": "googology:block/matrix_six"
+    },
+    "number=7": {
+      "model": "googology:block/matrix_seven"
+    },
+    "number=8": {
+      "model": "googology:block/matrix_eight"
+    },
+    "number=9": {
+      "model": "googology:block/matrix_nine"
+    },
+    "number=10": {
+      "model": "googology:block/matrix_ten"
+    },
+    "number=11": {
+      "model": "googology:block/matrix_eleven"
+    },
+    "number=12": {
+      "model": "googology:block/matrix_twelve"
+    },
+    "number=13": {
+      "model": "googology:block/matrix_thirteen"
+    },
+    "number=14": {
+      "model": "googology:block/matrix_fourteen"
+    },
+    "number=15": {
+      "model": "googology:block/matrix_fifteen"
+    }
+  }
+}

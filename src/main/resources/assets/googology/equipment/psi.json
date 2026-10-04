@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "googology:psi"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "googology:psi"
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "parent": "googology:block/matrix_zero",
+  "overrides": [
+    {
+      "predicate": {
+        "googology:appearance": 0.0
+      },
+      "model": "googology:block/matrix_zero"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.00390625
+      },
+      "model": "googology:block/matrix_one"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0078125
+      },
+      "model": "googology:block/matrix_two"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.01171875
+      },
+      "model": "googology:block/matrix_three"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.015625
+      },
+      "model": "googology:block/matrix_four"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.01953125
+      },
+      "model": "googology:block/matrix_five"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0234375
+      },
+      "model": "googology:block/matrix_six"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.02734375
+      },
+      "model": "googology:block/matrix_seven"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.03125
+      },
+      "model": "googology:block/matrix_eight"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.03515625
+      },
+      "model": "googology:block/matrix_nine"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0390625
+      },
+      "model": "googology:block/matrix_ten"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.04296875
+      },
+      "model": "googology:block/matrix_eleven"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.046875
+      },
+      "model": "googology:block/matrix_twelve"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.05078125
+      },
+      "model": "googology:block/matrix_thirteen"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.0546875
+      },
+      "model": "googology:block/matrix_fourteen"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.05859375
+      },
+      "model": "googology:block/matrix_fifteen"
+    }
+  ]
+}

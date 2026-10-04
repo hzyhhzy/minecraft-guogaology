@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "googology:basic_laver_pattern",
+    "googology:dread_log",
+    "googology:iblp_blank",
+    "googology:iblp_marked",
+    "googology:iblp_node",
+    "googology:laver_core",
+    "googology:laver_planks",
+    "googology:laver_vein",
+    "googology:y_log",
+    "googology:power_bricks"
+  ]
+}

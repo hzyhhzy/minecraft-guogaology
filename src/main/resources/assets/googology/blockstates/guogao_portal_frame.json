@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "fruit=false": {
+      "model": "googology:block/ordinal_portal_frame"
+    },
+    "fruit=true": {
+      "model": "googology:block/guogao_portal_frame"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "googology:psi_material",
+    "count": 9
+  },
+  "ingredients": [
+    {
+      "item": "googology:psi_block"
+    }
+  ]
+}

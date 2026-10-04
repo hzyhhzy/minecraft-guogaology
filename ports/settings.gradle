@@ -1,0 +1,7 @@
+pluginManagement { repositories { maven { url = 'https://maven.fabricmc.net/' }; mavenCentral(); gradlePluginPortal() } }
+rootProject.name = 'guogaology-modern'
+def targets = providers.gradleProperty('target').getOrElse('1.21.11,26.2,26.3').split(',')
+for (target in targets) {
+ if (!(target in ['1.21.11','26.2','26.3'])) throw new GradleException("Unsupported Minecraft target: ${target}")
+ include(target)
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "googology",
+  "version": "${version}",
+  "name": "果糕逻辑 · Guogaology",
+  "description": "探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。",
+  "authors": [
+    "Sigmoid"
+  ],
+  "license": "MIT",
+  "icon": "assets/googology/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.googology.GoogologyMod"
+    ],
+    "client": [
+      "dev.googology.client.GoogologyClient"
+    ]
+  },
+  "mixins": [
+    "googology.mixins.json",
+    {
+      "config": "googology.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "fabric-api": ">=0.102.0"
+  }
+}

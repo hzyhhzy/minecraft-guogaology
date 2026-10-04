@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "googology:lho_trace"
+    },
+    {
+      "item": "googology:lho_trace"
+    },
+    {
+      "item": "googology:fffz_trace"
+    },
+    {
+      "item": "googology:fffz_trace"
+    },
+    {
+      "item": "googology:fos_trace"
+    },
+    {
+      "item": "googology:fos_trace"
+    },
+    {
+      "item": "googology:lho_hydra_psi"
+    },
+    {
+      "item": "googology:lho_hydra_z"
+    },
+    {
+      "item": "googology:ordinal_crystal_lv2"
+    }
+  ],
+  "result": {
+    "id": "googology:lho_trace_lv2",
+    "count": 1
+  }
+}

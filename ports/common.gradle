@@ -1,0 +1,85 @@
+import groovy.json.JsonSlurper
+
+def config = new JsonSlurper().parse(rootProject.file('targets.json'))[project.name]
+def repositoryRoot = rootProject.projectDir.parentFile
+def releaseProperties = new Properties()
+repositoryRoot.toPath().resolve('gradle.properties').toFile().withInputStream { releaseProperties.load(it) }
+version = releaseProperties.getProperty('mod_version')
+group = releaseProperties.getProperty('maven_group')
+base { archivesName = "googology-dimension-${config.minecraft}" }
+repositories { mavenCentral() }
+
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        googology {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${config.minecraft}"
+    if (config.remap) {
+        mappings loom.officialMojangMappings()
+        modImplementation 'net.fabricmc:fabric-loader:0.19.5'
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${config.fabric}"
+    } else {
+        implementation 'net.fabricmc:fabric-loader:0.19.5'
+        implementation "net.fabricmc.fabric-api:fabric-api:${config.fabric}"
+    }
+}
+
+// Geometry and notation algorithms have one source for every supported game version.
+def sharedNames = rootProject.file('shared-sources.txt').readLines().findAll { !it.isBlank() }
+def generatedSources = layout.buildDirectory.dir('generated/sources')
+tasks.register('preparePortSources', Exec) {
+    inputs.dir(rootProject.file('common'))
+    inputs.file(rootProject.file('shared-sources.txt'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/prepare_port_sources.py'))
+    if (file('src').exists()) inputs.dir(file('src'))
+    outputs.dir(generatedSources)
+    commandLine providers.gradleProperty('portPython').getOrElse('python'),
+        '-X', 'utf8', repositoryRoot.toPath().resolve('tools/prepare_port_sources.py'), config.minecraft
+}
+sourceSets.main.java.srcDirs = [generatedSources.map { it.dir('main') }]
+sourceSets.main.java.srcDir(repositoryRoot.toPath().resolve('src/main/java').toFile())
+sourceSets.main.java.exclude { element ->
+    def file = element.file
+    def original = repositoryRoot.toPath().resolve('src/main/java')
+    !element.isDirectory() && file.toPath().startsWith(original) && !sharedNames.contains(original.relativize(file.toPath()).toString().replace('\\','/'))
+}
+sourceSets.client.java.srcDirs = [generatedSources.map { it.dir('client') }]
+def generatedResources = layout.buildDirectory.dir('generated/resources')
+sourceSets.main.resources.srcDirs = [generatedResources]
+tasks.register('preparePortResources', Exec) {
+    inputs.dir(repositoryRoot.toPath().resolve('src/main/resources'))
+    inputs.dir(repositoryRoot.toPath().resolve('src/client/resources'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/prepare_port_resources.py'))
+    inputs.file(rootProject.file('targets.json'))
+    inputs.property('release', project.version)
+    outputs.dir(generatedResources)
+    commandLine providers.gradleProperty('portPython').getOrElse('python'),
+        '-X', 'utf8', repositoryRoot.toPath().resolve('tools/prepare_port_resources.py'), config.minecraft, project.version
+}
+
+tasks.withType(JavaCompile).configureEach {
+    dependsOn tasks.named('preparePortSources')
+    options.release = config.java as int
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '500']
+}
+java { withSourcesJar() }
+tasks.named('sourcesJar') { dependsOn tasks.named('preparePortResources'), tasks.named('preparePortSources') }
+processResources {
+    dependsOn tasks.named('preparePortResources')
+    inputs.property 'version', project.version
+    inputs.property 'minecraft', config.minecraft
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+jar { from(repositoryRoot.toPath().resolve('LICENSE').toFile()) }
+
+// Keep caches, servers and client profiles separate for each target.
+loom.runs.configureEach {
+    runDir "build/run/${name}"
+}

@@ -1,0 +1,2980 @@
+{
+  "variants": {
+    "head=0,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=1,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=1,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=1,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=2,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=2,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=2,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=2,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=3,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=3,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=3,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=3,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=4,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=4,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=5,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_14"
+    },
+    "head=5,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=6,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=0": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=0": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=1,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=4,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=5,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=6,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=1": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=1": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=1,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=4,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=5,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=6,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=2": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=2": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=1,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=4,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=5,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=6,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=3": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=3": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=1,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=4,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=5,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=6,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=4": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=4": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=1,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=1,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=3,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=4,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=4,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=5,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=5,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=6,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=5": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=5": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=1,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=4,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=5,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=6,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=6": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=6": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=1,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=4,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=5,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=6,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=7": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=7": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=1,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=4,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=5,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=6,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=8": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=8": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=1,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=4,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=5,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=6,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=9": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=9": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=1,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=1,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=3,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=4,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=4,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=5,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=5,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=6,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=10": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=10": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=1,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=4,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=5,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=6,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=11": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=11": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=1,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=4,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=5,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=6,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=12": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=12": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=1,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=4,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=5,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=6,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=13": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=13": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=1,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=4,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=5,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=6,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=14": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=14": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=1,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=1,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=3,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=4,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=4,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=5,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=5,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=6,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=15": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=15": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=1,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=4,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=5,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=6,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=16": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=16": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=1,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=4,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=5,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=6,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=17": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=17": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=1,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=4,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=5,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=6,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=18": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=18": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=1,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=4,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=5,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=6,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=19": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=19": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=1,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=1,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=3,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=4,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=4,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=5,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=5,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=6,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=20": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=20": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=1,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=4,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=5,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=6,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=21": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=21": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=1,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=4,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=5,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=6,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=22": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=22": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=1,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=4,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=5,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=6,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=23": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=23": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=1,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=4,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=5,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=6,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=24": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=24": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=1,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=1,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=2,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=3,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=3,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=4,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=4,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=5,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=5,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=6,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=25": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=25": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=1,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=2,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=2,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_2"
+    },
+    "head=3,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=4,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=5,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_3"
+    },
+    "head=6,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=26": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=26": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=1,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=2,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=2,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_4"
+    },
+    "head=3,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=4,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=5,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_5"
+    },
+    "head=6,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=27": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=27": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=1,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=2,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=2,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_6"
+    },
+    "head=3,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=4,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=5,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_7"
+    },
+    "head=6,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=28": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=28": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=1,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=2,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=2,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_8"
+    },
+    "head=3,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=4,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=5,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_9"
+    },
+    "head=6,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=29": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=29": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=0,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=0,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=1,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=1,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=1,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=2,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=2,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=2,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_10"
+    },
+    "head=3,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=3,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_13"
+    },
+    "head=4,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=4,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=4,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_15"
+    },
+    "head=5,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_12"
+    },
+    "head=5,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=5,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_11"
+    },
+    "head=6,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=6,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=6,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=false,powered=false,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=false,powered=true,route=30": {
+      "model": "googology:block/turing_tape_0"
+    },
+    "head=7,ink=true,powered=false,route=30": {
+      "model": "googology:block/turing_tape_1"
+    },
+    "head=7,ink=true,powered=true,route=30": {
+      "model": "googology:block/turing_tape_1"
+    }
+  }
+}

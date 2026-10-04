@@ -1,0 +1,76 @@
+plugins {
+    id 'fabric-loom' version '1.10.5'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+
+repositories { mavenCentral() }
+
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        googology {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    if (project.hasProperty('qaSodium')) modLocalRuntime files(project.property('qaSodium'))
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+}
+
+jar { from('LICENSE') { rename { "${it}_${project.base.archivesName.get()}" } } }
+
+// Development launches use named methods and can mask a wrongly assigned refmap.
+// Validate the remapped artifact that a normal launcher actually loads.
+tasks.register('verifyReleaseMixins') {
+    dependsOn tasks.named('remapJar')
+    inputs.file(tasks.named('remapJar').flatMap { it.archiveFile })
+    doLast {
+        def artifact = tasks.named('remapJar').get().archiveFile.get().asFile
+        new java.util.jar.JarFile(artifact).withCloseable { jarFile ->
+            def readJson = { String path ->
+                def entry = jarFile.getJarEntry(path)
+                if (entry == null) throw new GradleException("Missing release resource: ${path}")
+                jarFile.getInputStream(entry).withCloseable { stream -> new groovy.json.JsonSlurper().parse(stream, 'UTF-8') }
+            }
+            ['googology.mixins.json', 'googology.client.mixins.json'].each { configPath ->
+                def config = readJson(configPath)
+                if (!config.refmap) throw new GradleException("Missing refmap in ${configPath}")
+                def refmap = readJson(config.refmap)
+                ((config.mixins ?: []) + (config.client ?: [])).each { mixinName ->
+                    def owner = (config.package + '.' + mixinName).replace('.', '/')
+                    if (jarFile.getJarEntry(owner + '.class') == null || !refmap.mappings[owner]) {
+                        throw new GradleException("${configPath} assigns ${owner} to the wrong refmap: ${config.refmap}")
+                    }
+                    logger.lifecycle("Verified release mixin: ${owner} -> ${config.refmap}")
+                }
+            }
+        }
+    }
+}
+tasks.named('check') { dependsOn tasks.named('verifyReleaseMixins') }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SL",
+    "LS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:cobblestone"
+    },
+    "L": {
+      "item": "googology:laver_planks"
+    }
+  },
+  "result": {
+    "id": "googology:laver_inlay",
+    "count": 8
+  }
+}

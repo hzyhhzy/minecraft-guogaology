@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "googology:epsilon_bloom",
+    "googology:omega_bloom",
+    "googology:great_omega_bloom",
+    "googology:zeta_vine",
+    "googology:psi_fern",
+    "googology:phi_bloom",
+    "googology:emoji_flower"
+  ]
+}

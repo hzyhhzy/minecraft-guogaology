@@ -1,0 +1,62 @@
+{
+  "criteria": {
+    "inventory": {
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "googology:amber_guogao",
+      "googology:amber_inlay",
+      "googology:astra_critical_core_lv2",
+      "googology:astra_critical_core_lv3",
+      "googology:azure_guogao",
+      "googology:basic_laver_pattern",
+      "googology:berry_guogao",
+      "googology:boundary_core_lv2",
+      "googology:boundary_core_lv3",
+      "googology:circuit_from_office_monitor",
+      "googology:circuit_from_server_rack",
+      "googology:cyan_guogao_lantern",
+      "googology:dread_log_charcoal",
+      "googology:dread_log_planks",
+      "googology:dread_planks",
+      "googology:guogao_heart_lv2",
+      "googology:guogao_heart_lv3",
+      "googology:guogao_lantern",
+      "googology:guogao_slices",
+      "googology:hydra_bud_lv2",
+      "googology:hydra_bud_lv3",
+      "googology:laver_core_lv2",
+      "googology:laver_core_lv3",
+      "googology:laver_inlay",
+      "googology:laver_planks",
+      "googology:laver_planks_from_vein",
+      "googology:laver_ribbon",
+      "googology:laver_vein_charcoal",
+      "googology:lho_trace_lv2",
+      "googology:lho_trace_lv3",
+      "googology:lime_guogao",
+      "googology:lime_guogao_lantern",
+      "googology:lty_yarn",
+      "googology:mosaic_light",
+      "googology:ordinal_crystal",
+      "googology:ordinal_crystal_lv2",
+      "googology:ordinal_crystal_lv3",
+      "googology:ordinal_crystal_lv4",
+      "googology:power_tower_core_lv2",
+      "googology:power_tower_core_lv3",
+      "googology:power_wood_charcoal",
+      "googology:power_wood_planks",
+      "googology:rose_guogao_lantern",
+      "googology:scarlet_guogao_lantern",
+      "googology:sequence_core_lv2",
+      "googology:sequence_core_lv3",
+      "googology:star_gold",
+      "googology:sun_pattern_tiles",
+      "googology:violet_guogao_lantern",
+      "googology:y_log_charcoal",
+      "googology:y_log_planks"
+    ]
+  }
+}

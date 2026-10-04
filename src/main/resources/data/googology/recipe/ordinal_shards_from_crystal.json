@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "googology:ordinal_crystal"
+    }
+  ],
+  "result": {
+    "id": "googology:ordinal_shard",
+    "count": 4
+  }
+}

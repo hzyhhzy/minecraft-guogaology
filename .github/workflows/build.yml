@@ -1,0 +1,45 @@
+name: Four Minecraft targets
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - minecraft: '1.21.1'
+            java: '21'
+          - minecraft: '1.21.11'
+            java: '21'
+          - minecraft: '26.2'
+            java: '25'
+          - minecraft: '26.3'
+            java: '25'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check resources
+        run: python tools/audit_resources.py --check
+      - name: Build Minecraft 1.21.1
+        if: matrix.minecraft == '1.21.1'
+        run: ./gradlew --no-daemon :build
+      - name: Build modern Minecraft
+        if: matrix.minecraft != '1.21.1'
+        run: ./ports/gradlew --no-daemon -p ports -Ptarget=${{ matrix.minecraft }} -PportPython=python :${{ matrix.minecraft }}:build
+      - name: Validate and collect release
+        run: python tools/package_multiversion.py --targets ${{ matrix.minecraft }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: guogaology-${{ matrix.minecraft }}
+          path: build/releases/*/*

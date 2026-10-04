@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "googology:epsilon_block",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    },
+    {
+      "item": "googology:epsilon_material"
+    }
+  ]
+}

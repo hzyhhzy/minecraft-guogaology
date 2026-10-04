@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    "googology:omega_helmet",
+    "googology:omega_chestplate",
+    "googology:omega_leggings",
+    "googology:omega_boots",
+    "googology:epsilon_helmet",
+    "googology:epsilon_chestplate",
+    "googology:epsilon_leggings",
+    "googology:epsilon_boots",
+    "googology:gamma_helmet",
+    "googology:gamma_chestplate",
+    "googology:gamma_leggings",
+    "googology:gamma_boots",
+    "googology:psi_helmet",
+    "googology:psi_chestplate",
+    "googology:psi_leggings",
+    "googology:psi_boots",
+    "googology:strata_helmet",
+    "googology:strata_chestplate",
+    "googology:strata_leggings",
+    "googology:strata_boots",
+    "googology:proof_helmet",
+    "googology:proof_chestplate",
+    "googology:proof_leggings",
+    "googology:proof_boots"
+  ]
+}

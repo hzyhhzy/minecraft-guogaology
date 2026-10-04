@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "color=0": {
+      "model": "googology:block/mosaic_light_0"
+    },
+    "color=1": {
+      "model": "googology:block/mosaic_light_1"
+    },
+    "color=2": {
+      "model": "googology:block/mosaic_light_2"
+    },
+    "color=3": {
+      "model": "googology:block/mosaic_light_3"
+    },
+    "color=4": {
+      "model": "googology:block/mosaic_light_4"
+    },
+    "color=5": {
+      "model": "googology:block/mosaic_light_5"
+    },
+    "color=6": {
+      "model": "googology:block/mosaic_light_6"
+    },
+    "color=7": {
+      "model": "googology:block/mosaic_light_7"
+    },
+    "color=8": {
+      "model": "googology:block/mosaic_light_8"
+    },
+    "color=9": {
+      "model": "googology:block/mosaic_light_9"
+    },
+    "color=10": {
+      "model": "googology:block/mosaic_light_10"
+    },
+    "color=11": {
+      "model": "googology:block/mosaic_light_11"
+    },
+    "color=12": {
+      "model": "googology:block/mosaic_light_12"
+    },
+    "color=13": {
+      "model": "googology:block/mosaic_light_13"
+    },
+    "color=14": {
+      "model": "googology:block/mosaic_light_14"
+    },
+    "color=15": {
+      "model": "googology:block/mosaic_light_15"
+    }
+  }
+}

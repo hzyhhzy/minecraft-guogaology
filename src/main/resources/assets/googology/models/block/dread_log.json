@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "googology:block/dread_log",
+    "end": "googology:block/dread_log_top"
+  }
+}

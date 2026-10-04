@@ -1,0 +1,17 @@
+.gradle/
+.gradle-user/
+**/build/
+run/
+run-*/
+logs/
+.idea/
+.vscode/
+*.iml
+*.log
+__pycache__/
+*.pyc
+.venv/
+local.properties
+.DS_Store
+Thumbs.db
+~$*

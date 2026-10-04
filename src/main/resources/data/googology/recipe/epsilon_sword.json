@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "result": {
+    "id": "googology:epsilon_sword",
+    "count": 1
+  },
+  "pattern": [
+    "M",
+    "M",
+    "S"
+  ],
+  "key": {
+    "M": {
+      "item": "googology:epsilon_material"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  }
+}

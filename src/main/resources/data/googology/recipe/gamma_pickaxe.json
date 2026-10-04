@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "result": {
+    "id": "googology:gamma_pickaxe",
+    "count": 1
+  },
+  "pattern": [
+    "MMM",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "M": {
+      "item": "googology:gamma_material"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  }
+}

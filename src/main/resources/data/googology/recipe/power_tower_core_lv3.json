@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:power_tower_core_lv2"
+    },
+    {
+      "item": "googology:ordinal_crystal_lv3"
+    }
+  ],
+  "result": {
+    "id": "googology:power_tower_core_lv3",
+    "count": 1
+  }
+}

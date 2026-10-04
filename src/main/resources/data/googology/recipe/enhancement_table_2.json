@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "googology:enhancement_table_2",
+    "count": 1
+  },
+  "pattern": [
+    "MCM",
+    "STS",
+    "MCM"
+  ],
+  "key": {
+    "M": {
+      "item": "googology:epsilon_material"
+    },
+    "C": {
+      "item": "googology:ordinal_crystal_lv2"
+    },
+    "T": {
+      "item": "googology:enhancement_table"
+    },
+    "S": {
+      "item": "googology:omega_block"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "parent": "googology:block/ordinal_portal_frame",
+  "overrides": [
+    {
+      "predicate": {
+        "googology:appearance": 0.0
+      },
+      "model": "googology:block/ordinal_portal_frame"
+    },
+    {
+      "predicate": {
+        "googology:appearance": 0.00390625
+      },
+      "model": "googology:block/guogao_portal_frame"
+    }
+  ]
+}

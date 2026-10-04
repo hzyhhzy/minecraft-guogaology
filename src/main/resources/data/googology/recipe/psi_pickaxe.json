@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "result": {
+    "id": "googology:psi_pickaxe",
+    "count": 1
+  },
+  "pattern": [
+    "MMM",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "M": {
+      "item": "googology:psi_material"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  }
+}

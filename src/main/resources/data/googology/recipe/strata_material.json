@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "googology:strata_material",
+    "count": 1
+  },
+  "pattern": [
+    "FSF",
+    "YCY",
+    "FSF"
+  ],
+  "key": {
+    "F": {
+      "item": "googology:strata_fragment"
+    },
+    "S": {
+      "item": "googology:ordinal_shard"
+    },
+    "Y": {
+      "item": "googology:y_sequence_stone"
+    },
+    "C": {
+      "item": "googology:sequence_core"
+    }
+  }
+}
