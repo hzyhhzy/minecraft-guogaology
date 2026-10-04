@@ -31,6 +31,8 @@ jobs:
           python-version: '3.12'
       - name: Check resources
         run: python tools/audit_resources.py --check
+      - name: Check English and Chinese
+        run: python tools/audit_localization.py --check
       - name: Build Minecraft 1.21.1
         if: matrix.minecraft == '1.21.1'
         run: ./gradlew --no-daemon :build

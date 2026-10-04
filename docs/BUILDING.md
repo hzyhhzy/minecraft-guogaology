@@ -1,4 +1,4 @@
-# Building Guogaology 0.3.1
+# Building Guogaology 0.3.2
 
 Use JDK 21 for Minecraft 1.21.1; the combined modern build runs with JDK 25 and targets the appropriate Java class version for each game. Python 3.10+ is required for the modern API/resource adapters and release audit. The normal build needs no pip packages.
 
@@ -32,7 +32,7 @@ Use the appropriate `JAVA_HOME`. On Windows replace `gradlew` with `gradlew.bat`
 ./ports/gradlew --no-daemon -p ports -Ptarget=26.3 -PportPython=python3 :26.3:build
 ```
 
-Run `python tools/audit_resources.py --check` to validate the model/texture graph. After all targets are built, `python tools/package_multiversion.py` verifies metadata, Java class versions, localization and core meshes, then collects the four JARs. For one target, pass e.g. `--targets 26.2`.
+Run `python tools/audit_resources.py --check` to validate the model/texture graph and `python tools/audit_localization.py --check` to check English and Chinese keys, arguments, live item/block names, UI references and Mod Menu descriptions. After all targets are built, `python tools/package_multiversion.py` verifies metadata, Java class versions, localization and core meshes, then collects the four JARs. For one target, pass e.g. `--targets 26.2`.
 
 Never install `-sources.jar`. Normal JARs include the assets, notation catalog and architecture data. Building does not launch Minecraft or alter any installed instance.
 

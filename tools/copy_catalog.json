@@ -167,7 +167,10 @@
       "itemGroup.googology.architecture": "果糕逻辑 · 建筑与装饰",
       "itemGroup.googology.numbers": "果糕逻辑 · 数字与数列",
       "itemGroup.googology.cores": "果糕逻辑 · 晶核与珍藏",
-      "itemGroup.googology.materials": "果糕逻辑 · 材料与矿物"
+      "itemGroup.googology.materials": "果糕逻辑 · 材料与矿物",
+      "modmenu.nameTranslation.googology": "果糕逻辑",
+      "modmenu.summaryTranslation.googology": "两个维度、八种群系、序数矿业与晶核强化。",
+      "modmenu.descriptionTranslation.googology": "探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。"
     },
     "en_us": {
       "dimension.googology.googology": "Guogaology World",
@@ -201,7 +204,7 @@
       "block.googology.phi_symbol": "φ Symbol Branchstone",
       "item.googology.guogao_slice": "Guogao Slice",
       "item.googology.laver_ribbon": "Laver Sheet",
-      "itemGroup.googology.lighting": "Guogaology · Lights & Guogao",
+      "itemGroup.googology.lighting": "Guogaology · Lights",
       "tag.item.googology.fruit_guogao": "Guogao Blocks",
       "block.googology.guogao_lantern": "Guogao Lantern · Amber",
       "block.googology.cyan_guogao_lantern": "Guogao Lantern · Cyan",
@@ -290,13 +293,18 @@
       "item.googology.proof_boots": "Ordinal Boots · Proof Boundary",
       "item.googology.proof_fragment": "Proof Boundary Ore Shard",
       "item.googology.proof_cluster": "Proof Boundary Crystal Cluster",
-      "message.googology.missing_dimension": "Guogaology is not loaded. Save and reopen the world.",
-      "itemGroup.googology.mining": "Guogaology · Equipment & Enhancement",
-      "itemGroup.googology.googology": "Guogaology · Terrain & Plants",
-      "itemGroup.googology.architecture": "Guogaology · Building & Decoration",
-      "itemGroup.googology.numbers": "Guogaology · Numbers & Sequences",
-      "itemGroup.googology.cores": "Guogaology · Cores & Relics",
-      "itemGroup.googology.materials": "Guogaology · Materials & Minerals"
+      "message.googology.missing_dimension": "The destination dimension is unavailable. Save and reopen the world.",
+      "itemGroup.googology.mining": "Guogaology · Equipment",
+      "itemGroup.googology.googology": "Guogaology · Terrain",
+      "itemGroup.googology.architecture": "Guogaology · Building",
+      "itemGroup.googology.numbers": "Guogaology · Numbers",
+      "itemGroup.googology.cores": "Guogaology · Cores",
+      "itemGroup.googology.materials": "Guogaology · Materials",
+      "modmenu.nameTranslation.googology": "Guogaology",
+      "modmenu.summaryTranslation.googology": "Two dimensions, eight biomes, ordinal mining, and crystal enhancements.",
+      "modmenu.descriptionTranslation.googology": "Explore eight biomes across the Guogaology World and Guogao Underworld. Discover landscapes shaped by ordinal notation and monumental ruins, mine ordinal ores, craft Denxi equipment, and enhance it with crystal cores.",
+      "mining.googology.slots": "Core slots: %s / %s; max grade: %s",
+      "mining.googology.drag_hint": "Drag cores / Shift-click"
     }
   }
 }

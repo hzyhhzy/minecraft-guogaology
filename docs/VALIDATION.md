@@ -1,6 +1,18 @@
 # Guogaology 验证记录
 
-验证日期：2026-10-04。
+最新验证日期：2026-10-05。
+
+## 0.3.2：中英双语 / English and Simplified Chinese
+
+285 项中英文键一一对应；163 个方块入口、51 个非方块物品入口、动态名称与 Java 界面引用均通过检查，没有缺译、格式参数不一致或硬编码中文提示。检查器接入四版批量构建、发行打包和 GitHub Actions。
+
+在独立隐藏 fo262（Minecraft 26.2）中使用发行 JAR、Fabric API、Sodium 和已安装的 Mod Menu 实际切换 `en_us` → `zh_cn`。两种语言分别检查全部 285 条文案和 522 个创造栏变体，Mod Menu 名称／摘要／介绍正确切换；满 10 槽的强化界面显示正常，真实字体测量未发现面板文本溢出。已检查两种语言的创造物品栏与强化台原始截图。未操作正常实例、配置或玩家存档。
+
+新增完整英文项目说明、生存指南和 142 条共享采集规则参考。英文创造栏标题缩短，避免覆盖翻页按钮；七个分类均检查真实字体宽度。动态数字、颜色、拼灯分片、门框名称和装备组件保留原行为。构建时保留 JSON 反斜杠转义，使双语元数据中的换行在四版 JAR 内仍是合法 JSON。
+
+四版发行包构建与资源检查通过；与 0.3.1 逐项比较，只有两份语言文件和 `fabric.mod.json` 改变，业务字节码、模型、纹理及数据均一致。只有 26.2 启动客户端，其余三版未启动游戏。
+
+All 285 English and Chinese entries, 163 block names, 51 non-block item names, and live UI references pass the localization audit. A hidden Minecraft 26.2 client reloads both languages and checks 522 creative variants, actual Mod Menu translations, enhancement-panel text widths, and screenshots. No normal game profile is used. Gameplay code, saved IDs, recipes, equipment balance, and world generation are unchanged.
 
 ## 0.3.1：GPL v3 许可更新
 

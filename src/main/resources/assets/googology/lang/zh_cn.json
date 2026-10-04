@@ -280,5 +280,8 @@
   "item.googology.number_variant": "%s · %s",
   "item.googology.blank_variant": "%s · 空白",
   "item.googology.lantern_tile": "拼灯分片：%s / %s / %s",
-  "item.googology.lantern_whole": "完整表情面"
+  "item.googology.lantern_whole": "完整表情面",
+  "modmenu.nameTranslation.googology": "果糕逻辑",
+  "modmenu.summaryTranslation.googology": "两个维度、八种群系、序数矿业与晶核强化。",
+  "modmenu.descriptionTranslation.googology": "探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。"
 }

@@ -1,8 +1,10 @@
 # 果糕逻辑 · Guogaology
 
+简体中文 | [English](README.en.md)
+
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.1 · Minecraft Java / Fabric**
+**v0.3.2 · Minecraft Java / Fabric**
 
 把大数构造、序数记号和社区梗变成可以探索、开采和建造的世界。两个维度、八种群系、八座巨型建筑，配有序数矿业、扽西装备、晶核融合和可逆强化。当前没有自定义生物或 Boss；代表建筑保留了后续战斗场地。
 
@@ -18,6 +20,8 @@ Explore worlds inspired by large numbers and ordinal notation: two dimensions, e
 | 26.3 | 25 | 0.161.0+26.3 |
 
 四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 保持 `googology`，因此现有方块和维度不会因改名丢失。
+
+游戏内支持简体中文和英语，随 Minecraft「选项 → 语言」切换；同一 JAR 包含两种语言。方块与装备名称、变体提示、强化台、创造分类、群系、建筑、进度、声音字幕和命令帮助均有对应翻译。装有 Mod Menu 时，模组名称与简介也可随语言切换，无需额外安装翻译包。
 
 ## 世界内容
 
@@ -50,7 +54,7 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.3.1/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.3.2/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 

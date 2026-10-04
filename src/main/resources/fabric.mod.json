@@ -3,7 +3,7 @@
   "id": "googology",
   "version": "${version}",
   "name": "果糕逻辑 · Guogaology",
-  "description": "探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。",
+  "description": "Explore eight biomes across the Guogaology World and Guogao Underworld. Discover landscapes shaped by ordinal notation and monumental ruins, mine ordinal ores, craft Denxi equipment, and enhance it with crystal cores.\n\n探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。",
   "authors": [
     "Sigmoid"
   ],
@@ -30,5 +30,10 @@
     "minecraft": "1.21.1",
     "java": ">=21",
     "fabric-api": ">=0.102.0"
+  },
+  "contact": {
+    "homepage": "https://github.com/hzyhhzy/minecraft-guogaology",
+    "sources": "https://github.com/hzyhhzy/minecraft-guogaology",
+    "issues": "https://github.com/hzyhhzy/minecraft-guogaology/issues"
   }
 }

@@ -74,8 +74,9 @@ tasks.named('sourcesJar') { dependsOn tasks.named('preparePortResources'), tasks
 processResources {
     dependsOn tasks.named('preparePortResources')
     inputs.property 'version', project.version
+    inputs.property 'preserveJsonEscapes', true
     inputs.property 'minecraft', config.minecraft
-    filesMatching('fabric.mod.json') { expand version: project.version }
+    filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
 }
 jar { from(repositoryRoot.toPath().resolve('LICENSE').toFile()) }
 def licenseNotices = ['LICENSE-MINECRAFT-EXCEPTION', 'COPYRIGHT', 'THIRD_PARTY.md'].collect { new File(repositoryRoot, it) }

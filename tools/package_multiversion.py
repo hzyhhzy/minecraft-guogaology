@@ -10,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 CONFIG=json.loads((ROOT/'ports/targets.json').read_text())
 
 def package(targets):
+    from audit_localization import audit
+    audit(ROOT)
     release=next(line.split('=',1)[1].strip() for line in (ROOT/'gradle.properties').read_text().splitlines() if line.startswith('mod_version='))
     output=ROOT/'build/releases'/release
     output.mkdir(parents=True,exist_ok=True)
@@ -22,6 +24,7 @@ def package(targets):
             metadata=json.loads(archive.read('fabric.mod.json'))
             assert metadata['id']=='googology' and metadata['version']==release
             assert metadata['name']=='果糕逻辑 · Guogaology'
+            assert metadata['description']==json.loads((ROOT/'src/main/resources/fabric.mod.json').read_text(encoding='utf-8'))['description']
             assert metadata['license']=='GPL-3.0-only WITH GPL-3.0-linking-exception'
             license_name = 'LICENSE_'+jar.stem.rsplit('-'+release,1)[0] if target=='1.21.1' else 'LICENSE'
             assert archive.read(license_name)==(ROOT/'LICENSE').read_bytes()

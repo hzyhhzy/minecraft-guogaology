@@ -29,6 +29,8 @@ try {
     if ($GradleCache) { $env:GRADLE_USER_HOME = $GradleCache }
     & $Python -X utf8 tools/audit_resources.py --check
     if ($LASTEXITCODE) { throw 'Resource audit failed.' }
+    & $Python -X utf8 tools/audit_localization.py --check
+    if ($LASTEXITCODE) { throw 'Localization audit failed.' }
     $options = @('--no-daemon','--console=plain')
     if ($Offline) { $options += '--offline' }
     if ('1.21.1' -in $Targets) {

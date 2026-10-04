@@ -30,7 +30,8 @@ dependencies {
 processResources {
     filteringCharset = 'UTF-8'
     inputs.property 'version', project.version
-    filesMatching('fabric.mod.json') { expand version: project.version }
+    inputs.property 'preserveJsonEscapes', true
+    filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
 }
 
 tasks.withType(JavaCompile).configureEach {
