@@ -1,12 +1,41 @@
-"""The 64-pixel native logo: a reference-proportioned Guogao face and capital Omega.
+"""Pixel logo: capital Omega and the giant Christmas-tree globe's Guogao face.
 
 All geometry lives on the same integer grid. SVG and PNG share the exact pixels;
 nearest-neighbour exports preserve the deliberate steps without smooth edges.
 """
 from pathlib import Path
+import math
+import re
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def globe_face(size=60):
+    """Sample the same large-globe formula as MosaicMotifs.facePixel (no dark rim)."""
+    source = (ROOT/'src/main/java/dev/googology/survival/MosaicMotifs.java').read_text(encoding='utf8')
+    palette = re.search(r'COLORS=\{(.*?)\};',source,re.S).group(1)
+    colors = [int(x,16) for x in re.findall(r'0x([0-9a-f]{6})',palette)]
+    assert len(colors)==16
+    face = Image.new('RGBA',(size,size))
+    r=size*.5;c=(size-1)*.5
+    for y in range(size):
+        for x in range(size):
+            u=(x-c)/r;v=(c-y)/r;a=abs(u)
+            if u*u+v*v>1:continue
+            color=(10 if v>.70 else 9 if v>.46 else 8) if v>.25 else 1 if v>.02 else 3 if v<-.60 else 2
+            brow=.48-.63*(a-.20)
+            if .18<a<.67 and abs(v-brow)<.065:color=6
+            if ((a-.30)/.115)**2+((v+.04)/.155)**2<1:color=5
+            if a<.32 and -.64+.30*u*u<v<-.40-.75*u*u:color=5
+            t=(.11-v)/.79
+            if 0<=t<=1:
+                w=.22*math.sin(math.pi*t)**.70
+                if abs(u+.72)<w:
+                    color=0 if -.82<u<-.72 and .34<t<.77 else 7 if u>-.66 else 8
+            rgb=colors[color]
+            face.putpixel((x,y),((rgb>>16)&255,(rgb>>8)&255,rgb&255,255))
+    return face
 
 
 def run():
@@ -30,62 +59,25 @@ def run():
     d.line(omega,fill='#326eab',width=7)
     d.line(omega,fill='#72e8f1',width=4)
     d.line([(15,15),(21,10),(28,8),(36,8),(43,10),(49,15)],fill='#c7fbff',width=2)
-    background = im
-    im = Image.new('RGBA', (64,64))
-    d = ImageDraw.Draw(im)
-    # Discrete blue-to-gold bands, not a blurred or dithered gradient.
-    face = Image.new('1',im.size)
-    fd = ImageDraw.Draw(face)
-    fd.ellipse((15,15,49,49),fill=1)
-    d.ellipse((14,14,50,50),fill='#ffeaa1')
-    bands=[(15,21,'#619ce9'),(22,24,'#88bee8'),(25,26,'#acd0d9'),
-           (27,28,'#d1d598'),(29,36,'#f8d563'),(37,42,'#f2be43'),
-           (43,49,'#eaa32e')]
-    for y0,y1,color in bands:
-        for y in range(y0,y1+1):
-            for x in range(15,50):
-                if face.getpixel((x,y)):
-                    im.putpixel((x,y),(*bytes.fromhex(color[1:]),255))
-    # Reference brows x=23..55 / 104..136, y=46..62; eyes y=76..95.
-    # Long, curved tapered brows sit outwards, not above the inner eye corners.
-    dark='#654830'
-    brow=[(18,26),(20,26),(23,25),(26,23),(25,25),(23,27),(19,27)]
-    d.polygon(brow,fill='#465659')
-    d.polygon([(64-x,y) for x,y in brow],fill='#465659')
-    for x in (25,35):
-        d.ellipse((x,31,x+4,36),fill='#67420f')
-        d.ellipse((x+1,32,x+3,35),fill='#966920')
-    # The reference is a broad, shallow worried frown, not a round O mouth.
-    # Both corners droop; the raised centre of the lower lip stays face-coloured.
-    # Reference face y=9..153, dark mouth y=114..129: centre at 78.125%.
-    # Here face y=14..50, mouth y=40..44: 77.778%, within 0.125 native pixel.
-    d.polygon([(26,44),(26,42),(28,40),(36,40),(38,42),(38,44),
-               (36,44),(35,43),(29,43),(28,44)],fill=dark)
-    d.line([(28,41),(36,41)],fill='#94622c',width=1)
-    # Large icy sweat drop: an actual pixel outline with a small white gleam.
-    d.polygon([(19,31),(21,35),(23,40),(23,43),(21,46),(18,46),
-               (15,43),(15,40),(17,35)],fill='#28b9eb')
-    d.line([(19,34),(17,40),(17,42)],fill='#dcfbf4',width=1)
-    # Scale the whole expression together, retaining the measured feature ratios.
-    # 37 native pixels -> 30 (80%, rounded to the pixel grid), centered at (32,30),
-    # the centre of Omega's upper loop rather than the whole icon including feet.
-    expression = im.crop((14,14,51,51)).resize((30,30),Image.Resampling.NEAREST)
-    background.alpha_composite(expression,(17,15))
-    im = background
+    # Keep the large-globe contour but sample it at 30 pixels for broader steps.
+    # 60/128 has the approved footprint (~80% of the old face), rendered at 2x.
+    # The face sits at (64,60), the upper loop's centre.
+    im = im.resize((128,128),Image.Resampling.NEAREST)
+    im.alpha_composite(globe_face(30).resize((60,60),Image.Resampling.NEAREST),(34,30))
     out = ROOT/'docs/branding'
     out.mkdir(parents=True,exist_ok=True)
-    im.save(out/'googology-mark-64.png')
+    im.save(out/'googology-mark-128.png')
     im.resize((512,512),Image.Resampling.NEAREST).save(out/'googology-mark.png')
     im.resize((128,128),Image.Resampling.NEAREST).save(ROOT/'src/main/resources/assets/googology/icon.png')
     # Editable SVG with horizontal runs; every run sits on the same pixel grid.
-    svg=['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">',
+    svg=['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" shape-rendering="crispEdges">',
          '<title>果糕逻辑 · Guogaology</title>',
-         '<desc>64像素网格：大写Ω与中央惊惧流汗表情，深靛蓝背景。</desc>']
-    for y in range(64):
+         '<desc>128像素网格：大写Ω与居中的果糕巨球表情，深靛蓝背景。</desc>']
+    for y in range(128):
         x=0
-        while x<64:
+        while x<128:
             color=im.getpixel((x,y));end=x+1
-            while end<64 and im.getpixel((end,y))==color:end+=1
+            while end<128 and im.getpixel((end,y))==color:end+=1
             if color[3]:
                 rgb='#{:02x}{:02x}{:02x}'.format(*color[:3])
                 svg.append(f'<rect x="{x}" y="{y}" width="{end-x}" height="1" fill="{rgb}"/>')
