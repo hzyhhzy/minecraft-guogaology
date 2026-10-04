@@ -22,6 +22,11 @@ def package(targets):
             metadata=json.loads(archive.read('fabric.mod.json'))
             assert metadata['id']=='googology' and metadata['version']==release
             assert metadata['name']=='果糕逻辑 · Guogaology'
+            assert metadata['license']=='GPL-3.0-only WITH GPL-3.0-linking-exception'
+            license_name = 'LICENSE_'+jar.stem.rsplit('-'+release,1)[0] if target=='1.21.1' else 'LICENSE'
+            assert archive.read(license_name)==(ROOT/'LICENSE').read_bytes()
+            for notice in ('LICENSE-MINECRAFT-EXCEPTION','COPYRIGHT','THIRD_PARTY.md'):
+                assert archive.read(notice)==(ROOT/notice).read_bytes(),f'Missing or stale license notice: {target}/{notice}'
             from copy_catalog import normalize
             for locale in ('zh_cn','en_us'):
                 key=f'assets/googology/lang/{locale}.json'
@@ -49,13 +54,17 @@ def package(targets):
                         assert '"functions"' not in data and '"conditions"' not in data,(target,n)
         destination=output/jar.name
         shutil.copy2(jar,destination)
-        manifest.append({'minecraft':target,'mod':release,'java':java,'file':jar.name,'bytes':jar.stat().st_size,
+        manifest.append({'minecraft':target,'mod':release,'java':java,'license':metadata['license'],'file':jar.name,'bytes':jar.stat().st_size,
                          'sha256':hashlib.sha256(jar.read_bytes()).hexdigest(),'requires':metadata['depends']})
     (output/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (output/'SHA256SUMS.txt').write_text(''.join(f"{m['sha256']}  {m['file']}\n" for m in manifest),encoding='utf-8')
     lines=['Guogaology / 果糕逻辑 '+release,'','Choose exactly ONE JAR matching the Minecraft version. Install Fabric Loader and matching Fabric API.','Both server and client need the same matching Guogaology JAR. Do not mix Minecraft versions in one mods folder.','No gallery or flight-speed addon is required. Test old worlds on a backup; cross-version world migration is not guaranteed.','']
     for m in manifest:lines.append(f"{m['minecraft']}: Java {m['java']}+, Fabric Loader {m['requires']['fabricloader']}, Fabric API {m['requires']['fabric-api']}")
     (output/'INSTALL.txt').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    for notice in ('LICENSE','LICENSE-MINECRAFT-EXCEPTION','COPYRIGHT'):
+        shutil.copy2(ROOT/notice,output/notice)
+    (output/'SOURCE.txt').write_text(f'Guogaology {release} is GPL-3.0-only WITH GPL-3.0-linking-exception.\n'
+        f'The matching complete source is Guogaology-v{release}-source.zip. Share that source archive with these JARs, or make the corresponding source available as required by GPLv3.\n',encoding='utf8')
     print(json.dumps({'output':str(output),'releases':manifest},ensure_ascii=False,indent=2))
 
 if __name__=='__main__':

@@ -78,6 +78,9 @@ processResources {
     filesMatching('fabric.mod.json') { expand version: project.version }
 }
 jar { from(repositoryRoot.toPath().resolve('LICENSE').toFile()) }
+def licenseNotices = ['LICENSE-MINECRAFT-EXCEPTION', 'COPYRIGHT', 'THIRD_PARTY.md'].collect { new File(repositoryRoot, it) }
+jar { from(licenseNotices) }
+tasks.named('sourcesJar') { from(new File(repositoryRoot, 'LICENSE')); from(licenseNotices) }
 
 // Keep caches, servers and client profiles separate for each target.
 loom.runs.configureEach {

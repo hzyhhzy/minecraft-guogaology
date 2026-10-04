@@ -7,7 +7,7 @@
   "authors": [
     "Sigmoid"
   ],
-  "license": "MIT",
+  "license": "GPL-3.0-only WITH GPL-3.0-linking-exception",
   "icon": "assets/googology/icon.png",
   "environment": "*",
   "entrypoints": {

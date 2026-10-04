@@ -1,0 +1,24 @@
+Guogaology / 果糕逻辑
+Copyright (c) 2026 Googology Dimension contributors
+
+Except for separately identified third-party files, the original source code,
+assets, documentation and build tools of this project are licensed under the
+GNU General Public License, version 3 only, with the Minecraft linking
+permission in LICENSE-MINECRAFT-EXCEPTION.
+
+SPDX-License-Identifier: GPL-3.0-only WITH GPL-3.0-linking-exception
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of version 3 of the GNU General Public License as published by the
+Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program in LICENSE. If not, see https://www.gnu.org/licenses/.
+
+Third-party files retain their own notices and license terms; see THIRD_PARTY.md.
+Earlier copies distributed under MIT retain the permissions originally granted
+with those copies. This notice does not revoke prior license grants.

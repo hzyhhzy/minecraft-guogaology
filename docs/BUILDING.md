@@ -1,4 +1,4 @@
-# Building Guogaology 0.3.0
+# Building Guogaology 0.3.1
 
 Use JDK 21 for Minecraft 1.21.1; the combined modern build runs with JDK 25 and targets the appropriate Java class version for each game. Python 3.10+ is required for the modern API/resource adapters and release audit. The normal build needs no pip packages.
 

@@ -44,6 +44,8 @@ java {
 }
 
 jar { from('LICENSE') { rename { "${it}_${project.base.archivesName.get()}" } } }
+jar { from('LICENSE-MINECRAFT-EXCEPTION', 'COPYRIGHT', 'THIRD_PARTY.md') }
+tasks.named('sourcesJar') { from('LICENSE', 'LICENSE-MINECRAFT-EXCEPTION', 'COPYRIGHT', 'THIRD_PARTY.md') }
 
 // Development launches use named methods and can mask a wrongly assigned refmap.
 // Validate the remapped artifact that a normal launcher actually loads.

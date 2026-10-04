@@ -2,7 +2,7 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.0 · Minecraft Java / Fabric**
+**v0.3.1 · Minecraft Java / Fabric**
 
 把大数构造、序数记号和社区梗变成可以探索、开采和建造的世界。两个维度、八种群系、八座巨型建筑，配有序数矿业、扽西装备、晶核融合和可逆强化。当前没有自定义生物或 Boss；代表建筑保留了后续战斗场地。
 
@@ -50,7 +50,7 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.3.0/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.3.1/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -58,4 +58,8 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 `src/main` / `src/client` 为 1.21.1 基础实现；`ports/common` 与目标覆盖负责现代 API，纯算法通过 `ports/shared-sources.txt` 共享。不要直接编辑 `build/generated`。像素 Logo 可用 `tools/generate_brand.py` 重建（可选安装 Pillow）。
 
-[MIT License](LICENSE) · [第三方与数据说明](THIRD_PARTY.md)
+本项目自 0.3.1 起采用 **GNU GPL v3（仅第 3 版）**，并附带 [Minecraft 链接许可](LICENSE-MINECRAFT-EXCEPTION)，允许模组与 Minecraft 游戏本体链接运行。该例外不改变本模组自身的 GPL 要求，也不授予 Minecraft 本体的再分发权。
+
+向他人分发本模组或修改版时，需要按 GPL 提供相应源代码和许可声明。此前已按 MIT 分发的版本保留原有许可；Gradle Wrapper 等第三方文件仍遵循各自的许可证。
+
+[GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)

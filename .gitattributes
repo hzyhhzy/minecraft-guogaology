@@ -12,3 +12,5 @@ ports/gradlew text eol=lf
 *.png binary
 *.jar binary
 *.gz binary
+LICENSE* text eol=lf
+COPYRIGHT text eol=lf

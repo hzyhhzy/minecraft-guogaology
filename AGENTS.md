@@ -1,6 +1,7 @@
 # Guogaology development
 
-- Current release: 0.3.0. Chinese name 果糕逻辑; English name Guogaology. Preserve internal `googology` IDs, commands and existing save semantics.
+- Current release: 0.3.1. Chinese name 果糕逻辑; English name Guogaology. Preserve internal `googology` IDs, commands and existing save semantics.
+- Main project license: GPL-3.0-only WITH GPL-3.0-linking-exception. Keep LICENSE, LICENSE-MINECRAFT-EXCEPTION, COPYRIGHT and fabric.mod.json consistent; ship all three notices in binary/source JARs. Third-party code retains its own licenses. Earlier MIT releases are not retroactively relicensed.
 - Maintain four independent Fabric targets: Minecraft 1.21.1, 1.21.11, 26.2, 26.3. All changes must compile across the four. Modern APIs belong in `ports/common` or explicit target overrides, not generated output.
 - Runtime checks are currently limited to Minecraft 26.2 in an isolated hidden instance; do not capture the user's mouse or change normal saves/configuration. Other versions are compile/resource checked only unless the user expands test scope.
 - Keep the repository free of historical art alternatives, retired systems, temporary add-ons, build caches, launcher data and game saves.
