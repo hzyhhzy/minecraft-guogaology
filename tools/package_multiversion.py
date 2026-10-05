@@ -1,5 +1,6 @@
 """Validate version-specific release jars and collect them with hashes; never installs them."""
 import argparse
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -10,13 +11,20 @@ from io import BytesIO
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=json.loads((ROOT/'ports/targets.json').read_text())
 
-def package(targets):
+def verify_structure_template(actual, expected, name):
+    # gzip headers (notably the OS byte) and compression output can differ
+    # between Python/zlib versions. Minecraft loads the decompressed NBT.
+    # Compare every NBT byte, and let gzip reject damaged streams/CRC values.
+    assert gzip.decompress(actual) == gzip.decompress(expected), f'Structure content mismatch: {name}'
+
+
+def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
     from audit_outer_content import audit as audit_outer
     assert not audit_outer()['unused'],'Unused outer-world assets remain'
     release=next(line.split('=',1)[1].strip() for line in (ROOT/'gradle.properties').read_text().splitlines() if line.startswith('mod_version='))
-    output=ROOT/'build/releases'/release
+    output=Path(output_dir) if output_dir is not None else ROOT/'build/releases'/release
     output.mkdir(parents=True,exist_ok=True)
     manifest=[]
     for target in targets:
@@ -52,7 +60,7 @@ def package(targets):
             from import_outer_content import nbt_transform
             for name in templates:
                 original=ROOT/'content/outer-1.0.0'/name.removeprefix('data/googology_outer/')
-                assert archive.read(name)==nbt_transform(original.read_bytes(),legacy=target!='26.3'),name
+                verify_structure_template(archive.read(name),nbt_transform(original.read_bytes(),legacy=target!='26.3'),name)
             for name in entries:
                 if name.startswith('data/googology_outer/advancement/') and name.endswith('.json'):
                     for recipe in json.loads(archive.read(name)).get('rewards',{}).get('recipes',[]):
@@ -103,4 +111,6 @@ def package(targets):
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--targets',default='1.21.1,1.21.11,26.2,26.3')
-    package(parser.parse_args().targets.split(','))
+    parser.add_argument('--output',type=Path,help='Optional output directory, e.g. for isolated package verification')
+    args=parser.parse_args()
+    package(args.targets.split(','),args.output)

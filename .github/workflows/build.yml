@@ -35,6 +35,8 @@ jobs:
         run: python tools/audit_localization.py --check
       - name: Check imported outer-world content
         run: python tools/audit_outer_content.py
+      - name: Test release validation
+        run: python -m unittest discover -s tools/tests -p 'test_*.py'
       - name: Build Minecraft 1.21.1
         if: matrix.minecraft == '1.21.1'
         run: ./gradlew --no-daemon :build
