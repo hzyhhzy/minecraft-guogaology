@@ -1,0 +1,265 @@
+{
+  "type": "googology_outer:template",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "googology_outer:bms_fto"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_lao"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sco"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_co"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_lco"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_hco"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_fso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_aco"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_svo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_lvo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_bho"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_bo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_fblo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_tfbo_btbo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_bio"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_ebo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_jo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sio"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_mbo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_tbo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sro"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_smo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sno"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_ro"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sko"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_do"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_lso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_apo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_bgo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sdo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_ldo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_dso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_tso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_pfec_lro"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_sbo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_tsso_sspo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_lspo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_q1bgo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_espo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_bobo"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_qsso"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:bms_qisso"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

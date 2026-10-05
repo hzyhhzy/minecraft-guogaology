@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "christmas_planks",
+  "key": {
+    "#": "googology:christmas_wood"
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "googology:christmas_planks"
+  }
+}

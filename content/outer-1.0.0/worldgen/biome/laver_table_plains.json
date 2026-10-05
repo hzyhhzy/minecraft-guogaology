@@ -1,0 +1,106 @@
+{
+  "attributes": {
+    "minecraft:gameplay/natural_mob_spawns": {
+      "modifier": "overlay",
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "googology:fruit_cake_slime",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 8
+            },
+            {
+              "type": "googology:evil_pig",
+              "count": 1,
+              "weight": 1
+            }
+          ],
+          "creature": [
+            {
+              "type": "googology:busy_beaver",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 8
+            }
+          ],
+          "ambient": [
+            {
+              "type": "googology:fly_y",
+              "count": 1,
+              "weight": 6
+            }
+          ]
+        }
+      }
+    },
+    "minecraft:visual/sky_color": "#6e8b6a",
+    "minecraft:visual/fog_color": "#b8ccb0"
+  },
+  "carvers": [
+    "minecraft:cave",
+    "minecraft:cave_extra_underground",
+    "minecraft:canyon"
+  ],
+  "downfall": 0.6,
+  "effects": {
+    "water_color": "#2e5b3e",
+    "grass_color": "#2f5d3a",
+    "foliage_color": "#24492c"
+  },
+  "features": [
+    [],
+    [
+      "googology:lake_water"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega",
+      "googology:ore_epsilon",
+      "googology:ore_gamma",
+      "googology:ore_true_omega",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper",
+      "googology:disk_sand_shore",
+      "googology:disk_gravel_shore"
+    ],
+    [],
+    [
+      "googology:spring_water_ordinal"
+    ],
+    [
+      "googology:laver_table",
+      "googology:laver_tree",
+      "googology:exponential_tower",
+      "googology:rock_blob_ordinal",
+      "googology:patch_grass_plain_on_grass",
+      "googology:patch_tall_grass_on_grass",
+      "minecraft:patch_bush",
+      "minecraft:patch_sugar_cane",
+      "googology:graham",
+      "googology:graham_flower",
+      "googology:graham_vine"
+    ],
+    []
+  ],
+  "has_precipitation": true,
+  "temperature": 0.6
+}

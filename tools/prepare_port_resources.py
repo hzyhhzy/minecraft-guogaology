@@ -215,6 +215,7 @@ def prepare(target, release):
     shutil.copytree(ROOT / 'src/client/resources', out, dirs_exist_ok=True)
     metadata = read(out / "fabric.mod.json")
     metadata["version"] = release
+    metadata.pop('jars',None)  # The legacy mapping bridge is only packaged for 1.21.1.
     metadata["depends"].update(minecraft=target, java=f">={config['java']}",
                               fabricloader=">=0.19.3", **{"fabric-api": ">=" + config["fabric"]})
     # Modern dimensions express their atmosphere through environment attributes.
@@ -260,6 +261,8 @@ def prepare(target, release):
     if target == '26.3':
         convert_263_misc(out)
     portable = convert_items(out)
+    from prepare_outer_resources import prepare as prepare_outer
+    prepare_outer(target, out)
     print(f"Prepared {target} resources: {portable} portable decoration variants")
     return out
 

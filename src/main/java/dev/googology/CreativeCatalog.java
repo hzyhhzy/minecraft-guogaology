@@ -27,7 +27,7 @@ public final class CreativeCatalog {
     public static List<ItemStack> entries(String tab){
         var out=new ArrayList<ItemStack>();
         for(Block block:GoogologyBlocks.ALL){
-            if(block==GoogologyBlocks.PORTAL||block==GoogologyBlocks.FRUIT_PORTAL||CoreGrades.upper(block)||block instanceof ChristmasDigitBlock)continue;
+            if(block==GoogologyBlocks.INNER_PORTAL||block==GoogologyBlocks.PORTAL||block==GoogologyBlocks.FRUIT_PORTAL||CoreGrades.upper(block)||block instanceof ChristmasDigitBlock)continue;
             if(category(block).equals(tab)){out.add(new ItemStack(block));CoreGrades.upgrades(block).forEach(b->out.add(new ItemStack(b)));}
         }
         if(tab.equals("numbers")){
@@ -53,6 +53,12 @@ public final class CreativeCatalog {
             for(var item:MiningContent.ITEMS)if(!MiningContent.GEAR.containsKey(item)&&Arrays.stream(MiningContent.TABLES).noneMatch(b->b.asItem()==item))out.add(new ItemStack(item));
             out.add(new ItemStack(GoogologyBlocks.ORDINAL_SHARD));out.add(new ItemStack(GoogologyBlocks.GUOGAO_SLICE));
             WorldMaterials.ITEMS.values().forEach(i->out.add(new ItemStack(i)));
+        }
+        for(var item:Registries.ITEM){
+            var id=Registries.ITEM.getId(item);if(!id.getNamespace().equals("googology_outer"))continue;
+            String name=id.getPath();
+            String section=item instanceof BlockItem?(name.endsWith("_stairs")||name.endsWith("_slab")||name.endsWith("_door")||name.endsWith("_trapdoor")||name.contains("sign")||name.contains("fence")||name.contains("button")||name.contains("plate")||name.contains("chair")?"architecture":"googology"):"materials";
+            if(section.equals(tab))out.add(new ItemStack(item));
         }
         return List.copyOf(out);
     }

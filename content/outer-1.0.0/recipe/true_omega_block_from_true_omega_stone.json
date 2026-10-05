@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "true_omega_block",
+  "key": {
+    "#": "googology:true_omega_stone"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "googology:true_omega_block"
+  }
+}

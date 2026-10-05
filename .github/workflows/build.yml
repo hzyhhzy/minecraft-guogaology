@@ -33,6 +33,8 @@ jobs:
         run: python tools/audit_resources.py --check
       - name: Check English and Chinese
         run: python tools/audit_localization.py --check
+      - name: Check imported outer-world content
+        run: python tools/audit_outer_content.py
       - name: Build Minecraft 1.21.1
         if: matrix.minecraft == '1.21.1'
         run: ./gradlew --no-daemon :build

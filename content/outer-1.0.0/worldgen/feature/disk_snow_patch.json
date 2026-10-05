@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:disk",
+  "half_height": 1,
+  "radius": {
+    "type": "minecraft:uniform",
+    "min_inclusive": 2,
+    "max_inclusive": 3
+  },
+  "state_provider": {
+    "id": "minecraft:snow_block"
+  },
+  "target": {
+    "type": "minecraft:any_of",
+    "predicates": [
+      {
+        "type": "minecraft:matching_block_tag",
+        "tag": "googology:ordinal_surface_replaceables"
+      }
+    ]
+  }
+}

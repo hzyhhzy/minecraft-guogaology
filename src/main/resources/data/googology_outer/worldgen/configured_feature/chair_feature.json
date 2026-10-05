@@ -1,0 +1,31 @@
+{
+  "type": "googology_outer:template",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "googology_outer:chair_north"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:chair_east"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:chair_south"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:chair_west"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

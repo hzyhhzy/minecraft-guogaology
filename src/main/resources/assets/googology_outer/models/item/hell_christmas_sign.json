@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology_outer:item/hell_christmas_sign"
+  }
+}

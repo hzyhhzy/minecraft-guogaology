@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "googology:omega_block",
+    "googology:epsilon_block",
+    "googology:gamma_block",
+    "googology:raw_omega_block",
+    "googology:true_omega_block",
+    "googology:bashicu_block",
+    "googology:snake_head"
+  ]
+}

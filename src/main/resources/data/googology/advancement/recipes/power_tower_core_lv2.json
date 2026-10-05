@@ -7,7 +7,11 @@
         "items": [
           {
             "items": [
-              "googology:power_tower_core"
+              "googology:ordinal_crystal_lv2",
+              "googology:power_tower_core",
+              "googology:tree_node_blue",
+              "googology:tree_node_green",
+              "googology:tree_node_red"
             ]
           }
         ]

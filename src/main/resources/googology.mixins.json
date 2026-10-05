@@ -11,10 +11,13 @@
     "PlacedRelicHarvestMixin",
     "EquipmentDefenseMixin",
     "EquipmentBreakMixin",
-    "MiningExperienceMixin",
     "EquipmentRepairRecipeMixin",
     "AnvilCoreRepairMixin",
-    "GrindstoneCoreRepairMixin"
+    "GrindstoneCoreRepairMixin",
+    "ManuscriptMiningMixin",
+    "ManuscriptExperienceMixin",
+    "OuterNoiseSettingsMixin",
+    "OuterSpawnPlacementInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

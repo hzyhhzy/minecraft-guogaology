@@ -31,12 +31,14 @@ try {
     if ($LASTEXITCODE) { throw 'Resource audit failed.' }
     & $Python -X utf8 tools/audit_localization.py --check
     if ($LASTEXITCODE) { throw 'Localization audit failed.' }
+    & $Python -X utf8 tools/audit_outer_content.py
+    if ($LASTEXITCODE) { throw 'Outer-world content audit failed.' }
     $options = @('--no-daemon','--console=plain')
     if ($Offline) { $options += '--offline' }
     if ('1.21.1' -in $Targets) {
         Confirm-Jdk $Java21 21
         $env:JAVA_HOME = $Java21
-        & $Gradle21 @options ':build'
+        & $Gradle21 @options "-PportPython=$Python" "-PouterGradle=$Gradle25" ':build'
         if ($LASTEXITCODE) { throw 'Minecraft 1.21.1 build failed.' }
     }
     $modern = @($Targets | Where-Object { $_ -ne '1.21.1' })

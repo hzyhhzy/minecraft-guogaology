@@ -3,9 +3,6 @@
   "values": [
     "googology:omega_boots",
     "googology:epsilon_boots",
-    "googology:gamma_boots",
-    "googology:psi_boots",
-    "googology:strata_boots",
-    "googology:proof_boots"
+    "googology:gamma_boots"
   ]
 }

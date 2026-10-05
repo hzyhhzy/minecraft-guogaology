@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "googology_outer:cobbled_ordinal_stone"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "googology_outer:ordinal_stone_from_cobbled_ordinal_stone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "googology_outer:ordinal_stone_from_cobbled_ordinal_stone"
+    ]
+  }
+}

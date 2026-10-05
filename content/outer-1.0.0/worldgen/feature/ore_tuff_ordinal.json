@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:ore",
+  "discard_chance_on_air_exposure": 0.0,
+  "size": 64,
+  "targets": [
+    {
+      "state": "googology:tuff_ordinal_stone",
+      "target": {
+        "predicate_type": "minecraft:tag_match",
+        "tag": "googology:ordinal_stone_ore_replaceables"
+      }
+    }
+  ]
+}

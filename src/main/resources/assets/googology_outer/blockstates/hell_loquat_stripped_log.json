@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "googology_outer:block/hell_loquat_stripped_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "googology_outer:block/hell_loquat_stripped_log"
+    },
+    "axis=z": {
+      "model": "googology_outer:block/hell_loquat_stripped_log_horizontal",
+      "x": 90
+    }
+  }
+}

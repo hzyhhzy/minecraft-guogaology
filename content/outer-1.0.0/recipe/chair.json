@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "P": "googology:christmas_planks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "PP",
+    "PP",
+    "SS"
+  ],
+  "result": {
+    "id": "googology:chair"
+  }
+}

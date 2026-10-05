@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "googology_outer:block/hell_christmas_slab"
+    },
+    "type=top": {
+      "model": "googology_outer:block/hell_christmas_slab_top"
+    },
+    "type=double": {
+      "model": "googology_outer:block/hell_christmas_planks"
+    }
+  }
+}

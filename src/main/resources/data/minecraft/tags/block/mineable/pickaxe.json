@@ -103,15 +103,6 @@
     "googology:gamma_block",
     "googology:gamma_ore",
     "googology:nether_gamma_ore",
-    "googology:psi_block",
-    "googology:psi_ore",
-    "googology:nether_psi_ore",
-    "googology:strata_block",
-    "googology:strata_ore",
-    "googology:nether_strata_ore",
-    "googology:proof_block",
-    "googology:proof_ore",
-    "googology:nether_proof_ore",
     "googology:enhancement_table",
     "googology:enhancement_table_2",
     "googology:enhancement_table_3",
@@ -123,6 +114,10 @@
     "googology:ordinal_stone_6",
     "googology:ordinal_stone_7",
     "googology:ordinal_stone_8",
-    "googology:ordinal_stone_9"
+    "googology:ordinal_stone_9",
+    "googology:true_omega_ore",
+    "googology:nether_true_omega_ore",
+    "googology:true_omega_block",
+    "googology_outer:snake_head"
   ]
 }

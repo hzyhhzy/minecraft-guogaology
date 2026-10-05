@@ -4,11 +4,11 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.2 · Minecraft Java / Fabric**
+**v0.3.3 · Minecraft Java / Fabric**
 
-把大数构造、序数记号和社区梗变成可以探索、开采和建造的世界。两个维度、八种群系、八座巨型建筑，配有序数矿业、扽西装备、晶核融合和可逆强化。当前没有自定义生物或 Boss；代表建筑保留了后续战斗场地。
+三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备或副手扽西手稿。暂无 Boss。
 
-Explore worlds inspired by large numbers and ordinal notation: two dimensions, eight biomes, monumental landmarks, ordinal ores, Denxi equipment and reversible crystal upgrades.
+本轮为合并试验分支；地形、模板与矿物装备美术来自获授权的 Googology Dimension 1.0.0，移植来源和改动边界见[合并说明](docs/OUTER-IMPORT.md)。[待核对的设计选择](docs/MERGE-REVIEW-CHECKLIST.md)
 
 ## 支持版本
 
@@ -36,13 +36,22 @@ Explore worlds inspired by large numbers and ordinal notation: two dimensions, e
 | 界限高原 | 图灵机纸带、集合晶壳、证明与公式景观 | 界限演算庭 |
 | 果糕冥林 | 阴森圣诞树、粗壮藤蔓、破碎地形与湖泊 | 果糕终境巨树 |
 
-前七种在大数世界，果糕冥林位于独立的果糕地府。六阶矿石可制作镐、剑和护甲，九条晶核路线用于融合及强化。[生存指南](docs/SURVIVAL-GUIDE.md) · [方块采集表](docs/BLOCK-BALANCE.md) · [名称约定](docs/TERMINOLOGY.md)
+上表前七种在大数里界，果糕冥林位于独立地府。表界另外保留 BMS 山脉、圣诞森林、紫菜桌平原、LHO 边缘、LHO 空境、瘫坐之地和地下群系。四档矿石可制作镐、剑、护甲和手稿，九条晶核路线用于融合及强化。[生存指南](docs/SURVIVAL-GUIDE.md) · [方块采集表](docs/BLOCK-BALANCE.md) · [名称约定](docs/TERMINOLOGY.md)
 
 ## 进入维度
 
-12 个完整蛋糕或任意颜色果糕，围成末地传送门形状。扔苹果开启大数世界门，扔果糕方块开启地府门。主世界、大数世界、果糕地府的水平距离比例为 1:4:16。
+用十二个方块围成末地门形状（5×5 去四角，中间空 3×3）：
 
-从大数世界坠入虚空会进入地府。地府重力为四分之一，无摔落伤害。`/googology` 显示帮助；管理员可用 `/googology return`。
+| 所在世界 | 门框／投掷材料 | 目的地 |
+|---|---|---|
+| 主世界 | 完整蛋糕框（可混果糕）＋苹果 | 大数表界 |
+| 表界 | 当地常见方块框＋Ω材料 | 大数里界 |
+| 里界 | 当地常见方块框＋果糕方块 | 果糕地府 |
+| 三个模组世界 | 当地常见方块框，再投一块当地材料 | 返回上一层 |
+
+返程不需要矿物或晶核：表界可用泥土／木板，里界可用数字刻石／幂塔沙等地表材料，地府可用果糕冥土／冥岩／冥杉木。框架可混用对应材料；激活后有现成的反向门。破坏门框会使整门失效。
+
+主世界、表界、里界、地府水平比例为 1:1:4:16。里界坠入虚空会进入地府；地府重力为四分之一且无摔落伤害。`/googology` 查看帮助；管理员命令有 `visit`（表界）、`inner`、`guogao`、`return`（上一层）。
 
 ## 构建
 
@@ -54,7 +63,7 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.3.2/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.3.3/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 

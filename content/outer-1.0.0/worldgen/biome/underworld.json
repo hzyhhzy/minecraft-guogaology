@@ -1,0 +1,103 @@
+{
+  "attributes": {
+    "minecraft:gameplay/natural_mob_spawns": {
+      "modifier": "overlay",
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "googology:fruit_cake_slime",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 8
+            },
+            {
+              "type": "googology:evil_pig",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 3
+              },
+              "weight": 40
+            }
+          ],
+          "creature": [
+            {
+              "type": "googology:snake",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 8
+            },
+            {
+              "type": "googology:busy_beaver",
+              "count": 1,
+              "weight": 2
+            }
+          ],
+          "ambient": [
+            {
+              "type": "googology:fly_y",
+              "count": 1,
+              "weight": 8
+            }
+          ]
+        }
+      }
+    },
+    "minecraft:visual/sky_color": "#2b0a0a",
+    "minecraft:visual/fog_color": "#3a1010"
+  },
+  "carvers": [
+    "googology:underworld_cave",
+    "googology:underworld_canyon"
+  ],
+  "downfall": 0.0,
+  "effects": {
+    "water_color": "#8b1a1a",
+    "grass_color": "#8b1e1e",
+    "foliage_color": "#6b1414"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega_hell",
+      "googology:ore_epsilon_hell",
+      "googology:ore_gamma_hell",
+      "googology:ore_true_omega_hell",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper"
+    ],
+    [],
+    [],
+    [
+      "googology:underworld_cave_floor",
+      "googology:cave_trees_hell_christmas",
+      "googology:cave_trees_hell_loquat",
+      "googology:trees_hell_christmas",
+      "googology:trees_hell_loquat",
+      "googology:exponential_tower"
+    ],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 2.0
+}

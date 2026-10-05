@@ -27,11 +27,39 @@ dependencies {
     if (project.hasProperty('qaSodium')) modLocalRuntime files(project.property('qaSodium'))
 }
 
+// Only the 1.21.1 bridge is a nested intermediary JAR. Modern builds compile the
+// same outer module directly. The public download remains a single mod file.
+def outerBridge = layout.projectDirectory.file("ports/outer-1.21.1/build/libs/guogaology-outer-legacy-${project.version}.jar")
+tasks.register('buildLegacyOuter', Exec) {
+    inputs.dir('ports/common/main/dev/googology/outer')
+    inputs.dir('ports/common/client/dev/googology/outer')
+    inputs.dir('ports/outer-1.21.1/src')
+    inputs.file('tools/prepare_outer_legacy.py')
+    inputs.files('ports/common/main/dev/googology/mixin/OuterNoiseSettingsMixin.java', 'ports/common/main/dev/googology/mixin/OuterSpawnPlacementInvoker.java')
+    inputs.files('ports/outer-1.21.1/build.gradle','ports/settings.gradle','gradle.properties')
+    outputs.file(outerBridge)
+    def windows = System.getProperty('os.name').toLowerCase().contains('windows')
+    def wrapper = providers.gradleProperty('outerGradle').getOrElse(file(windows ? 'ports/gradlew.bat' : 'ports/gradlew').absolutePath)
+    def args = ['-p', file('ports').absolutePath, '-Ptarget=outer-1.21.1', "-PportPython=${providers.gradleProperty('portPython').getOrElse('python')}", '--no-daemon', '--console=plain', ':outer-1.21.1:build']
+    if (gradle.startParameter.offline) args += '--offline'
+    commandLine([wrapper] + args)
+}
+tasks.named('jar') {
+    dependsOn tasks.named('buildLegacyOuter')
+    from(outerBridge) { into 'META-INF/jars' }
+}
+
 processResources {
     filteringCharset = 'UTF-8'
     inputs.property 'version', project.version
     inputs.property 'preserveJsonEscapes', true
     filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
+    doLast {
+        def configFile = new File(destinationDir, 'googology.mixins.json')
+        def config = new groovy.json.JsonSlurper().parse(configFile, 'UTF-8')
+        config.mixins.removeAll { it == 'OuterNoiseSettingsMixin' || it == 'OuterSpawnPlacementInvoker' }
+        configFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(config)), 'UTF-8')
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {

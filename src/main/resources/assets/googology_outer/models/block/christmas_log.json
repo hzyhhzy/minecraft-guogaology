@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "googology_outer:block/christmas_log_top",
+    "side": "googology_outer:block/christmas_log"
+  }
+}

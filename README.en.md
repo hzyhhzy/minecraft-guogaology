@@ -4,9 +4,11 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.2 · Minecraft Java / Fabric**
+**v0.3.3 · Minecraft Java / Fabric**
 
-Explore worlds inspired by large numbers, ordinal notation, and the googology community. Guogaology adds two dimensions, eight biomes, monumental landmarks, ordinal ores, Denxi equipment, crystal fusion, and reversible enhancements. There are currently no custom creatures or bosses; the landmarks include arenas reserved for future encounters.
+Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and passive offhand Denxi Manuscripts. No bosses are included.
+
+This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [choices for review](docs/MERGE-REVIEW-CHECKLIST.md).
 
 ## Installation
 
@@ -25,7 +27,7 @@ The internal mod ID remains `googology`. The standalone core gallery and flight-
 
 The same JAR includes **English and Simplified Chinese**. Choose **Options → Language → English (US)** or **简体中文（中国大陆）** in Minecraft; no translation pack is needed. Block and item names, saved variants, equipment tooltips, enhancement screens, creative tabs, biome and landmark names, advancements, sound subtitles, and command help follow your language. Mod Menu also has localized names and descriptions when its translation options are enabled.
 
-The names **Guogao** and **Denxi** are intentional transliterations of community terms. Guogao refers both to fruit confectionery and to the anxious, sweating expression associated with unusually difficult or strange ordinal notations. Denxi is the equipment family name and the name of its special ordinal-mining speed.
+The names **Guogao** and **Denxi** are intentional transliterations of community terms. Guogao refers both to fruit confectionery and to the anxious, sweating expression associated with unusually difficult or strange ordinal notations. Denxi now also names the passive offhand Manuscript; the former exponential ore-mining gate has been removed.
 
 ## The worlds
 
@@ -40,19 +42,20 @@ The names **Guogao** and **Denxi** are intentional transliterations of community
 | Boundary Highlands | Turing-machine tapes, set shells, proof and formula landscapes | Boundary Calculus Court |
 | Guogao Dreadwood | Eerie Christmas trees, thick vines, fractured terrain, lakes | Guogao Finality Tree |
 
-The first seven biomes belong to the Guogaology World. Guogao Dreadwood is in the separate Guogao Underworld. Six tiers of ores support pickaxes, swords, and armor; nine crystal families support fusion and equipment enhancement.
+The first seven biomes belong to Inner Googology. Guogao Dreadwood is in the separate Guogao Underworld. Outer Googology adds the donor's seven natural-scale biomes and four mineral tiers. Nine crystal families support fusion and equipment enhancement in the deeper worlds.
 
 [Survival guide](docs/SURVIVAL-GUIDE.en.md) · [Harvesting reference](docs/BLOCK-BALANCE.en.md) · [Chinese–English terminology](docs/TERMINOLOGY.md)
 
-## Entering the dimensions
+## Travel
 
-Arrange 12 whole cakes or Guogao blocks of any color in an End-portal-shaped ring: a 5×5 outline without corners, surrounding an empty 3×3 center. You may mix frame materials.
+All rings are twelve blocks in a 5×5 frame without corners, with an empty 3×3 center.
 
-- Throw an **apple** into the ring to travel between the Overworld and the Guogaology World.
-- Throw a **Guogao block** into the ring to enter the Guogao Underworld; using this portal there returns you to the Guogaology World.
-- Horizontal distances scale as **Overworld : Guogaology World : Guogao Underworld = 1 : 4 : 16**.
+- Overworld: whole cakes (Guogao blocks may be mixed in) plus an apple → Outer.
+- Outer: local frame plus Ω mineral → Inner.
+- Inner: local frame plus a Guogao block → Underworld.
+- Return: a local frame plus one more local block → previous layer. No crystals or ores are required.
 
-Falling into the Guogaology void sends you to the Underworld. Gravity there is one quarter of normal, and falling causes no damage. `/googology` shows help; administrators can use `/googology return`.
+Return materials include dirt/planks in Outer, Number Stone/biome ground in Inner, and Guogao earth/rock/Dread Wood in Underworld. Horizontal scales are 1:1:4:16. Falling through the Inner void leads to the Underworld at Y=500. Underworld gravity is quarter strength and prevents fall damage. `/googology` displays help; `visit`, `inner`, `guogao`, and `return` are administrator subcommands.
 
 ## Building from source
 
@@ -74,7 +77,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.2/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.3/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 

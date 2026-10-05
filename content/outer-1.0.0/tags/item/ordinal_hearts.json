@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "googology:ordinal_heart",
+    "googology:worn_ordinal_heart",
+    "googology:damaged_ordinal_heart",
+    "googology:incomplete_ordinal_heart"
+  ]
+}

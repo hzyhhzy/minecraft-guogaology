@@ -29,7 +29,25 @@ public final class PortalRitual {
         for(Block jelly:GoogologyBlocks.JELLIES) if(stack.isOf(jelly.asItem())) return true;
         return false;
     }
-    public static boolean isOffering(ItemStack stack) { return stack.isOf(Items.APPLE)||isFruit(stack); }
+    public static boolean isOffering(ItemStack stack) { return anyReturnMaterial(stack)||stack.isOf(Items.APPLE)||isFruit(stack)||stack.isOf(dev.googology.mining.MiningContent.MATERIALS[3]); }
+
+    private static final net.minecraft.registry.tag.TagKey<Block> OUTER_MATERIALS=net.minecraft.registry.tag.TagKey.of(net.minecraft.registry.RegistryKeys.BLOCK,GoogologyMod.id("portal_outer_materials"));
+    private static final net.minecraft.registry.tag.TagKey<Block> INNER_MATERIALS=net.minecraft.registry.tag.TagKey.of(net.minecraft.registry.RegistryKeys.BLOCK,GoogologyMod.id("portal_inner_materials"));
+    private static final net.minecraft.registry.tag.TagKey<Block> HELL_MATERIALS=net.minecraft.registry.tag.TagKey.of(net.minecraft.registry.RegistryKeys.BLOCK,GoogologyMod.id("portal_guogao_materials"));
+    private static boolean localMaterial(ServerWorld world,BlockState state){
+        var source=world.getRegistryKey();
+        return source.equals(GoogologyMod.OUTER)?state.isIn(OUTER_MATERIALS):source.equals(GoogologyMod.DIMENSION)?state.isIn(INNER_MATERIALS):source.equals(GoogologyMod.GUOGAO)&&state.isIn(HELL_MATERIALS);
+    }
+    private static boolean localOffering(ServerWorld world,ItemStack stack){return stack.getItem() instanceof net.minecraft.item.BlockItem item&&localMaterial(world,item.getBlock().getDefaultState());}
+    private static boolean anyReturnMaterial(ItemStack stack){if(!(stack.getItem() instanceof net.minecraft.item.BlockItem item))return false;var state=item.getBlock().getDefaultState();return state.isIn(OUTER_MATERIALS)||state.isIn(INNER_MATERIALS)||state.isIn(HELL_MATERIALS);}
+    public static PortalKind ritualKind(ServerWorld world,ItemStack stack){
+        var source=world.getRegistryKey();
+        if(source.equals(net.minecraft.world.World.OVERWORLD))return stack.isOf(Items.APPLE)?PortalKind.GGG:null;
+        if(source.equals(GoogologyMod.OUTER))return localOffering(world,stack)?PortalKind.GGG:stack.isOf(dev.googology.mining.MiningContent.MATERIALS[3])?PortalKind.INNER:null;
+        if(source.equals(GoogologyMod.DIMENSION))return localOffering(world,stack)?PortalKind.INNER:isFruit(stack)?PortalKind.GUOGAO:null;
+        return source.equals(GoogologyMod.GUOGAO)&&localOffering(world,stack)?PortalKind.GUOGAO:null;
+    }
+
     public static boolean isFrameMaterial(BlockState state) {
         if(state.isOf(Blocks.CAKE)) return state.get(CakeBlock.BITES)==0;
         for(Block jelly:GoogologyBlocks.JELLIES) if(state.isOf(jelly)) return true;
@@ -40,15 +58,15 @@ public final class PortalRitual {
         for(int x=-2;x<=2;x+=4)for(int z=-2;z<=2;z+=4)if(!world.isChunkLoaded(center.add(x,0,z)))return false;
         for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
             var state=world.getBlockState(center.add(x,0,z));
-            if(isFrameOffset(x,z)) { if(!isFrameMaterial(state)) return false; }
+            if(isFrameOffset(x,z)) { if(!isFrameMaterial(state)&&!localMaterial(world,state)) return false; }
             else if(Math.abs(x)<=1 && Math.abs(z)<=1 && (!state.isReplaceable() || !state.getFluidState().isEmpty())) return false;
         }
         return true;
     }
     public static boolean tryActivate(ServerWorld world,ItemEntity offering) {
         if(offering.isRemoved() || offering.getStack().isEmpty() || !isOffering(offering.getStack())) return false;
-        PortalKind kind=isFruit(offering.getStack())?PortalKind.GUOGAO:PortalKind.GGG;
-        if(world.getServer().getWorld(kind==PortalKind.GGG?GoogologyMod.DIMENSION:GoogologyMod.GUOGAO)==null) return false;
+        PortalKind kind=ritualKind(world,offering.getStack());
+        if(kind==null||world.getServer().getWorld(PortalTravel.destination(world.getRegistryKey(),kind))==null)return false;
         // React over the entire frame, without waiting for the thrown item to drift into the inner 3x3.
         for(int dy=0;dy>=-4;dy--) for(int dx=-2;dx<=2;dx++) for(int dz=-2;dz<=2;dz++) {
             BlockPos center=offering.getBlockPos().add(dx,dy,dz);
@@ -69,7 +87,7 @@ public final class PortalRitual {
             else if(Math.abs(x)<=1 && Math.abs(z)<=1) world.setBlockState(center.add(x,0,z),kind.block().getDefaultState(),Block.NOTIFY_ALL);
         }
         PortalState.get(world.getServer()).addGate(new PortalState.Gate(world.getRegistryKey().getValue().toString(),center.toImmutable(),kind));
-        var appearance=new PortalActivationPayload(world.getRegistryKey().getValue().toString(),center.toImmutable(),kind==PortalKind.GUOGAO);
+        var appearance=new PortalActivationPayload(world.getRegistryKey().getValue().toString(),center.toImmutable(),kind.ordinal());
         for(var player:world.getPlayers())if(player.squaredDistanceTo(center.toCenterPos())<=64*64&&net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.canSend(player,PortalActivationPayload.ID))
             net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player,appearance);
 

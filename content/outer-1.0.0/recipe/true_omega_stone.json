@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "googology:fruit_cake",
+    "R": "googology:raw_omega_stone",
+    "B": "googology:bashicu_block",
+    "H": "#googology:ordinal_hearts",
+    "L": "googology:stellar_stone_block",
+    "G": "googology:gummy"
+  },
+  "pattern": [
+    "FRB",
+    "RHR",
+    "LRG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "googology:true_omega_stone"
+  }
+}

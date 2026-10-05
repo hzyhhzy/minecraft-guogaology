@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import shutil
 from zipfile import ZipFile
+from io import BytesIO
 
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=json.loads((ROOT/'ports/targets.json').read_text())
@@ -12,6 +13,8 @@ CONFIG=json.loads((ROOT/'ports/targets.json').read_text())
 def package(targets):
     from audit_localization import audit
     audit(ROOT)
+    from audit_outer_content import audit as audit_outer
+    assert not audit_outer()['unused'],'Unused outer-world assets remain'
     release=next(line.split('=',1)[1].strip() for line in (ROOT/'gradle.properties').read_text().splitlines() if line.startswith('mod_version='))
     output=ROOT/'build/releases'/release
     output.mkdir(parents=True,exist_ok=True)
@@ -39,8 +42,35 @@ def package(targets):
             assert archive.read(metadata['icon'])==(ROOT/'src/main/resources'/metadata['icon']).read_bytes()
             assert metadata['depends']['minecraft']==target
             entries=archive.namelist()
-            assert not any('/qa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
+            assert not any('/qa/' in n or '/mergeqa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'
+            for locale in ('zh_cn','en_us'):
+                name=f'assets/googology_outer/lang/{locale}.json'
+                assert archive.read(name)==(ROOT/'src/main/resources'/name).read_bytes()
+            templates=[n for n in entries if n.startswith('data/googology_outer/structure/') and n.endswith('.nbt')]
+            assert len(templates)==61,(target,len(templates))
+            from import_outer_content import nbt_transform
+            for name in templates:
+                original=ROOT/'content/outer-1.0.0'/name.removeprefix('data/googology_outer/')
+                assert archive.read(name)==nbt_transform(original.read_bytes(),legacy=target!='26.3'),name
+            for name in entries:
+                if name.startswith('data/googology_outer/advancement/') and name.endswith('.json'):
+                    for recipe in json.loads(archive.read(name)).get('rewards',{}).get('recipes',[]):
+                        namespace,path=recipe.split(':',1)
+                        assert f'data/{namespace}/recipe/{path}.json' in entries,(target,name,recipe)
+            if target=='1.21.1':
+                nested=metadata['jars'][0]['file']
+                with ZipFile(BytesIO(archive.read(nested))) as bridge:
+                    info=json.loads(bridge.read('fabric.mod.json'))
+                    assert info['version']==release and info['depends']['minecraft']==target
+                    assert info['entrypoints'].keys()=={'guogaology:outer','guogaology:outer_client'}
+                    # Loom 1.17 remaps Mixin annotation selectors in-place, without a refmap.
+                    noise=bridge.read('dev/googology/mixin/OuterNoiseSettingsMixin.class')
+                    spawn=bridge.read('dev/googology/mixin/OuterSpawnPlacementInvoker.class')
+                    assert b'Lnet/minecraft/class_7138;method_41556(' in noise
+                    assert b'method_20637' in spawn
+                    assert b'net/minecraft/world/level' not in noise+spawn
+            else:assert not metadata.get('jars'),'Legacy bridge leaked into modern target'
             meshes=[n for n in entries if n.startswith('assets/googology/core_meshes/') and n.endswith('.json')]
             assert len(meshes)==28,(target,len(meshes))
             for name in meshes:
@@ -64,7 +94,7 @@ def package(targets):
     lines=['Guogaology / 果糕逻辑 '+release,'','Choose exactly ONE JAR matching the Minecraft version. Install Fabric Loader and matching Fabric API.','Both server and client need the same matching Guogaology JAR. Do not mix Minecraft versions in one mods folder.','No gallery or flight-speed addon is required. Test old worlds on a backup; cross-version world migration is not guaranteed.','']
     for m in manifest:lines.append(f"{m['minecraft']}: Java {m['java']}+, Fabric Loader {m['requires']['fabricloader']}, Fabric API {m['requires']['fabric-api']}")
     (output/'INSTALL.txt').write_text('\n'.join(lines)+'\n',encoding='utf-8')
-    for notice in ('LICENSE','LICENSE-MINECRAFT-EXCEPTION','COPYRIGHT'):
+    for notice in ('LICENSE','LICENSE-MINECRAFT-EXCEPTION','COPYRIGHT','THIRD_PARTY.md'):
         shutil.copy2(ROOT/notice,output/notice)
     (output/'SOURCE.txt').write_text(f'Guogaology {release} is GPL-3.0-only WITH GPL-3.0-linking-exception.\n'
         f'The matching complete source is Guogaology-v{release}-source.zip. Share that source archive with these JARs, or make the corresponding source available as required by GPLv3.\n',encoding='utf8')

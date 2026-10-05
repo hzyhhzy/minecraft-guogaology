@@ -4,6 +4,25 @@
     "googology:dread_log",
     "googology:y_log",
     "googology:laver_vein",
-    "googology:power_bricks"
+    "googology:power_bricks",
+    "googology_outer:christmas_log",
+    "googology_outer:christmas_wood",
+    "googology_outer:christmas_stripped_log",
+    "googology_outer:christmas_stripped_wood",
+    "googology_outer:loquat_log",
+    "googology_outer:loquat_wood",
+    "googology_outer:loquat_stripped_log",
+    "googology_outer:loquat_stripped_wood",
+    "googology_outer:laver_wood",
+    "googology_outer:laver_stripped_log",
+    "googology_outer:laver_stripped_wood",
+    "googology_outer:hell_christmas_log",
+    "googology_outer:hell_christmas_wood",
+    "googology_outer:hell_christmas_stripped_log",
+    "googology_outer:hell_christmas_stripped_wood",
+    "googology_outer:hell_loquat_log",
+    "googology_outer:hell_loquat_wood",
+    "googology_outer:hell_loquat_stripped_log",
+    "googology_outer:hell_loquat_stripped_wood"
   ]
 }

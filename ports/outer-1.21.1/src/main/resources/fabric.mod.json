@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "guogaology-outer-legacy",
+  "version": "${version}",
+  "name": "Guogaology outer-world compatibility",
+  "environment": "*",
+  "license": "GPL-3.0-only WITH GPL-3.0-linking-exception",
+  "depends": {
+    "googology": "*",
+    "minecraft": "1.21.1",
+    "fabric-api": "*"
+  },
+  "mixins": [
+    "outer-legacy.mixins.json"
+  ],
+  "entrypoints": {
+    "guogaology:outer": [
+      "dev.googology.outer.LegacyBootstrap"
+    ],
+    "guogaology:outer_client": [
+      "dev.googology.outer.client.LegacyClientBootstrap"
+    ]
+  }
+}

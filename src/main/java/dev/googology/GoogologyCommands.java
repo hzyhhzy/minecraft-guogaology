@@ -15,12 +15,13 @@ public final class GoogologyCommands {
                         .executes(context -> { context.getSource().sendFeedback(() -> Text.translatable("message.googology.guide"), false); return 1; })
                         .then(CommandManager.literal("return").requires(source -> source.hasPermissionLevel(2)).executes(context -> {
                             ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
-                            if (player.getWorld().getRegistryKey().equals(GoogologyMod.DIMENSION)||player.getWorld().getRegistryKey().equals(GoogologyMod.GUOGAO)) PortalTravel.returnHome(player);
+                            if (player.getWorld().getRegistryKey().equals(GoogologyMod.OUTER)||player.getWorld().getRegistryKey().equals(GoogologyMod.DIMENSION)||player.getWorld().getRegistryKey().equals(GoogologyMod.GUOGAO)) PortalTravel.returnHome(player);
                             return 1;
                         }))
                         .then(CommandManager.literal("visit").requires(source -> source.hasPermissionLevel(2)).executes(context -> {
                             PortalTravel.travel(context.getSource().getPlayerOrThrow()); return 1;
                         }))
+                        .then(CommandManager.literal("inner").requires(source -> source.hasPermissionLevel(2)).executes(context -> { PortalTravel.toInner(context.getSource().getPlayerOrThrow());return 1; }))
                         .then(CommandManager.literal("guogao").requires(source -> source.hasPermissionLevel(2)).executes(context -> { PortalTravel.toGuogao(context.getSource().getPlayerOrThrow());return 1; }))
                         .then(CommandManager.literal("kit").requires(source -> source.hasPermissionLevel(2)).executes(context -> {
                             ServerPlayerEntity player = context.getSource().getPlayerOrThrow();

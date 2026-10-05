@@ -1,0 +1,19 @@
+{
+  "type": "googology_outer:template",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "googology_outer:nuke_mushroom_1"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "googology_outer:nuke_mushroom_2"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

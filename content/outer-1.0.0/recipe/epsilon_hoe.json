@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "googology:epsilon_stone",
+    "#": "minecraft:stick"
+  },
+  "pattern": [
+    "XX ",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "id": "googology:epsilon_hoe"
+  }
+}

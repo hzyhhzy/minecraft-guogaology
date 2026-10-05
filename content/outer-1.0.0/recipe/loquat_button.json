@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    "googology:loquat_planks"
+  ],
+  "result": {
+    "id": "googology:loquat_button"
+  }
+}

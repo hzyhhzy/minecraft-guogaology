@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "#googology:number_stones",
+    "googology:epsilon_turf",
+    "googology:power_sand",
+    "googology:laver_mat",
+    "googology:absence_glass",
+    "googology:rootbound_stone",
+    "googology:astra_cloud",
+    "#minecraft:planks",
+    "minecraft:dirt",
+    "minecraft:cobblestone"
+  ]
+}

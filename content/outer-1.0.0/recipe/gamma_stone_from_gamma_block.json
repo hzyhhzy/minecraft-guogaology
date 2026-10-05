@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "gamma_stone",
+  "ingredients": [
+    "googology:gamma_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "googology:gamma_stone"
+  }
+}

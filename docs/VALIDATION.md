@@ -2,6 +2,31 @@
 
 最新验证日期：2026-10-05。
 
+## 0.3.3：三层世界合并预览
+
+四版独立编译与发行包检查通过：Minecraft 1.21.1、1.21.11、26.2、26.3。1.21.1 内嵌源码桥接模块的版本、入口和两处 Mixin 的 intermediary 目标已检查；现代版不包含该桥接模块。未启动 1.21.1、1.21.11 或 26.3。
+
+运行验证使用隐藏独立 fo262 / Minecraft 26.2、Java 25、Fabric API 和 Sodium。不是整合包全部附加 Mod 的兼容性测试。正常游戏、配置、账户资料和存档未改动，窗口不捕获鼠标。最终测试正常保存并退出。
+
+实际加载的服务端通过 181 项机制／模板断言，另通过真实致命伤害和三种景物实放检查：
+
+- 主世界→表界→里界→地府及三次反向返回；六种祭品／门框组合实际生成完整门。
+- 返程常用材料可徒手取得；破坏一块框架后完整门被移除。
+- 强化台等级拒绝不适合的晶核、手稿可逆安装／拆出、飞行开启／卸除与安全缓降、创造飞行保留。
+- 同一满配 Ω镐从表界 72 挖速切到里界 4608，回主世界恢复 72；没有携带深层倍率残留。
+- 果糕手稿对真实致命伤害保命，背包两枚图腾变一枚；手稿和晶核仍保留。
+- 61 份模板能解码；43 种 BMS 模板进一步确认含真实数字砖，防止“有尺寸却全是空气”的假通过。
+- 在独立场地调用实际配置特征，确认 BMS 数字砖 13 格、紫菜桌木板 33 格、蘑菇云帽体 837 格。具体数值来自固定随机测试样本，不代表所有模板的大小。
+- 七个表界群系的实际区块生成、七种普通生物模型和自然场景截图检查；BMS、紫菜树林、圣诞森林恢复可见景物。
+
+实拍暴露并修复了 26.3 NBT 调色板 `id/properties` 与旧版 `Name/Properties` 的差异。61 份模板共 2,489 个位置条目保持原坐标；共用数字砖属性 `digit→number`、紫菜木材属性映射与状态格式按目标版本转换。两类模板原有的不同居中规则分别保留。日志未发现本模组的模型／配方／模板缺失、越界模板写入或注册错误；离线账户认证、系统性能计数器以及批量生成区块的超时 tick 警告单独记录，不作为完整性能基准。
+
+资源审计：宿主 281 组中英文键、表界 137 组中英文键一致；主资源 1,893 个可达文件，表界 678 个可达文件，缺失引用和未引用资源均为零。73 条表界配方及其解锁奖励没有旧扽／斧铲锄／矿心引用。四个发行 JAR 逐项核对 28 款晶核模型、61 份按版本转换的模板、双语资源、许可文件和 Java 版本；不含测试辅助代码。
+
+测试日志标记：`MERGE_MECHANICS_OK checks=181 templates=61`、`MERGE_TOTEM_OK`、`MERGE_FEATURES_OK`、`PRODUCTION_PORT_OK 26.2`。可复用辅助源码在 `ports/qa26`，运行范围和构建方式见 [BUILDING.md](BUILDING.md)。未进行旧六矿物品的存档迁移或长时间多人平衡测试；跨 Minecraft 版本的地形不承诺逐格一致。
+
+All four targets compile and pass package checks. Only hidden Minecraft 26.2 is runtime tested. The final run validates three-layer travel, local-material return gates, passive Manuscripts, realm-dependent mining, inventory Totems, seven creatures, 61 templates, real BMS/Laver/cloud placements and clean shutdown. The original donor JAR is never embedded. See [the import architecture](OUTER-IMPORT.md) and [implemented choices for review](MERGE-REVIEW-CHECKLIST.md).
+
 ## 0.3.2：中英双语 / English and Simplified Chinese
 
 285 项中英文键一一对应；163 个方块入口、51 个非方块物品入口、动态名称与 Java 界面引用均通过检查，没有缺译、格式参数不一致或硬编码中文提示。检查器接入四版批量构建、发行打包和 GitHub Actions。

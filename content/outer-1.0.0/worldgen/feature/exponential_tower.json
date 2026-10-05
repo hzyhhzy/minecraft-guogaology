@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:template",
+  "templates": [
+    {
+      "data": {
+        "id": "googology:exponential_tower_3"
+      },
+      "weight": 8
+    },
+    {
+      "data": {
+        "id": "googology:exponential_tower_4"
+      },
+      "weight": 4
+    },
+    {
+      "data": {
+        "id": "googology:exponential_tower_5"
+      },
+      "weight": 2
+    },
+    {
+      "data": {
+        "id": "googology:exponential_tower_6"
+      },
+      "weight": 1
+    }
+  ]
+}

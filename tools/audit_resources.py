@@ -11,7 +11,7 @@ from pathlib import Path
 LANTERNS = ('guogao_lantern', 'cyan_guogao_lantern', 'rose_guogao_lantern',
             'lime_guogao_lantern', 'violet_guogao_lantern', 'scarlet_guogao_lantern')
 LEGACY_ENTRIES = {name + '_sad' for name in LANTERNS}
-MINERALS = ('omega', 'epsilon', 'gamma', 'psi', 'strata', 'proof')
+MINERALS = ('omega', 'epsilon', 'gamma', 'true_omega')
 
 
 def audit(root, prune=False):

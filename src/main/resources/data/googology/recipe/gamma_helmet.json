@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "result": {
-    "id": "googology:gamma_helmet",
-    "count": 1
-  },
   "pattern": [
     "MMM",
     "M M"
@@ -13,5 +9,9 @@
     "M": {
       "item": "googology:gamma_material"
     }
+  },
+  "result": {
+    "id": "googology:gamma_helmet",
+    "count": 1
   }
 }

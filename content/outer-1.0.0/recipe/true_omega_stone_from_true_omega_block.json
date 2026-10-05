@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "true_omega_stone",
+  "ingredients": [
+    "googology:true_omega_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "googology:true_omega_stone"
+  }
+}

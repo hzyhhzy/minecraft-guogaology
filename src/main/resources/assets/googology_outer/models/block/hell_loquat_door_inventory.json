@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology_outer:block/hell_loquat_door_bottom"
+  }
+}

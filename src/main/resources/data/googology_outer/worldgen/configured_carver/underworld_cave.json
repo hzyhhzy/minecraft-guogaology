@@ -1,0 +1,58 @@
+{
+  "type": "googology_outer:source_cave",
+  "config": {
+    "base": {
+      "floor_level": {
+        "type": "minecraft:uniform",
+        "min_inclusive": -1.0,
+        "max_exclusive": -0.4
+      },
+      "horizontal_radius_multiplier": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 1.0,
+        "max_exclusive": 1.6
+      },
+      "probability": 0.12,
+      "vertical_radius_multiplier": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 1.0,
+        "max_exclusive": 1.5
+      },
+      "y": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "above_bottom": 0
+        },
+        "max_inclusive": {
+          "absolute": 56
+        }
+      },
+      "lava_level": {
+        "above_bottom": 8
+      },
+      "replaceable": "#minecraft:overworld_carver_replaceables",
+      "yScale": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 0.1,
+        "max_exclusive": 0.9
+      }
+    },
+    "count": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 3,
+      "max_inclusive": 9
+    },
+    "thickness": {
+      "type": "minecraft:trapezoid",
+      "min": 0.5,
+      "max": 3.0,
+      "plateau": 1.5
+    },
+    "weird_thickness_bias": true,
+    "floor_level": {
+      "type": "minecraft:uniform",
+      "min_inclusive": -1.0,
+      "max_exclusive": -0.4
+    }
+  }
+}

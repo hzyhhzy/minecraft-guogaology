@@ -39,6 +39,14 @@
     "googology:guogao_heart_lv3",
     "googology:ordinal_crystal_lv2",
     "googology:ordinal_crystal_lv3",
-    "googology:ordinal_crystal_lv4"
+    "googology:ordinal_crystal_lv4",
+    "googology:omega_ore",
+    "googology:epsilon_ore",
+    "googology:gamma_ore",
+    "googology:true_omega_ore",
+    "googology:nether_omega_ore",
+    "googology:nether_epsilon_ore",
+    "googology:nether_gamma_ore",
+    "googology:nether_true_omega_ore"
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:template",
+  "templates": [
+    {
+      "data": {
+        "id": "googology:chair_north"
+      },
+      "weight": 1
+    },
+    {
+      "data": {
+        "id": "googology:chair_east"
+      },
+      "weight": 1
+    },
+    {
+      "data": {
+        "id": "googology:chair_south"
+      },
+      "weight": 1
+    },
+    {
+      "data": {
+        "id": "googology:chair_west"
+      },
+      "weight": 1
+    }
+  ]
+}

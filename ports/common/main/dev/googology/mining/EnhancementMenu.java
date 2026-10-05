@@ -34,7 +34,7 @@ public final class EnhancementMenu extends AbstractContainerMenu {
     }
     public ItemStack gear(){return contents.getItem(GEAR);}
     public int rank(){return data.get(0);}
-    public int capacity(){var spec=MiningContent.GEAR.get(gear().getItem());return spec==null?0:EquipmentRules.slots(spec.tier());}
+    public int capacity(){var spec=MiningContent.GEAR.get(gear().getItem());return spec==null?0:EquipmentRules.slots(spec.tier(),spec.kind());}
     public int gearGrade(){var spec=MiningContent.GEAR.get(gear().getItem());return spec==null?0:EquipmentRules.grade(spec.tier());}
     public int installed(){return GearData.cores(gear()).size();}
     /** Exactly the same eligibility as an empty real socket, including station and gear grade. */

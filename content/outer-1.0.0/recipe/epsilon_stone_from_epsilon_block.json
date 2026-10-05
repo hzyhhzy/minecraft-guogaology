@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "epsilon_stone",
+  "ingredients": [
+    "googology:epsilon_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "googology:epsilon_stone"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "fruit_cake",
+  "ingredients": [
+    {
+      "item": "googology_outer:fruit_cake_gel"
+    },
+    {
+      "item": "googology_outer:loquat"
+    }
+  ],
+  "result": {
+    "id": "googology:guogao_slice"
+  }
+}

@@ -1,0 +1,31 @@
+plugins { id 'net.fabricmc.fabric-loom-remap' version '1.17.21' }
+def hostVersion=new Properties()
+new File(rootProject.projectDir.parentFile,'gradle.properties').withInputStream { hostVersion.load(it) }
+version=hostVersion.getProperty('mod_version')
+group='dev.googology'
+base { archivesName='guogaology-outer-legacy' }
+repositories { mavenCentral() }
+loom { splitEnvironmentSourceSets(); mods { outer { sourceSet sourceSets.main;sourceSet sourceSets.client } } }
+dependencies {
+    minecraft 'com.mojang:minecraft:1.21.1'
+    mappings loom.officialMojangMappings()
+    modImplementation 'net.fabricmc:fabric-loader:0.19.5'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.116.17+1.21.1'
+}
+def repo=rootProject.projectDir.parentFile
+tasks.register('prepareLegacyOuter',Exec){
+    inputs.dir(rootProject.file('common/main/dev/googology/outer'))
+    inputs.dir(rootProject.file('common/client/dev/googology/outer'))
+    inputs.dir(file('src'))
+    inputs.file(new File(repo,'tools/prepare_outer_legacy.py'))
+    inputs.files(rootProject.file('common/main/dev/googology/mixin/OuterNoiseSettingsMixin.java'),rootProject.file('common/main/dev/googology/mixin/OuterSpawnPlacementInvoker.java'))
+    outputs.dir(layout.buildDirectory.dir('generated/sources'))
+    commandLine providers.gradleProperty('portPython').getOrElse('python'),'-X','utf8',new File(repo,'tools/prepare_outer_legacy.py')
+}
+sourceSets.main.java.srcDirs=[layout.buildDirectory.dir('generated/sources/main')]
+sourceSets.client.java.srcDirs=[layout.buildDirectory.dir('generated/sources/client')]
+tasks.withType(JavaCompile).configureEach { dependsOn tasks.named('prepareLegacyOuter');options.release=21;options.encoding='UTF-8';options.compilerArgs+=['-Xmaxerrs','500'] }
+java { withSourcesJar() }
+tasks.named('sourcesJar'){dependsOn tasks.named('prepareLegacyOuter')}
+
+tasks.named('processResources'){inputs.property 'version',project.version;filesMatching('fabric.mod.json'){expand version:project.version}}

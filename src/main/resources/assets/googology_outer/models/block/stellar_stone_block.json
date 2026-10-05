@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": {
+      "sprite": "googology_outer:block/stellar_stone_block",
+      "force_translucent": true
+    }
+  }
+}

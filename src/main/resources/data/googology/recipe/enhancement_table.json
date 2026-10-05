@@ -1,27 +1,27 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "result": {
-    "id": "googology:enhancement_table",
-    "count": 1
-  },
   "pattern": [
     " M ",
-    "CWC",
+    "BWB",
     "SSS"
   ],
   "key": {
     "M": {
       "item": "googology:omega_material"
     },
-    "C": {
-      "item": "googology:ordinal_crystal"
+    "B": {
+      "item": "minecraft:book"
     },
     "W": {
       "item": "minecraft:crafting_table"
     },
     "S": {
-      "tag": "googology:number_stones"
+      "tag": "minecraft:stone_crafting_materials"
     }
+  },
+  "result": {
+    "id": "googology:enhancement_table",
+    "count": 1
   }
 }

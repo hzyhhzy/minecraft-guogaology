@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "googology:snake_head",
+          "condition": {
+            "type": "minecraft:random_chance",
+            "chance": 0.3
+          }
+        }
+      ]
+    }
+  ],
+  "random_sequence": "googology:snake"
+}

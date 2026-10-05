@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "googology_outer:ordinal_stone",
+    "googology_outer:hell_ordinal_stone",
+    "googology_outer:andesite_ordinal_stone",
+    "googology_outer:diorite_ordinal_stone",
+    "googology_outer:granite_ordinal_stone",
+    "googology_outer:tuff_ordinal_stone",
+    "googology_outer:cobbled_ordinal_stone",
+    "googology:omega_ore",
+    "googology:epsilon_ore",
+    "googology:gamma_ore",
+    "googology:true_omega_ore",
+    "googology:nether_omega_ore",
+    "googology:nether_epsilon_ore",
+    "googology:nether_gamma_ore",
+    "googology:nether_true_omega_ore",
+    "googology_outer:stellar_stone_block",
+    "googology:omega_block",
+    "googology:epsilon_block",
+    "googology:gamma_block",
+    "googology:true_omega_block",
+    "googology:ordinal_bricks"
+  ]
+}

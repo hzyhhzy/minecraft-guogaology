@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "googology_outer:chair"
+    },
+    {
+      "item": "googology_outer:nuke_mushroom"
+    }
+  ],
+  "result": {
+    "id": "googology_outer:nuke_chair"
+  }
+}

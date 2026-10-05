@@ -8,6 +8,11 @@
           "type": "minecraft:item",
           "name": "googology:omega_block"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
   ]

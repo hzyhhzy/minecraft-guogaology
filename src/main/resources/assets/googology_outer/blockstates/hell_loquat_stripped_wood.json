@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "googology_outer:block/hell_loquat_stripped_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "googology_outer:block/hell_loquat_stripped_wood"
+    },
+    "axis=z": {
+      "model": "googology_outer:block/hell_loquat_stripped_wood",
+      "x": 90
+    }
+  }
+}

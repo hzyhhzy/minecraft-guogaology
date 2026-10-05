@@ -15,6 +15,7 @@ public final class GoogologyMod implements ModInitializer {
     public static final String ID = "googology";
     public static final Logger LOGGER = LoggerFactory.getLogger(ID);
     public static final ResourceKey<Level> DIMENSION = ResourceKey.create(Registries.DIMENSION, id("googology"));
+    public static final ResourceKey<Level> OUTER = ResourceKey.create(Registries.DIMENSION, id("outer"));
     public static final ResourceKey<Level> GUOGAO = ResourceKey.create(Registries.DIMENSION, id("guogao"));
 
     public static Identifier id(String path) { return Identifier.fromNamespaceAndPath(ID, path); }
@@ -25,6 +26,7 @@ public final class GoogologyMod implements ModInitializer {
         GoogologySounds.initialize();
         WorldMaterials.initialize();
         dev.googology.mining.MiningContent.initialize();
+        dev.googology.outer.GoogologyMod.initialize();
         CreativeCatalog.initialize();
         dev.googology.portal.PortalRitual.initialize();
         dev.googology.world.OrdinalDensity.initialize();

@@ -47,8 +47,8 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
             line(graphics,tr("mining_speed",EquipmentRules.format(GearData.miningSpeed(gear))),y,0xffc2d9d0);y+=14;
         }
         if(spec.kind()<2){line(graphics,tr("attack",EquipmentRules.format(GearData.power(gear))),y,0xffc2d9d0);y+=14;}
-        else {line(graphics,tr("defense",EquipmentRules.format(GearData.power(gear)*EquipmentRules.armorShare(spec.kind()))),y,0xffc2d9d0);y+=14;}
-        line(graphics,tr("durability",gear.getMaxDamage()-gear.getDamageValue(),gear.getMaxDamage()),y,0xffc2d9d0);y+=18;
+        else if(spec.kind()<6){line(graphics,tr("defense",EquipmentRules.format(GearData.power(gear)*EquipmentRules.armorShare(spec.kind()))),y,0xffc2d9d0);y+=14;}
+        if(spec.kind()<6)line(graphics,tr("durability",gear.getMaxDamage()-gear.getDamageValue(),gear.getMaxDamage()),y,0xffc2d9d0);y+=18;
         if(menu.installed()>0){line(graphics,tr("effect_points"),y,0xffecdec0);y+=12;}
         for(int type=0;type<9;type++)if(GearData.points(gear,type)>0){
             line(graphics,tr("effect_value",tr("effect."+type),EquipmentRules.format(GearData.points(gear,type))),y,0xff9cd6cd);y+=12;

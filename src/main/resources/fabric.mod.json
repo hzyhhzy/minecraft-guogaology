@@ -3,7 +3,7 @@
   "id": "googology",
   "version": "${version}",
   "name": "果糕逻辑 · Guogaology",
-  "description": "Explore eight biomes across the Guogaology World and Guogao Underworld. Discover landscapes shaped by ordinal notation and monumental ruins, mine ordinal ores, craft Denxi equipment, and enhance it with crystal cores.\n\n探索大数世界与果糕地府的八种群系，穿行记号山脉与巨型遗迹，开采序数矿物，锻造扽西装备，以晶核强化你的旅程。",
+  "description": "Explore Outer Googology, monumental Inner Googology and the Guogao Underworld. Four ordinal minerals, shared equipment, crystal upgrades, passive Denxi Manuscripts and seven outer-world creatures.\n\n探索大数表界、巨构里界与果糕地府。四档序数矿物与装备、晶核强化、被动扽西手稿，以及七类表界生物。",
   "authors": [
     "Sigmoid"
   ],
@@ -35,5 +35,10 @@
     "homepage": "https://github.com/hzyhhzy/minecraft-guogaology",
     "sources": "https://github.com/hzyhhzy/minecraft-guogaology",
     "issues": "https://github.com/hzyhhzy/minecraft-guogaology/issues"
-  }
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/guogaology-outer-legacy-${version}.jar"
+    }
+  ]
 }

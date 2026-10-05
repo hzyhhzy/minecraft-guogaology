@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "googology:ordinal_heart"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "googology:nine_headed_hydra"
+}

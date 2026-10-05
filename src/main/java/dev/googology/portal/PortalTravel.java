@@ -54,9 +54,11 @@ public final class PortalTravel {
     }
     public static void queue(ServerPlayerEntity player) { queue(player,player.getBlockPos()); }
     public static RegistryKey<World> destination(RegistryKey<World> source,PortalKind kind) {
-        if(source.equals(GoogologyMod.GUOGAO)) return GoogologyMod.DIMENSION;
-        if(kind==PortalKind.GUOGAO) return GoogologyMod.GUOGAO;
-        return source.equals(GoogologyMod.DIMENSION)?World.OVERWORLD:GoogologyMod.DIMENSION;
+        return switch(kind){
+            case GGG -> source.equals(GoogologyMod.OUTER)?World.OVERWORLD:GoogologyMod.OUTER;
+            case INNER -> source.equals(GoogologyMod.DIMENSION)?GoogologyMod.OUTER:GoogologyMod.DIMENSION;
+            case GUOGAO -> source.equals(GoogologyMod.GUOGAO)?GoogologyMod.DIMENSION:GoogologyMod.GUOGAO;
+        };
     }
     public static double scale(RegistryKey<World> dimension) { return dimension.equals(GoogologyMod.GUOGAO)?16:dimension.equals(GoogologyMod.DIMENSION)?4:1; }
     public static Vec3d scaledPosition(Vec3d pos,RegistryKey<World> source,RegistryKey<World> target) {
@@ -64,7 +66,11 @@ public final class PortalTravel {
     }
     public static void travel(ServerPlayerEntity player) { transfer(player,PortalKind.GGG,player.getBlockPos()); }
     public static void toGuogao(ServerPlayerEntity player) { transfer(player,PortalKind.GUOGAO,player.getBlockPos()); }
-    public static void returnHome(ServerPlayerEntity player) { transfer(player,PortalKind.GGG,player.getBlockPos()); }
+    public static void toInner(ServerPlayerEntity player) { transfer(player,PortalKind.INNER,player.getBlockPos()); }
+    public static void returnHome(ServerPlayerEntity player) {
+        var source=player.getWorld().getRegistryKey();
+        transfer(player,source.equals(GoogologyMod.GUOGAO)?PortalKind.GUOGAO:source.equals(GoogologyMod.DIMENSION)?PortalKind.INNER:PortalKind.GGG,player.getBlockPos());
+    }
     public static void fallIntoGuogao(ServerPlayerEntity player) {
         var world=player.getServer().getWorld(GoogologyMod.GUOGAO);if(world==null) return;
         var mapped=scaledPosition(player.getPos(),GoogologyMod.DIMENSION,GoogologyMod.GUOGAO);
@@ -84,7 +90,7 @@ public final class PortalTravel {
         var mapped=scaledPosition(Vec3d.ofCenter(origin),source.getRegistryKey(),key);
         double x=Math.clamp(mapped.x,world.getWorldBorder().getBoundWest()+20,world.getWorldBorder().getBoundEast()-20);
         double z=Math.clamp(mapped.z,world.getWorldBorder().getBoundNorth()+20,world.getWorldBorder().getBoundSouth()-20);
-        var back=source.getRegistryKey().equals(GoogologyMod.GUOGAO)||key.equals(GoogologyMod.GUOGAO)?PortalKind.GUOGAO:PortalKind.GGG;
+        var back=kind;
         return new Target(world,BlockPos.ofFloored(x,Math.clamp(mapped.y,24,230),z),back);
     }
     private static void transfer(ServerPlayerEntity player,PortalKind kind,BlockPos origin,BlockPos prepared) {

@@ -1738,5 +1738,17 @@
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "采集／合成"
+  },
+  "inner_portal": {
+    "hardness": -1,
+    "resistance": 3600000,
+    "tool": "none",
+    "tier": 0,
+    "light": 8,
+    "drop": "none",
+    "use": "维度传送门；不能采集",
+    "friction": 0.6,
+    "collision": "无",
+    "renewable": "采集／合成"
   }
 }

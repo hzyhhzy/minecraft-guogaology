@@ -21,8 +21,4 @@ public abstract class EquipmentDefenseMixin {
             result.setReturnValue((float)(vanilla/(1+total/8)));
         }
     }
-    @Inject(method="getExperienceReward",at=@At("RETURN"),cancellable=true)
-    private void googology$experience(ServerLevel world,Entity killer,CallbackInfoReturnable<Integer> result){
-        if(killer instanceof LivingEntity entity)result.setReturnValue(MiningEffects.experience(result.getReturnValueI(),entity.getMainHandItem()));
-    }
 }

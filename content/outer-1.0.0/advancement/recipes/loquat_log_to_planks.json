@@ -1,0 +1,46 @@
+{
+  "parent": "googology:recipes/root",
+  "criteria": {
+    "has_any_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#googology:recipe_unlock_materials"
+          },
+          {
+            "items": "minecraft:apple"
+          },
+          {
+            "items": "minecraft:cobblestone"
+          },
+          {
+            "items": "minecraft:glass"
+          },
+          {
+            "items": "minecraft:sand"
+          },
+          {
+            "items": "minecraft:stick"
+          },
+          {
+            "items": "minecraft:sugar"
+          },
+          {
+            "items": "minecraft:wheat"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_any_material"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "googology:loquat_log_to_planks"
+    ]
+  }
+}

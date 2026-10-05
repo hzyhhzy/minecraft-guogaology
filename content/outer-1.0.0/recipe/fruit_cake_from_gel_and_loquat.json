@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "fruit_cake",
+  "ingredients": [
+    "googology:fruit_cake_gel",
+    "googology:loquat"
+  ],
+  "result": {
+    "id": "googology:fruit_cake"
+  }
+}

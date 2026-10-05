@@ -1,4 +1,4 @@
-# Building Guogaology 0.3.2
+# Building Guogaology 0.3.3
 
 Use JDK 21 for Minecraft 1.21.1; the combined modern build runs with JDK 25 and targets the appropriate Java class version for each game. Python 3.10+ is required for the modern API/resource adapters and release audit. The normal build needs no pip packages.
 
@@ -20,7 +20,7 @@ Use the appropriate `JAVA_HOME`. On Windows replace `gradlew` with `gradlew.bat`
 
 ```sh
 # JDK 21, Minecraft 1.21.1
-./gradlew --no-daemon :build
+./gradlew --no-daemon -PportPython=python3 :build
 
 # JDK 21 or 25, Minecraft 1.21.11
 ./ports/gradlew --no-daemon -p ports -Ptarget=1.21.11 -PportPython=python3 :1.21.11:build
@@ -35,6 +35,12 @@ Use the appropriate `JAVA_HOME`. On Windows replace `gradlew` with `gradlew.bat`
 Run `python tools/audit_resources.py --check` to validate the model/texture graph and `python tools/audit_localization.py --check` to check English and Chinese keys, arguments, live item/block names, UI references and Mod Menu descriptions. After all targets are built, `python tools/package_multiversion.py` verifies metadata, Java class versions, localization and core meshes, then collects the four JARs. For one target, pass e.g. `--targets 26.2`.
 
 Never install `-sources.jar`. Normal JARs include the assets, notation catalog and architecture data. Building does not launch Minecraft or alter any installed instance.
+
+Run `python tools/audit_outer_content.py` for the imported namespace's bilingual names, reachable models/textures, item/tag/loot references and recipe-unlock rewards. It is included in batch builds and CI. `--prune` is an explicit source-cleanup operation, never required for an ordinary build.
+
+The 1.21.1 host uses Yarn names; reconstructed Outer sources use Mojang names. Its build invokes the Gradle 9.6 wrapper for `ports/outer-1.21.1`, then includes the remapped compatibility module inside the one public JAR. No separate installation is needed. JDK 21 runs both parts. `-PouterGradle=/path/to/gradle` optionally selects an installed Gradle 9.6 launcher. Source edits and adapters are in [OUTER-IMPORT.md](OUTER-IMPORT.md); a donor JAR is not required to build this repository.
+
+Development-only 26.2 merger checks can be compiled with `-PmergeQa :26.2:mergeQaJar`. Install that helper only in a disposable hidden test instance with a fixture save named `port-qa`; it automatically edits that save and exits after checking portals, cores, manuscripts, creatures, templates and scenery. Never add it to a normal player instance. Release packaging rejects QA classes. Building other targets does not launch their games.
 
 ## Asset editing
 

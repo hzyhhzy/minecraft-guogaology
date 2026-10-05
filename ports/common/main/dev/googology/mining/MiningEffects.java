@@ -20,7 +20,6 @@ public final class MiningEffects {
         Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ANCIENT_DEBRIS);
     private static final ThreadLocal<Boolean> EXTRA=ThreadLocal.withInitial(()->false);
     private MiningEffects(){}
-    public static int experience(int base,ItemStack tool){return Math.max(0,(int)Math.round(base*(1+.25*GearData.points(tool,4))));}
     public static void initialize(){
         PlayerBlockBreakEvents.AFTER.register((world,player,pos,state,entity)->{
             if(EXTRA.get()||!(player instanceof ServerPlayer p)||p.isCreative()||p.isShiftKeyDown()||entity!=null)return;

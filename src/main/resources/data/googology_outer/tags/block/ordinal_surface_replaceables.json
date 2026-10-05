@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "googology_outer:ordinal_stone",
+    "googology_outer:andesite_ordinal_stone",
+    "googology_outer:diorite_ordinal_stone",
+    "googology_outer:granite_ordinal_stone",
+    "googology_outer:tuff_ordinal_stone",
+    "googology_outer:cobbled_ordinal_stone",
+    "minecraft:dirt",
+    "minecraft:coarse_dirt",
+    "minecraft:grass_block",
+    "minecraft:gravel",
+    "minecraft:sand",
+    "minecraft:podzol",
+    "minecraft:mycelium"
+  ]
+}

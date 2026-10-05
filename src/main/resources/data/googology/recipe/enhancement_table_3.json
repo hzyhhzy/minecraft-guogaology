@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "result": {
-    "id": "googology:enhancement_table_3",
-    "count": 1
-  },
   "pattern": [
     "MCM",
     "STS",
@@ -12,16 +8,20 @@
   ],
   "key": {
     "M": {
-      "item": "googology:psi_material"
+      "item": "googology:true_omega_material"
     },
     "C": {
-      "item": "googology:ordinal_crystal_lv3"
+      "item": "googology:ordinal_crystal_lv2"
     },
     "T": {
       "item": "googology:enhancement_table_2"
     },
     "S": {
-      "item": "googology:gamma_block"
+      "item": "googology:epsilon_block"
     }
+  },
+  "result": {
+    "id": "googology:enhancement_table_3",
+    "count": 1
   }
 }

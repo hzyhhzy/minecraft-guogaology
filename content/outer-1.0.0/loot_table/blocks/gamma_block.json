@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "googology:gamma_block",
+          "condition": {
+            "type": "minecraft:survives_explosion"
+          }
+        }
+      ]
+    }
+  ],
+  "random_sequence": "googology:gamma_block"
+}

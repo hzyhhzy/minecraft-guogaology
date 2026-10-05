@@ -7,7 +7,12 @@
         "items": [
           {
             "items": [
-              "googology:lho_trace"
+              "googology:fffz_trace",
+              "googology:fos_trace",
+              "googology:lho_hydra_psi",
+              "googology:lho_hydra_z",
+              "googology:lho_trace",
+              "googology:ordinal_crystal_lv2"
             ]
           }
         ]

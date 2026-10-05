@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "hell_christmas_planks",
+  "key": {
+    "#": {
+      "item": "googology_outer:hell_christmas_log"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "googology_outer:hell_christmas_planks"
+  }
+}

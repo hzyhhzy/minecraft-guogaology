@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "googology_outer:gummy"
+    },
+    {
+      "item": "googology_outer:fruit_cake_gel"
+    }
+  ],
+  "result": {
+    "id": "googology:amber_guogao"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "googology_outer:block/snake_head"
+    },
+    "facing=east": {
+      "model": "googology_outer:block/snake_head",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "googology_outer:block/snake_head",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "googology_outer:block/snake_head",
+      "y": 270
+    }
+  }
+}

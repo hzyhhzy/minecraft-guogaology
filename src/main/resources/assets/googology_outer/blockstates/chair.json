@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "googology_outer:block/chair"
+    },
+    "facing=east": {
+      "model": "googology_outer:block/chair",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "googology_outer:block/chair",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "googology_outer:block/chair",
+      "y": 270
+    }
+  }
+}

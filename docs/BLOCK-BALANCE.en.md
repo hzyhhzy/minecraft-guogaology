@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.3.2
+# Block harvesting reference · 0.3.3
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
@@ -8,7 +8,7 @@ Player-placed regional cores, TREE nodes, landmark relics, rare LHO materials, a
 
 Natural LHO fragments and ψ/Z branches require an Ordinal Crystal anchor in the offhand or within a 5×5×5 neighborhood. Their natural harvesting also requires a pickaxe.
 
-Ordinal ores use a separate Denxi hardness calculation, so ordinary block hardness alone does not predict their mining time. Mining materials, enhancement tables, special recipes and the practical uses of cores are covered in the survival guide. This table lists the 142 shared terrain, plant, decoration and relic profiles; the six ore/storage families and enhancement tables are registered separately by the mining system.
+Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe. They naturally generate only in Outer Googology. This table lists the shared monumental-world terrain, plant, decoration and relic profiles; the four ore/storage families, enhancement tables and imported Outer wood families are registered separately. See the survival guide for equipment and core fusion.
 
 | Name | Block ID | Hardness | Blast resistance | Tool | Minimum tier | Light | Collision | Drop |
 |---|---|---:|---:|---|---|---:|---|---|

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "googology_outer:block/christmas_planks",
+    "top": "googology_outer:block/christmas_planks",
+    "side": "googology_outer:block/christmas_planks"
+  }
+}

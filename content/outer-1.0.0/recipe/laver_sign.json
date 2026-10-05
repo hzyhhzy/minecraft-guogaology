@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "sign",
+  "key": {
+    "#": "googology:laver_planks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "###",
+    "###",
+    " S "
+  ],
+  "result": {
+    "id": "googology:laver_sign",
+    "count": 3
+  }
+}

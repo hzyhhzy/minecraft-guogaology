@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "googology:ordinal_stone",
+    "googology:andesite_ordinal_stone",
+    "googology:diorite_ordinal_stone",
+    "googology:granite_ordinal_stone",
+    "googology:tuff_ordinal_stone",
+    "googology:cobbled_ordinal_stone"
+  ]
+}

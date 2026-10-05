@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    "googology:laver_planks"
+  ],
+  "result": {
+    "id": "googology:laver_button"
+  }
+}

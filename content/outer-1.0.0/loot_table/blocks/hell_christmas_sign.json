@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "googology:hell_christmas_sign",
+          "condition": {
+            "type": "minecraft:survives_explosion"
+          }
+        }
+      ]
+    }
+  ],
+  "random_sequence": "googology:hell_christmas_sign"
+}

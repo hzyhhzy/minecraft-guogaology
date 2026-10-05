@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "result": {
-    "id": "googology:omega_pickaxe",
-    "count": 1
-  },
   "pattern": [
     "MMM",
     " S ",
@@ -17,5 +13,9 @@
     "S": {
       "item": "minecraft:stick"
     }
+  },
+  "result": {
+    "id": "googology:omega_pickaxe",
+    "count": 1
   }
 }

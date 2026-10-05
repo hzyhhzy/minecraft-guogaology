@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 public final class GoogologyClient implements ClientModInitializer {
     @Override public void onInitializeClient() {
+        new dev.googology.outer.client.GoogologyClient().onInitializeClient();
         net.minecraft.client.gui.screens.MenuScreens.register(dev.googology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
         PortalAppearance.initialize();
         CoreMeshModels.initialize();
@@ -17,6 +18,6 @@ public final class GoogologyClient implements ClientModInitializer {
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.EPSILON_BLOOM);
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.ORDINAL_PLANTS);
         BlockRenderLayerMap.putBlock(GoogologyBlocks.EMOJI_FLOWER, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlocks(ChunkSectionLayer.TRANSLUCENT, GoogologyBlocks.PORTAL, GoogologyBlocks.FRUIT_PORTAL);
+        BlockRenderLayerMap.putBlocks(ChunkSectionLayer.TRANSLUCENT, GoogologyBlocks.PORTAL, GoogologyBlocks.INNER_PORTAL, GoogologyBlocks.FRUIT_PORTAL);
     }
 }

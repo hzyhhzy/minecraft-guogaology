@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 public class OrdinalGear extends Item {
     public final int tier,kind;
     public OrdinalGear(Settings properties,int tier,int kind){super(properties);this.tier=tier;this.kind=kind;}
-    @Override public void inventoryTick(ItemStack s,World world,Entity entity,int slot,boolean selected){if(!world.isClient&&s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION)GearData.refresh(s);}
+    @Override public void inventoryTick(ItemStack s,World world,Entity entity,int slot,boolean selected){if(!world.isClient&&(s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION||s.getOrDefault(MiningContent.DEEP,false)!=ManuscriptEffects.deep(world))){s.set(MiningContent.DEEP,ManuscriptEffects.deep(world));GearData.refresh(s);}}
     @Override public float getMiningSpeed(ItemStack stack,BlockState state){return kind==0&&(state.isIn(BlockTags.PICKAXE_MINEABLE)||state.getBlock() instanceof OrdinalOre)?(float)GearData.miningSpeed(stack):1;}
     @Override public boolean isCorrectForDrops(ItemStack stack,BlockState state){return kind==0&&(state.isIn(BlockTags.PICKAXE_MINEABLE)||state.getBlock() instanceof OrdinalOre);}
     @Override public boolean postMine(ItemStack stack,World world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClient)stack.damage(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
@@ -28,9 +28,9 @@ public class OrdinalGear extends Item {
     @Override public int getEnchantability(){return 15;}
     @Override public boolean canRepair(ItemStack gear,ItemStack ingredient){return tier>0&&ingredient.isOf(MiningContent.MATERIALS[tier-1]);}
     @Override public void appendTooltip(ItemStack s,TooltipContext context,java.util.List<Text> out,TooltipType flag){
-        if(kind==0)out.add(Text.translatable("mining.googology.denxi",EquipmentRules.format(GearData.denxi(s))));
+        if(kind==0)out.add(Text.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.add(Text.translatable("mining.googology.digit",GearData.digit(s)));
-        out.add(Text.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier),EquipmentRules.grade(tier)));
+        out.add(Text.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
         for(var c:GearData.cores(s))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable("mining.googology.effect."+GearData.type(c))));
         if(kind==0)out.add(Text.translatable("mining.googology.sneak"));
     }

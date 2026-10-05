@@ -56,6 +56,9 @@ tasks.register('preparePortResources', Exec) {
     inputs.dir(repositoryRoot.toPath().resolve('src/main/resources'))
     inputs.dir(repositoryRoot.toPath().resolve('src/client/resources'))
     inputs.file(repositoryRoot.toPath().resolve('tools/prepare_port_resources.py'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/prepare_outer_resources.py'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/import_outer_content.py'))
+    inputs.dir(repositoryRoot.toPath().resolve('content/outer-1.0.0'))
     inputs.file(rootProject.file('targets.json'))
     inputs.property('release', project.version)
     outputs.dir(generatedResources)
@@ -86,4 +89,21 @@ tasks.named('sourcesJar') { from(new File(repositoryRoot, 'LICENSE')); from(lice
 // Keep caches, servers and client profiles separate for each target.
 loom.runs.configureEach {
     runDir "build/run/${name}"
+}
+
+if (project.name == '26.2' && project.hasProperty('mergeQa')) {
+    sourceSets {
+        mergeQa {
+            java.srcDir rootProject.file('qa26')
+            resources.srcDir rootProject.file('qa26-resources')
+            compileClasspath += sourceSets.main.output + sourceSets.client.output + sourceSets.client.compileClasspath
+            runtimeClasspath += output + compileClasspath + sourceSets.client.runtimeClasspath
+        }
+    }
+    tasks.register('mergeQaJar',Jar) {
+        dependsOn tasks.named('mergeQaClasses')
+        from sourceSets.mergeQa.output
+        archiveBaseName='googology-merge-qa'
+        destinationDirectory=layout.buildDirectory.dir('qa')
+    }
 }

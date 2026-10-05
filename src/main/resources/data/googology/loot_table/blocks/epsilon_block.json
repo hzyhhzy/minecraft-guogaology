@@ -8,6 +8,11 @@
           "type": "minecraft:item",
           "name": "googology:epsilon_block"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
   ]

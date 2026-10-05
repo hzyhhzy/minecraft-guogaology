@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:spring_feature",
+  "config": {
+    "state": {
+      "Name": "minecraft:water",
+      "Properties": {
+        "falling": "true"
+      }
+    },
+    "valid_blocks": [
+      "googology_outer:ordinal_stone",
+      "googology_outer:andesite_ordinal_stone",
+      "googology_outer:diorite_ordinal_stone",
+      "googology_outer:granite_ordinal_stone",
+      "googology_outer:tuff_ordinal_stone",
+      "googology_outer:cobbled_ordinal_stone"
+    ],
+    "requires_block_below": true,
+    "rock_count": 4,
+    "hole_count": 1
+  }
+}

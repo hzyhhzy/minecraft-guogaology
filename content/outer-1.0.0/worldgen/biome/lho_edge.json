@@ -1,0 +1,84 @@
+{
+  "attributes": {
+    "minecraft:gameplay/natural_mob_spawns": {
+      "modifier": "overlay",
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "googology:fruit_cake_slime",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 8
+            },
+            {
+              "type": "googology:evil_pig",
+              "count": 1,
+              "weight": 1
+            }
+          ],
+          "creature": [
+            {
+              "type": "googology:busy_beaver",
+              "count": 1,
+              "weight": 2
+            }
+          ],
+          "ambient": [
+            {
+              "type": "googology:fly_y",
+              "count": 1,
+              "weight": 6
+            }
+          ]
+        }
+      }
+    },
+    "minecraft:visual/sky_color": "#7b8198",
+    "minecraft:visual/fog_color": "#8a93b0"
+  },
+  "carvers": [
+    "minecraft:cave",
+    "minecraft:cave_extra_underground",
+    "minecraft:canyon"
+  ],
+  "downfall": 0.2,
+  "effects": {
+    "water_color": "#3f76e4",
+    "grass_color": "#5f7a52",
+    "foliage_color": "#4a6b3f"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega",
+      "googology:ore_epsilon",
+      "googology:ore_gamma",
+      "googology:ore_true_omega",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper"
+    ],
+    [],
+    [],
+    [],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 0.5
+}

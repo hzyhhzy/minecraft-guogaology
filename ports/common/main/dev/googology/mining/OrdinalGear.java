@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 public final class OrdinalGear extends Item {
     public final int tier,kind;
     public OrdinalGear(Properties properties,int tier,int kind){super(properties);this.tier=tier;this.kind=kind;}
-    @Override public void inventoryTick(ItemStack s,net.minecraft.server.level.ServerLevel world,Entity entity,EquipmentSlot slot){if(s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION)GearData.refresh(s);}
+    @Override public void inventoryTick(ItemStack s,net.minecraft.server.level.ServerLevel world,Entity entity,EquipmentSlot slot){if((s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION||s.getOrDefault(MiningContent.DEEP,false)!=ManuscriptEffects.deep(world))){s.set(MiningContent.DEEP,ManuscriptEffects.deep(world));GearData.refresh(s);}}
     @Override public float getDestroySpeed(ItemStack stack,BlockState state){return kind==0&&(state.is(BlockTags.MINEABLE_WITH_PICKAXE)||state.getBlock() instanceof OrdinalOre)?(float)GearData.miningSpeed(stack):1;}
     @Override public boolean isCorrectToolForDrops(ItemStack stack,BlockState state){return kind==0&&(state.is(BlockTags.MINEABLE_WITH_PICKAXE)||state.getBlock() instanceof OrdinalOre);}
     @Override public boolean mineBlock(ItemStack stack,Level world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClientSide())stack.hurtAndBreak(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
@@ -27,9 +27,9 @@ public final class OrdinalGear extends Item {
     }
     @Override public void appendHoverText(ItemStack s,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
         if(kind>=2)out.accept(Component.translatable("mining.googology.defense",EquipmentRules.format(GearData.power(s)*EquipmentRules.armorShare(kind))));
-        if(kind==0)out.accept(Component.translatable("mining.googology.denxi",EquipmentRules.format(GearData.denxi(s))));
+        if(kind==0)out.accept(Component.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.accept(Component.translatable("mining.googology.digit",GearData.digit(s)));
-        out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier),EquipmentRules.grade(tier)));
+        out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
         for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable("mining.googology.effect."+GearData.type(c))));
         if(kind==0)out.accept(Component.translatable("mining.googology.sneak"));
     }

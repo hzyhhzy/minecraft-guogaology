@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "N": "googology:nuke_mushroom",
+    "#": "minecraft:sand"
+  },
+  "pattern": [
+    "N#N",
+    "#N#",
+    "N#N"
+  ],
+  "result": {
+    "id": "minecraft:tnt"
+  }
+}

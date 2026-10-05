@@ -13,6 +13,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def adapt(text, target, name):
     if target == '1.21.11':
+        if name in ('FruitCakeSlimeMoveControl.java','FruitSlimeMoveControl.java'):
+            text=re.sub(r'extends MoveControl<[^>]+>', 'extends MoveControl',text).replace('return this.mob;', 'return (FruitSlimeEntity)this.mob;')
+        if name=='EvilPigEntity.java':text=text.replace('SoundEvents.PIG_STEP.value()','SoundEvents.PIG_STEP')
+        if name=='ModWoodTypes.java':text=text.replace('.soundType(SoundType.WOOD)','')
+        if name=='LaverTableFeature.java':text=text.replace('Blocks.WOOL.white()','Blocks.WHITE_WOOL').replace('Blocks.WOOL.black()','Blocks.BLACK_WOOL')
+        if name=='TreeSelfOverlapGuardFeature.java':text=text.replace('this.minimumSize,var5).decorators','this.minimumSize).dirt(var5).decorators')
+        if name=='GoogologyClient.java':text=text.replace('ModelLayerRegistry','EntityModelLayerRegistry')
+        if name=='GoogologyBoatRenderer.java':
+            text=text.replace('super(var1, var3);','super(var1);\n      this.texture=var3;')
+            text=text.replace('private final BoatModel model;','private final BoatModel model;\n   private final Identifier texture;\n   @Override protected net.minecraft.client.renderer.rendertype.RenderType renderType(){return net.minecraft.client.renderer.rendertype.RenderTypes.entityCutoutNoCull(texture);}')
         return text
     replacements = {
         'net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup': 'net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab',
@@ -23,6 +33,9 @@ def adapt(text, target, name):
         'FuelRegistryEvents': 'FuelValueEvents',
         'recipe.assemble(input,world.registryAccess())': 'recipe.assemble(input)',
         'CompostingChanceRegistry': 'CompostableRegistry',
+        'p.getTags()': 'p.entityTags()',
+        'IntProvider.codec(0,64)': 'IntProviders.codec(0,64)',
+        'FloatProvider.CODEC': 'FloatProviders.CODEC',
         'PayloadTypeRegistry.playS2C()': 'PayloadTypeRegistry.clientboundPlay()',
         'ServerTickEvents.END_WORLD_TICK': 'ServerTickEvents.END_LEVEL_TICK',
         'DensityFunction.HOLDER_HELPER_CODEC': 'DensityFunction.CODEC',
@@ -97,6 +110,8 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'ManuscriptEffects.java':
+            text = text.replace('p.hurtMarked=true;', 'p.syncVelocity=true;')
         if name == 'CoreAnimationRenderer.java':
             text = text.replace('matrices.mulPose(', 'matrices.rotate(')
         if name == 'CoreMeshModels.java':
@@ -128,8 +143,14 @@ def prepare(target):
     if out.exists():
         shutil.rmtree(out)
     for group, origin in [('main', 'common/main'), ('client', 'common/client')]:
-        for file in (ROOT / 'ports' / origin).rglob('*.java'):
-            relative = file.relative_to(ROOT / 'ports' / origin)
+        common = ROOT / 'ports' / origin
+        specific = ROOT / 'ports' / target / 'src' / group / 'java'
+        paths = {p.relative_to(common) for p in common.rglob('*.java')}
+        paths.update(p.relative_to(specific) for p in specific.rglob('*.java'))
+        for relative in sorted(paths):
+            if target == '26.3' and relative.as_posix().startswith('dev/googology/outer/') and relative.name in ('BlockItemId.java','OuterFeatureConfig.java','TemplateEntry.java','SimpleTemplateFeature.java','OuterCaveCarver.java'):
+                continue
+            file = common / relative
             override = ROOT / 'ports' / target / 'src' / group / 'java' / relative
             source = override if override.is_file() else file
             output = out / group / relative

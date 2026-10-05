@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "MMM",
+    "M M"
+  ],
+  "key": {
+    "M": {
+      "item": "googology:true_omega_material"
+    }
+  },
+  "result": {
+    "id": "googology:true_omega_helmet",
+    "count": 1
+  }
+}

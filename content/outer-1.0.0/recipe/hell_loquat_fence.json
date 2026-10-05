@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_fence",
+  "key": {
+    "W": "googology:hell_loquat_planks",
+    "#": "minecraft:stick"
+  },
+  "pattern": [
+    "W#W",
+    "W#W"
+  ],
+  "result": {
+    "count": 3,
+    "id": "googology:hell_loquat_fence"
+  }
+}

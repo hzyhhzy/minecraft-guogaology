@@ -1,0 +1,75 @@
+{
+  "type": "minecraft:sequence",
+  "sequence": [
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:not",
+        "invert": {
+          "type": "minecraft:biome",
+          "biome_is": "googology:lho_void"
+        }
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          "minecraft:bedrock_floor",
+          {
+            "type": "minecraft:condition",
+            "if_true": {
+              "type": "minecraft:biome",
+              "biome_is": "googology:underworld"
+            },
+            "then_run": {
+              "type": "minecraft:sequence",
+              "sequence": [
+                {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:vertical_gradient",
+                    "random_name": "googology:underworld_bands",
+                    "true_at_and_below": {
+                      "absolute": 0
+                    },
+                    "false_at_and_above": {
+                      "absolute": 48
+                    }
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": "googology:hell_ordinal_stone"
+                  }
+                },
+                {
+                  "type": "minecraft:block",
+                  "result_state": "googology:hell_ordinal_stone"
+                }
+              ]
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": {
+              "type": "minecraft:above_preliminary_surface"
+            },
+            "then_run": "googology:surface_layer"
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "googology:lho_void"
+      },
+      "then_run": {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:above_preliminary_surface"
+        },
+        "then_run": "googology:surface_layer"
+      }
+    }
+  ]
+}

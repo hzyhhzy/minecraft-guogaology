@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:oak_sapling",
+    "minecraft:spruce_sapling",
+    "minecraft:birch_sapling",
+    "minecraft:jungle_sapling",
+    "minecraft:acacia_sapling",
+    "minecraft:dark_oak_sapling",
+    "minecraft:pale_oak_sapling",
+    "minecraft:cherry_sapling",
+    "googology:christmas_sapling",
+    "googology:loquat_sapling",
+    "googology:laver_sapling",
+    "googology:hell_christmas_sapling",
+    "googology:hell_loquat_sapling"
+  ]
+}

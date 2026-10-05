@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "googology:laver_planks"
+    "googology:laver_planks",
+    "googology_outer:christmas_planks",
+    "googology_outer:loquat_planks",
+    "googology_outer:hell_christmas_planks",
+    "googology_outer:hell_loquat_planks"
   ]
 }
