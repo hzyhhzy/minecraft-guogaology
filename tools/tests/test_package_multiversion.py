@@ -12,7 +12,7 @@ from package_multiversion import ROOT, verify_structure_template
 class StructureValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.name='data/googology_outer/structure/bms_aco.nbt'
+        cls.name='data/googology/structure/bms_aco.nbt'
         cls.original=(ROOT/'src/main/resources'/cls.name).read_bytes()
         cls.nbt=gzip.decompress(cls.original)
 

@@ -1,7 +1,1 @@
-{
-  "variants": {
-    "": {
-      "model": "googology:block/guogao_portal"
-    }
-  }
-}
+{"variants":{"style=0":{"model":"googology:block/gate_field_0"},"style=1":{"model":"googology:block/gate_field_1"},"style=2":{"model":"googology:block/gate_field_2"}}}

@@ -14,7 +14,7 @@ public final class PortalAppearance {
             if(world==null||!world.dimension().identifier().toString().equals(payload.dimension()))return;
             for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++){
                 var pos=payload.center().offset(x,0,z);if(!world.hasChunkAt(pos))continue;
-                var state=PortalRitual.isFrameOffset(x,z)?GoogologyBlocks.PORTAL_FRAME.defaultBlockState().setValue(GoogologyPortalFrameBlock.FRUIT,payload.kind()==dev.googology.portal.PortalKind.GUOGAO.ordinal()):Math.abs(x)<=1&&Math.abs(z)<=1?dev.googology.portal.PortalKind.values()[payload.kind()].block().defaultBlockState():null;
+                var state=PortalRitual.isFrameOffset(x,z)?GoogologyBlocks.PORTAL_FRAME.defaultBlockState().setValue(GoogologyPortalFrameBlock.STYLE,dev.googology.portal.PortalKind.values()[payload.kind()].appearance(payload.dimension())):Math.abs(x)<=1&&Math.abs(z)<=1?dev.googology.portal.PortalKind.values()[payload.kind()].block().defaultBlockState().setValue(dev.googology.block.GoogologyPortalBlock.STYLE,dev.googology.portal.PortalKind.values()[payload.kind()].appearance(payload.dimension())):null;
                 if(state==null)continue;
                 world.setServerVerifiedBlockState(pos,state,Block.UPDATE_CLIENTS|Block.UPDATE_IMMEDIATE);
                 // A vanilla packet may already have set the same state at ordinary priority.

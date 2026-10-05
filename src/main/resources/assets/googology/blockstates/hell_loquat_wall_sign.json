@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=south": {
+      "model": "googology:block/hell_loquat_wall_sign"
+    },
+    "facing=west": {
+      "model": "googology:block/hell_loquat_wall_sign",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "googology:block/hell_loquat_wall_sign",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "googology:block/hell_loquat_wall_sign",
+      "y": 270
+    }
+  }
+}

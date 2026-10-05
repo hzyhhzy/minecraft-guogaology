@@ -31,8 +31,10 @@ def audit(root, prune=False):
                 pending.append(path)
 
     def texture(value):
-        if isinstance(value, str) and value.startswith('googology:'):
-            path = assets / ('textures/' + value.split(':', 1)[1] + '.png')
+        if isinstance(value,dict):value=value.get('sprite')
+        if isinstance(value, str) and value.split(':')[0] == 'googology':
+            namespace,name=value.split(':',1)
+            path = assets.parent / namespace / ('textures/' + name + '.png')
             add(path)
             if path.with_suffix('.png.mcmeta').exists():
                 add(path.with_suffix('.png.mcmeta'))
@@ -43,8 +45,9 @@ def audit(root, prune=False):
                 walk(child)
         elif isinstance(value, dict):
             for key, child in value.items():
-                if key in ('model', 'parent') and isinstance(child, str) and child.startswith('googology:'):
-                    add(models / (child.split(':', 1)[1] + '.json'))
+                if key in ('model', 'parent') and isinstance(child, str) and child.split(':')[0] == 'googology':
+                    namespace,name=child.split(':',1)
+                    add(assets.parent / namespace / 'models' / (name + '.json'))
                 elif key == 'textures' and isinstance(child, dict):
                     for entry in child.values():
                         texture(entry)
@@ -63,10 +66,16 @@ def audit(root, prune=False):
         for layer in ('humanoid', 'humanoid_leggings'):
             add(assets / f'textures/entity/equipment/{layer}/{mineral}.png')
         add(assets / f'equipment/{mineral}.json')
+    imported=assets
+    for name in ('snake','deepseek_whale','busy_beaver','fly_y','fruit_cake_slime','fruit_slime','evil_pig'):
+        add(imported/f'textures/entity/{name}.png')
+    for wood in ('christmas','loquat','laver','hell_christmas','hell_loquat'):
+        add(imported/f'textures/entity/boat/{wood}_boat.png')
+        add(imported/f'textures/gui/signs/{wood}.png')
     while pending:
         walk(json.loads(pending.pop().read_text(encoding='utf8')))
-    candidates = {p for directory in ('blockstates', 'models', 'textures', 'equipment', 'core_meshes')
-                  for p in (assets / directory).rglob('*') if p.is_file()}
+    candidates = {p for assetroot in (assets,) for directory in ('blockstates', 'models', 'textures', 'equipment', 'core_meshes')
+                  for p in (assetroot / directory).rglob('*') if p.is_file()}
     unused = sorted(candidates - retained)
     result = {
         'retained_assets': len(retained),
@@ -76,14 +85,14 @@ def audit(root, prune=False):
         'unused_paths': [p.relative_to(root).as_posix() for p in unused],
         'notes': ['Block/item entrypoints retained except six unregistered *_sad aliases.',
                   'All live blockstate variants, item overrides and 28 core meshes traversed.',
-                  'Both legacy and modern armor textures retained; game IDs are not renamed.'],
+                  'Both legacy and modern armor textures retained; imported block/item IDs belong to the host.'],
     }
     if missing:
         raise ValueError('Missing referenced resources: ' + ', '.join(sorted(missing)))
     if prune:
         # Individual audited files only: no recursive removal or external target.
         for path in unused:
-            if not path.resolve().is_relative_to(assets.resolve()):
+            if not any(path.resolve().is_relative_to(base.resolve()) for base in (assets,imported)):
                 raise ValueError('Asset escapes resource directory: ' + str(path))
             path.unlink()
     return result

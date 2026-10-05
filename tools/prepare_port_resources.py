@@ -213,6 +213,10 @@ def prepare(target, release):
         shutil.rmtree(out)
     shutil.copytree(SOURCE, out)
     shutil.copytree(ROOT / 'src/client/resources', out, dirs_exist_ok=True)
+    # Imported world data is rebuilt directly from its source contracts below;
+    # don't run the host's conversion pipeline over those already-converted files.
+    from prepare_outer_resources import clear_generated
+    clear_generated(out)
     metadata = read(out / "fabric.mod.json")
     metadata["version"] = release
     metadata.pop('jars',None)  # The legacy mapping bridge is only packaged for 1.21.1.

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_wall_sign",
+  "textures": {
+    "all": "googology:block/laver_sign",
+    "particle": "googology:block/laver_planks"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "downfall": 0.4,
+  "effects": {
+    "water_color": 4159204,
+    "grass_color": 10217640,
+    "foliage_color": 8313175,
+    "sky_color": 10217640,
+    "fog_color": 14218716,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [
+      "googology:lake_water"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega",
+      "googology:ore_epsilon",
+      "googology:ore_gamma",
+      "googology:ore_true_omega",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper",
+      "googology:disk_sand_shore",
+      "googology:disk_gravel_shore"
+    ],
+    [],
+    [
+      "googology:spring_water_ordinal"
+    ],
+    [
+      "googology:nuke_mushroom",
+      "googology:chair_feature",
+      "googology:exponential_tower",
+      "googology:white_concrete_powder",
+      "googology:rock_blob_ordinal",
+      "minecraft:patch_bush",
+      "minecraft:patch_dead_bush",
+      "googology:patch_dry_grass_on_grass",
+      "googology:graham",
+      "googology:graham_flower",
+      "googology:graham_vine"
+    ],
+    []
+  ],
+  "has_precipitation": true,
+  "temperature": 0.8,
+  "spawners": {
+    "monster": [
+      {
+        "type": "googology:fruit_cake_slime",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "googology:evil_pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "creature": [
+      {
+        "type": "googology:busy_beaver",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "googology:deepseek_whale",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [
+      {
+        "type": "googology:fly_y",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {}
+}

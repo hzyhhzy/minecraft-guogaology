@@ -4,6 +4,14 @@ import com.google.gson.*;
 import dev.googology.GoogologyMod;
 import dev.googology.CoreGrades;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.minecraft.world.BlockRenderView;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.item.ItemStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.*;
@@ -15,6 +23,7 @@ import net.minecraft.util.math.random.Random;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /** Geometry is baked once; the block entity renderer only transforms the cached interior. */
 public final class CoreMeshModels {
@@ -43,7 +52,7 @@ public final class CoreMeshModels {
     }
     public static boolean polished(BakedModel model){return model instanceof GemModel;}
     static GemModel animated(BakedModel model){return model instanceof GemModel gem?gem:null;}
-    static final class GemModel implements BakedModel {
+    static final class GemModel implements BakedModel,FabricBakedModel {
         private final BakedModel base;
         private final List<BakedQuad> general;
         final Map<Integer,List<BakedQuad>> interior=new TreeMap<>();
@@ -51,9 +60,12 @@ public final class CoreMeshModels {
         final float motionScale;
         final boolean extended;
         private final List<BakedQuad> shell;
+        private final List<BakedQuad> fallback;
+        private final RenderMaterial material;
         private final Map<Direction,List<BakedQuad>> culled=new EnumMap<>(Direction.class);
         GemModel(BakedModel base,JsonObject mesh,Function<SpriteIdentifier,Sprite> sprites){
-            this.base=base;var all=new ArrayList<BakedQuad>();var fixed=new ArrayList<BakedQuad>();
+            this.base=base;var all=new ArrayList<BakedQuad>();var fixed=new ArrayList<BakedQuad>();var distant=new ArrayList<BakedQuad>();
+            material=RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(BlendMode.TRANSLUCENT).find();
             motion=mesh.has("motion")?mesh.get("motion").getAsString():"rotate";
             motionScale=mesh.has("motion_scale")?mesh.get("motion_scale").getAsFloat():1;
             extended=mesh.has("extended")&&mesh.get("extended").getAsBoolean();
@@ -75,16 +87,42 @@ public final class CoreMeshModels {
                 }
                 var quad=new BakedQuad(packed,-1,Direction.getFacing(nx,ny,nz),sprite,false);
                 int part=q.has("part")?q.get("part").getAsInt():1;
+                if(part<10){
+                    var fallbackSprite=textures.get(q.get(q.has("lod_t")?"lod_t":"t").getAsString());
+                    var fallbackUv=q.getAsJsonArray(q.has("lod_uv")?"lod_uv":"uv");int[] lod=packed.clone();
+                    for(int i=0;i<4;i++){
+                        for(int axis=0;axis<3;axis++)lod[i*8+axis]=Float.floatToRawIntBits(Math.clamp(Float.intBitsToFloat(lod[i*8+axis]),0f,1f));
+                        lod[i*8+3]=0xffffffff;
+                        lod[i*8+4]=Float.floatToRawIntBits(fallbackSprite.getFrameU(fallbackUv.get(i).getAsJsonArray().get(0).getAsFloat()));
+                        lod[i*8+5]=Float.floatToRawIntBits(fallbackSprite.getFrameV(fallbackUv.get(i).getAsJsonArray().get(1).getAsFloat()));
+                    }
+                    distant.add(new BakedQuad(lod,-1,Direction.getFacing(nx,ny,nz),fallbackSprite,false));
+                }
                 if(part==0)fixed.add(quad);else interior.computeIfAbsent(part,k->new ArrayList<>()).add(quad);
                 if(q.has("cull"))culled.computeIfAbsent(Direction.byName(q.get("cull").getAsString()),ignored->new ArrayList<>()).add(quad);
                 else all.add(quad);
             }
-            general=List.copyOf(all);shell=List.copyOf(fixed);interior.replaceAll((part,list)->List.copyOf(list));
+            distant.sort(Comparator.comparingDouble(quad->{
+                double radius=0;var vertices=quad.getVertexData();
+                for(int axis=0;axis<3;axis++){double center=0;for(int i=0;i<4;i++)center+=Float.intBitsToFloat(vertices[i*8+axis])/4;radius+=(center-.5)*(center-.5);}
+                return radius;
+            }));
+            general=List.copyOf(all);shell=List.copyOf(fixed);fallback=List.copyOf(distant);interior.replaceAll((part,list)->List.copyOf(list));
             culled.replaceAll((side,list)->List.copyOf(list));
         }
         @Override public List<BakedQuad> getQuads(BlockState state,Direction face,Random random){
-            // Inventory models include the whole design; placed blocks cache only the fixed glass shell.
-            return face==null?(state==null?general:shell):culled.getOrDefault(face,List.of());
+            // Ordinary quad consumers (including LOD renderers) get the complete
+            // static body. FRAPI below keeps the nearby animated body separate.
+            if(state!=null)return face==null?fallback:List.of();
+            return face==null?general:culled.getOrDefault(face,List.of());
+        }
+        @Override public boolean isVanillaAdapter(){return false;}
+        @Override public void emitBlockQuads(BlockRenderView view,BlockState state,BlockPos pos,Supplier<Random> random,RenderContext context){
+            var emitter=context.getEmitter();for(var quad:shell)emitter.fromVanilla(quad,material,null).emit();
+        }
+        @Override public void emitItemQuads(ItemStack stack,Supplier<Random> random,RenderContext context){
+            var emitter=context.getEmitter();for(var quad:general)emitter.fromVanilla(quad,material,null).emit();
+            for(var list:culled.values())for(var quad:list)emitter.fromVanilla(quad,material,null).emit();
         }
         @Override public boolean useAmbientOcclusion(){return false;}
         @Override public boolean hasDepth(){return true;}

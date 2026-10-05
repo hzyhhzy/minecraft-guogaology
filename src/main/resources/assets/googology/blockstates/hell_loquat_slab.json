@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "googology:block/hell_loquat_slab"
+    },
+    "type=top": {
+      "model": "googology:block/hell_loquat_slab_top"
+    },
+    "type=double": {
+      "model": "googology:block/hell_loquat_planks"
+    }
+  }
+}

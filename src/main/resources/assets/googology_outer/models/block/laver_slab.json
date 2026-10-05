@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "googology_outer:block/laver_planks",
-    "top": "googology_outer:block/laver_planks",
-    "side": "googology_outer:block/laver_planks"
-  }
-}

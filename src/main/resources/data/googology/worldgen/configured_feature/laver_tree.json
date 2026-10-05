@@ -1,0 +1,27 @@
+{
+  "type": "googology:laver_tree_guard",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "googology:laver_tree_1"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "googology:laver_tree_2"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "googology:laver_tree_3"
+        },
+        "weight": 2
+      }
+    ],
+    "pad": 10,
+    "y_up": 14
+  }
+}

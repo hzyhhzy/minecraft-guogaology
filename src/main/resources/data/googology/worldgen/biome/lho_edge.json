@@ -1,0 +1,80 @@
+{
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "downfall": 0.2,
+  "effects": {
+    "water_color": 4159204,
+    "grass_color": 6257234,
+    "foliage_color": 4877119,
+    "sky_color": 8094104,
+    "fog_color": 9081776,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega",
+      "googology:ore_epsilon",
+      "googology:ore_gamma",
+      "googology:ore_true_omega",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper"
+    ],
+    [],
+    [],
+    [],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 0.5,
+  "spawners": {
+    "monster": [
+      {
+        "type": "googology:fruit_cake_slime",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "googology:evil_pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "creature": [
+      {
+        "type": "googology:busy_beaver",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [
+      {
+        "type": "googology:fly_y",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {}
+}

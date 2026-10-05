@@ -1,19 +1,30 @@
 """Import the authorized 1.0.0 archive without shipping its conflicting entrypoint.
 
 Run once against the author's JAR. The source snapshot is retained for future
-upstream comparisons; runtime resources use a separate namespace, except explicit
-shared-item aliases. No executable code from the archive is loaded by this tool.
+upstream comparisons. All runtime IDs belong to the host. Optional donor art
+imports are staged for review, never overlaid on current artwork automatically.
+No executable code from the archive is loaded.
 """
 from pathlib import Path
 from zipfile import ZipFile
 import argparse,hashlib,json,re,struct,gzip,io
 
 ROOT=Path(__file__).resolve().parents[1]
-NS='googology_outer'
+NS='googology'
+DATA_NAMES={'googology':'outer'}  # The inner world already owns googology:googology.
 ALIASES={
     'bashicu_block':'ordinal_bricks','gummy_block':'amber_guogao',
-    'fruit_cake':'guogao_slice','christmas_light':'mosaic_light',
+    'fruit_cake':'guogao_slice','christmas_light':'amber_sequence_light',
     'laver_log':'laver_vein','laver_planks':'laver_planks',
+    'laver_leaves':'giant_laver','lho_glass':'absence_glass',
+    'ordinal_stone':'minecraft:stone','cobbled_ordinal_stone':'minecraft:cobblestone',
+    'andesite_ordinal_stone':'minecraft:andesite','diorite_ordinal_stone':'minecraft:diorite',
+    'granite_ordinal_stone':'minecraft:granite','tuff_ordinal_stone':'minecraft:tuff',
+    'hell_ordinal_stone':'minecraft:netherrack',
+    'christmas_log':'minecraft:oak_log','christmas_wood':'minecraft:oak_wood',
+    'christmas_stripped_log':'minecraft:stripped_oak_log','christmas_stripped_wood':'minecraft:stripped_oak_wood',
+    'hell_christmas_log':'minecraft:dark_oak_log','hell_christmas_wood':'minecraft:dark_oak_wood',
+    'hell_christmas_stripped_log':'minecraft:stripped_dark_oak_log','hell_christmas_stripped_wood':'minecraft:stripped_dark_oak_wood',
     'googology_portal':'guogao_portal','googology_portal_frame':'guogao_portal_frame',
 }
 for material in ('omega','epsilon','gamma','true_omega'):
@@ -22,10 +33,16 @@ for material in ('omega','epsilon','gamma','true_omega'):
         ALIASES[material+'_'+part]=material+'_'+part
     ALIASES['hell_'+material+'_ore']='nether_'+material+'_ore'
 
+CONTENT_IDS=set().union(*json.loads((ROOT/'tools/outer_content_ids.json').read_text('utf8')).values())
+LAMPS=('amber','cyan','rose','lime','violet','scarlet')
+
 def remap_id(value):
     if not value.startswith('googology:'):return value
     name=value.split(':',1)[1]
-    return ('googology:'+ALIASES[name]) if name in ALIASES else NS+':'+name
+    if name in ALIASES:
+        target=ALIASES[name]
+        return target if ':' in target else 'googology:'+target
+    return NS+':'+DATA_NAMES.get(name,name)
 
 def walk(v,asset=False):
     if isinstance(v,dict):
@@ -33,8 +50,11 @@ def walk(v,asset=False):
         # Canonical shared number bricks use NUMBER, not the donor's DIGIT.
         if v.get('Name')=='googology:ordinal_bricks' and 'digit' in v.get('Properties',{}):v['Properties']['number']=v['Properties'].pop('digit')
         if v.get('id')=='googology:ordinal_bricks' and 'digit' in v.get('properties',{}):v['properties']['number']=v['properties'].pop('digit')
-        if v.get('Name',v.get('id'))=='googology:laver_vein':
-            v.get('Properties',v.get('properties',{})).pop('axis',None)
+        for idkey,propkey in [('Name','Properties'),('id','properties')]:
+            if v.get(idkey)=='googology:amber_sequence_light':
+                props=v.setdefault(propkey,{})
+                color=int(props.pop('color','0'))%len(LAMPS)
+                v[idkey]='googology:'+LAMPS[color]+'_sequence_light';props['digit']='33'
         return v
     if isinstance(v,list):return [walk(w,asset) for w in v]
     if isinstance(v,str):
@@ -80,10 +100,15 @@ def nbt_transform(blob,legacy=False):
                 for a,b,c in v:
                     if b in ('properties','Properties'):
                         if identity in ('googology:bashicu_block','googology:ordinal_bricks'):c=[(aa,'number' if bb=='digit' else bb,cc) for aa,bb,cc in c]
-                        if identity=='googology:laver_log':c=[x for x in c if x[1]!='axis']
+                        if identity=='googology:christmas_light':
+                            color=next((int(cc) for aa,bb,cc in c if bb=='color'),0)%len(LAMPS)
+                            c=[(8,'digit','33')]
+                            identity='googology:'+LAMPS[color]+'_sequence_light'
                         b='Properties' if legacy else 'properties'
                     elif b in ('id','Name'):b='Name' if legacy else 'id'
                     updated.append((a,b,c))
+                if identity.startswith('googology:') and identity.endswith('_sequence_light'):
+                    updated=[(a,b,identity if b in ('Name','id') else c) for a,b,c in updated]
                 v=updated
             return b''.join(bytes([a])+st(b)+encode(a,c) for a,b,c in v)+b'\0'
     t=src.read(1)[0];name=readstr();v=payload(t)
@@ -92,7 +117,7 @@ def nbt_transform(blob,legacy=False):
 def run(archive):
     digest=hashlib.sha256(archive.read_bytes()).hexdigest()
     if digest!='5310b51a48821bc49bb754068b04d89c787806679fd36303ca16a282af9f2fb4':raise ValueError('Unexpected donor archive; review changes before importing')
-    res=ROOT/'src/main/resources';canonical=ROOT/'content/outer-1.0.0'
+    res=ROOT/'build/outer-import';canonical=ROOT/'content/outer-1.0.0'
     with ZipFile(archive) as z:
         meta=json.loads(z.read('fabric.mod.json'))
         for name in z.namelist():
@@ -123,7 +148,7 @@ def run(archive):
                 write(res/f'assets/googology/textures/models/armor/{m}_layer_{layer}.png',image)
                 write(res/f'assets/googology/textures/entity/equipment/{name}/{m}.png',image)
     write(canonical/'manifest.json',{'source':'googology-dimension-1.0.0.jar','sha256':digest,'authors':meta['authors'],'declared_license':meta['license'],'permission':'User reports author permission to import code/content and all material art, 2026-10-05.','aliases':ALIASES,'policy':'Preserve source terrain and biome parameters; API format adaptations only. Shared progression and travel use Guogaology.'})
-    print('Imported source worldgen/templates and authorized assets; final registry/resource filtering still required.')
+    print('Updated canonical source data and staged authorized assets in build/outer-import; review before copying artwork into the source tree.')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('archive',type=Path);run(p.parse_args().archive)

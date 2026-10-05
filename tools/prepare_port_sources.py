@@ -97,6 +97,12 @@ def adapt(text, target, name):
             '@Override public void collectParts': '@Override public int materialFlags(){return new MeshQuadCollection(geometry.fixed).materialFlags();}\n        @Override public void collectParts',
         }.items():
             text = text.replace(old,new)
+    if name == 'CoreFallbackPart.java':
+        text=text.replace('net.minecraft.client.renderer.block.model.*;', 'net.minecraft.client.renderer.block.dispatch.*;\nimport net.minecraft.client.resources.model.geometry.*;\nimport net.minecraft.client.resources.model.sprite.Material;\nimport net.minecraft.client.renderer.chunk.ChunkSectionLayer;\nimport net.minecraft.client.renderer.rendertype.RenderTypes;')
+        text=text.replace('BlockModelPart','BlockStateModelPart').replace('TextureAtlasSprite particle','Material.Baked particle').replace('particleIcon()','particleMaterial()')
+        text=text.replace('static BakedQuad bake(JsonObject q,TextureAtlasSprite sprite){','static BakedQuad bake(JsonObject q,Material.Baked material){\n        var sprite=material.sprite();')
+        text=text.replace('uv[3],-1,face,sprite,false,0)', 'uv[3],face,new BakedQuad.MaterialInfo(sprite,ChunkSectionLayer.TRANSLUCENT,RenderTypes.translucentMovingBlock(),-1,false,0))')
+        text=text.replace('@Override public boolean useAmbientOcclusion()', '@Override public int materialFlags(){return BakedQuad.FLAG_TRANSLUCENT;}\n    @Override public boolean useAmbientOcclusion()')
     if name == 'CoreAnimationRenderer.java':
         text = text.replace('.client.rendering.v1.world.WorldRenderEvents', '.client.rendering.v1.level.LevelRenderEvents')
         text = text.replace('WorldRenderEvents.END_EXTRACTION', 'LevelRenderEvents.END_EXTRACTION')
@@ -110,6 +116,9 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'CoreFallbackPart.java':
+            text = text.replace('new BakedQuad.MaterialInfo(sprite,ChunkSectionLayer.TRANSLUCENT,RenderTypes.translucentMovingBlock(),-1,false,0)',
+                                'BakedQuad.MaterialInfo.of(material,com.mojang.blaze3d.platform.Transparency.TRANSLUCENT,-1,Direction.UP,0)')
         if name == 'ManuscriptEffects.java':
             text = text.replace('p.hurtMarked=true;', 'p.syncVelocity=true;')
         if name == 'CoreAnimationRenderer.java':

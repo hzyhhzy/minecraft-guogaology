@@ -11,6 +11,17 @@ from io import BytesIO
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=json.loads((ROOT/'ports/targets.json').read_text())
 
+def verify_namespace(archive):
+    """Include nested legacy bridge classes and compressed NBT, not only JSON."""
+    for name in archive.namelist():
+        assert 'googology_outer' not in name,f'Retired namespace path: {name}'
+        if name.endswith(('.json','.class','.nbt')):
+            raw=archive.read(name)
+            if name.endswith('.nbt'):raw=gzip.decompress(raw)
+            assert b'googology_outer' not in raw,f'Retired namespace content: {name}'
+        elif name.endswith('.jar'):
+            with ZipFile(BytesIO(archive.read(name))) as nested:verify_namespace(nested)
+
 def verify_structure_template(actual, expected, name):
     # gzip headers (notably the OS byte) and compression output can differ
     # between Python/zlib versions. Minecraft loads the decompressed NBT.
@@ -50,19 +61,17 @@ def package(targets, output_dir=None):
             assert archive.read(metadata['icon'])==(ROOT/'src/main/resources'/metadata['icon']).read_bytes()
             assert metadata['depends']['minecraft']==target
             entries=archive.namelist()
+            verify_namespace(archive)
             assert not any('/qa/' in n or '/mergeqa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'
-            for locale in ('zh_cn','en_us'):
-                name=f'assets/googology_outer/lang/{locale}.json'
-                assert archive.read(name)==(ROOT/'src/main/resources'/name).read_bytes()
-            templates=[n for n in entries if n.startswith('data/googology_outer/structure/') and n.endswith('.nbt')]
+            templates=[n for n in entries if n.startswith('data/googology/structure/') and n.endswith('.nbt')]
             assert len(templates)==61,(target,len(templates))
             from import_outer_content import nbt_transform
             for name in templates:
-                original=ROOT/'content/outer-1.0.0'/name.removeprefix('data/googology_outer/')
+                original=ROOT/'content/outer-1.0.0'/name.removeprefix('data/googology/')
                 verify_structure_template(archive.read(name),nbt_transform(original.read_bytes(),legacy=target!='26.3'),name)
             for name in entries:
-                if name.startswith('data/googology_outer/advancement/') and name.endswith('.json'):
+                if name.startswith('data/googology/advancement/') and name.endswith('.json'):
                     for recipe in json.loads(archive.read(name)).get('rewards',{}).get('recipes',[]):
                         namespace,path=recipe.split(':',1)
                         assert f'data/{namespace}/recipe/{path}.json' in entries,(target,name,recipe)

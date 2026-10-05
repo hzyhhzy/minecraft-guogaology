@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "googology_outer:christmas_sign",
-    "googology_outer:hell_christmas_sign",
-    "googology_outer:hell_loquat_sign",
-    "googology_outer:laver_sign",
-    "googology_outer:loquat_sign"
+    "googology:christmas_sign",
+    "googology:hell_christmas_sign",
+    "googology:hell_loquat_sign",
+    "googology:laver_sign",
+    "googology:loquat_sign"
   ]
 }

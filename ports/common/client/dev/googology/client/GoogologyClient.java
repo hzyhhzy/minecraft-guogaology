@@ -14,7 +14,7 @@ public final class GoogologyClient implements ClientModInitializer {
         CoreAnimationRenderer.initialize();
         GoogologyAtmosphere.initialize();
         GoogologyBlocks.TRANSLUCENT.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT));
-        BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.DREAD_LEAVES, GoogologyBlocks.Y_LEAVES);
+        BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.DREAD_LEAVES, GoogologyBlocks.Y_LEAVES, GoogologyBlocks.GIANT_LAVER);
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.EPSILON_BLOOM);
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GoogologyBlocks.ORDINAL_PLANTS);
         BlockRenderLayerMap.putBlock(GoogologyBlocks.EMOJI_FLOWER, ChunkSectionLayer.CUTOUT);

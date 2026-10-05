@@ -15,6 +15,7 @@ public final class CreativeCatalog {
     public static final List<String> TABS=List.of("googology","architecture","numbers","lighting","cores","mining","materials");
     private static final Set<String> RARE=Set.of("fffz_trace","fos_trace","lho_hydra_psi","lho_hydra_z","tree_node_red","tree_node_green","tree_node_blue");
     private static final Set<String> BUILDING=Set.of("ordinal_bricks","power_bricks","basic_laver_pattern","iblp_blank","iblp_node","iblp_marked","laver_court_node","laver_court_blank","laver_inlay","lty_yarn","tianyi_fiber","white_fiber","sun_pattern_tiles","amber_inlay","turing_tape","laver_planks");
+    private static final Set<String> IMPORTED=Set.of("busy_beaver_spawn_egg","chair","christmas_boat","christmas_button","christmas_door","christmas_fence","christmas_fence_gate","christmas_leaves","christmas_planks","christmas_pressure_plate","christmas_sapling","christmas_sign","christmas_slab","christmas_stairs","christmas_trapdoor","christmas_wall_sign","deepseek_whale_spawn_egg","evil_pig_spawn_egg","fly_y_spawn_egg","fruit_cake_gel","fruit_cake_slime_spawn_egg","fruit_slime_spawn_egg","graham","graham_flower","graham_vine","gummy","hell_christmas_boat","hell_christmas_button","hell_christmas_door","hell_christmas_fence","hell_christmas_fence_gate","hell_christmas_leaves","hell_christmas_planks","hell_christmas_pressure_plate","hell_christmas_sapling","hell_christmas_sign","hell_christmas_slab","hell_christmas_stairs","hell_christmas_trapdoor","hell_christmas_wall_sign","hell_loquat_boat","hell_loquat_button","hell_loquat_door","hell_loquat_fence","hell_loquat_fence_gate","hell_loquat_leaves","hell_loquat_log","hell_loquat_planks","hell_loquat_pressure_plate","hell_loquat_sapling","hell_loquat_sign","hell_loquat_slab","hell_loquat_stairs","hell_loquat_stripped_log","hell_loquat_stripped_wood","hell_loquat_trapdoor","hell_loquat_wall_sign","hell_loquat_wood","laver_boat","laver_button","laver_door","laver_fence","laver_fence_gate","laver_pressure_plate","laver_sapling","laver_sign","laver_slab","laver_stairs","laver_stripped_log","laver_stripped_wood","laver_trapdoor","laver_wall_sign","laver_wood","loquat","loquat_boat","loquat_button","loquat_door","loquat_fence","loquat_fence_gate","loquat_leaves","loquat_log","loquat_planks","loquat_pressure_plate","loquat_sapling","loquat_sign","loquat_slab","loquat_stairs","loquat_stripped_log","loquat_stripped_wood","loquat_trapdoor","loquat_wall_sign","loquat_wood","nuke_chair","nuke_mushroom","nuke_mushroom_cap","nuke_mushroom_stem","snake_head","snake_spawn_egg","stellar_stone","stellar_stone_block","white_rice");
     private CreativeCatalog(){}
     private static String category(Block block){
         String id=BuiltInRegistries.BLOCK.getKey(block).getPath();
@@ -40,7 +41,7 @@ public final class CreativeCatalog {
         }
         if(tab.equals("architecture")){
             for(int color=1;color<64;color++)out.add(StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.ASTRA_WEAVE),GoogologyBlocks.ASTRA_WEAVE.defaultBlockState().setValue(AstraWeaveBlock.COLOR,color)));
-            out.add(StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.PORTAL_FRAME),GoogologyBlocks.PORTAL_FRAME.defaultBlockState().setValue(GoogologyPortalFrameBlock.FRUIT,true)));
+            for(int style=1;style<=2;style++)out.add(StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.PORTAL_FRAME),GoogologyBlocks.PORTAL_FRAME.defaultBlockState().setValue(GoogologyPortalFrameBlock.STYLE,style)));
         }
         if(tab.equals("mining")){
             for(var e:MiningContent.GEAR.entrySet()){
@@ -55,7 +56,7 @@ public final class CreativeCatalog {
             WorldMaterials.ITEMS.values().forEach(i->out.add(new ItemStack(i)));
         }
         for(var item:BuiltInRegistries.ITEM){
-            var id=BuiltInRegistries.ITEM.getKey(item);if(!id.getNamespace().equals("googology_outer"))continue;
+            var id=BuiltInRegistries.ITEM.getKey(item);if(!id.getNamespace().equals("googology")||!IMPORTED.contains(id.getPath()))continue;
             String name=id.getPath();
             String section=item instanceof BlockItem?(name.endsWith("_stairs")||name.endsWith("_slab")||name.endsWith("_door")||name.endsWith("_trapdoor")||name.contains("sign")||name.contains("fence")||name.contains("button")||name.contains("plate")||name.contains("chair")?"architecture":"googology"):"materials";
             if(section.equals(tab))out.add(new ItemStack(item));

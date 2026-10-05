@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom_right_open",
-  "textures": {
-    "bottom": "googology_outer:block/hell_loquat_door_bottom",
-    "top": "googology_outer:block/hell_loquat_door_top"
-  }
-}

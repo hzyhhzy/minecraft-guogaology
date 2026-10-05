@@ -17,4 +17,8 @@ public final class ChristmasDigitBlock extends StatefulDecorBlock {
         setDefaultState(getStateManager().getDefaultState().with(DIGIT,BLANK));
     }
     @Override protected void appendProperties(StateManager.Builder<Block, BlockState> builder) { builder.add(DIGIT); }
+    @Override protected net.minecraft.util.ActionResult onUse(BlockState state,net.minecraft.world.World world,net.minecraft.util.math.BlockPos pos,net.minecraft.entity.player.PlayerEntity player,net.minecraft.util.hit.BlockHitResult hit){
+        if(!world.isClient)world.setBlockState(pos,state.with(DIGIT,state.get(DIGIT)>=32?0:state.get(DIGIT)+1),Block.NOTIFY_LISTENERS);
+        return net.minecraft.util.ActionResult.SUCCESS;
+    }
 }

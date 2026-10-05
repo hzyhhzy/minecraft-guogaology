@@ -1,7 +1,7 @@
 package dev.googology.outer.world.feature;
 
 import dev.googology.outer.GoogologyMod;
-import dev.googology.block.MosaicLightBlock;
+
 import dev.googology.outer.registry.ModBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -42,7 +42,8 @@ public record ChristmasLightsFeature(int candidates, float chance, int radius) i
          BlockPos var11 = var4.offset(var8, var9, var10);
          if (var1.hasChunkAt(var11) && var1.getBlockState(var11).is(var5) && var3.nextInt(10) < 1) {
             int var12 = var3.nextInt(6);
-            BlockState var13 = (BlockState)ModBlocks.CHRISTMAS_LIGHT.defaultBlockState().setValue(MosaicLightBlock.COLOR, var12);
+            String[] colors={"amber","cyan","rose","lime","violet","scarlet"};
+            BlockState var13 = BuiltInRegistries.BLOCK.getValue(net.minecraft.resources.Identifier.fromNamespaceAndPath("googology",colors[var12]+"_sequence_light")).defaultBlockState();
             var1.setBlock(var11, var13, 2);
             var6++;
          }

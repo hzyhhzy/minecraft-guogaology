@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "googology:block/loquat_planks",
+    "top": "googology:block/loquat_planks",
+    "side": "googology:block/loquat_planks"
+  }
+}

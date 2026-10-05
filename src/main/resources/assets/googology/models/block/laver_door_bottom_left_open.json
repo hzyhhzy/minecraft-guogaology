@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left_open",
+  "textures": {
+    "bottom": "googology:block/laver_door_bottom",
+    "top": "googology:block/laver_door_top"
+  }
+}

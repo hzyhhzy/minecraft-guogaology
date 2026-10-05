@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public interface TemplatePlaceFeature extends OuterFeatureConfig {
-   String TEMPLATE_DIR = "data/googology_outer/structure/";
+   String TEMPLATE_DIR = "data/googology/structure/";
    Codec<WeightedList<TemplateEntry>> TEMPLATES_CODEC = WeightedList.codec(TemplateEntry.CODEC);
    ThreadLocal<Identifier> LAST_TEMPLATE = new ThreadLocal<>();
    Map<Identifier, Optional<StructureTemplate>> CACHE = new ConcurrentHashMap<>();
@@ -70,7 +70,7 @@ public interface TemplatePlaceFeature extends OuterFeatureConfig {
    }
 
    private static StructureTemplate readTemplate(WorldGenLevel var0, Identifier var1) {
-      String var2 = "data/googology_outer/structure/" + var1.getPath() + ".nbt";
+      String var2 = "data/googology/structure/" + var1.getPath() + ".nbt";
 
       try (InputStream var3 = TemplatePlaceFeature.class.getClassLoader().getResourceAsStream(var2)) {
          if (var3 == null) {

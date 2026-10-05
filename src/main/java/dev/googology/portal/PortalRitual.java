@@ -48,17 +48,34 @@ public final class PortalRitual {
         return source.equals(GoogologyMod.GUOGAO)&&localOffering(world,stack)?PortalKind.GUOGAO:null;
     }
 
-    public static boolean isFrameMaterial(BlockState state) {
-        if(state.isOf(Blocks.CAKE)) return state.get(CakeBlock.BITES)==0;
-        for(Block jelly:GoogologyBlocks.JELLIES) if(state.isOf(jelly)) return true;
-        return false;
+    /** The offering selects the route before any frame is accepted. */
+    public static boolean isFrameMaterial(ServerWorld world,BlockState state,PortalKind kind) {
+        var source=world.getRegistryKey();
+        if(source.equals(net.minecraft.world.World.OVERWORLD)) {
+            if(kind!=PortalKind.GGG)return false;
+            if(state.isOf(Blocks.CAKE))return state.get(CakeBlock.BITES)==0;
+            for(Block jelly:GoogologyBlocks.JELLIES)if(state.isOf(jelly))return true;
+            return false;
+        }
+        if(source.equals(GoogologyMod.OUTER)&&kind==PortalKind.INNER) {
+            for(Block mineral:dev.googology.mining.MiningContent.STORAGE)if(state.isOf(mineral))return true;
+            return false;
+        }
+        if(source.equals(GoogologyMod.DIMENSION)&&kind==PortalKind.GUOGAO) {
+            for(Block jelly:GoogologyBlocks.JELLIES)if(state.isOf(jelly))return true;
+            return false;
+        }
+        boolean returning=source.equals(GoogologyMod.OUTER)&&kind==PortalKind.GGG
+            ||source.equals(GoogologyMod.DIMENSION)&&kind==PortalKind.INNER
+            ||source.equals(GoogologyMod.GUOGAO)&&kind==PortalKind.GUOGAO;
+        return returning&&localMaterial(world,state);
     }
-    public static boolean isValidRing(ServerWorld world,BlockPos center) {
+    public static boolean isValidRing(ServerWorld world,BlockPos center,PortalKind kind) {
         if(!world.getWorldBorder().contains(center.add(-2,0,-2)) || !world.getWorldBorder().contains(center.add(2,0,2))) return false;
         for(int x=-2;x<=2;x+=4)for(int z=-2;z<=2;z+=4)if(!world.isChunkLoaded(center.add(x,0,z)))return false;
         for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
             var state=world.getBlockState(center.add(x,0,z));
-            if(isFrameOffset(x,z)) { if(!isFrameMaterial(state)&&!localMaterial(world,state)) return false; }
+            if(isFrameOffset(x,z)) { if(!isFrameMaterial(world,state,kind)) return false; }
             else if(Math.abs(x)<=1 && Math.abs(z)<=1 && (!state.isReplaceable() || !state.getFluidState().isEmpty())) return false;
         }
         return true;
@@ -70,7 +87,7 @@ public final class PortalRitual {
         // React over the entire frame, without waiting for the thrown item to drift into the inner 3x3.
         for(int dy=0;dy>=-4;dy--) for(int dx=-2;dx<=2;dx++) for(int dz=-2;dz<=2;dz++) {
             BlockPos center=offering.getBlockPos().add(dx,dy,dz);
-            if(offering.getY()<center.getY()-.1 || offering.getY()>center.getY()+4 || !isValidRing(world,center)) continue;
+            if(offering.getY()<center.getY()-.1 || offering.getY()>center.getY()+4 || !isValidRing(world,center,kind)) continue;
             fillPortal(world,center,kind);
             offering.getStack().decrement(1);
             if(offering.getStack().isEmpty()) offering.discard();
@@ -83,8 +100,8 @@ public final class PortalRitual {
     public static void fillPortal(ServerWorld world,BlockPos center) { fillPortal(world,center,PortalKind.GGG); }
     public static void fillPortal(ServerWorld world,BlockPos center,PortalKind kind) {
         for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
-            if(isFrameOffset(x,z)) world.setBlockState(center.add(x,0,z),GoogologyBlocks.PORTAL_FRAME.getDefaultState().with(dev.googology.block.GoogologyPortalFrameBlock.FRUIT,kind==PortalKind.GUOGAO),Block.NOTIFY_ALL);
-            else if(Math.abs(x)<=1 && Math.abs(z)<=1) world.setBlockState(center.add(x,0,z),kind.block().getDefaultState(),Block.NOTIFY_ALL);
+            if(isFrameOffset(x,z)) world.setBlockState(center.add(x,0,z),GoogologyBlocks.PORTAL_FRAME.getDefaultState().with(dev.googology.block.GoogologyPortalFrameBlock.STYLE,kind.appearance(world.getRegistryKey().getValue().toString())),Block.NOTIFY_ALL);
+            else if(Math.abs(x)<=1 && Math.abs(z)<=1) world.setBlockState(center.add(x,0,z),kind.block().getDefaultState().with(dev.googology.block.GoogologyPortalBlock.STYLE,kind.appearance(world.getRegistryKey().getValue().toString())),Block.NOTIFY_ALL);
         }
         PortalState.get(world.getServer()).addGate(new PortalState.Gate(world.getRegistryKey().getValue().toString(),center.toImmutable(),kind));
         var appearance=new PortalActivationPayload(world.getRegistryKey().getValue().toString(),center.toImmutable(),kind.ordinal());

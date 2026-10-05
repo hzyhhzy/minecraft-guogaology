@@ -58,6 +58,8 @@ tasks.register('preparePortResources', Exec) {
     inputs.file(repositoryRoot.toPath().resolve('tools/prepare_port_resources.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/prepare_outer_resources.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/import_outer_content.py'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/outer_content_ids.json'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/outer_generated_resources.json'))
     inputs.dir(repositoryRoot.toPath().resolve('content/outer-1.0.0'))
     inputs.file(rootProject.file('targets.json'))
     inputs.property('release', project.version)
@@ -73,6 +75,7 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-Xmaxerrs', '500']
 }
 java { withSourcesJar() }
+tasks.withType(Jar).configureEach { includeEmptyDirs = false }
 tasks.named('sourcesJar') { dependsOn tasks.named('preparePortResources'), tasks.named('preparePortSources') }
 processResources {
     dependsOn tasks.named('preparePortResources')

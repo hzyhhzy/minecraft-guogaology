@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "googology:block/laver_planks",
+    "top": "googology:block/laver_planks",
+    "side": "googology:block/laver_planks"
+  }
+}

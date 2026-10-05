@@ -2,14 +2,6 @@
   "replace": false,
   "values": [
     "minecraft:dirt",
-    "minecraft:cobblestone",
-    "#minecraft:planks",
-    "googology_outer:ordinal_stone",
-    "googology_outer:cobbled_ordinal_stone",
-    "googology_outer:hell_ordinal_stone",
-    "googology_outer:andesite_ordinal_stone",
-    "googology_outer:diorite_ordinal_stone",
-    "googology_outer:granite_ordinal_stone",
-    "googology_outer:tuff_ordinal_stone"
+    "minecraft:cobblestone"
   ]
 }

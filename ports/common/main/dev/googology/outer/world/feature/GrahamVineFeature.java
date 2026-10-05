@@ -26,7 +26,7 @@ public record GrahamVineFeature(String block, List<String> exclude, int patchDow
    implements OuterFeatureConfig {
    public static final String DEFAULT_BLOCK = "graham_vine";
    public static final List<String> EXCLUDED_IDS = List.of(
-      "googology_outer:lho_glass", "googology_outer:stellar_stone_block", "googology_outer:nuke_mushroom_cap", "googology_outer:nuke_mushroom_stem"
+      "googology:absence_glass", "googology:stellar_stone_block", "googology:nuke_mushroom_cap", "googology:nuke_mushroom_stem"
    );
    public static final List<String> DEFAULT_EXCLUDE = EXCLUDED_IDS;
    public static final int DEFAULT_PATCH_DOWN = 3;

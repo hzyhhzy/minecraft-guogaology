@@ -17,8 +17,10 @@ import net.minecraft.world.World;
 
 public final class GoogologyPortalBlock extends Block {
     public static final MapCodec<GoogologyPortalBlock> CODEC = createCodec(GoogologyPortalBlock::new);
-    private static final VoxelShape OUTLINE = createCuboidShape(0, 8.5, 0, 16, 9.5, 16);
-    public GoogologyPortalBlock(Settings settings) { super(settings); }
+    private static final VoxelShape OUTLINE = createCuboidShape(0, 4.5, 0, 16, 5.5, 16);
+    public static final net.minecraft.state.property.IntProperty STYLE=GoogologyPortalFrameBlock.STYLE;
+    public GoogologyPortalBlock(Settings settings) { super(settings);setDefaultState(getStateManager().getDefaultState().with(STYLE,0)); }
+    @Override protected void appendProperties(net.minecraft.state.StateManager.Builder<Block,BlockState> b){b.add(STYLE);}
     @Override public MapCodec<GoogologyPortalBlock> getCodec() { return CODEC; }
     @Override protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) { return OUTLINE; }
 
@@ -35,7 +37,7 @@ public final class GoogologyPortalBlock extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        world.addParticle(ParticleTypes.SOUL, pos.getX() + random.nextDouble(), pos.getY() + 0.65, pos.getZ() + random.nextDouble(), 0, 0.03, 0);
+        world.addParticle(ParticleTypes.SOUL, pos.getX() + random.nextDouble(), pos.getY() + 0.4, pos.getZ() + random.nextDouble(), 0, 0.03, 0);
         if (random.nextInt(130) == 0) {
             world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_AMETHYST_BLOCK_RESONATE, SoundCategory.AMBIENT, 0.45f, 0.6f, false);
         }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "stellar_stone",
+  "ingredients": [
+    {
+      "item": "googology:stellar_stone_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "googology:stellar_stone"
+  }
+}

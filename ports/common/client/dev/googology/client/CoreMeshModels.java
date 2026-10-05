@@ -65,14 +65,16 @@ public final class CoreMeshModels {
     static final class GemModel implements BlockStateModel {
         final Geometry geometry;
         private final TextureAtlasSprite particle;
-        GemModel(BlockStateModel base,Geometry geometry){this.geometry=geometry;particle=base.particleIcon();}
-        @Override public void collectParts(RandomSource random,List<BlockModelPart> parts){}
+        private final CoreFallbackPart fallback;
+        GemModel(BlockStateModel base,Geometry geometry){this.geometry=geometry;particle=base.particleIcon();fallback=new CoreFallbackPart(geometry.fallback,particle);}
+        @Override public void collectParts(RandomSource random,List<BlockModelPart> parts){parts.add(fallback);}
         @Override public TextureAtlasSprite particleIcon(){return particle;}
         @Override public void emitQuads(QuadEmitter emitter,BlockAndTintGetter view,BlockPos pos,BlockState state,RandomSource random,Predicate<Direction> cullTest){geometry.fixed.outputTo(emitter);}
         @Override public Object createGeometryKey(BlockAndTintGetter view,BlockPos pos,BlockState state,RandomSource random){return this;}
     }
     static final class Geometry {
         final Mesh all,fixed;
+        final List<BakedQuad> fallback;
         final Map<Integer,List<Surface>> interior;
         final String motion;
         final float motionScale;
@@ -86,13 +88,21 @@ public final class CoreMeshModels {
             MutableMesh every=Renderer.get().mutableMesh(),shell=Renderer.get().mutableMesh();
             QuadEmitter everyOut=every.emitter(),shellOut=shell.emitter();
             Map<Integer,List<Surface>> moving=new TreeMap<>();
+            List<JsonObject> vanilla=new ArrayList<>();
             for(var element:mesh.getAsJsonArray("quads")){
                 JsonObject q=element.getAsJsonObject();Surface face=new Surface(q,textures.get(q.get("t").getAsString()));
                 face.emit(everyOut);
                 int part=q.has("part")?q.get("part").getAsInt():1;
+                // LOD cells retain the shell and static interior. Orbiting outer
+                // ornaments cannot be represented faithfully within one cell.
+                if(part<10)vanilla.add(q);
                 if(part==0)face.emit(shellOut);else moving.computeIfAbsent(part,k->new ArrayList<>()).add(face);
             }
             all=every.immutableCopy();fixed=shell.immutableCopy();
+            // Voxy's software baker writes depth even for translucent faces.
+            // Draw the body before its glass, otherwise the first shell hides it.
+            vanilla.sort(Comparator.comparingDouble(CoreFallbackPart::radiusSquared));
+            fallback=vanilla.stream().map(q->CoreFallbackPart.bake(q,textures.get(q.get(q.has("lod_t")?"lod_t":"t").getAsString()))).toList();
             moving.replaceAll((key,value)->List.copyOf(value));interior=Collections.unmodifiableMap(moving);
         }
     }

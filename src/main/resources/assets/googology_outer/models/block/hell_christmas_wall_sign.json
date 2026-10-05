@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/template_wall_sign",
-  "textures": {
-    "all": "googology_outer:block/hell_christmas_sign",
-    "particle": "googology_outer:block/hell_christmas_planks"
-  }
-}

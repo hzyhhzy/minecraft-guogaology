@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "googology:block/loquat_log",
+    "side": "googology:block/loquat_log"
+  }
+}

@@ -1,4 +1,4 @@
-# 表界内容移植与维护 · 0.3.3
+# 表界内容移植与维护 · 0.3.5
 
 基底始终是本项目。获授权的 `googology-dimension-1.0.0.jar` 内容作为表界模块加入；不加载或嵌入对方原 JAR，不运行其同名入口。来源、SHA-256、作者与许可声明见 [THIRD_PARTY.md](../THIRD_PARTY.md)。用户已明确说明取得作者许可。
 
@@ -6,7 +6,7 @@
 
 - 七个群系的气候分区、地表规则、植物与矿物分布参数；主世界噪声委托和 LHO 岛体密度场。
 - 61 份原始 NBT 景物模板，包括 43 种 BMS、五种紫菜桌、三种紫菜树及蘑菇云等。坐标、体积、模板权重与旋转规则保留，只映射共用方块 ID 和属性。
-- 圣诞／枇杷／紫菜／地狱圣诞／地狱枇杷五套木材，以及船、牌子、座椅、植物和食物。
+- 枇杷／紫菜／地狱枇杷木系，以及船、牌子、座椅、植物和食物。圣诞／地狱圣诞的原木、木块和去皮变体分别改用原版橡木／深色橡木；它们的其他木制品暂时保留。
 - 蛇、DeepSeek 鲸、忙碌海狸、飞行 Y、果糕史莱姆、水果史莱姆、邪恶猪七类普通生物的行为和模型。仅表界的生成表引用它们。
 - ω、ε、Γ、Ω矿物、材料、工具和护甲贴图采用授权原图。注册、配方和强化规则由本项目的四档装备系统统一管理。
 
@@ -24,19 +24,24 @@
 | `tools/prepare_outer_legacy.py` | 1.21.1 API 转换；有语义差异时使用明确源码覆盖 |
 | `tools/prepare_outer_resources.py` | 原始数据到各版数据格式的可重复转换 |
 | `tools/import_outer_content.py` | 可选的原 JAR 导入工具和共用 ID 映射；普通构建无需原 JAR |
+| `tools/outer_content_ids.json` / `tools/unify_outer_content.py` | 导入物品目录、宿主资源入口和 Java ID 映射同步 |
+| `tools/refresh_common_art.py` / `tools/refine_material_art.py` | 共用矩阵砖、空集核心、传送门、果糕切片、ε₀纹理与四款手稿美术 |
+| `tools/outer_generated_resources.json` | 导入数据的精确生成归属清单，防止误删同域的里界数据 |
 | `tools/generate_merge_progression.py` | 共用四矿、装备、手稿、配方和文案生成 |
 | `tools/audit_outer_content.py` | 导入资源、语言、配方解锁和物品引用检查 |
 
-表界独有 ID 位于 `googology_outer`。数字砖、紫菜叶脉／木板、果糕、灯以及四套矿材装备使用 `googology` 的共用 ID。`outer/GoogologyMod.id` 是 Java 映射入口；Python 映射在 `import_outer_content.ALIASES`。修改别名要同步两处，并检查 NBT 调色板、JSON 和 Java 三种来源。
+所有运行时 ID 和资源都属于宿主 `googology`，包括生物、群系、世界生成、模板、语言与美术。发行包不得保留旧域，1.21.1 的嵌套桥接 JAR 也一并检查。Java 包 `dev.googology.outer` 仅用于代码组织。矩阵数字砖、紫菜原木／木板／叶、果糕、灯、空境玻璃以及四套矿材装备各自只注册一份共用物品。Alice 序石及岩石变体映射到对应原版石头，地狱序石映射地狱岩；宿主数字刻石与果糕浮雕地形不是这些被删除的方块。
 
-`src/main/resources/data/googology_outer` 是可直接构建的 1.21.1 数据。修改原始参数后运行：
+`outer/GoogologyMod.id` 是 Java 映射入口；Python 映射在 `import_outer_content.ALIASES`，其余保留物品由 `outer_content_ids.json` 识别。修改映射后运行 `unify_outer_content.py` 同步 Java 与资源入口，并检查 NBT 调色板、JSON 和 Java 三种来源。数字属性转换为 `number`，彩灯颜色转成对应宿主 ID、数字设为空白值33，原木保留轴向。没有旧存档迁移别名。
+
+`src/main/resources/data/googology` 同时存放表界与里界／地府数据。表界维度类型、噪声设置和 26.3 地表规则命名为 `outer`，避免覆盖里界原有的 `googology` 文件。生成器只清理精确归属清单中的文件，禁止删除整个目录。修改原始参数后运行：
 
 ```sh
 python tools/prepare_outer_resources.py 1.21.1 src/main/resources
 python tools/audit_outer_content.py
 ```
 
-现代目标会在构建时自动从原始数据重新转换。不得修改 `build/generated`；否则下次构建会覆盖。资源与模型已提交，不需要作者私有文件。可选重新导入原 JAR 后，需要运行 `normalize_outer_assets.py`、共用配方生成器、上述转换和资源审计；不能直接发布未过滤的导入目录。
+现代目标会在构建时自动从原始数据重新转换。不得修改 `build/generated`；否则下次构建会覆盖。资源与模型已提交，不需要作者私有文件。可选的原 JAR 导入只写 `build/outer-import` 暂存目录，`normalize_outer_assets.py` 也只操作暂存内容，不能覆盖宿主图标、语言和共用美术。`unify_outer_content.py` 同步 Java ID 映射及创造栏目录。审查暂存差异后再合入源资源并执行上述转换／审计；不能直接发布未过滤的原作者资源。
 
 ## 有意适配的地方
 

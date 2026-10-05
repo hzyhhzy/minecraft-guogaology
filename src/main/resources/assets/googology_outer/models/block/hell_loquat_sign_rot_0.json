@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/template_sign_rot_0",
-  "textures": {
-    "all": "googology_outer:block/hell_loquat_sign",
-    "particle": "googology_outer:block/hell_loquat_planks"
-  }
-}

@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=y": {
       "model": "googology:block/laver_vein"
+    },
+    "axis=z": {
+      "model": "googology:block/laver_vein",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "googology:block/laver_vein",
+      "x": 90,
+      "y": 90
     }
   }
 }

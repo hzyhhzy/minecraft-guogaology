@@ -22,7 +22,7 @@ public final class GoogologyClient implements ClientModInitializer {
         DimensionRenderingRegistry.registerCloudRenderer(GoogologyMod.DIMENSION, context -> {});
         DimensionRenderingRegistry.registerCloudRenderer(GoogologyMod.GUOGAO, context -> {});
         GoogologyBlocks.TRANSLUCENT.forEach(block -> BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent()));
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), GoogologyBlocks.DREAD_LEAVES, GoogologyBlocks.Y_LEAVES);
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), GoogologyBlocks.DREAD_LEAVES, GoogologyBlocks.Y_LEAVES, GoogologyBlocks.GIANT_LAVER);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), GoogologyBlocks.EPSILON_BLOOM);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), GoogologyBlocks.ORDINAL_PLANTS);
         BlockRenderLayerMap.INSTANCE.putBlock(GoogologyBlocks.EMOJI_FLOWER,RenderLayer.getCutout());

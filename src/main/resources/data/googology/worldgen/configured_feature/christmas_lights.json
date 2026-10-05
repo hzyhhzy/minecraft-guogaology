@@ -1,0 +1,8 @@
+{
+  "type": "googology:christmas_lights",
+  "config": {
+    "candidates": 20,
+    "chance": 0.1,
+    "radius": 4
+  }
+}

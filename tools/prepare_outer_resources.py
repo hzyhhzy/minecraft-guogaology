@@ -7,8 +7,21 @@ coordinates, cave dimensions or LHO field constants are retuned here.
 """
 import json,re
 from pathlib import Path
-from import_outer_content import ROOT,NS,ALIASES,walk,write,remap_id,nbt_transform
+from import_outer_content import ROOT,NS,ALIASES,DATA_NAMES,walk,write,remap_id,nbt_transform
 SOURCE=ROOT/'content/outer-1.0.0'
+GENERATED=json.loads((ROOT/'tools/outer_generated_resources.json').read_text('utf8'))
+
+def clear_generated(out):
+    """Remove precisely the imported generated files, never the host data tree."""
+    out=Path(out).resolve()
+    assert out.is_relative_to(ROOT.resolve())
+    for name in GENERATED:
+        path=(out/name).resolve()
+        assert name.startswith('data/googology/') and path.is_relative_to(out/'data/googology')
+        assert name not in ('data/googology/dimension/googology.json','data/googology/dimension/guogao.json',
+                            'data/googology/dimension_type/googology.json','data/googology/dimension_type/guogao.json',
+                            'data/googology/worldgen/noise_settings/googology.json','data/googology/worldgen/noise_settings/guogao.json')
+        path.unlink(missing_ok=True)
 
 def load(path):return json.loads(path.read_text(encoding='utf8'))
 def state(v):
@@ -82,7 +95,8 @@ def condition(v):
 
 def old_rule(v):
     if isinstance(v,str):
-        if v.startswith(NS+':') and (p:=SOURCE/'worldgen/material_rule'/f'{v.split(":")[1]}.json').exists():return old_rule(walk(load(p)))
+        original={new:old for old,new in DATA_NAMES.items()}.get(v.split(':')[-1],v.split(':')[-1])
+        if v.startswith(NS+':') and (p:=SOURCE/'worldgen/material_rule'/f'{original}.json').exists():return old_rule(walk(load(p)))
         if v=='minecraft:bedrock_floor':return {'type':'minecraft:condition','if_true':{'type':'minecraft:vertical_gradient','random_name':'minecraft:bedrock_floor','true_at_and_below':{'above_bottom':0},'false_at_and_above':{'above_bottom':5}},'then_run':{'type':'minecraft:block','result_state':{'Name':'minecraft:bedrock'}}}
         if v in ('minecraft:on_floor','minecraft:under_floor'):return {'type':'minecraft:stone_depth','offset':0,'add_surface_depth':v.endswith('under_floor'),'secondary_depth_range':0,'surface_type':'floor'}
         return v
@@ -113,7 +127,7 @@ def old_ingredient(v):
     if isinstance(v,str):return {'tag':v[1:]} if v.startswith('#') else {'item':v}
     return v
 
-def recipe_unlocks(data):
+def recipe_unlocks(data,recipe_paths):
     """Unlock surviving recipes from any ingredient, without stale donor rewards.
 
     The original recipe advancements refer to removed Den/axe/hoe items and
@@ -127,7 +141,7 @@ def recipe_unlocks(data):
             if 'item' in v:return {v['item']}
             if 'tag' in v:return {'#'+v['tag']}
         return set()
-    for p in (data/'recipe').glob('*.json'):
+    for p in recipe_paths:
         recipe=load(p);values=set()
         for ingredient in recipe.get('key',{}).values():values |= ingredients(ingredient)
         for key in ('ingredient','ingredients'):
@@ -158,9 +172,8 @@ def prepare(target,out):
             model['textures'][k]={'sprite':sprite,'force_translucent':True} if target.startswith('26.') else sprite
         write(glass,model)
     data=out/'data'/NS;data.mkdir(parents=True,exist_ok=True)
-    # Remove only previously generated files in this namespace; every path is rooted above.
-    for p in data.rglob('*'):
-        if p.is_file():p.unlink()
+    clear_generated(out)
+    recipe_paths=[];biome_paths=[]
     for p in SOURCE.rglob('*'):
         if not p.is_file() or 'compat' in p.parts or 'minecraft' in p.relative_to(SOURCE).parts or p.name=='manifest.json':continue
         rel=p.relative_to(SOURCE)
@@ -207,8 +220,17 @@ def prepare(target,out):
             old['sea_level']=v['sea_level'];old['ore_veins_enabled']=False
             old['surface_rule']=old_rule(walk(load(SOURCE/'worldgen/material_rule/googology.json')))
             v=old
-        write(data/rel,v)
-    recipe_unlocks(data)
+        destination=data/rel
+        if rel.parts[:2]==('loot_table','blocks'):
+            namespace,name=remap_id('googology:'+rel.stem).split(':')
+            destination=out/f'data/{namespace}/loot_table/blocks/{name}.json'
+        elif rel.parts[0]=='worldgen':
+            namespace,name=remap_id('googology:'+rel.stem).split(':')
+            destination=out/f'data/{namespace}'/rel.parent/(name+'.json')
+        write(destination,v)
+        if folder=='recipe':recipe_paths.append(destination)
+        if rel.parts[:2]==('worldgen','biome'):biome_paths.append(destination)
+    recipe_unlocks(data,recipe_paths)
     dimension=walk(load(SOURCE/'dimension/googology.json'))
     if target!='26.3':
         def climate(v):
@@ -223,11 +245,11 @@ def prepare(target,out):
         dim.update(effects='minecraft:overworld',natural=True,piglin_safe=False,respawn_anchor_works=False,bed_works=True,has_raids=True,ultrawarm=False)
     elif target=='1.21.11':
         dim.pop('default_clock',None);dim.pop('has_ender_dragon_fight',None);dim.update(has_fixed_time=False,skybox='overworld')
-    write(data/'dimension_type/googology.json',dim)
+    write(data/'dimension_type/outer.json',dim)
     # 1.21.11 / 26.2 use environment attributes, but retained biome fields need conversion.
     if target not in ('1.21.1','26.3'):
         from prepare_port_resources import convert_biome
-        for p in (data/'worldgen/biome').glob('*.json'):
+        for p in biome_paths:
             v=load(p);convert_biome(v);write(p,v)
     print(f'Prepared faithful outer-world resources for {target}')
     for p in (SOURCE/'minecraft/tags').rglob('*.json'):
@@ -242,7 +264,7 @@ def prepare(target,out):
         path=out/'data/minecraft/tags/block/overworld_carver_replaceables.json'
         tag=load(path) if path.exists() else {'replace':False,'values':[]}
         stones=['ordinal_stone','hell_ordinal_stone','andesite_ordinal_stone','diorite_ordinal_stone','granite_ordinal_stone','tuff_ordinal_stone','cobbled_ordinal_stone']
-        tag['values']=list(dict.fromkeys(tag['values']+[NS+':'+s for s in stones]));write(path,tag)
+        tag['values']=list(dict.fromkeys(tag['values']+[remap_id('googology:'+s) for s in stones]));write(path,tag)
 
 if __name__=='__main__':
     import argparse

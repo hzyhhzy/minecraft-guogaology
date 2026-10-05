@@ -23,7 +23,7 @@ public final class DecorItemModels {
         register(GoogologyBlocks.ORDINAL_BRICKS,s->s.get(OrdinalBrickBlock.NUMBER));
         register(GoogologyBlocks.MOSAIC_LIGHT,s->s.get(MosaicLightBlock.COLOR));
         register(GoogologyBlocks.ASTRA_WEAVE,s->s.get(AstraWeaveBlock.COLOR));
-        register(GoogologyBlocks.PORTAL_FRAME,s->s.get(GoogologyPortalFrameBlock.FRUIT)?1:0);
+        register(GoogologyBlocks.PORTAL_FRAME,s->s.get(GoogologyPortalFrameBlock.STYLE));
         register(GoogologyBlocks.TURING_TAPE,TuringTapeBlock::appearanceIndex);
     }
 }

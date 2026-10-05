@@ -1,4 +1,4 @@
-# 正式名称与词根 · 0.3.3
+# 正式名称与词根 · 0.3.5
 
 | 中文 | 英文 | 约定 |
 |---|---|---|
@@ -7,7 +7,10 @@
 | 大数里界 | Inner Googology | 原有巨构世界；保留内部 ID googology:googology |
 | 果糕地府 | Guogao Underworld | 第三层世界；与表界的地下群系区分 |
 | 果糕 | Guogao | 词根 guogao，不再写成 fruit cake 或 jelly |
-| 扽西 | Denxi | 词根 denxi；用于镐、剑与被动副手手稿，不再有指数矿石硬度 |
+| 扽西 | Denxi | 词根 denxi；保留数字工具与被动副手手稿，四档矿物装备为「ω镐、ε剑、Γ胸甲、Ω靴子」等，不带「石」 |
+| 矩阵数字砖 | Matrix Number Bricks | 宿主字形、Alice 白底；右键循环0～15 |
+| 空境玻璃 | Void Glass | 统一原空境／空无玻璃，使用宿主 absence_glass 材质 |
+| 紫菜原木／木板／叶 | Laver Log / Planks / Leaves | 两层世界共用 Alice 外观和宿主物品 |
 | 序数 | Ordinal | 词根 ordinal |
 | 序列 | Sequence | 词根 sequence；矩阵山脉的晶核仍称序列晶核 |
 | 幂塔 | Power Tower | 各阶晶核统一称幂塔晶核 |
@@ -32,4 +35,4 @@
 
 修订源为 `tools/copy_catalog.json`，`tools/copy_catalog.py` 可同步语言资源。资源生成器写语言文件时也执行这份规则；新增或更名须同步中英文和当前指南。
 
-原巨构与晶核 ID 保留；`epsilon_meadow` 对应序数花园。`nether_*_ore` 现只自然生成于表界地下群系，第三层地府不再产矿。新增门面 `inner_portal`；`guogao_portal_frame` 仍保存普通／果糕两种框架外观。旧矿业物品删除没有自动存档迁移。
+原巨构与晶核 ID 保留；`epsilon_meadow` 对应序数花园。`nether_*_ore` 现只自然生成于表界地下群系，第三层地府不再产矿。ε矿石、结晶块和材料的美术显示 ε₀，名称仍是 ε。门面和 `guogao_portal_frame` 均用 `style=0/1/2` 区分表界／归家、里界、地府三种目的地。所有导入注册、生成及美术资源统一到 `googology`；表界维度／类型／噪声配置为 `outer`。按用户要求不提供旧存档迁移。

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "googology:white_rice"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "googology:deepseek_whale"
+}

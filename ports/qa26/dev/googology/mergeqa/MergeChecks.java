@@ -25,7 +25,7 @@ public final class MergeChecks implements ClientModInitializer {
     private static final String[] BIOMES={"bms_plain","epsilon_forest","power_desert","laver_forest","astra","lho_void","underworld"};
     private static final List<BlockPos> SITES=new ArrayList<>();
     private static void require(boolean b,String s){if(!b)throw new AssertionError(s);}
-    public void onInitializeClient(){ClientTickEvents.END_CLIENT_TICK.register(this::tick);}
+    public void onInitializeClient(){if(Boolean.getBoolean("googology.qa.voxy")){VoxyChecks.initialize();return;}ClientTickEvents.END_CLIENT_TICK.register(this::tick);}
     private void tick(Minecraft c){
       if(done)return;
       try{
@@ -38,7 +38,7 @@ public final class MergeChecks implements ClientModInitializer {
         if(!ready||++ticks<140)return;
         var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int frame=scene;
         Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),i->{try(i){i.writeToFile(folder.resolve("merge-"+frame+".png"));}catch(Exception e){failure=e;}});
-        if(++scene>SITES.size()+1){done=true;Files.writeString(Path.of("port-client-ok.txt"),"MERGE_RUNTIME_OK: four tiers, shared registries, three worlds, outer generation and feature placement, seven creatures, passive core data and portal routes.\n");c.stop();return;}
+        if(++scene>SITES.size()+5){done=true;Files.writeString(Path.of("port-client-ok.txt"),"MERGE_RUNTIME_OK: four tiers, shared registries, three worlds, outer generation and feature placement, seven creatures, passive core data and portal routes; 0.3.5 one namespace, mixed mineral gate, old empty-set art, epsilon-zero texture and four manuscripts.\n");c.stop();return;}
         ticks=0;queued=false;
       }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
     }
@@ -47,6 +47,7 @@ public final class MergeChecks implements ClientModInitializer {
       p.setGameMode(GameType.CREATIVE);
       if(scene==0){
         MergeMechanics.run(p);
+        MaterialChecks.run(p);
         require(s.getLevel(GoogologyMod.DIMENSION)!=null&&s.getLevel(GoogologyMod.GUOGAO)!=null,"inner and underworld present");
         require(EquipmentRules.MINERALS.length==4&&MiningContent.MATERIALS.length==4,"four mineral tiers");
         require(EquipmentRules.multiplier(16,false)==4&&EquipmentRules.multiplier(16,true)==256,"bounded realm scaling");
@@ -62,7 +63,7 @@ public final class MergeChecks implements ClientModInitializer {
         var origin=new BlockPos(0,220,0);var level=s.overworld();
         for(var q:BlockPos.betweenClosed(origin.offset(-12,-1,-10),origin.offset(30,6,12)))level.setBlock(q,q.getY()==219?Blocks.SMOOTH_QUARTZ.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
         int n=0;for(String id:List.of("snake","deepseek_whale","busy_beaver","fly_y","fruit_cake_slime","evil_pig","fruit_slime")){
-          var entity=BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.fromNamespaceAndPath("googology_outer",id)).create(level,EntitySpawnReason.COMMAND);
+          var entity=BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.fromNamespaceAndPath("googology",id)).create(level,EntitySpawnReason.COMMAND);
           require(entity!=null,"spawn "+id);entity.snapTo(n++*4,220,0,0,0);if(entity instanceof Mob mob)mob.setNoAi(true);level.addFreshEntity(entity);
         }
         // Sample donor biome source without loading unrelated chunks.
@@ -73,6 +74,7 @@ public final class MergeChecks implements ClientModInitializer {
         }
         require(SITES.size()>=5,"Donor biome variety: "+seen);
         p.teleport(new TeleportTransition(level,new Vec3(12,225,25),Vec3.ZERO,180,10,TeleportTransition.DO_NOTHING));
+      }else if(scene>SITES.size()+1){MaterialChecks.display(p,scene-SITES.size()-2);
       }else if(scene==SITES.size()+1){
         var level=s.overworld();var generator=level.getChunkSource().getGenerator();
         var registry=level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE);
@@ -80,7 +82,7 @@ public final class MergeChecks implements ClientModInitializer {
         for(int i=0;i<names.size();i++){
           var center=new BlockPos(i*45,225,100);
           for(var q:BlockPos.betweenClosed(center.offset(-30,-1,-30),center.offset(30,-1,30)))level.setBlock(q,Blocks.GRASS_BLOCK.defaultBlockState(),2);
-          var feature=registry.getValue(Identifier.fromNamespaceAndPath("googology_outer",names.get(i)));
+          var feature=registry.getValue(dev.googology.outer.GoogologyMod.id(names.get(i)));
           require(feature!=null&&feature.place(level,generator,net.minecraft.util.RandomSource.create(173+i),center),"actual configured feature "+names.get(i));
           Block expected=i==0?GoogologyBlocks.ORDINAL_BRICKS:i==1?GoogologyBlocks.LAVER_PLANKS:dev.googology.outer.registry.ModBlocks.NUKE_MUSHROOM_CAP;
           int placed=0;for(var q:BlockPos.betweenClosed(center.offset(-30,0,-30),center.offset(30,40,30)))if(level.getBlockState(q).is(expected))placed++;

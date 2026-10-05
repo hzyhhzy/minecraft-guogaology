@@ -1,17 +1,1 @@
-{
-  "parent": "googology:block/ordinal_portal_frame",
-  "overrides": [
-    {
-      "predicate": {
-        "googology:appearance": 0.0
-      },
-      "model": "googology:block/ordinal_portal_frame"
-    },
-    {
-      "predicate": {
-        "googology:appearance": 0.00390625
-      },
-      "model": "googology:block/guogao_portal_frame"
-    }
-  ]
-}
+{"parent":"googology:block/gate_frame_0","overrides":[{"predicate":{"googology:appearance":0.0},"model":"googology:block/gate_frame_0"},{"predicate":{"googology:appearance":0.00390625},"model":"googology:block/gate_frame_1"},{"predicate":{"googology:appearance":0.0078125},"model":"googology:block/gate_frame_2"}]}

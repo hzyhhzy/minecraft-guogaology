@@ -1,0 +1,92 @@
+{
+  "carvers": {
+    "air": [
+      "googology:underworld_cave",
+      "googology:underworld_canyon"
+    ]
+  },
+  "downfall": 0.0,
+  "effects": {
+    "water_color": 9116186,
+    "grass_color": 9117214,
+    "foliage_color": 7017492,
+    "sky_color": 2820618,
+    "fog_color": 3805200,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "googology:ore_omega_hell",
+      "googology:ore_epsilon_hell",
+      "googology:ore_gamma_hell",
+      "googology:ore_true_omega_hell",
+      "googology:ore_dirt_ordinal",
+      "googology:ore_gravel_ordinal",
+      "googology:ore_granite_ordinal",
+      "googology:ore_diorite_ordinal",
+      "googology:ore_andesite_ordinal",
+      "googology:ore_tuff_ordinal",
+      "googology:ore_granite_ordinal_upper",
+      "googology:ore_diorite_ordinal_upper",
+      "googology:ore_andesite_ordinal_upper"
+    ],
+    [],
+    [],
+    [
+      "googology:underworld_cave_floor",
+      "googology:cave_trees_hell_christmas",
+      "googology:cave_trees_hell_loquat",
+      "googology:trees_hell_christmas",
+      "googology:trees_hell_loquat",
+      "googology:exponential_tower"
+    ],
+    []
+  ],
+  "has_precipitation": false,
+  "temperature": 2.0,
+  "spawners": {
+    "monster": [
+      {
+        "type": "googology:fruit_cake_slime",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "googology:evil_pig",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "creature": [
+      {
+        "type": "googology:snake",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "googology:busy_beaver",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [
+      {
+        "type": "googology:fly_y",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {}
+}

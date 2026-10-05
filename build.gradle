@@ -71,6 +71,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
     withSourcesJar()
 }
+// Deleted namespaces must not linger as empty archive directories after an
+// incremental resource build.
+tasks.withType(Jar).configureEach { includeEmptyDirs = false }
 
 jar { from('LICENSE') { rename { "${it}_${project.base.archivesName.get()}" } } }
 jar { from('LICENSE-MINECRAFT-EXCEPTION', 'COPYRIGHT', 'THIRD_PARTY.md') }

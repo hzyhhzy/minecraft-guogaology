@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left",
+  "textures": {
+    "bottom": "googology:block/hell_christmas_door_bottom",
+    "top": "googology:block/hell_christmas_door_top"
+  }
+}

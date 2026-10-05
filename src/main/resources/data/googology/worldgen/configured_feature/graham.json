@@ -1,0 +1,6 @@
+{
+  "type": "googology:graham",
+  "config": {
+    "plant": "graham"
+  }
+}

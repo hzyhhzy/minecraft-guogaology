@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "googology:block/laver_vein"
+    "side": "googology:block/laver_vein",
+    "end": "googology:block/laver_vein_top"
   }
 }

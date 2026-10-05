@@ -1,10 +1,1 @@
-{
-  "variants": {
-    "fruit=false": {
-      "model": "googology:block/ordinal_portal_frame"
-    },
-    "fruit=true": {
-      "model": "googology:block/guogao_portal_frame"
-    }
-  }
-}
+{"variants":{"style=0":{"model":"googology:block/gate_frame_0"},"style=1":{"model":"googology:block/gate_frame_1"},"style=2":{"model":"googology:block/gate_frame_2"}}}

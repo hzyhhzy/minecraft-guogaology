@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_trapdoor_top",
-  "textures": {
-    "texture": "googology_outer:block/christmas_trapdoor"
-  }
-}

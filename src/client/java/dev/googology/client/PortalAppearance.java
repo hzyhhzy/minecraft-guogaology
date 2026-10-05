@@ -14,7 +14,7 @@ public final class PortalAppearance {
             if(world==null||!world.getRegistryKey().getValue().toString().equals(payload.dimension()))return;
             for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++){
                 var pos=payload.center().add(x,0,z);if(!world.isChunkLoaded(pos))continue;
-                var state=PortalRitual.isFrameOffset(x,z)?GoogologyBlocks.PORTAL_FRAME.getDefaultState().with(GoogologyPortalFrameBlock.FRUIT,payload.kind()==dev.googology.portal.PortalKind.GUOGAO.ordinal()):Math.abs(x)<=1&&Math.abs(z)<=1?dev.googology.portal.PortalKind.values()[payload.kind()].block().getDefaultState():null;
+                var state=PortalRitual.isFrameOffset(x,z)?GoogologyBlocks.PORTAL_FRAME.getDefaultState().with(GoogologyPortalFrameBlock.STYLE,dev.googology.portal.PortalKind.values()[payload.kind()].appearance(payload.dimension())):Math.abs(x)<=1&&Math.abs(z)<=1?dev.googology.portal.PortalKind.values()[payload.kind()].block().getDefaultState().with(dev.googology.block.GoogologyPortalBlock.STYLE,dev.googology.portal.PortalKind.values()[payload.kind()].appearance(payload.dimension())):null;
                 if(state==null)continue;
                 world.handleBlockUpdate(pos,state,Block.NOTIFY_LISTENERS|Block.REDRAW_ON_MAIN_THREAD);
                 // Promote the rebuild even if an ordinary block packet got here first.

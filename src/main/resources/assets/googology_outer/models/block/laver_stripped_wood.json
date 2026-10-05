@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "googology_outer:block/laver_stripped_log",
-    "side": "googology_outer:block/laver_stripped_log"
-  }
-}

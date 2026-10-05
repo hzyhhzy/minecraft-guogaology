@@ -47,7 +47,7 @@ def generate():
         shaped(metal+'_block',['MMM']*3,{'M':'googology:'+metal+'_material'})
         simple(metal+'_unpack',['googology:'+metal+'_block'],'googology:'+metal+'_material',9)
         # A book silhouette stays readable at native item resolution.
-        model(metal+'_manuscript','minecraft:item/generated','minecraft:item/book')
+        model(metal+'_manuscript','minecraft:item/generated','googology:item/'+metal+'_manuscript')
         shaped(metal+'_manuscript',[' M ','MBM',' M '],{'M':'googology:'+metal+'_material','B':'minecraft:book'})
     shaped('enhancement_table',[' M ','BWB','SSS'],{'M':'googology:omega_material','B':'minecraft:book','W':'minecraft:crafting_table','S':'#minecraft:stone_crafting_materials'})
     for tier,metal in ((2,'gamma'),(3,'true_omega')):
@@ -74,7 +74,7 @@ def generate():
         for m,symbol in zip(METALS,SYMBOLS):
             for part in PARTS:
                 name=dict(zip(PARTS,('镐','剑','头盔','胸甲','护腿','靴子')))[part]
-                values['item.googology.'+m+'_'+part]=(f'{symbol}'+('扽西' if part in ('pickaxe','sword') else '序数')+name) if zh else f'{symbol} '+('Denxi ' if part in ('pickaxe','sword') else 'Ordinal ')+part.title()
+                values['item.googology.'+m+'_'+part]=f'{symbol}{name}' if zh else f'{symbol} {part.title()}'
             values['item.googology.'+m+'_material']=f'{symbol} 序数结晶' if zh else f'{symbol} Ordinal Mineral'
             values['item.googology.'+m+'_manuscript']=f'{symbol} 扽西手稿' if zh else f'{symbol} Denxi Manuscript'
             for prefix in ('','nether_'):values['block.googology.'+prefix+m+'_ore']=('冥岩' if prefix else '')+f'{symbol}矿石' if zh else ('Understone ' if prefix else '')+f'{symbol} Ore'

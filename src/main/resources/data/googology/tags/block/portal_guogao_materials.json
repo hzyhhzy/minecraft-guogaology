@@ -2,8 +2,6 @@
   "replace": false,
   "values": [
     "googology:guogao_loam",
-    "googology:rootbound_stone",
-    "googology:dread_log",
-    "#minecraft:planks"
+    "googology:rootbound_stone"
   ]
 }

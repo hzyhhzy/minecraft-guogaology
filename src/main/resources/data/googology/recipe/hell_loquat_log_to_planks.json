@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "hell_loquat_planks",
+  "key": {
+    "#": {
+      "item": "googology:hell_loquat_log"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "googology:hell_loquat_planks"
+  }
+}

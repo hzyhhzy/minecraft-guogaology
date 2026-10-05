@@ -16,8 +16,8 @@ public final class VariantDecorItem extends BlockItem {
         return stack.getOrDefault(DataComponentTypes.BLOCK_STATE,BlockStateComponent.DEFAULT).properties().getOrDefault(key,fallback);
     }
     @Override public Text getName(ItemStack stack){
-        if(getBlock() instanceof GoogologyPortalFrameBlock&&property(stack,"fruit","false").equals("true"))
-            return Text.translatable("block.googology.guogao_portal_frame.fruit");
+        if(getBlock() instanceof GoogologyPortalFrameBlock)
+            return Text.translatable("block.googology.guogao_portal_frame.style."+property(stack,"style","0"));
         Text base=super.getName(stack);
         if(getBlock() instanceof OrdinalBrickBlock)return Text.translatable("item.googology.number_variant",base,property(stack,"number","0"));
         if(getBlock() instanceof ChristmasDigitBlock){

@@ -2,6 +2,38 @@
 
 最新验证日期：2026-10-05。
 
+## 0.3.5：统一命名空间、门与手稿美术、Voxy 远景
+
+四版独立编译和发行校验通过：1.21.1、1.21.11、26.2、26.3。仅启动隐藏独立 fo262 / 26.2；其他版本只做编译与资源检查。所有注册项、资源、模板和嵌套桥接包都已归入 `googology`，发行包不含旧 `googology_outer` 命名空间，也不含 QA 辅助类。外界使用 `outer` 路径，保留里界原密度场。资源图2390项、双语403组键，无缺失引用或文案格式冲突。
+
+- `namespace-035-a`：203项机制／模板检查和473项本轮材质／命名空间／传送门检查，共676项。61份模板、七种表界群系与生物、BMS／Laver／蘑菇云实际生成、四档矿块混搭内界门、拒收不合法材料、低成本返程及手稿保命回归均通过。实拍检查单面旧空集纹理、三套门面、ε₀矿物贴图及四种手稿图标。
+- `voxy-035-final`：使用用户安装的 Voxy 0.2.19-beta、Fabric API 和 Sodium，遍历241种方块、3725种状态，并调用 Voxy 自身的软件烘焙器逐一烘焙2833种不同模型。没有空模型或不可见变体；28款晶体／晶核的六向图均有可见像素，已查看实际烘焙图和近处截图，游戏正常保存退出。
+- 远景使用缓存的静态壳与内核，保留主体配色和透明度，按用户授权省略外伸动画。修复普通模型接口为空、Voxy忽略顶点颜色、玻璃先写入深度遮住内核三个问题。近处仍用完整模型和动画。没有修改 Voxy JAR，也不将它设为必要依赖。
+
+测试辅助程序、截图与原始输出在本地忽略目录 `build/runtime-qa/`；没有使用正常存档。离线账户认证、Windows性能计数器及未安装可选附加Mod的探测警告不属于本模组故障。上述证据验证实际 Voxy 模型烘焙和近处渲染，并非全整合包光影兼容或性能基准。
+
+已确认游戏关闭并安装0.3.5到正常fo262。安装包与最终Voxy实测包 SHA-256 一致：`4b619fa7ff61852c6e63df7780ab6937148ebc2bf7a0e068f0202ce9f96216dd`。旧0.3.4保存在 `build/backups/fo262-before-0.3.5`；正常实例只有一个主模组，其他55个文件哈希未变。
+
+All four targets build. Hidden Minecraft 26.2 passes 676 gameplay/material assertions and the installed Voxy baker renders all 2,833 distinct block models, including every core grade. Static distant interiors remain visible through their glass; nearby animation is preserved. The tested release is installed in fo262, with the previous JAR backed up.
+
+## 0.3.4：共用材质、目的地门面与数字交互
+
+四版独立编译和发行校验通过：1.21.1、1.21.11、26.2、26.3。仅运行隐藏独立 fo262 / 26.2，发行 JAR 与待安装包 SHA-256 一致；使用 Fabric API、Sodium 和开发检查辅助包，未启动其他版本，未改正常存档或配置。
+
+- 实际服务端通过原193项机制／模板检查及新增223项检查，共416项；覆盖所有导入方块／物品均属宿主注册域、创造栏收录、原版石头与原木别名、共用紫菜木材和玻璃、16种矩阵砖循环、6色彩灯边界值及真实掉落物状态、数字石头不变、各世界往返门的实际外观。
+- 61份模板加载，BMS／紫菜桌／蘑菇云配置特征实际生成，七种表界群系生成和普通生物模型检查；原三层旅行、手稿保命与可逆强化回归通过。
+- 实拍核对空集三级内外断续材质、三套目的地门面、橡木／深色橡木／冥杉／紫菜木系、白底数字砖及六色灯。保留原有动画几何和面数，不新增运行时实体。
+- Python回归共8项：gzip跨平台模板一致性、共享注册映射、全部彩灯颜色的NBT跨版本状态转换、16种数字砖和原木轴向。
+- 资源图2385个可达文件，无缺失和未引用资源。宿主384组双语键及内部19组双语键一致，无缺译／格式参数冲突；保留73条表界配方。
+
+完整成功标记：`MERGE_MECHANICS_OK checks=193 templates=61`、`MATERIALS_034_OK checks=223`、`MERGE_TOTEM_OK`、`MERGE_FEATURES_OK`、`PRODUCTION_PORT_OK 26.2`。日志及原始截图位于本地忽略目录 `build/runtime-qa/materials-034-c`，游戏正常保存退出。首次检查中测试程序仍用旧命名空间查找蘑菇云，已改为实际ID映射并完整重跑成功。离线账户认证和Windows性能计数器警告与上版相同，未发现本模组资源或注册异常。
+
+四版证据限于构建和静态检查，只有26.2做了本轮运行验证；不声称全部附加Mod的兼容性验证。按用户要求不提供删改ID的旧存档迁移。
+
+All four targets build; hidden Minecraft 26.2 passes 416 assertions, real feature placements, visual checks and clean shutdown. The ordinary instance and saves are untouched during testing. See [the change checklist](WORK-034.md).
+
+安装完成：进程检查确认Minecraft已关闭后，将26.2的0.3.4装入正常 `fo262/mods`。旧0.3.3移至工作区备份，确认恰好一个主模组JAR，其他55个文件哈希均未变。安装包与实测包均为 `57cbf60ad38a99aab55ee630ee91cf04c6dee32bb065868fc799b6c19bf988dc`。
+
 ## 0.3.3：跨平台发行校验修正
 
 首次 GitHub Actions 四版编译均成功，1.21.1 在收集发行包时误报 `bms_aco.nbt` 不一致。已提交模板由 Windows 工具生成，CI 使用 Linux/Python 3.12；gzip 压缩头的 OS 字节可不同，不能用压缩流逐字节相等判断 NBT 是否相同。现代目标在 CI 当场转换模板，因此没有触发这一误报。
