@@ -1,9 +1,13 @@
 # Guogaology development
 
+- User terminology (2026-10-05): the authorized reference `googology-dimension-1.0.0.jar` is called "alice版" / "Alice version". Comparisons to our pre-merge version use 0.3.2 (`bec510e`), not the merged 0.3.3 which already uses some Alice textures.
+
+- Standing install authorization (2026-10-05): after completing changes and applicable validation, install the main Mod into the user's normal `fo262` instance by default without another confirmation. If Minecraft is running, defer installation and do not close the game. Check processes first, back up the previous JAR, then verify installed SHA-256 and exactly one main Mod. Leave add-ons, other mods, saves and configuration alone. This does not authorize GitHub publishing.
+
 - 0.3.3 merger preview: `codex/0.3.3-outer-inner-worlds`, baseline `bec510e` backed up separately. Passive offhand Denxi Manuscript has no focus/charge/quota mechanics. Four accessible outer-world ore tiers replace the old six-tier exponential mining gate. Ordinary imported mobs spawn in the outer world only; exclude Hydra creatures and bosses, retain Hydra plants. Outer terrain/templates retain donor parameters through maintainable source/API adapters; see `docs/OUTER-IMPORT.md`. 1.21.1 includes an independently remapped source bridge inside the host JAR, not the donor archive.
 - Three-layer portals: preserve Overworld cake + apple. Other layers accept common local blocks as frame and return offering; return must never depend on rare cores/minerals or carried apples. Outer→inner uses Ω material; inner→underworld uses Guogao. Scale 1:1:4:16. Latest implementation and provisional balance choices: `docs/WORK-033.md`, `docs/MERGE-REVIEW-CHECKLIST.md`. Do not restore the active manuscript/energy proposal or old ore gates.
 
-- Current release: 0.3.2. Chinese name 果糕逻辑; English name Guogaology. Preserve internal `googology` IDs, commands and existing save semantics.
+- Current release: 0.3.3. Chinese name 果糕逻辑; English name Guogaology. Preserve internal `googology` IDs, commands and existing save semantics.
 - Keep English and Simplified Chinese complete together, including dynamic item names, Mod Menu metadata and player documentation. Run tools/audit_localization.py --check; language keys, argument placeholders and translated catalog entries must agree. Do not hardcode translated player text in Java.
 - Main project license: GPL-3.0-only WITH GPL-3.0-linking-exception. Keep LICENSE, LICENSE-MINECRAFT-EXCEPTION, COPYRIGHT and fabric.mod.json consistent; ship all three notices in binary/source JARs. Third-party code retains its own licenses. Earlier MIT releases are not retroactively relicensed.
 - Maintain four independent Fabric targets: Minecraft 1.21.1, 1.21.11, 26.2, 26.3. All changes must compile across the four. Modern APIs belong in `ports/common` or explicit target overrides, not generated output.

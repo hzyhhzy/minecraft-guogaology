@@ -38,5 +38,16 @@ destination preparation remain in place.
 - `VALIDATION.md`: four-version compilation, package checks and isolated fo262 evidence.
 
 This branch removes retired ore/item IDs without a migration layer. The existing
-inner/underworld dimension IDs and monumental structures remain. No automatic
-installation, GitHub push or release publishing is part of this implementation.
+inner/underworld dimension IDs and monumental structures remain. The user later
+authorized publishing this preview on its own GitHub branch; it is not a main
+branch merge or a tagged release.
+
+## Installation
+
+On 2026-10-05 at 09:00 (Asia/Shanghai), the user authorized installation and future
+automatic replacement after validation whenever Minecraft is closed. The tested
+26.2 JAR was installed into `fo262`; the previous 0.2.26 JAR was backed up first.
+Installed SHA-256: `e269a2b85e79e372ebbde303a0d7a3724c909eb884dc6586f03636367d55bf82`.
+Exactly one main Mod remains and all 55 other Mod JAR hashes are unchanged.
+The local record is `build/installation-0.3.3-26.2-fo262.json`; backups are under
+`build/backups/installed-before-0.3.3-26.2-fo262-20261005-090031/`.
