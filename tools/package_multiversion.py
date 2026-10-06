@@ -29,6 +29,19 @@ def verify_structure_template(actual, expected, name):
     assert gzip.decompress(actual) == gzip.decompress(expected), f'Structure content mismatch: {name}'
 
 
+def verify_client_hooks(archive, metadata):
+    active=set()
+    for entry in metadata['mixins']:
+        config=json.loads(archive.read(entry if isinstance(entry,str) else entry['config']))
+        for kind in ('mixins','client','server'):
+            for name in config.get(kind,[]):
+                full=config['package']+'.'+name
+                assert full.replace('.','/')+'.class' in archive.namelist(),f'Missing registered mixin: {full}'
+                active.add(full)
+    for required in ('ManuscriptVerticalFlightMixin','InventoryOriginAccessor'):
+        assert 'dev.googology.client.mixin.'+required in active,f'Unregistered client hook: {required}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -61,6 +74,7 @@ def package(targets, output_dir=None):
             assert archive.read(metadata['icon'])==(ROOT/'src/main/resources'/metadata['icon']).read_bytes()
             assert metadata['depends']['minecraft']==target
             entries=archive.namelist()
+            verify_client_hooks(archive, metadata)
             verify_namespace(archive)
             assert not any('/qa/' in n or '/mergeqa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'

@@ -233,10 +233,13 @@ def prepare(target, release):
     metadata.pop('jars',None)  # The legacy mapping bridge is only packaged for 1.21.1.
     metadata["depends"].update(minecraft=target, java=f">={config['java']}",
                               fabricloader=">=0.19.3", **{"fabric-api": ">=" + config["fabric"]})
-    # Modern dimensions express their atmosphere through environment attributes.
-    metadata["mixins"] = ["googology.mixins.json"]
+    # Only the old atmosphere hooks are superseded by environment attributes.
+    # Keep unrelated client hooks (flight prediction / inventory positioning).
+    metadata["mixins"] = ["googology.mixins.json", {"config": "googology.client.mixins.json", "environment": "client"}]
     write(out / "fabric.mod.json", metadata)
-    (out / "googology.client.mixins.json").unlink()
+    client_mixins = read(out / "googology.client.mixins.json")
+    client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GoogologyFogMixin", "GoogologySkyLightMixin")]
+    write(out / "googology.client.mixins.json", client_mixins)
     # Fabric supplies metadata for the active pack type. A shared numeric range cannot
     # describe both resource 75 and data 94 without conflicting legacy-format rules.
     (out / "pack.mcmeta").unlink(missing_ok=True)

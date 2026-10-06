@@ -1,12 +1,38 @@
 """Regression coverage for cross-platform gzip structure validation."""
 import gzip
 import io
+import json
+from zipfile import ZipFile
 from pathlib import Path
 import sys
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from package_multiversion import ROOT, verify_structure_template
+from package_multiversion import ROOT, verify_structure_template, verify_client_hooks
+
+
+class ClientHookValidationTests(unittest.TestCase):
+    def archive(self, names, classes=True):
+        stream=io.BytesIO()
+        with ZipFile(stream,'w') as out:
+            out.writestr('client.json',json.dumps({'package':'dev.googology.client.mixin','client':names}))
+            if classes:
+                for name in names:out.writestr('dev/googology/client/mixin/'+name+'.class',b'fixture')
+        return ZipFile(stream)
+
+    def test_client_hooks_are_packaged_and_enabled(self):
+        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin']) as archive:
+            verify_client_hooks(archive,{'mixins':[{'config':'client.json','environment':'client'}]})
+
+    def test_dropping_client_config_is_rejected(self):
+        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin']) as archive:
+            with self.assertRaisesRegex(AssertionError,'Unregistered client hook'):
+                verify_client_hooks(archive,{'mixins':[]})
+
+    def test_registering_an_unpackaged_class_is_rejected(self):
+        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin'],False) as archive:
+            with self.assertRaisesRegex(AssertionError,'Missing registered mixin'):
+                verify_client_hooks(archive,{'mixins':['client.json']})
 
 
 class StructureValidationTests(unittest.TestCase):

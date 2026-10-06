@@ -1,4 +1,4 @@
-# Survival guide · 0.3.12
+# Survival guide · 0.4.0
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -46,7 +46,7 @@ Native full-set armor is 16/18/20/22 and toughness 4/8/12/16. Bare armor has no 
 
 Enhancement tables have reversible sockets and highlight eligible cores in the inventory. Basic/Advanced/Ultimate tables accept core grades1/2/3; the ungraded Ordinal Crystal is also accepted. Ordinal Cores fit manuscripts only. Mineral equipment has2/4/6/8 sockets; manuscripts have2/3/4/6, with grade caps1/2/2/3. Removing cores preserves wear; broken equipment releases installed cores.
 
-Manuscripts have no durability and open their own socket menu by right-clicking. They work in either hand; **the offhand takes priority when both hands hold manuscripts**. Ordinal Crystals and Ordinal Cores are manuscript-only, and Criticality cannot enter manuscripts. Ordinal equipment, bows and manuscripts reject enchantments; numeric and vanilla tools remain enchantable. Normal realms are Outer and the vanilla dimensions; deep realms are Inner and Underworld.
+Manuscripts have no durability. With one in your offhand, open the inventory and click **Book** to edit its sockets; a main-hand manuscript can also be right-clicked. Offhand manuscripts do not intercept ordinary right-click actions. Passive effects keep their pre-edit values until the menu closes; the right panel previews the edited setup. They work in either hand; **the offhand takes priority when both hands hold manuscripts**. Ordinal Crystals and Ordinal Cores are manuscript-only, and Criticality cannot enter manuscripts. Ordinal equipment, bows and manuscripts reject enchantments; numeric and vanilla tools remain enchantable. Normal realms are Outer and the vanilla dimensions; deep realms are Inner and Underworld.
 
 | Core | Equipment | Manuscript |
 |---|---|---|

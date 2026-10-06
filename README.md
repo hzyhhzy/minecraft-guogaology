@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.12 · Minecraft Java / Fabric**
+**v0.4.0 · Minecraft Java / Fabric**
 
-三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，手稿可直接右键镶嵌。暂无 Boss。
+三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
 本轮为合并试验分支；地形、模板与矿物装备美术来自获授权的 Googology Dimension 1.0.0，移植来源和改动边界见[合并说明](docs/OUTER-IMPORT.md)。[当前玩法规则](docs/MERGE-REVIEW-CHECKLIST.md)
 
@@ -63,7 +63,7 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.3.12/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.4.0/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -77,4 +77,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[强化模拟器](docs/enhancement-simulator.html) · [0.3.12规则](docs/WORK-0312.md)
+[强化模拟器](docs/enhancement-simulator.html) · [晶核与装备规则](docs/WORK-0312.md) · [0.4.0更新](docs/RELEASE-0.4.0.md)

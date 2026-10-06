@@ -504,9 +504,9 @@
       "block.googology.guogao_return_frame": "冥林归途框",
       "item.googology.return_token": "归途签",
       "mining.googology.wear_factor": "耐久保护：×%s",
-      "mining.googology.manuscript.open": "右键：直接镶嵌晶核",
+      "mining.googology.manuscript.open": "背包手稿按钮：镶嵌；主手持有时也可右键",
       "mining.googology.manuscript_label": "扽西手稿",
-      "mining.googology.manuscript_drag_hint": "直接取放晶核 · 手稿保持在手中",
+      "mining.googology.manuscript_drag_hint": "手稿留在手中 · 关闭后生效",
       "mining.googology.status_attack": "攻击：%s HP",
       "mining.googology.status_mining": "挖速：×%s",
       "mining.googology.status_yield": "增产等级：%s",
@@ -542,7 +542,10 @@
       "item.googology.epsilon_bow": "ε弓",
       "item.googology.gamma_bow": "Γ弓",
       "item.googology.true_omega_bow": "Ω弓",
-      "mining.googology.status_mining_speed": "基础挖速：%s"
+      "mining.googology.status_mining_speed": "基础挖速：%s",
+      "mining.googology.manuscript.button": "手稿",
+      "mining.googology.manuscript.button_hint": "编辑副手手稿；关闭页面后生效",
+      "mining.googology.manuscript.preview": "关闭后生效 · 预览"
     },
     "en_us": {
       "dimension.googology.googology": "Inner Googology",
@@ -915,9 +918,9 @@
       "block.googology.guogao_return_frame": "Dread Forest Return Frame",
       "item.googology.return_token": "Return Token",
       "mining.googology.wear_factor": "Wear protection: ×%s",
-      "mining.googology.manuscript.open": "Right-click: socket cores directly",
+      "mining.googology.manuscript.open": "Inventory Book button: socket cores; main-hand right-click also works",
       "mining.googology.manuscript_label": "Denxi Manuscript",
-      "mining.googology.manuscript_drag_hint": "Move cores directly · keep this manuscript held",
+      "mining.googology.manuscript_drag_hint": "Keep held · apply on close",
       "mining.googology.status_attack": "Attack: %s HP",
       "mining.googology.status_mining": "Mining: ×%s",
       "mining.googology.status_yield": "Yield level: %s",
@@ -953,7 +956,10 @@
       "item.googology.epsilon_bow": "ε Bow",
       "item.googology.gamma_bow": "Γ Bow",
       "item.googology.true_omega_bow": "Ω Bow",
-      "mining.googology.status_mining_speed": "Base mining speed: %s"
+      "mining.googology.status_mining_speed": "Base mining speed: %s",
+      "mining.googology.manuscript.button": "Book",
+      "mining.googology.manuscript.button_hint": "Edit offhand manuscript; changes activate when closed",
+      "mining.googology.manuscript.preview": "Preview · applies on close"
     }
   }
 }

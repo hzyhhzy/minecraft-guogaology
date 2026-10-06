@@ -28,7 +28,8 @@ public final class ManuscriptEffects {
     private static final List<RegistryEntry<StatusEffect>> STRONG=List.of(StatusEffects.NAUSEA,StatusEffects.SLOWNESS,StatusEffects.WITHER,StatusEffects.BLINDNESS,StatusEffects.DARKNESS);
     private ManuscriptEffects(){}
     public static boolean deep(World world){return world.getRegistryKey().equals(GoogologyMod.DIMENSION)||world.getRegistryKey().equals(GoogologyMod.GUOGAO);}
-    public static ItemStack held(LivingEntity entity){var stack=entity.getOffHandStack();if(stack.getItem() instanceof DenxiManuscript)return stack;stack=entity.getMainHandStack();return stack.getItem() instanceof DenxiManuscript?stack:ItemStack.EMPTY;}
+    public static ItemStack held(LivingEntity entity){var stack=entity.getOffHandStack();if(stack.getItem() instanceof DenxiManuscript)return effective(entity,stack);stack=entity.getMainHandStack();return stack.getItem() instanceof DenxiManuscript?effective(entity,stack):ItemStack.EMPTY;}
+    public static ItemStack effective(LivingEntity entity,ItemStack stack){return stack.getItem() instanceof DenxiManuscript&&entity instanceof PlayerEntity player&&player.currentScreenHandler instanceof ManuscriptMenu menu?menu.activeManuscript(stack):stack;}
     public static int level(ItemStack book,int type){return EquipmentRules.highest(GearData.profile(book),type);}
     public static double points(LivingEntity entity,int type){return GearData.points(held(entity),type);}
     public static double miningMultiplier(PlayerEntity player,ItemStack tool,net.minecraft.block.BlockState state){return EquipmentRules.miningMultiplier(GearData.minesWithPick(tool,state)?GearData.profile(tool):List.of(),GearData.profile(held(player)),deep(player.getWorld()));}
@@ -42,6 +43,7 @@ public final class ManuscriptEffects {
     }
     public static boolean ownsFlight(PlayerEntity player){return player instanceof ManuscriptFlightAccess access&&access.googology$ownsManuscriptFlight();}
     private static boolean customFlight(PlayerEntity player){return ownsFlight(player)&&player.getAbilities().flying&&!player.hasVehicle()&&!player.isCreative()&&!player.isSpectator();}
+    public static boolean controlsFlightSpeed(PlayerEntity player){return customFlight(player)&&level(held(player),6)>=2;}
     public static float horizontalSpeed(PlayerEntity player,float vanilla){
         if(!customFlight(player))return vanilla;int grade=level(held(player),6);
         if(grade==2)return .05f/3;

@@ -2,6 +2,14 @@
 
 最新验证日期：2026-10-06。
 
+## 0.4.0：背包手稿编辑、飞行兼容与粒子修复
+
+四版完整构建与发行核验通过；412组双语键、2,258项资源及17项Python回归通过。实际运行仅限隐藏独立fo262 /26.2。`manuscript-040-addon-b`与正常实例中的创造飞行调速0.1.1联合运行，164项手稿机制和85项专门检查通过：真实背包按钮请求、关闭页面后应用效果、主／副手及死亡保留开关四种死亡物品守恒、三世界完整客户端移动、全部28款粒子贴图。
+
+`release-040-final`完整回归通过107,619项晶核、90项弓、16张奖励表8,192次实际箱子填充，及原有材质、地形边界、传送和64格模型回归。两次运行与安装到正常fo262的JAR均为 `be7f606282af718c5db5ab2f1d7e2f43d277ce4931dc1498dbfc686e6852d50f`。安装前确认游戏关闭，备份旧包，其他55个文件未变。详见 [WORK-0400.md](WORK-0400.md)。
+
+All four targets build and pass package checks. Only Minecraft26.2 is runtime-tested. The installed creative-flight utility is included in the focused integration test: manuscript survival sprint flight reaches8× horizontal and vertical movement in Inner/Underworld. Inventory editing, deferred effects, exact death/cursor conservation and all28 particle materials pass. The same tested JAR is installed in normal fo262; unrelated mods, saves and settings are unchanged.
+
 ## 0.3.11：九核职责、无耐久手稿与强化模拟器
 
 四版发行／源码JAR编译与打包通过；资源2,199项、双语387组键、132条配方、61份模板及28款晶核审计通过。14项Python回归、76项纯Java断言通过；模拟器与Java对612组配置完成9,192次数值检查，实际无头Edge中文／英文桌面及移动布局通过。

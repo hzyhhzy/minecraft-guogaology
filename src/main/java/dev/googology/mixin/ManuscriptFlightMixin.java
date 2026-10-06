@@ -16,8 +16,10 @@ public abstract class ManuscriptFlightMixin implements ManuscriptFlightAccess {
     private void googology$ownership(DataTracker.Builder builder,CallbackInfo ci){builder.add(GOOGOLOGY_FLIGHT,false);}
     @Override public boolean googology$ownsManuscriptFlight(){return ((PlayerEntity)(Object)this).getDataTracker().get(GOOGOLOGY_FLIGHT);}
     @Override public void googology$setManuscriptFlight(boolean value){((PlayerEntity)(Object)this).getDataTracker().set(GOOGOLOGY_FLIGHT,value);}
-    @Inject(method="getOffGroundSpeed",at=@At("RETURN"),cancellable=true)
-    private void googology$horizontal(CallbackInfoReturnable<Float> result){result.setReturnValue(ManuscriptEffects.horizontalSpeed((PlayerEntity)(Object)this,result.getReturnValueF()));}
+    // Only own survival manuscript flight. A cancellable RETURN hook in another
+    // flight mod can return before ours even when it leaves vanilla speed unchanged.
+    @Inject(method="getOffGroundSpeed",at=@At("HEAD"),cancellable=true)
+    private void googology$horizontal(CallbackInfoReturnable<Float> result){var player=(PlayerEntity)(Object)this;if(ManuscriptEffects.controlsFlightSpeed(player))result.setReturnValue(ManuscriptEffects.horizontalSpeed(player,.05f));}
     // Native mayfly suppresses every fall callback, including stalagmites. Our immunity is FALL only.
     @ModifyExpressionValue(method="handleFallDamage",at=@At(value="FIELD",target="Lnet/minecraft/entity/player/PlayerAbilities;allowFlying:Z"))
     private boolean googology$onlyNormalFalls(boolean original,@Local(argsOnly=true) DamageSource source){return original&&(!ManuscriptEffects.ownsFlight((PlayerEntity)(Object)this)||source.isOf(DamageTypes.FALL));}

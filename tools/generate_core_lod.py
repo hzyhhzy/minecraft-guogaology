@@ -5,6 +5,7 @@ face tint into ONE padded atlas, preserving the full nearby mesh independently.
 """
 from pathlib import Path
 from PIL import Image
+from repair_core_particles import particle_texture
 import json,math
 ROOT=Path(__file__).resolve().parents[1]
 A=ROOT/'src/main/resources/assets/googology'
@@ -13,6 +14,7 @@ def generate():
     meshes=[];keys=set()
     for p in sorted((A/'core_meshes').glob('*.json')):
         v=json.loads(p.read_text('utf8'));v['textures'].pop('lod_tints',None)
+        v['textures']['particle']=particle_texture(p.stem)
         for q in v['quads']:
             q.pop('lod_t',None);q.pop('lod_uv',None)
             if q.get('part',1)>=10:continue

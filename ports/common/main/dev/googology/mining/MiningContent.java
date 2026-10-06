@@ -65,6 +65,6 @@ public final class MiningContent {
             Item bow=item(id,new OrdinalBowItem(itemSettings(id).durability(EquipmentRules.durability(tier,7)).component(CORES,List.of()).repairable(MATERIALS[tier-1]),tier));
             BOWS[tier-1]=bow;GEAR.put(bow,new GearSpec(tier,7));
         }
-        NumericRecipe.register();MiningEffects.initialize();ManuscriptEffects.initialize();
+        NumericRecipe.register();MiningEffects.initialize();ManuscriptEffects.initialize();OpenManuscriptPayload.initialize();
     }
 }

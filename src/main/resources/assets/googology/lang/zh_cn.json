@@ -369,9 +369,9 @@
   "block.googology.guogao_return_frame": "冥林归途框",
   "item.googology.return_token": "归途签",
   "mining.googology.wear_factor": "耐久保护：×%s",
-  "mining.googology.manuscript.open": "右键：直接镶嵌晶核",
+  "mining.googology.manuscript.open": "背包手稿按钮：镶嵌；主手持有时也可右键",
   "mining.googology.manuscript_label": "扽西手稿",
-  "mining.googology.manuscript_drag_hint": "直接取放晶核 · 手稿保持在手中",
+  "mining.googology.manuscript_drag_hint": "手稿留在手中 · 关闭后生效",
   "mining.googology.status_attack": "攻击：%s HP",
   "mining.googology.status_mining": "挖速：×%s",
   "mining.googology.status_yield": "增产等级：%s",
@@ -407,5 +407,8 @@
   "item.googology.epsilon_bow": "ε弓",
   "item.googology.gamma_bow": "Γ弓",
   "item.googology.true_omega_bow": "Ω弓",
-  "mining.googology.status_mining_speed": "基础挖速：%s"
+  "mining.googology.status_mining_speed": "基础挖速：%s",
+  "mining.googology.manuscript.button": "手稿",
+  "mining.googology.manuscript.button_hint": "编辑副手手稿；关闭页面后生效",
+  "mining.googology.manuscript.preview": "关闭后生效 · 预览"
 }

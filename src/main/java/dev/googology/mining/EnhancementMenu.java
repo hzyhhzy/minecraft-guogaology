@@ -19,12 +19,15 @@ public class EnhancementMenu extends ScreenHandler {
     private final PlayerEntity owner;
     private final int boundSlot;
     private final ItemStack boundBook;
+    // Read-only effect snapshots: never insert these copies into slots or drops.
+    private final ItemStack openingMain,openingOff;
     private ItemStack trackedGear=ItemStack.EMPTY;
     private boolean closed,syncing;
     public EnhancementMenu(int id,PlayerInventory inventory){this(id,inventory,null,BlockPos.ORIGIN,1);}
     public EnhancementMenu(int id,PlayerInventory inventory,World world,BlockPos pos,int rank){this(MiningContent.ENHANCEMENT_MENU,id,inventory,world,pos,rank,-1,ItemStack.EMPTY);}
     protected EnhancementMenu(ScreenHandlerType<?> type,int id,PlayerInventory inventory,World world,BlockPos pos,int rank,int boundSlot,ItemStack book){
         super(type,id);this.world=world;this.pos=pos.toImmutable();owner=inventory.player;this.boundSlot=boundSlot;boundBook=book;
+        openingMain=owner.getMainHandStack().copy();openingOff=owner.getOffHandStack().copy();
         data.set(0,rank);data.set(2,boundSlot);data.set(1,world!=null&&ManuscriptEffects.deep(world)?1:0);addProperties(data);
         for(int i=0;i<INVENTORY;i++){
             final int n=i;int x=i==0?84:28+((i-FIRST_CORE)%5)*28,y=i==0?38:78+((i-FIRST_CORE)/5)*26;
@@ -45,6 +48,14 @@ public class EnhancementMenu extends ScreenHandler {
         });
     }
     public boolean manuscript(){return this instanceof ManuscriptMenu;}
+    /** Item ownership is saved on every move; only passive activation waits until close. */
+    public ItemStack activeManuscript(ItemStack actual){
+        if(closed||!manuscript()||world!=null&&!boundValid())return actual;
+        int slot=lockedSlot();
+        if(slot==40&&actual==owner.getOffHandStack())return openingOff;
+        if(slot>=0&&slot<9&&owner.getInventory().selectedSlot==slot&&actual==owner.getMainHandStack())return openingMain;
+        return actual;
+    }
     private int lockedSlot(){return data.get(2);}
     public boolean locksHotbar(){return manuscript()&&lockedSlot()!=40;}
     public boolean blocksSelection(int selected){return locksHotbar()&&selected!=lockedSlot();}

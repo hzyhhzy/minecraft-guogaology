@@ -40,7 +40,7 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
         graphics.drawString(font,tr("socket_count",menu.installed(),menu.capacity()),18,64,0xff354e4a,false);
         if(!menu.canToggleSilk())graphics.drawString(font,tr(menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
         graphics.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,0xff445753,false);
-        line(graphics,tr("status"),34,0xffecdec0);
+        line(graphics,tr(menu.manuscript()?"manuscript.preview":"status"),34,0xffecdec0);
         var gear=menu.gear();var spec=MiningContent.GEAR.get(gear.getItem());
         if(spec==null){line(graphics,tr("insert_gear"),55,0xffc2d9d0);return;}
         int y=52;

@@ -138,8 +138,8 @@ def core_icon(family, level):
                 if face.getpixel((x,y)) == (0x5d,0x3c,0x0d,255):
                     face.putpixel((x,y),(0x24,0x31,0x3b,255))
         im.alpha_composite(face,(12,13))
-        # A slightly fuller worried opening remains visible in the 16px sample.
-        d.ellipse((24,34,34,42),fill='#2c2627')
+        # Keep the prior face; compress only the mouth vertically around its centre.
+        d.ellipse((24,36,34,40),fill='#2c2627')
     crystal_case(d, colors, True)
     grade_badge(d, level-1 if family == 'ordinal_crystal' else level)
     return im

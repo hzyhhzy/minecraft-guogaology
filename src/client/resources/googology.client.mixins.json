@@ -2,6 +2,13 @@
   "required": true,
   "package": "dev.googology.client.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["GoogologyFogMixin", "GoogologySkyLightMixin", "ManuscriptVerticalFlightMixin"],
-  "injectors": { "defaultRequire": 1 }
+  "client": [
+    "GoogologyFogMixin",
+    "GoogologySkyLightMixin",
+    "ManuscriptVerticalFlightMixin",
+    "InventoryOriginAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

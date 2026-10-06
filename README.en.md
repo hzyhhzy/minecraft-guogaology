@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.12 · Minecraft Java / Fabric**
+**v0.4.0 · Minecraft Java / Fabric**
 
-Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. No bosses are included.
+Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
 This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
 
@@ -77,7 +77,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.12/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.4.0/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
@@ -93,4 +93,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[Offline enhancement simulator](docs/enhancement-simulator.html)
+[Offline enhancement simulator](docs/enhancement-simulator.html) · [0.4.0 release notes](docs/RELEASE-0.4.0.md)

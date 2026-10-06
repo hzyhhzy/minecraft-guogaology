@@ -1,4 +1,4 @@
-# 方块采集表 · 0.3.12
+# 方块采集表 · 0.4.0
 
 简体中文 | [English](BLOCK-BALANCE.en.md)
 

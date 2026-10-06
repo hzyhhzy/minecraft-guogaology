@@ -34,9 +34,12 @@ BOOK = [
 ]
 EXTRA = {
     'manuscript.passive': ('持于主手或副手被动生效，副手优先', 'Passive while held; offhand takes priority'),
-    'manuscript.open': ('右键：直接镶嵌晶核', 'Right-click: socket cores directly'),
+    'manuscript.open': ('背包手稿按钮：镶嵌；主手持有时也可右键', 'Inventory Book button: socket cores; main-hand right-click also works'),
+    'manuscript.button': ('手稿', 'Book'),
+    'manuscript.button_hint': ('编辑副手手稿；关闭页面后生效', 'Edit offhand manuscript; changes activate when closed'),
+    'manuscript.preview': ('关闭后生效 · 预览', 'Preview · applies on close'),
     'manuscript_label': ('扽西手稿', 'Denxi Manuscript'),
-    'manuscript_drag_hint': ('直接取放晶核 · 手稿保持在手中', 'Move cores directly · keep this manuscript held'),
+    'manuscript_drag_hint': ('手稿留在手中 · 关闭后生效', 'Keep held · apply on close'),
     'status_attack': ('攻击：%s HP', 'Attack: %s HP'),
     'status_mining': ('挖速：×%s', 'Mining: ×%s'),
     'status_mining_speed': ('基础挖速：%s', 'Base mining speed: %s'),

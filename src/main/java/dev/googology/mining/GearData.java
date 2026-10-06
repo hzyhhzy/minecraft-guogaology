@@ -20,7 +20,7 @@ public final class GearData {
         PROFILES.put(stack,new ProfileCache(source,value));return value;
     }
     public static EquipmentRules.Gear gear(ItemStack stack,int emptyKind){var spec=MiningContent.GEAR.get(stack.getItem());return spec==null?EquipmentRules.Gear.empty(emptyKind):new EquipmentRules.Gear(spec.tier(),spec.kind(),digit(stack),profile(stack));}
-    public static EquipmentRules.Snapshot snapshot(LivingEntity owner){return new EquipmentRules.Snapshot(gear(owner.getMainHandStack(),0),gear(owner.getOffHandStack(),-1),gear(owner.getEquippedStack(EquipmentSlot.HEAD),2),gear(owner.getEquippedStack(EquipmentSlot.CHEST),3),gear(owner.getEquippedStack(EquipmentSlot.LEGS),4),gear(owner.getEquippedStack(EquipmentSlot.FEET),5),ManuscriptEffects.deep(owner.getWorld()));}
+    public static EquipmentRules.Snapshot snapshot(LivingEntity owner){return new EquipmentRules.Snapshot(gear(ManuscriptEffects.effective(owner,owner.getMainHandStack()),0),gear(ManuscriptEffects.effective(owner,owner.getOffHandStack()),-1),gear(owner.getEquippedStack(EquipmentSlot.HEAD),2),gear(owner.getEquippedStack(EquipmentSlot.CHEST),3),gear(owner.getEquippedStack(EquipmentSlot.LEGS),4),gear(owner.getEquippedStack(EquipmentSlot.FEET),5),ManuscriptEffects.deep(owner.getWorld()));}
     public static int bookTier(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.kind()==EquipmentRules.MANUSCRIPT?spec.tier():0;}
     public static int bookTier(LivingEntity owner){return owner==null?0:bookTier(ManuscriptEffects.held(owner));}
     public static boolean isBow(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.kind()==EquipmentRules.BOW;}

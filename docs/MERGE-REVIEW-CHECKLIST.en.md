@@ -1,4 +1,4 @@
-# Current gameplay rules · 0.3.12
+# Current gameplay rules · 0.4.0
 
 [简体中文](MERGE-REVIEW-CHECKLIST.md) | English
 
@@ -9,7 +9,7 @@ This replaces the older enhancement rules. Current roles and verification are re
 | Worlds | Outer supplies four mineral tiers and ordinary creatures; Inner and Guogao Underworld supply cores and landmarks |
 | Equipment | Four tiers of picks, swords, bows, armor and manuscripts; numeric stone picks/swords remain |
 | Numeric harvesting | 0–4 stone, 5–7 iron, 8 diamond, 9 netherite; ordinary progressive stats remain |
-| Manuscripts | No durability; either hand, offhand priority; direct reversible bound-item sockets; 2/3/4/6 slots |
+| Manuscripts | No durability; either hand, offhand priority; inventory Book button for offhand, main-hand right-click; passive edits apply on close; 2/3/4/6 slots |
 | Enhancement | Same-item attack/protection uses root-sum-squares; armor is weighted; normal additive attack / multiplicative protection, separate deep factors |
 | Durability | Empty Set 4/16/64 summed; wear probability changes, armor also benefits from pre-hit protection; no manuscript wear |
 | Core roles | Sequence excavation/efficiency; Branch yield/reach; Laver aquatic/healing; Empty Set wear/stealth; Ordinal book-only; Criticality excludes books |

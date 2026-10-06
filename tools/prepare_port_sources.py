@@ -38,6 +38,7 @@ def adapt(text, target, name):
         'IntProvider.codec(0,64)': 'IntProviders.codec(0,64)',
         'FloatProvider.CODEC': 'FloatProviders.CODEC',
         'PayloadTypeRegistry.playS2C()': 'PayloadTypeRegistry.clientboundPlay()',
+        'PayloadTypeRegistry.playC2S()': 'PayloadTypeRegistry.serverboundPlay()',
         'ServerTickEvents.END_WORLD_TICK': 'ServerTickEvents.END_LEVEL_TICK',
         'DensityFunction.HOLDER_HELPER_CODEC': 'DensityFunction.CODEC',
         'net.minecraft.world.entity.EntityType.OCELOT': 'net.minecraft.world.entity.EntityTypes.OCELOT',
@@ -89,6 +90,8 @@ def adapt(text, target, name):
         text=text.replace('super(menu,inventory,title);imageWidth=362;imageHeight=238;', 'super(menu,inventory,title,362,238);')
         text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('graphics.drawString(', 'graphics.text(')
         text=text.replace('protected void renderBg(GuiGraphicsExtractor graphics,float delta,int mouseX,int mouseY){', 'public void extractBackground(GuiGraphicsExtractor graphics,int mouseX,int mouseY,float delta){\n        super.extractBackground(graphics,mouseX,mouseY,delta);')
+    if name == 'ManuscriptInventoryButton.java':
+        text=text.replace('Screens.getButtons(', 'Screens.getWidgets(').replace('ScreenEvents.beforeRender(', 'ScreenEvents.beforeExtract(')
     if name == 'CoreMeshModels.java':
         for old, new in {
             'net.fabricmc.fabric.api.renderer.v1': 'net.fabricmc.fabric.api.client.renderer.v1',
