@@ -99,6 +99,15 @@ public final class GoogologyBlocks {
     public static final Block BERRY_GUOGAO = jelly("berry_guogao");
     public static final Block LIME_GUOGAO = jelly("lime_guogao");
     public static final Block AZURE_GUOGAO = jelly("azure_guogao");
+    public static final Block PLAIN_AMBER_GUOGAO = jelly("plain_amber_guogao");
+    public static final Block PLAIN_BERRY_GUOGAO = jelly("plain_berry_guogao");
+    public static final Block PLAIN_LIME_GUOGAO = jelly("plain_lime_guogao");
+    public static final Block PLAIN_AZURE_GUOGAO = jelly("plain_azure_guogao");
+
+    public static final Block OUTER_RETURN_FRAME = block("outer_return_frame", new dev.googology.block.ReturnFrameBlock(dev.googology.survival.BlockBalance.apply("outer_return_frame",BlockBehaviour.Properties.of().noOcclusion()),0));
+    public static final Block INNER_RETURN_FRAME = block("inner_return_frame", new dev.googology.block.ReturnFrameBlock(dev.googology.survival.BlockBalance.apply("inner_return_frame",BlockBehaviour.Properties.of().noOcclusion()),1));
+    public static final Block GUOGAO_RETURN_FRAME = block("guogao_return_frame", new dev.googology.block.ReturnFrameBlock(dev.googology.survival.BlockBalance.apply("guogao_return_frame",BlockBehaviour.Properties.of().noOcclusion()),2));
+
     public static final Block PORTAL_FRAME = block("guogao_portal_frame", new GoogologyPortalFrameBlock(dev.googology.survival.BlockBalance.apply("guogao_portal_frame",BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).strength(3.5f).noOcclusion().lightLevel(s -> 8))));
     public static final Block PORTAL = block("guogao_portal", new GoogologyPortalBlock(dev.googology.survival.BlockBalance.apply("guogao_portal",BlockBehaviour.Properties.of().strength(-1.0f, 3600000.0f).noCollision().noOcclusion().lightLevel(s -> 12).noLootTable().sound(SoundType.GLASS))));
     public static final Block INNER_PORTAL = block("inner_portal", new GoogologyPortalBlock(dev.googology.survival.BlockBalance.apply("inner_portal",BlockBehaviour.Properties.of().strength(-1.0f, 3600000.0f).noCollision().noOcclusion().lightLevel(s -> 12).noLootTable().sound(SoundType.GLASS))));
@@ -164,8 +173,10 @@ public final class GoogologyBlocks {
     public static int ordinalValue(BlockState state) {return state.is(ORDINAL_BRICKS)?state.getValue(OrdinalBrickBlock.NUMBER):-1;}
 
     public static final Item GUOGAO_SLICE = Registry.register(BuiltInRegistries.ITEM, GoogologyMod.id("guogao_slice"), new Item(itemSettings("guogao_slice").food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6f).build())));
+    public static final Item RETURN_TOKEN = Registry.register(BuiltInRegistries.ITEM, GoogologyMod.id("return_token"), new Item(itemSettings("return_token")));
     public static final Item ORDINAL_SHARD = Registry.register(BuiltInRegistries.ITEM, GoogologyMod.id("ordinal_shard"), new Item(itemSettings("ordinal_shard")));
     public static final Block[] JELLIES = {AMBER_GUOGAO, BERRY_GUOGAO, LIME_GUOGAO, AZURE_GUOGAO};
+    public static final Block[] ALL_JELLIES = {AMBER_GUOGAO, BERRY_GUOGAO, LIME_GUOGAO, AZURE_GUOGAO, PLAIN_AMBER_GUOGAO, PLAIN_BERRY_GUOGAO, PLAIN_LIME_GUOGAO, PLAIN_AZURE_GUOGAO};
     public static final Block[] LANTERNS = {GUOGAO_LANTERN, CYAN_LANTERN, ROSE_LANTERN, LIME_LANTERN, VIOLET_LANTERN, SCARLET_LANTERN};
 
     private static Item.Properties itemSettings(String name) {return new Item.Properties().setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ITEM,GoogologyMod.id(name)));}

@@ -21,12 +21,26 @@ ALIASES={
     'andesite_ordinal_stone':'minecraft:andesite','diorite_ordinal_stone':'minecraft:diorite',
     'granite_ordinal_stone':'minecraft:granite','tuff_ordinal_stone':'minecraft:tuff',
     'hell_ordinal_stone':'minecraft:netherrack',
-    'christmas_log':'minecraft:oak_log','christmas_wood':'minecraft:oak_wood',
-    'christmas_stripped_log':'minecraft:stripped_oak_log','christmas_stripped_wood':'minecraft:stripped_oak_wood',
+    'christmas_log':'minecraft:spruce_log','christmas_wood':'minecraft:spruce_wood',
+    'christmas_stripped_log':'minecraft:stripped_spruce_log','christmas_stripped_wood':'minecraft:stripped_spruce_wood',
     'hell_christmas_log':'minecraft:dark_oak_log','hell_christmas_wood':'minecraft:dark_oak_wood',
     'hell_christmas_stripped_log':'minecraft:stripped_dark_oak_log','hell_christmas_stripped_wood':'minecraft:stripped_dark_oak_wood',
     'googology_portal':'guogao_portal','googology_portal_frame':'guogao_portal_frame',
 }
+# Christmas trees remain scenery, but their retired wood families are no longer
+# registered. Outer Christmas trees keep their original dedicated leaves and
+# use spruce trunks; their retired products resolve to the vanilla spruce family.
+for old,wood in (('christmas','spruce'),('hell_christmas','dark_oak'),('loquat','oak'),('hell_loquat','oak')):
+    for shape in ('log','wood','planks','stairs','slab','door','trapdoor','fence','fence_gate','button','pressure_plate','sign','wall_sign','boat','sapling'):
+        ALIASES[old+'_'+shape]='minecraft:'+wood+'_'+shape
+    for shape in ('stripped_log','stripped_wood'):
+        ALIASES[old+'_'+shape]='minecraft:stripped_'+wood+'_'+shape.removeprefix('stripped_')
+ALIASES.update({'hell_christmas_leaves':'dread_leaves',
+                'loquat_leaves':'minecraft:oak_leaves','hell_loquat_leaves':'minecraft:oak_leaves',
+                'dread_log':'dread_log','dread_leaves':'dread_leaves'})
+# The user retained both Loquat foliage / fruit sources, while all carpentry is oak.
+for family in ('loquat','hell_loquat'):
+    for shape in ('leaves','sapling'):ALIASES.pop(family+'_'+shape,None)
 for material in ('omega','epsilon','gamma','true_omega'):
     ALIASES[material+'_stone']=material+'_material'
     for part in ('ore','block','pickaxe','sword','helmet','chestplate','leggings','boots'):

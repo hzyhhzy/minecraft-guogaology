@@ -3,7 +3,8 @@ package dev.googology.mining;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.*;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,6 +13,13 @@ import net.minecraft.sounds.*;
 import java.util.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.effect.*;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.enchantment.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.core.registries.Registries;
+import dev.googology.mixin.ExtraDamageAccessor;
 
 public final class MiningEffects {
     private static final Set<Block> VANILLA_ORES=Set.of(
@@ -24,7 +32,7 @@ public final class MiningEffects {
         PlayerBlockBreakEvents.AFTER.register((world,player,pos,state,entity)->{
             if(EXTRA.get()||!(player instanceof ServerPlayer p)||p.isCreative()||p.isShiftKeyDown()||entity!=null)return;
             var tool=p.getMainHandItem();var spec=MiningContent.GEAR.get(tool.getItem());if(spec==null||spec.kind()!=0)return;
-            int budget=EquipmentRules.spreadBudget(GearData.points(tool,0));if(budget==0)return;
+            int budget=EquipmentRules.spreadBudget(GearData.profile(tool),GearData.profile(ManuscriptEffects.held(p)),ManuscriptEffects.deep(world));if(budget==0)return;
             var look=p.getLookAngle();Direction normal=Direction.getApproximateNearest(look.x,look.y,look.z);
             var candidates=new ArrayList<BlockPos>();
             for(int a=-4;a<=4;a++)for(int b=-4;b<=4;b++)if(a!=0||b!=0)candidates.add(switch(normal.getAxis()){case X->pos.offset(0,a,b);case Y->pos.offset(a,0,b);case Z->pos.offset(a,b,0);});
@@ -46,12 +54,39 @@ public final class MiningEffects {
         return next.is(BlockTags.BASE_STONE_OVERWORLD)||next.is(BlockTags.BASE_STONE_NETHER)||next.getBlock() instanceof dev.googology.block.NumberStoneBlock||next.getBlock()==dev.googology.GoogologyBlocks.ROOTBOUND_STONE||next.is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,dev.googology.GoogologyMod.id("ores")));
     }
     public static void burst(ItemStack weapon,LivingEntity target,LivingEntity attacker){
-        double points=GearData.points(weapon,5);if(points<=0||!(attacker instanceof ServerPlayer p)||!(target.level() instanceof ServerLevel world))return;
+        double coefficient=EquipmentRules.criticalCoefficient(GearData.profile(weapon),List.of(),false);if(coefficient<=0||!(attacker instanceof ServerPlayer p)||!(target.level() instanceof ServerLevel world))return;
+        explode(world,target,p,p,(float)(GearData.attackWithBook(weapon,p)*coefficient));
+    }
+    public static void projectileBurst(Projectile projectile,LivingEntity target,float actualDamage){
+        if(!(projectile.getOwner() instanceof ServerPlayer player)||!(target.level() instanceof ServerLevel world))return;
+        double extra=EquipmentRules.projectileBurst(actualDamage,GearData.profile(ManuscriptEffects.held(player)),ManuscriptEffects.deep(world));
+        if(extra>0)explode(world,target,player,projectile,(float)extra);
+    }
+    private static void explode(ServerLevel world,LivingEntity target,ServerPlayer p,Entity source,float amount){
         world.sendParticles(ParticleTypes.EXPLOSION,target.getX(),target.getY()+.5,target.getZ(),1,0,0,0,0);
         world.playSound(null,target.blockPosition(),SoundEvents.GENERIC_EXPLODE.value(),SoundSource.PLAYERS,.55f,1.25f);
-        for(var other:world.getEntitiesOfClass(LivingEntity.class,target.getBoundingBox().inflate(3),e->e!=target&&e!=p&&!e.isAlliedTo(p))){
-            if(other.distanceToSqr(target)>9||!p.hasLineOfSight(other))continue;
-            other.hurtServer(world,p.damageSources().playerAttack(p),(float)(GearData.power(weapon)*points*.15));
+        var damage=p.damageSources().explosion(source,p);
+        for(var other:world.getEntitiesOfClass(LivingEntity.class,target.getBoundingBox().inflate(3),e->e!=p&&!e.isAlliedTo(p))){
+            if(other.distanceToSqr(target)>9||other!=target&&!target.hasLineOfSight(other))continue;
+            if(other==target){int timer=other.invulnerableTime;var accessor=(ExtraDamageAccessor)other;float previous=accessor.googology$lastDamage();other.invulnerableTime=0;try{other.hurtServer(world,damage,amount);}finally{other.invulnerableTime=timer;accessor.googology$lastDamage(previous);}}
+            else other.hurtServer(world,damage,amount);
         }
+    }
+    public static void control(ItemStack weapon,LivingEntity target,LivingEntity attacker){
+        if(!(attacker instanceof ServerPlayer)||!target.isAlive()||target.isAlliedTo(attacker))return;
+        var cores=GearData.profile(weapon);int level=EquipmentRules.highest(cores,7);if(level==0)return;int ticks=(int)Math.round(20*EquipmentRules.controlDuration(cores));
+        target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,ticks,level-1));
+        if(level>=2)target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,ticks,level-2));
+    }
+    /** Fortune participates only in the existing loot-table calculation; never duplicate drops. */
+    public static ItemStack lootTool(BlockState state,ServerLevel world,Entity entity,ItemStack tool){
+        if(tool.isEmpty()||!(entity instanceof LivingEntity owner)||state.hasBlockEntity())return tool;
+        var id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(state.getBlock());
+        if(id.getNamespace().equals("googology")&&(EquipmentRules.coreType(id.getPath())>=0||Arrays.stream(MiningContent.STORAGE).anyMatch(b->b==state.getBlock())))return tool;
+        for(var property:state.getProperties())if(property.getName().equals("player_placed")&&Boolean.TRUE.equals(state.getValue(property)))return tool;
+        int level=GearData.yieldLevel(tool,owner,false);if(level<=0)return tool;
+        var fortune=world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+        if(EnchantmentHelper.getItemEnchantmentLevel(fortune,tool)>=level)return tool;
+        var copy=tool.copy();var builder=new ItemEnchantments.Mutable(copy.getOrDefault(DataComponents.ENCHANTMENTS,ItemEnchantments.EMPTY));builder.set(fortune,level);copy.set(DataComponents.ENCHANTMENTS,builder.toImmutable());return copy;
     }
 }

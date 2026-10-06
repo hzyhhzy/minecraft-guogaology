@@ -2,22 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "MCM",
-    "STS",
-    "MCM"
+    "CCC",
+    "CTC",
+    "CCC"
   ],
   "key": {
-    "M": {
-      "item": "googology:true_omega_material"
-    },
     "C": {
       "item": "googology:ordinal_crystal_lv2"
     },
     "T": {
       "item": "googology:enhancement_table_2"
-    },
-    "S": {
-      "item": "googology:epsilon_block"
     }
   },
   "result": {

@@ -58,7 +58,7 @@ public final class ModWoodDecorBlocks {
       ModBlocks.registerExternal(var2, var4);
       BlockItemId var5 = BlockItemId.create(GoogologyMod.id(var1), GoogologyMod.id(var1));
       Block var6 = register(var5.block(), var1x -> new StandingSignBlock(var3, var1x), signProperties());
-      StandingAndWallBlockItem var7 = new StandingAndWallBlockItem(var6, var4, Direction.DOWN, new Properties().useBlockDescriptionPrefix().setId(var5.item()));
+      StandingAndWallBlockItem var7 = new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1).useBlockDescriptionPrefix().setId(var5.item()));
       Registry.register(BuiltInRegistries.ITEM, var5.item(), var7);
       ModBlocks.registerExternal(var1, var6);
    }
@@ -122,7 +122,7 @@ public final class ModWoodDecorBlocks {
    ) {
       BlockItemId var3 = BlockItemId.create(GoogologyMod.id(var0), GoogologyMod.id(var0));
       Block var4 = register(var3.block(), var1, var2);
-      BlockItem var5 = new BlockItem(var4, new Properties().useBlockDescriptionPrefix().setId(var3.item()));
+      BlockItem var5 = new BlockItem(var4, ModBlocks.woodItemProperties(var0).useBlockDescriptionPrefix().setId(var3.item()));
       Registry.register(BuiltInRegistries.ITEM, var3.item(), var5);
       ModBlocks.registerExternal(var0, var4);
       return var4;
@@ -133,7 +133,7 @@ public final class ModWoodDecorBlocks {
       Function<net.minecraft.world.level.block.state.BlockBehaviour.Properties, Block> var1,
       net.minecraft.world.level.block.state.BlockBehaviour.Properties var2
    ) {
-      Block var3 = (Block)var1.apply(var2.setId(var0));
+      Block var3 = (Block)var1.apply(ModBlocks.woodProperties(var0.identifier().getPath(),var2).setId(var0));
       return (Block)Registry.register(BuiltInRegistries.BLOCK, var0, var3);
    }
 }

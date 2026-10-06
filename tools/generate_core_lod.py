@@ -40,5 +40,17 @@ def generate():
         if tinted:v['textures']['lod_tints']='googology:block/core_lod_tints'
         write(p,v)
         model=A/f'models/block/{p.stem}.json';m=json.loads(model.read_text('utf8'));m['textures']=v['textures'];write(model,m)
+    # Keep the inspectable grade inventory consistent with the actual art.
+    # Shape revisions must not leave historical face counts/motion metadata.
+    manifest=ROOT/'src/main/resources/googology/core_grades.json'
+    grades=json.loads(manifest.read_text('utf8'))
+    models={p.stem:v for p,v in meshes}
+    for grade in grades:
+        if grade['id'] not in models:continue
+        mesh=models[grade['id']]
+        grade.update(quads=len(mesh['quads']),
+                     dynamic_quads=sum(q.get('part',0)>0 for q in mesh['quads']),
+                     motion=mesh.get('motion','still'),extended=mesh.get('extended',False))
+    write(manifest,grades)
     print(f'LOD material atlas: {len(keys)} tint tiles in one {size}x{size} sprite; {len(meshes)} static fallbacks')
 if __name__=='__main__':generate()

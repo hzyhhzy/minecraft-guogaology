@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>果糕逻辑 · 强化模拟器</title>
+<style>
+:root{color-scheme:light dark;--bg:#f3f5fa;--card:#fff;--ink:#202638;--muted:#627084;--line:#dfe5ef;--accent:#5145c5;--tint:#efedff;--green:#127c64;--red:#bd364c;--shadow:0 5px 25px #29395608;--chart:#5145c5}
+@media(prefers-color-scheme:dark){:root{--bg:#151923;--card:#1e2431;--ink:#edf0f7;--muted:#abb6c8;--line:#343e51;--accent:#aca3ff;--tint:#302b50;--green:#70d8b5;--red:#ff96aa;--shadow:none;--chart:#aca3ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}button,select,input,textarea{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:9px}button{padding:8px 13px;cursor:pointer}button:hover{border-color:var(--accent)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}button.active,.primary{color:var(--accent);background:var(--tint);border-color:var(--accent)}input,select{padding:7px 10px;min-width:0;width:100%}input[type=checkbox]{width:auto;accent-color:var(--accent)}input[type=range]{padding:0;accent-color:var(--accent)}h1,h2,h3,p{margin:0}h1{font-size:26px;letter-spacing:-.6px}h2{font-size:18px}h3{font-size:15px}.wrap{max-width:1440px;margin:auto;padding:28px 30px 40px}.top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;gap:14px;align-items:center}.logo{display:grid;place-items:center;background:var(--accent);color:var(--bg);width:48px;height:48px;font-size:34px;font-weight:650;border-radius:12px}.muted{color:var(--muted);font-size:13px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 18px}.toolbar .spacer{flex:1}.layout{display:grid;grid-template-columns:minmax(330px,.88fr) minmax(450px,1.2fr);gap:18px;align-items:start}.stack{display:grid;gap:18px}.panel{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px;box-shadow:var(--shadow)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 0}.tabs button{padding:10px 5px}.tabs small{display:block;font-size:11px;color:var(--muted)}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}.formgrid label,.field{display:grid;gap:5px;font-size:13px}.formgrid label.check{display:flex;align-items:center;gap:8px}.full{grid-column:1/-1}.cores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}.core{display:grid;grid-template-columns:1fr 64px;gap:5px;border:1px solid var(--line);padding:7px;border-radius:11px;position:relative}.core select{padding:6px;font-size:12px}.core .num{font-size:11px;color:var(--muted);grid-column:1/-1}.note{margin-top:12px;font-size:13px;color:var(--muted)}.check{display:flex;gap:8px;align-items:center;font-size:13px}.section{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}.metric{padding:12px 13px;background:var(--bg);border-radius:12px}.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:24px;font-weight:650;letter-spacing:-.4px;overflow-wrap:anywhere}.metric small{font-size:12px;color:var(--muted)}.tag{display:inline-block;background:var(--tint);color:var(--accent);border-radius:6px;padding:2px 7px;font-size:12px}.detail{display:grid;grid-template-columns:1fr auto;gap:7px 16px;font-size:13px;margin-top:14px}.detail dt{color:var(--muted)}.detail dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}.barrow{display:grid;grid-template-columns:104px 1fr 68px;gap:9px;align-items:center;font-size:12px;margin:9px 0}.track{height:8px;background:var(--bg);border-radius:20px;overflow:hidden}.fill{height:100%;background:var(--accent);border-radius:20px}.barrow .value{text-align:right;font-variant-numeric:tabular-nums}.outcome{font-size:24px;font-weight:650;letter-spacing:-.5px;margin-top:12px}.success{color:var(--green)}.failure{color:var(--red)}.chart{width:100%;height:150px;display:block;margin-top:12px;overflow:visible}.chart text{fill:var(--muted);font:11px system-ui}.chart .curve{stroke:var(--chart);stroke-width:2.5;fill:none}.chart .axis{stroke:var(--line);stroke-width:1}.chart .area{fill:var(--tint)}details{margin-top:12px;font-size:13px}summary{cursor:pointer;color:var(--muted)}.bottom{margin-top:24px;font-size:12px;color:var(--muted)}.message{min-height:20px;color:var(--accent);font-size:13px;margin-top:10px}.hidden{display:none!important}.jsonbox{width:100%;height:180px;font:12px/1.5 ui-monospace,monospace;margin:12px 0}dialog{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:16px;width:min(650px,90vw);padding:22px}dialog::backdrop{background:#11182770}.inline{display:flex;gap:8px;flex-wrap:wrap}.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin:9px 0}.dot{display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;margin-right:4px}.badge{font-size:11px;color:var(--muted);white-space:nowrap}.compare{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}.compare .metric strong{font-size:21px}.danger-note{color:var(--red)}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.wrap{padding:20px}.metrics{grid-template-columns:repeat(3,1fr)}.top{align-items:flex-start}h1{font-size:23px}}
+@media(max-width:520px){.wrap{padding:15px 12px}.panel{padding:16px}.metrics{grid-template-columns:repeat(2,1fr)}.toolbar .spacer{display:none}.brand{gap:9px}.logo{width:40px;height:40px;font-size:28px}h1{font-size:20px}.top{gap:10px}.cores{grid-template-columns:1fr}.formgrid{gap:10px}.barrow{grid-template-columns:86px 1fr 58px}.tabs{gap:4px}.tabs button{font-size:12px}}
+@media(prefers-reduced-motion:no-preference){.fill{transition:width .15s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand"><div class="logo" aria-hidden="true">Ω</div><div><h1 data-i18n="title"></h1><p class="muted" data-i18n="subtitle"></p></div></div><button id="language" aria-label="切换语言 / Change language">English</button></header>
+  <nav class="toolbar" aria-label="Configuration"><button data-preset="defense" data-i18n="presetDefense"></button><button data-preset="mining" data-i18n="presetMining"></button><button data-preset="combat" data-i18n="presetCombat"></button><button id="reset" data-i18n="reset"></button><span class="spacer"></span><a id="coreReference" class="primary" href="core-effects-reference.html" target="_blank" rel="noopener" data-i18n="coreReference" style="padding:8px 13px;border:1px solid var(--accent);border-radius:9px;text-decoration:none"></a><a id="auditLink" href="enhancement-numeric-audit.html" data-i18n="auditLink" style="padding:8px 13px">数值审计</a><button id="share" data-i18n="share"></button><button id="json" data-i18n="json"></button></nav>
+  <p class="note" data-i18n="proposalNotice" style="margin-bottom:16px"></p>
+  <div class="layout">
+    <div class="stack">
+      <section class="panel"><div class="row"><h2 data-i18n="equipment"></h2><span id="revision" class="badge"></span></div>
+        <div class="formgrid"><label><span data-i18n="mode"></span><select id="mode"><option value="set" data-i18n="set"></option><option value="single" data-i18n="single"></option></select></label><label><span data-i18n="realm"></span><select id="realm"><option value="normal" data-i18n="normal"></option><option value="deep" data-i18n="deep"></option></select></label></div>
+        <div id="gearTabs" class="tabs" role="group" aria-label="Equipment slots"></div>
+        <label class="field"><span id="gearLabel"></span><select id="gearChoice"></select></label>
+        <div id="digitBox" class="formgrid hidden"><label><span data-i18n="digit"></span><select id="digit"></select></label><div><span class="muted" data-i18n="harvest"></span><p id="harvest"></p></div></div>
+        <div id="vanillaBox" class="formgrid hidden"><label><span data-i18n="baseAttack"></span><input id="baseAttack" type="number" min="0" step=".1"></label><label><span data-i18n="baseMining"></span><input id="baseMining" type="number" min="0" step=".1"></label></div>
+        <div id="nativeBox" class="formgrid hidden"><label><span data-i18n="nativeEfficiency"></span><input id="nativeEfficiency" type="number" min="0" max="5" step="1"></label><label><span data-i18n="nativeYield"></span><input id="nativeYield" type="number" min="0" max="3" step="1"></label></div>
+        <label id="silkBox" class="check note hidden"><input id="silkTouch" type="checkbox"><span data-i18n="silkSwitch"></span></label>
+        <div class="formgrid"><label class="check full"><input id="miningApplicable" data-mining="miningApplicable" type="checkbox"><span data-i18n="miningApplicable"></span></label><label class="check"><input id="submerged" data-mining="submerged" type="checkbox"><span data-i18n="submerged"></span></label><label class="check"><input id="airborne" data-mining="airborne" type="checkbox"><span data-i18n="airborne"></span></label></div>
+        <div class="row section"><h3 data-i18n="cores"></h3><span id="socketInfo" class="badge"></span></div><div id="cores" class="cores"></div><p id="gearHelp" class="note"></p>
+      </section>
+      <section class="panel"><h2 data-i18n="combatInputs"></h2>
+        <div class="formgrid"><label><span data-i18n="cooldown"></span><input id="cooldown" data-combat="cooldown" type="number" min="0" max="1" step=".05"></label><label class="check"><input id="critical" data-combat="critical" type="checkbox"><span data-i18n="critical"></span></label><label><span data-i18n="projectileDamage"></span><input data-combat="projectileDamage" type="number" min="0" step=".1"></label></div>
+        <div class="row section"><h3 data-i18n="target"></h3><button id="copyDefense" data-i18n="copyDefense"></button></div>
+        <div class="formgrid"><label><span data-i18n="armor"></span><input data-combat="targetArmor" type="number" min="0" step="1"></label><label><span data-i18n="toughness"></span><input data-combat="targetToughness" type="number" min="0" step="1"></label><label><span data-i18n="resistance"></span><input data-combat="targetResistance" type="number" min="0" max="5" step="1"></label><label><span data-i18n="meleeEpf"></span><input data-combat="targetEpf" type="number" min="0" max="20" step="1"></label><label><span data-i18n="burstEpf"></span><input data-combat="targetBurstEpf" type="number" min="0" max="20" step="1"></label><label><span data-i18n="modFactor"></span><input data-combat="targetFactor" type="number" min="1" step=".1"></label><label><span data-i18n="absorption"></span><input data-combat="targetAbsorption" type="number" min="0" step="1"></label></div>
+        <div class="section"><h3 data-i18n="incoming"></h3><div class="formgrid"><label><span data-i18n="rawDamage"></span><input data-combat="incoming" type="number" min="0" step=".1"></label><label><span data-i18n="source"></span><select id="source"></select></label><label><span data-i18n="armor"></span><input data-combat="ownArmor" type="number" min="0" step="1"></label><label><span data-i18n="toughness"></span><input data-combat="ownToughness" type="number" min="0" step="1"></label><label><span data-i18n="resistance"></span><input data-combat="ownResistance" type="number" min="0" max="5" step="1"></label><label><span data-i18n="epf"></span><input data-combat="ownEpf" type="number" min="0" max="20" step="1"></label><label><span data-i18n="absorption"></span><input data-combat="ownAbsorption" type="number" min="0" step="1"></label></div></div>
+        <p class="note" data-i18n="combatAssumptions"></p>
+      </section>
+    </div>
+    <div class="stack">
+      <section class="panel" aria-live="polite"><div class="row"><h2 data-i18n="summary"></h2><span id="scope" class="tag"></span></div><div id="metrics" class="metrics"></div><dl id="misc" class="detail"></dl><p class="note" data-i18n="stealthNote"></p><details><summary data-i18n="formulaTitle"></summary><p id="formula" class="note"></p></details></section>
+      <section class="panel" aria-live="polite"><h2 data-i18n="damageResults"></h2><div id="damageMetrics" class="compare"></div><dl id="damageDetails" class="detail"></dl><div class="section"><h3 data-i18n="incomingStages"></h3><div id="damageBars"></div></div><p class="note" data-i18n="burstAssumption"></p></section>
+      <section class="panel"><h2 data-i18n="voidTitle"></h2><div class="formgrid"><label><span data-i18n="startY"></span><input data-combat="startY" type="number" step="1"></label><label><span data-i18n="endY"></span><input data-combat="endY" type="number" step="1"></label><label><span data-i18n="healthInput"></span><input data-combat="health" type="number" min="0" step="1"></label><label><span data-i18n="tps"></span><input data-combat="tps" type="number" min="1" max="20" step="1"></label><label class="check full"><input data-combat="regen" type="checkbox"><span data-i18n="includeHealing"></span></label></div><div id="voidOutcome" class="outcome" aria-live="polite"></div><div id="voidDetails" class="note"></div><svg id="voidChart" class="chart" role="img" aria-label="Health during fall" viewBox="0 0 560 150"></svg><details open><summary data-i18n="assumptions"></summary><p class="note" data-i18n="voidAssumptions"></p><p class="note" data-i18n="predictionOnly"></p></details></section>
+    </div>
+  </div>
+  <p id="message" class="message" role="status"></p><footer class="bottom"><span data-i18n="footer"></span> <span id="testStatus"></span></footer>
+</div>
+<dialog id="jsonDialog"><div class="row"><h2 data-i18n="json"></h2><button id="closeDialog" data-i18n="close"></button></div><p class="note" data-i18n="jsonHelp"></p><textarea id="jsonText" class="jsonbox" aria-label="Configuration JSON" spellcheck="false"></textarea><div class="inline"><button id="importJson" class="primary" data-i18n="import"></button><button id="downloadJson" data-i18n="download"></button></div><p id="jsonError" class="note danger-note"></p></dialog>
+<script id="ruleData" type="application/json">{"revision":41,"universal":[0.05,0.1,0.2,0.4],"yieldType":2,"wearType":3,"miningBookType":0,"spreadType":0,"regenBookType":4,"wearGrades":[4,16,64],"regenGrades":[1,2,3],"armorShares":[0.2,0.4,0.25,0.15],"baseMining":[9,11,14,18],"baseSwordAttack":[8,10,12,16],"basePickAttack":[6,8,10,12],"baseArmorFactor":null,"gearSlots":[1,2,4,6,8],"bookSlots":[0,2,3,4,6],"regionalGrades":[1,1,2,2,3],"bookRegionalGrades":[0,1,2,2,3],"bookOrdinalGrades":[0,2,3,3,4],"coreIds":["sequence_core","power_tower_core","hydra_bud","lho_trace","laver_core","astra_critical_core","boundary_core","guogao_heart","ordinal_crystal"],"coreTranslationKeys":["block.googology.sequence_core","block.googology.power_tower_core","block.googology.hydra_bud","block.googology.lho_trace","block.googology.laver_core","block.googology.astra_critical_core","block.googology.boundary_core","block.googology.guogao_heart","block.googology.ordinal_crystal"],"compatibility":[[true,false,true,true,false,false,false,false,false],[false,true,true,true,false,true,false,true,false],[false,false,false,true,true,false,true,false,false],[false,false,false,true,false,false,true,false,false],[false,false,false,true,false,false,true,false,false],[false,false,false,true,true,false,true,false,false],[true,true,true,true,true,true,true,true,true]],"attributeCaps":{"attackDamage":2048,"maxHealth":1024,"blockReach":64,"entityReach":64},"baseBlockReach":4.5,"baseEntityReach":3,"baseMaxHealth":20,"oxygenGrades":[0.25,0.0625,0],"yieldAggregation":"max(2*toolBranchLevel)+applicableNativeLevel; Silk Touch overrides Fortune","normalAggregation":"sqrt(sum(value^2))","deepUniversal":"sum(u)","deepMultiplier":"1+2*U","wearFormula":"max(1,sum(itemAbsenceProtection)); Ordinal is manuscript-only and never protects wear","numericMiningFormula":"4+5*digit/9","numericPickAttackFormula":"3+digit/3","numericSwordAttackFormula":"5+digit/3","durabilityTools":[1800,2250,2700,3600],"durabilityArmorBase":[400,600,550,450],"durabilityScales":[1,1.25,1.5,2],"numericDurabilityFormula":"round(131*(2031/131)^(digit/9))","regenIntervalTicks":80,"maxControlSeconds":null,"proposalModel":"core_design_046_manuscript_channels_and_native_armor","healthModel":"guogao_only_realm_invariant_rms","proposalRevision":46,"reachBookType":2,"flightBookType":6,"stealthBookType":3,"waterGearType":4,"healingFormula":"RSS(bookLaverLevels)*(1+bookInnateHealing+RSS(bookOrdinalHealingGrades)); zero without Laver","protectionFormula":"Extra F=(1+2*sum(armorShare*RSS(pieceBoundaryPercentGrades)))*bookFactor; normal bookFactor=1+b+RSS(bookBoundaryPercentGrades)+RSS(bookOrdinalPercentGrades); deep bookFactor=(1+b)*(1+RSS(bookBoundaryPercentGrades))*(1+RSS(bookOrdinalPercentGrades))","realmAggregation":"Same-type contributions use RSS within one item. Normal attack sums fixed HP sources. Deep attack multiplies separate innate/book-Ordinal/book-Power/tool-Power factors. Both defenses multiply the separately computed armor and manuscript factors; native armor/toughness is a preceding damage stage.","deepScales":{"projectileBurst":4},"deepPotencies":null,"normalPowerAttackGrades":[1,2,3],"normalOrdinalAttackGrades":[0.5,1,1.5,2.5],"powerPercentGrades":[0.25,0.5,1],"ordinalPercentGrades":[0.05,0.1,0.2,0.4],"ordinalHealingGrades":[0.1,0.2,0.3,0.5],"ordinalDurationGrades":[0.25,0.5,0.75,1.25],"bookInnateAttackHp":[0,0.5,1,1.5,2],"bookInnateAttackProtection":[0,0.05,0.1,0.15,0.2],"bookInnateHealing":[0,0.1,0.2,0.3,0.4],"bookInnateDuration":[0,0.25,0.5,0.75,1],"armorBoundaryScale":2,"nativeArmorByTier":[16,18,20,22],"nativeToughnessByTier":[4,8,12,16],"deepSpreadGrades":[1,4,9],"bookUniversalExclusions":["miningMultiplier","wearMultiplier","reachBonus","maximumHealth","yield","extraBlocks","abilityGrades","projectileBurst"],"baseControlSeconds":2,"efficiencyGrades":[2,4,6],"yieldGrades":[2,4,6],"bookUniversalBase":[0,0.05,0.1,0.15,0.2],"provisionalChoices":{"efficiencyStacking":"highest manuscript grade; max with applicable native Efficiency; add e^2+1; no Ordinal mining multiplier","aquaAffinity":"Laver helmet Lv1+ removes underwater mining penalty","depthStrider":"Laver boots Lv1/2/3 are native Depth Strider I/II/III equivalents","flightOwner":"Boundary manuscript inherits the jump/fall/flight package","armorWearAttenuation":"pre-hit native integer wear budget divided by custom protection factor, then multiplied by consumption probability; retain fractions as expectation"},"coreNames":{"zh":["序列晶核","幂塔晶核","分枝芽核","空集晶核","紫菜凝核","临界核晶","界限晶核","果糕之心","序数晶体"],"en":["Sequence Core","Power Tower Core","Hydra Bud","Empty Set Core","Laver Condensation Core","Criticality Core","Boundary Core","Heart of Guogao","Ordinal Crystal"]}}</script>
+<script>/* Independent pending-design engine. Never compiled into the Minecraft Mod. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.EnhancementEngine = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+  let rules = {};
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, Number(v) || 0));
+  // Legacy saved configurations may still contain equipment Ordinal cores.
+  // Ignore them here as well as disallowing them in the editor compatibility table.
+  const list = g => g && g.tier >= 0 && Array.isArray(g.cores)
+    ? g.cores.filter(c=>c.type!==8||g.kind===6) : [];
+  const sum = (cs, type, square = false) => cs.reduce((n,c) => n+(c.type===type ? (square?c.level*c.level:c.level):0),0);
+  const highest = (cs,type) => cs.reduce((n,c) => c.type===type?Math.max(n,c.level):n,0);
+  const empty = kind => ({tier:-1,kind,digit:0,cores:[]});
+  function defaults() {return {mainhand:empty(0),offhand:empty(6),helmet:empty(2),chestplate:empty(3),leggings:empty(4),boots:empty(5),deep:false};}
+  function setRules(value) {rules=value||{};}
+  function activeBook(s) {
+    for(const key of ['offhand','mainhand']) {const g=s[key];if(g&&g.kind===6&&g.tier>0)return g;}
+    return empty(6);
+  }
+  const bookChannelBase = (g,field) => g&&g.kind===6&&g.tier>0?(rules[field]||[])[g.tier]||0:0;
+  const bookBase = g => bookChannelBase(g,'bookInnateAttackProtection');
+  const grade = (field,level) => (rules[field]||[])[level-1]||0;
+  const rss = (cs,type,field) => Math.sqrt(cs.reduce((n,c)=>{
+    const value=c.type===type?grade(field,c.level):0;return n+value*value;
+  },0));
+  function universal(cs) {return rss(cs,8,'ordinalPercentGrades');}
+  const scale = (field,deep) => deep?(rules.deepScales||{})[field]||1:1;
+  const armorShare = kind => (rules.armorShares||[.2,.4,.25,.15])[kind-2]||0;
+  function baseAttack(g) {
+    if(!g||g.kind===6||g.kind>=2)return 1;
+    if(g.tier<0)return g.baseAttack===undefined?1:Number(g.baseAttack);
+    if(g.tier===0)return (g.kind===1?5:3)+clamp(Math.floor(g.digit),0,9)/3;
+    return (g.kind===1?rules.baseSwordAttack||[8,10,12,16]:rules.basePickAttack||[6,8,10,12])[g.tier-1];
+  }
+  function baseMining(g) {
+    if(!g||g.kind!==0)return 1;
+    if(g.tier<0)return g.baseMining===undefined?1:Number(g.baseMining);
+    return g.tier===0?4+5*clamp(Math.floor(g.digit),0,9)/9:(rules.baseMining||[9,11,14,18])[g.tier-1];
+  }
+  function attack(base,gear,book,deep,b=0,innateHp=0) {
+    if(!deep)return base+innateHp+rss(gear,1,'normalPowerAttackGrades')
+      +rss(book,1,'normalPowerAttackGrades')+rss(book,8,'normalOrdinalAttackGrades');
+    return base*(1+b)*(1+universal(book))*(1+rss(book,1,'powerPercentGrades'))
+      *(1+rss(gear,1,'powerPercentGrades'));
+  }
+  function miningMultiplier() {return 1;}
+  function spreadBudget(gear,book,deep) {const grades=deep?(rules.deepSpreadGrades||[1,4,9]):[1,2,3];return Math.floor(Math.sqrt(gear.reduce((n,c)=>c.type===0?n+(grades[c.level-1]||0)**2:n,0)));}
+  const yieldLevel = gear => (rules.yieldGrades||[2,4,6])[highest(gear,2)-1]||0;
+  const reach = (gear,book) => Math.sqrt(sum(book,2,true));
+  function wearFactor(gear,book,b=0) {
+    let d=0;for(const c of gear)if(c.type===3)d+=(rules.wearGrades||[4,16,64])[c.level-1];
+    return Math.max(1,d);
+  }
+  const regen = (book,healingBase=0) => Math.sqrt(sum(book,4,true))
+    *(1+healingBase+rss(book,8,'ordinalHealingGrades'));
+  function bonusHealth(armor,book,deep,b=0) {
+    return 4*Math.sqrt(sum(book,7,true));
+  }
+  function protectionFactor(armor,book,deep,b=0) {
+    let armorContribution=0;
+    for(const g of armor)if(g.tier>0&&g.kind>=2&&g.kind<6)
+      armorContribution+=armorShare(g.kind)*rss(list(g),6,'powerPercentGrades');
+    const armorFactor=1+(rules.armorBoundaryScale||2)*armorContribution;
+    const q=rss(book,6,'powerPercentGrades'),u=universal(book);
+    const bookFactor=deep?(1+b)*(1+q)*(1+u):1+b+q+u;
+    return armorFactor*bookFactor;
+  }
+  function nativeArmorStats(armor) {
+    let armorValue=0,toughness=0;
+    for(const g of armor) {
+      if(g.tier>0&&g.kind>=2&&g.kind<6){
+        armorValue+=armorShare(g.kind)*((rules.nativeArmorByTier||[16,18,20,22])[g.tier-1]||0);
+        toughness+=armorShare(g.kind)*((rules.nativeToughnessByTier||[4,8,12,16])[g.tier-1]||0);
+      }else if(g.tier<0){
+        armorValue+=Math.max(0,Number(g.nativeArmor)||0);
+        toughness+=Math.max(0,Number(g.nativeToughness)||0);
+      }
+    }
+    return {nativeArmor:armorValue,nativeToughness:toughness};
+  }
+  function critical(cs) {return Math.sqrt(cs.reduce((n,c)=>c.type===5?n+(.075*(c.level+1))**2:n,0));}
+  const criticalCoefficient = gear => critical(gear);
+  const projectileCoefficient = (book,deep=false) => critical(book)*scale('projectileBurst',deep);
+  const projectileBurst = (value,book,deep,b=0) => value*projectileCoefficient(book,deep);
+  const controlDuration = (gear,book=[],durationBase=0) => highest(gear,7)
+    ?(rules.baseControlSeconds||2)*(1+durationBase+rss(book,8,'ordinalDurationGrades')):0;
+  const oxygenConsumption = helmet => [1,.25,1/16,0][highest(helmet,4)];
+  function calculate(snapshot) {
+    const s={...defaults(),...snapshot},m=s.mainhand,armor=[s.helmet,s.chestplate,s.leggings,s.boots],bg=activeBook(s),book=list(bg),b=bookBase(bg),deep=!!s.deep;
+    const innateHp=bookChannelBase(bg,'bookInnateAttackHp'),healingBase=bookChannelBase(bg,'bookInnateHealing'),durationBase=bookChannelBase(bg,'bookInnateDuration');
+    const gear=m.kind>=0&&m.kind<2?list(m):[],pick=m.kind===0,sword=m.kind===1;
+    const nativeEfficiency=m.tier<=0?clamp(m.nativeEfficiency,0,255):0;
+    const manuscriptEfficiency=(rules.efficiencyGrades||[2,4,6])[highest(book,0)-1]||0;
+    const efficiencyLevel=Math.max(nativeEfficiency,manuscriptEfficiency),baseSpeed=baseMining(m);
+    const applicable=pick&&s.miningApplicable!==false&&baseSpeed>1;
+    const efficiencyBonus=applicable&&efficiencyLevel>0?efficiencyLevel**2+1:0;
+    const aquaAffinity=highest(list(s.helmet),4)>0;
+    const miningMultiplierValue=miningMultiplier(pick?gear:[],book,deep,b);
+    const waterPenalty=s.submerged&&!aquaAffinity?.2:1,airPenalty=s.airborne?.2:1;
+    const coreYield=pick||sword?yieldLevel(gear):0;
+    const silkTouch=pick&&highest(gear,2)>0&&!!m.silkTouch;
+    const nativeYield=m.tier<=0?clamp(m.nativeYield,0,255):0;
+    const effects={
+      attack:attack(baseAttack(m),sword?gear:gear.filter(c=>c.type!==1),book,deep,b,innateHp),
+      miningMultiplier:miningMultiplierValue,efficiencyLevel,efficiencyBonus,rawMining:baseSpeed+efficiencyBonus,
+      miningFinal:(baseSpeed+efficiencyBonus)*miningMultiplierValue*waterPenalty*airPenalty,
+      extraBlocks:pick?spreadBudget(gear,book,deep):0,
+      yieldLevel:silkTouch?0:coreYield+nativeYield,coreYieldLevel:coreYield,nativeYieldLevel:nativeYield,silkTouch,
+      reach:reach(gear,book),wearFactor:wearFactor(gear,book),regeneration:regen(book,healingBase),
+      bonusHealth:bonusHealth(armor,book,deep,b),protectionFactor:protectionFactor(armor,book,deep,b),
+      ...nativeArmorStats(armor),
+      criticalCoefficient:sword?criticalCoefficient(gear):0,projectileCoefficient:projectileCoefficient(book,deep),
+      projectileBurstMultiplier:projectileCoefficient(book,deep),
+      controlSeconds:sword?controlDuration(gear,book,durationBase):0,bookBase:b,
+      bookInnateAttackHp:innateHp,bookHealingBase:healingBase,bookDurationBase:durationBase,
+      activeBookSlot:bg.tier<0?'none':bg===s.offhand?'offhand':'mainhand'
+    };
+    effects.totalMinedBlocks=pick?1+effects.extraBlocks:0;
+    effects.actualMaxHealth=clamp((rules.baseMaxHealth||20)+effects.bonusHealth,1,rules.attributeCaps?.maxHealth||1024);
+    effects.actualBlockReach=clamp((rules.baseBlockReach||4.5)+effects.reach,0,rules.attributeCaps?.blockReach||64);
+    effects.actualEntityReach=clamp((rules.baseEntityReach||3)+effects.reach,0,rules.attributeCaps?.entityReach||64);
+    return effects;
+  }
+  function misc(snapshot) {
+    const s={...defaults(),...snapshot},bg=activeBook(s),book=list(bg),b=bookBase(bg),mode=highest(book,6),g=highest(book,7),hidden=highest(book,3),laver=highest(book,4);
+    const sword=s.mainhand.kind===1?highest(list(s.mainhand),7):0;
+    const debuffs=[[],[{effect:'slowness',level:1},{effect:'poison',level:2}],
+      [{effect:'slowness',level:2},{effect:'wither',level:2},{effect:'weakness',level:1}],
+      [{effect:'slowness',level:3},{effect:'wither',level:3},{effect:'weakness',level:2},{effect:'nausea',level:1},{effect:'blindness',level:1,chance:.2}]][sword];
+    return {maxHealth:calculate(s).actualMaxHealth,oxygenConsumption:oxygenConsumption(list(s.helmet)),
+      aquaAffinity:highest(list(s.helmet),4)>0,depthStrider:highest(list(s.boots),4),foodFloor:laver>=3?19:laver>=2?10:0,
+      jumpExtra:book.filter(c=>c.type===6&&c.level===1).length,
+      flight:mode>=3?'creative':mode===2?'slow':'none',fallFactor:mode>=2?0:mode===1?.25:1,
+      wallFactor:mode>=3?0:1,nightVision:hidden>=2,fireResistance:highest(book,5)>=2,
+      stealthLevel:hidden,detectionFactor:hidden>=2?0:hidden===1?.3:1,retaliationChance:hidden>=3?0:1,
+      autoTotem:g>=2,immuneLevel:g,debuffs,debuffSeconds:calculate(s).controlSeconds,
+      immunities:g>=3?['poison','hunger','weakness','nausea','slowness','wither','blindness','darkness']:g>=2?['poison','hunger','weakness']:[],
+      armorWear:[s.helmet,s.chestplate,s.leggings,s.boots].map(a=>wearFactor(list(a),book,b))};
+  }
+  // Flags follow local Minecraft 26.2 damage_type tags. EPF is already source-specific.
+  const SOURCES = {
+    mob_attack: {}, player_attack: {}, arrow: {}, trident: {}, explosion: {},
+    in_fire: { fire: true }, on_fire: { armor: false, fire: true }, lava: { fire: true },
+    fall: { armor: false, fall: true }, fly_into_wall: { armor: false, wall: true },
+    drown: { armor: false }, magic: { armor: false }, wither: { armor: false },
+    sonic_boom: { armor: false, enchantments: false },
+    out_of_world: { armor: false, resistance: false, enchantments: false }
+  };
+  function damage(raw, source, defense = {}) {
+    const flags = SOURCES[source] || {}, values = [{ stage: 'raw', value: Math.max(0, Number(raw) || 0) }];
+    let d = values[0].value;
+    if (flags.fire && defense.fireResistance) d = 0;
+    if (flags.fall) d *= defense.fallFactor === undefined ? 1 : defense.fallFactor;
+    if (flags.wall) d *= defense.wallFactor === undefined ? 1 : defense.wallFactor;
+    values.push({ stage: 'ability', value: d });
+    if (flags.armor !== false) {
+      const a = Math.max(0, Number(defense.armor) || 0), t = Math.max(0, Number(defense.toughness) || 0);
+      d *= 1 - Math.min(20, Math.max(a / 5, a - d / (2 + t / 4))) / 25;
+    }
+    values.push({ stage: 'armor', value: d });
+    if (flags.resistance !== false) d *= 1 - clamp(defense.resistance, 0, 5) * .2;
+    if (flags.enchantments !== false) d *= 1 - clamp(defense.epf, 0, 20) * .04;
+    values.push({ stage: 'vanilla', value: d });
+    d /= Math.max(1, Number(defense.factor) || 1);
+    values.push({ stage: 'cores', value: d });
+    const absorbed = Math.min(d, Math.max(0, Number(defense.absorption) || 0));
+    d -= absorbed; values.push({ stage: 'health', value: d });
+    return { healthDamage: d, absorbed, beforeAbsorption: d + absorbed, stages: values };
+  }
+  function combat(effects, params) {
+    const p = params || {}, cooldown = clamp(p.cooldown === undefined ? 1 : p.cooldown, 0, 1), scale = .2 + .8 * cooldown ** 2;
+    const directRaw = effects.attack * scale * (p.critical && cooldown > .9 ? 1.5 : 1);
+    const burstRaw = effects.attack * effects.criticalCoefficient;
+    const target = { armor: p.targetArmor, toughness: p.targetToughness, resistance: p.targetResistance, epf: p.targetEpf, factor: p.targetFactor };
+    const direct = damage(directRaw, 'player_attack', target), burst = damage(burstRaw, 'explosion', { ...target, epf: p.targetBurstEpf === undefined ? p.targetEpf : p.targetBurstEpf });
+    const total = direct.beforeAbsorption + burst.beforeAbsorption, absorbed = Math.min(total, Math.max(0, Number(p.targetAbsorption) || 0));
+    return { directRaw, burstRaw, direct, burst, totalHealthDamage: total - absorbed, absorbed };
+  }
+  function voidForecast(snapshot, params = {}) {
+    const e = calculate(snapshot), max = e.actualMaxHealth;
+    let hp = params.health > 0 ? Math.min(max, params.health) : max, shield = Math.max(0, Number(params.ownAbsorption) || 0);
+    let y = Number(params.startY === undefined ? -64 : params.startY), v = Number(params.initialVelocity) || 0;
+    const end = Number(params.endY === undefined ? -1000 : params.endY), threshold = Number(params.voidY === undefined ? -128 : params.voidY);
+    const interval = 10, healing = 80, tps = clamp(params.tps === undefined ? 20 : params.tps, 1, 20), history = [{ seconds: 0, y, health: hp }];
+    let ticks = 0, nextVoid = -1, hits = 0, reached = y <= end, dead = false;
+    while (!reached && !dead && ticks < 24000) {
+      ticks++; v = (v - .08) * .98; y += v;
+      if (y < threshold && nextVoid < 0) nextVoid = ticks;
+      if (nextVoid >= 0 && ticks >= nextVoid) {
+        const hit = damage(4, 'out_of_world', { factor: e.protectionFactor, absorption: shield });
+        hp -= hit.healthDamage; shield -= hit.absorbed; hits++; nextVoid += interval;
+        if (hp <= 0) dead = true;
+      }
+      if (!dead && params.regen !== false && ticks % healing === 0) hp = Math.min(max, hp + e.regeneration);
+      reached = y <= end;
+      if (ticks % 10 === 0 || reached || dead) history.push({ seconds: ticks / tps, y, health: Math.max(0, hp) });
+    }
+    return { reached: reached && !dead, dead, health: Math.max(0, hp), seconds: ticks / tps, y, hits, maxHealth: max, history,
+      netHpPerSecond: e.regeneration * tps / 80 - (4 / e.protectionFactor) * tps / 10 };
+  }
+  // Expected durability loss per worn piece, evaluated from the pre-hit snapshot.
+  // Vanilla's integer floor is taken before custom attenuation. Fractions stay probabilities.
+  function armorWearBudget(snapshot,raw,source) {
+    const s={...defaults(),...snapshot},m=misc(s),e=calculate(s),flags=SOURCES[source]||{};
+    const immune=(flags.fire&&m.fireResistance)||(flags.fall&&m.fallFactor===0)||(flags.wall&&m.wallFactor===0);
+    const nativeBudget=flags.armor===false||immune||raw<=0?0:Math.floor(Math.max(1,Number(raw)/4));
+    return [s.helmet,s.chestplate,s.leggings,s.boots].map((g,i)=>g.tier>0?nativeBudget/e.protectionFactor/m.armorWear[i]:0);
+  }
+  return {setRules,defaults,empty,calculate,misc,damage,combat,voidForecast,SOURCES,baseAttack,baseMining,
+    activeBook,bookBase,attack,miningMultiplier,spreadBudget,yieldLevel,reach,wearFactor,regen,bonusHealth,protectionFactor,
+    criticalCoefficient,projectileCoefficient,projectileBurst,controlDuration,oxygenConsumption,universal,highest,armorWearBudget,
+    nativeArmorStats,bookChannelBase};
+});
+</script>
+<script>
+(() => {
+'use strict';
+const E = EnhancementEngine, RULES = JSON.parse(document.getElementById('ruleData').textContent); E.setRules(RULES);
+const BUILD = {"caseCount":612,"ruleSourceSha256":"f01ecd05478fd430c90e8d02f532f32f0581dfc2f9958b7700d4a2eab8d43732","engineSha256":"aaa3c176a788199d3fe1b8421cc7aa3b262108b4c51f6c818d73f8a8e0e52084","revision":41,"healthPreview":false,"proposalPreview":true,"calculationSourceSha256":"f01ecd05478fd430c90e8d02f532f32f0581dfc2f9958b7700d4a2eab8d43732","proposalRevision":46,"proposalRulesSha256":"a48b9be820db9954b823be4b2d43957ae6e241c45bf27cff2da17e6ffed4fa81"};
+const $ = id => document.getElementById(id), slots = ['mainhand','offhand','helmet','chestplate','leggings','boots'];
+const labels = {
+zh:{title:'果糕逻辑 · 强化模拟器',subtitle:'九核新方案预览（尚未应用于 Mod 0.3.11） · 离线计算',presetDefense:'满防配置',presetMining:'采矿配置',presetCombat:'战斗配置',reset:'重置',share:'复制分享链接',json:'导入 / 导出 JSON',mode:'计算范围',set:'整套装备',single:'仅当前单件',realm:'所在维度',normal:'普通维度',deep:'里界 / 地府',equipment:'装备与晶核',mainhand:'主手',offhand:'副手手稿',helmet:'头盔',chestplate:'胸甲',leggings:'护腿',boots:'靴子',empty:'空',digit:'数字等级',harvest:'采集等级',stone:'石质',iron:'铁质',diamond:'钻石',netherite:'下界合金',baseAttack:'基础攻击 HP',baseMining:'基础挖速',cores:'镶嵌晶核',coreEmpty:'空槽',slot:'槽',noSockets:'该物品没有晶核槽',socketGrade:'区域最高 Lv{r} · 序数最高 Lv{o}',gearHelp:'槽位、等级与适用装备按 Java 规则限制。闲置背包物品不计入。',vanillaHelp:'原版 / 自定义工具仅获得副手效果，可输入其基础属性；已有附魔需另计入对应参数。',pick:'镐',sword:'剑',book:'扽西手稿',vanilla:'原版 / 自定义',hand:'徒手',combatInputs:'攻击与防护参数',cooldown:'攻击冷却 0–1',critical:'近战暴击 ×1.5',projectileDamage:'投射物有效攻击 HP',target:'目标防护',copyDefense:'使用我的防护',armor:'原版护甲值',toughness:'护甲韧性',resistance:'抗性提升等级 0–5',epf:'本伤害源附魔保护 EPF 0–20',modFactor:'晶核总承伤倍率 ≥1',absorption:'吸收 / 护盾 HP',incoming:'自身受伤条件',rawDamage:'原始伤害 HP',source:'伤害源',summary:'最终效果',attack:'攻击值',speed:'挖速倍率',range:'额外采矿格数',yield:'产出效力等级',reach:'额外触距',maxHealth:'最大生命',wear:'主手耐久保护',wearChance:'每点原始损耗保留概率',regen:'每 4 秒治疗',defense:'晶核承伤倍率',defenseReduction:'晶核总减伤',armorWear:'头 / 胸 / 腿 / 靴耐久倍率',oxygen:'水下呼吸时间',jump:'额外跳高',flight:'飞行模式',night:'夜视',fire:'火焰抗性',autoTotem:'背包图腾自动使用',immune:'负面状态免疫',none:'无',yes:'生效',slow:'慢飞',creative:'创造式飞行',infinite:'无限',hp:'HP',blocks:'格',times:'倍',seconds:'秒',flightSpeeds:'非冲刺 / 冲刺 / 升降 / 冲刺升降',fall:'摔落伤害倍率',wall:'撞墙伤害倍率',damageResults:'实际生命损伤',outgoing:'主目标合计损伤',received:'自身损伤',directRaw:'直击原始值',burstRaw:'临界爆炸原始值',directFinal:'直击过防护后',burstFinal:'爆炸过防护后',projectileBurst:'投射物爆炸原始值',absorbed:'目标吸收值消耗',control:'果糕控制持续',incomingStages:'自身伤害处理',raw:'原始伤害',ability:'免疫 / 空集',armorStage:'原版护甲',vanillaStage:'抗性 / EPF',coresStage:'晶核防护',healthStage:'最终生命损伤',combatAssumptions:'',burstAssumption:'直击计入冷却与暴击。临界剑爆炸以强化后的剑攻击值计算，不再乘暴击或冷却；直接伤害和爆炸分别过护甲，再共用目标吸收池。投射物输入为本次有效攻击值。',formulaTitle:'计算规则',voidTitle:'表界坠落 / 虚空预测',startY:'起始 Y',endY:'目标 Y',healthInput:'起始 HP（0 = 满生命）',tps:'TPS 1–20',includeHealing:'计入手稿每 4 秒治疗',survived:'预计抵达目标高度',died:'预计途中生命耗尽',invalidFall:'目标 Y 必须低于起始 Y',voidResult:'{t} 秒 · Y={y} · 剩余 {h} HP · 虚空命中 {n} 次',assumptions:'预测假设',voidAssumptions:'按表界 minY=-64、虚空阈值 Y<-128；静止开始自由落体，每刻 v=(v−0.08)×0.98、y+=v。首次进入虚空即受伤，此后每 10 刻 4HP；只除以晶核承伤倍率，原版护甲、抗性和EPF不抵挡虚空。治疗首发在第80刻，此后每80刻一次。计入初始吸收值，不计图腾、临时再生、落地、流体、飞行或装备损坏。TPS改变现实时间，不改变每刻事件。',predictionOnly:'这是固定假设下的估算，不是游戏实测。飞行即使已解锁，预测仍假定没有开启；实际服务器事件相位、存档和其他模组会改变结果。',footer:'离线单文件 · 配置保存在本机和链接片段中 · 规则来自共享 EquipmentRules',close:'关闭',jsonHelp:'可复制、下载或粘贴完整配置。导入时会按槽位、等级与兼容性检查并清除无效晶核。',import:'应用 JSON',download:'下载 JSON',saved:'配置已更新',shared:'分享链接已复制',shareFallback:'无法写入剪贴板，分享配置已显示在 JSON 窗口',invalidJson:'配置格式无效：',trimmed:'已移除不符合装备槽位、等级或兼容规则的晶核',test:'Java / JS 对照：{n} 组通过',poison:'中毒',hunger:'饥饿',nausea:'反胃',weakness:'虚弱',slowness:'缓慢',wither:'凋零',blindness:'失明',darkness:'黑暗',source_mob_attack:'生物近战',source_player_attack:'玩家近战',source_arrow:'箭',source_trident:'三叉戟',source_explosion:'爆炸',source_in_fire:'火中接触',source_on_fire:'持续燃烧',source_lava:'熔岩',source_fall:'摔落',source_fly_into_wall:'鞘翅撞墙',source_drown:'溺水',source_magic:'魔法',source_wither:'凋零伤害',source_sonic_boom:'监守者音爆',source_out_of_world:'虚空',formulaNormal:'',formulaDeep:''},
+en:{title:'Guogaology · Enhancement simulator',subtitle:'Nine-core proposal preview (not applied to Mod 0.3.11) · Offline',presetDefense:'Full defense',presetMining:'Mining',presetCombat:'Combat',reset:'Reset',share:'Copy share link',json:'Import / export JSON',mode:'Calculate',set:'Full equipment',single:'Selected item only',realm:'Realm',normal:'Normal realms',deep:'Inner / Underworld',equipment:'Equipment and cores',mainhand:'Main hand',offhand:'Offhand manuscript',helmet:'Helmet',chestplate:'Chestplate',leggings:'Leggings',boots:'Boots',empty:'Empty',digit:'Digit',harvest:'Harvest tier',stone:'Stone',iron:'Iron',diamond:'Diamond',netherite:'Netherite',baseAttack:'Base attack HP',baseMining:'Base mining speed',cores:'Socketed cores',coreEmpty:'Empty socket',slot:'Socket',noSockets:'This item has no core sockets',socketGrade:'Regional max Lv{r} · Ordinal max Lv{o}',gearHelp:'Slots, grades and compatibility follow the Java rules. Idle inventory items contribute nothing.',vanillaHelp:'Vanilla / custom tools receive offhand effects only. Enter their base attributes; account for existing enchantments in the relevant inputs.',pick:'Pickaxe',sword:'Sword',book:'Denxi Manuscript',vanilla:'Vanilla / custom',hand:'Bare hand',combatInputs:'Attack and defense inputs',cooldown:'Attack cooldown 0–1',critical:'Melee critical ×1.5',projectileDamage:'Effective projectile attack HP',target:'Target defense',copyDefense:'Use my defense',armor:'Vanilla armor points',toughness:'Armor toughness',resistance:'Resistance level 0–5',epf:'Source-specific enchantment EPF 0–20',modFactor:'Total core damage tolerance ≥1',absorption:'Absorption / shield HP',incoming:'Incoming damage',rawDamage:'Raw damage HP',source:'Damage source',summary:'Final effects',attack:'Attack',speed:'Mining multiplier',range:'Extra mined blocks',yield:'Yield potency',reach:'Additional reach',maxHealth:'Maximum health',wear:'Main-hand wear protection',wearChance:'Probability of keeping each wear point',regen:'Healing every 4s',defense:'Core damage tolerance factor',defenseReduction:'Total core damage reduction',armorWear:'Helmet / chest / legs / boots wear',oxygen:'Underwater breathing time',jump:'Additional jump height',flight:'Flight mode',night:'Night vision',fire:'Fire resistance',autoTotem:'Inventory totem use',immune:'Negative effect immunity',none:'None',yes:'Active',slow:'Slow flight',creative:'Creative-style flight',infinite:'Infinite',hp:'HP',blocks:'blocks',times:'×',seconds:'s',flightSpeeds:'Normal / sprint / vertical / sprint vertical',fall:'Fall damage multiplier',wall:'Wall impact multiplier',damageResults:'Actual health damage',outgoing:'Combined main-target damage',received:'Incoming health damage',directRaw:'Raw direct hit',burstRaw:'Raw critical burst',directFinal:'Direct hit after defense',burstFinal:'Burst after defense',projectileBurst:'Raw projectile burst',absorbed:'Target absorption used',control:'Guogao control duration',incomingStages:'Incoming damage stages',raw:'Raw damage',ability:'Immunity / Absence',armorStage:'Vanilla armor',vanillaStage:'Resistance / EPF',coresStage:'Core protection',healthStage:'Health damage',combatAssumptions:'',burstAssumption:'Direct hits include cooldown and critical scaling. Sword bursts use enhanced sword attack, without further critical or cooldown scaling. Direct and burst damage pass armor separately and share one absorption pool. Projectile input is the effective attack of this impact.',formulaTitle:'Calculation rules',voidTitle:'Outer realm fall / void estimate',startY:'Starting Y',endY:'Target Y',healthInput:'Initial HP (0 = full health)',tps:'TPS 1–20',includeHealing:'Include manuscript healing every 4s',survived:'Estimated to reach the target',died:'Estimated to run out of health',invalidFall:'Target Y must be below starting Y',voidResult:'{t}s · Y={y} · {h} HP remaining · {n} void hits',assumptions:'Prediction assumptions',voidAssumptions:'Outer minY=-64; void starts at Y<-128. Free fall starts at rest: each tick v=(v−0.08)×0.98 and y+=v. First void hit occurs upon entry, then 4HP every 10 ticks. Core damage tolerance applies; vanilla armor, Resistance and EPF do not stop void. Healing first occurs at tick80, then every80 ticks. Initial absorption is included. Totems, temporary regeneration, landing, fluids, flight and equipment breakage are excluded. TPS changes wall time, not per-tick events.',predictionOnly:'This is an estimate under fixed assumptions, not an in-game measurement. Flight is assumed off even when unlocked. Server event phase, saves and other mods may change the result.',footer:'Offline single file · Configuration stays on this device and in the URL fragment · Rules from shared EquipmentRules',close:'Close',jsonHelp:'Copy, download or paste a full configuration. Import validates sockets, grades and compatibility and removes invalid cores.',import:'Apply JSON',download:'Download JSON',saved:'Configuration updated',shared:'Share link copied',shareFallback:'Clipboard unavailable; the share configuration is shown in the JSON dialog',invalidJson:'Invalid configuration: ',trimmed:'Cores outside slot, grade or compatibility limits were removed',test:'Java / JS comparison: {n} cases passed',poison:'Poison',hunger:'Hunger',nausea:'Nausea',weakness:'Weakness',slowness:'Slowness',wither:'Wither',blindness:'Blindness',darkness:'Darkness',source_mob_attack:'Mob melee',source_player_attack:'Player melee',source_arrow:'Arrow',source_trident:'Trident',source_explosion:'Explosion',source_in_fire:'Fire contact',source_on_fire:'Burning over time',source_lava:'Lava',source_fall:'Fall',source_fly_into_wall:'Elytra wall impact',source_drown:'Drowning',source_magic:'Magic',source_wither:'Wither damage',source_sonic_boom:'Warden sonic boom',source_out_of_world:'Void',formulaNormal:'',formulaDeep:''}
+};
+Object.assign(labels.zh,{coreReference:'晶核作用与数值 ↗',miningFinal:'当前镐的挖速系数',blockReach:'实际方块触距',entityReach:'实际实体触距',healthBonus:'理论额外生命',shareNote:'链接片段适用于同一HTML；跨设备可下载或导入JSON配置。',meleeEpf:'目标近战保护 EPF 0–20',burstEpf:'目标爆炸保护 EPF 0–20',critical:'近战暴击（冷却 >0.9）×1.5'});
+Object.assign(labels.en,{coreReference:'Core effects & values ↗',miningFinal:'Current pick mining coefficient',blockReach:'Actual block reach',entityReach:'Actual entity reach',healthBonus:'Uncapped additional health',shareNote:'The URL fragment works with this HTML. For another device, download or import the configuration JSON.',meleeEpf:'Target melee EPF 0–20',burstEpf:'Target explosion EPF 0–20',critical:'Melee critical (cooldown >0.9) ×1.5'});
+Object.assign(labels.zh,{
+ proposalNotice:'此页是最新九核方案预览，尚未应用于主 Mod 0.3.11。效率叠加、水下速掘、游泳及飞行归属先按说明页的暂定细则计算，供本轮审计。',auditLink:'数值审计 ↗',
+ gearHelp:'槽位、材料等级沿用当前装备；晶核适用部位采用新方案。主副手都有手稿时只取副手，闲置物品不计入。',vanillaHelp:'可输入原版属性及已有附魔；序数装备不可附魔。手稿效率与原版效率暂取最高，时运/抢夺与工具原有等级相加。',
+ speed:'最终挖速系数',yield:'时运 / 抢夺等级',ability:'免疫 / 移动',footer:'离线方案预览 · 尚未更新主 Mod · 新分工使用独立规则，不冒称生产 Java 对照',test:'独立方案数值检查通过',
+ nativeEfficiency:'原版效率等级 0–5',nativeYield:'原版时运 / 抢夺 0–3',silkSwitch:'精准采集（分枝 Lv1 起解锁，开启后本次时运不生效）',miningApplicable:'当前方块适用主手镐（效率加项才生效）',submerged:'水下挖掘',airborne:'未站稳挖掘',efficiency:'有效效率等级 / 加项',universalSpeed:'综合挖速倍率',totalBlocks:'一次总开采格数',silkMode:'采集模式',fortuneMode:'时运',silkModeOn:'精准采集',aqua:'水下速掘',depthStrider:'深海探索等效等级',foodFloor:'手稿饥饿值下限（满值20）',activeBook:'生效手稿',bookBaseline:'手稿固有攻防项 b',stealth:'普通主动索敌距离',retaliation:'普通受击反击触发概率',stealthNote:'已有仇恨与特殊索敌不受此项清除；流弹/范围伤害照常结算。',debuffs:'剑命中状态（均2秒）',wearExpected:'该次头 / 胸 / 腿 / 靴预期磨损',noneBook:'无手稿',
+ formulaNormal:'序数晶体只装手稿。表攻击=基础攻击+书固有攻击+RSS(剑幂塔HP)+RSS(书幂塔HP)+RSS(书序数HP)。甲贡献C=2Σ[部位份额×RSS(本件界限百分比)]；晶核承伤倍率F=(1+C)×(1+b+RSS书界限+RSS书序数)。原版护甲与韧性另按实际伤害计算，不预设80%减伤。挖速=基础+效率加项，无序数倍率；额外开采=floor(RSS单颗预算)。生命=20+4RSS书果糕等级；治疗=RSS书紫菜等级×(1+书治疗基值+RSS序数治疗)，没有紫菜不治疗。',
+ formulaDeep:'里攻击=基础攻击×(1+b)×(1+RSS书序数百分比)×(1+RSS书幂塔百分比)×(1+RSS剑幂塔百分比)。甲贡献与表界相同；晶核承伤倍率F=(1+C)×(1+b)×(1+RSS书界限)×(1+RSS书序数)。幂塔百分比25%/50%/100%，序数百分比5%/10%/20%/40%，b为5%/10%/15%/20%。原版护甲和韧性另算。生命、治疗、触距、耐久与效率保持两界一致；序列额外开采单颗预算1/4/9。果糕剑状态持续=2秒×(1+书持续基值+RSS序数持续)，没有果糕剑不产生状态。',
+ burstAssumption:'直击计入冷却与暴击，剑爆裂不再次乘两者；两次伤害独立过防护后共用吸收池。以下不含2秒中毒/凋零后续伤害，也不模拟普通索敌或实际飞行。甲磨损为该次攻击前配置下的期望值：原版整数预算÷晶核防护÷耐久倍率；低于1不强制扣1。',
+ voidAssumptions:labels.zh.voidAssumptions+' 紫菜Lv3的饥饿保障可能触发的原版自然回复不计入；仅展示本页明确的周期治疗。'
+});
+Object.assign(labels.en,{
+ proposalNotice:'Latest nine-core proposal, not applied to Mod 0.3.11. Efficiency stacking, aquatic perks and flight ownership use the provisional choices listed in the reference for this audit.',auditLink:'Numerical audit ↗',
+ gearHelp:'Existing slot and grade limits; new proposal compatibility. Offhand manuscripts take priority over main-hand manuscripts. Idle items do not contribute.',vanillaHelp:'Enter native attributes and existing enchantments. Ordinal gear cannot be enchanted. Manuscript/native Efficiency provisionally use the maximum; Fortune/Looting add to applicable native levels.',
+ speed:'Final mining coefficient',yield:'Fortune / Looting level',ability:'Immunity / movement',footer:'Offline proposal · Main Mod unchanged · Independent design rules, not a production Java parity claim',test:'Independent proposal checks passed',
+ nativeEfficiency:'Native Efficiency level 0–5',nativeYield:'Native Fortune / Looting 0–3',silkSwitch:'Silk Touch (Branch Lv1+; Fortune inactive for this harvest)',miningApplicable:'Current block matches the main-hand pick (required for Efficiency bonus)',submerged:'Mining underwater',airborne:'Mining off the ground',efficiency:'Effective Efficiency / speed bonus',universalSpeed:'Universal speed multiplier',totalBlocks:'Total blocks per operation',silkMode:'Harvest mode',fortuneMode:'Fortune',silkModeOn:'Silk Touch',aqua:'Aqua Affinity',depthStrider:'Depth Strider equivalent level',foodFloor:'Manuscript food floor (full=20)',activeBook:'Active manuscript',bookBaseline:'Innate manuscript attack/protection b',stealth:'Ordinary discovery distance',retaliation:'Ordinary retaliation trigger chance',stealthNote:'Existing targets and special targeting are not cleared. Stray projectiles and area damage still apply.',debuffs:'On-hit effects (all 2s)',wearExpected:'Expected helmet / chest / legs / boots wear',noneBook:'No manuscript',
+ formulaNormal:'Ordinal fits manuscripts only. Normal attack=base+innate book attack+RSS(weapon Power HP)+RSS(book Power HP)+RSS(book Ordinal HP). Armor contribution C=2Σ[slot share×RSS(item Boundary percentages)]. Core tolerance F=(1+C)×(1+b+RSS book Boundary+RSS book Ordinal). Native armor/toughness are evaluated separately for the actual damage, without assuming 80% reduction. Mining=base+Efficiency bonus, with no Ordinal multiplier. Extra mining=floor(RSS individual budgets). HP=20+4RSS book Guogao grades; healing=RSS book Laver grades×(1+innate healing+RSS Ordinal healing), zero without Laver.',
+ formulaDeep:'Deep attack=base×(1+b)×(1+RSS book Ordinal percentages)×(1+RSS book Power percentages)×(1+RSS weapon Power percentages). Armor contribution is unchanged. Core tolerance F=(1+C)×(1+b)×(1+RSS book Boundary)×(1+RSS book Ordinal). Power percentages are25%/50%/100%; Ordinal5%/10%/20%/40%; b5%/10%/15%/20%. Native armor/toughness remain separate. Health, healing, reach, wear and Efficiency match normal realms; Sequence budgets are1/4/9. Guogao sword duration=2s×(1+innate duration+RSS Ordinal duration), zero without a Guogao sword core.',
+ burstAssumption:'Direct hits include cooldown/crit; bursts do not apply them again. The two hits pass defense separately and share absorption. Poison/Wither over the next2s is excluded; targeting and actual flight are not simulated. Expected armor wear uses the pre-hit configuration: native integer budget ÷ core tolerance ÷ wear factor, retaining fractions.',
+ voidAssumptions:labels.en.voidAssumptions+' Native food-based regeneration enabled by Laver Lv3 is excluded; only explicit periodic healing is counted.'
+});
+const coreFallback = [['序列晶核','Sequence Core'],['幂塔晶核','Power Tower Core'],['分枝芽核','Branch Bud Core'],['空集','Absence'],['紫菜凝核','Laver Condensation Core'],['临界核晶','Critical Core'],['界限晶核','Boundary Core'],['果糕之心','Guogao Heart'],['序数晶体','Ordinal Crystal']];
+Object.assign(labels.zh,{gearSocketGrade:'区域最高 Lv{r} · 序数仅限手稿',ordinalRemoved:'旧配置中的装备序数晶体已清除；其他合法晶核及空槽位置保留。序数晶体现在只允许放入手稿。',nativeArmorTotal:'当前装备原版护甲',nativeToughnessTotal:'当前装备原版韧性',ownArmorExtra:'额外原版护甲值',ownToughnessExtra:'额外原版韧性',bookInnateAttack:'手稿固有攻击 HP（表界）',bookHealingBase:'手稿固有治疗加成',bookDurationBase:'手稿固有状态延时',gearHelp:'现有槽位与材料等级，新方案晶核部位。序数仅装手稿；双持手稿优先副手。旧配置保留合法晶核和空槽。',combatAssumptions:'实际护甲与韧性=当前装备原版属性+下方额外输入。四套基础属性分别16/4、18/8、20/12、22/16；没有额外裸甲自定义倍率，也不固定假定80%减伤。晶核承伤倍率单独应用。EPF须对应所选伤害源，序数装备不可附魔；不模拟盾牌格挡、距离、击退或其他Mod。',debuffs:'剑命中状态（持续时间见上）',burstAssumption:'直击计入冷却与暴击，剑爆裂不再次乘两者；两次伤害独立过防护后共用吸收池。果糕状态持续时间按书基值和书序数延长，不计算后续中毒/凋零伤害，也不模拟普通索敌或实际飞行。甲磨损按受击前配置取期望值：原版整数预算÷晶核防护÷耐久倍率；低于1不强制扣1。'});
+Object.assign(labels.en,{gearSocketGrade:'Regional max Lv{r} · Ordinal: manuscripts only',ordinalRemoved:'Ordinal cores in legacy equipment slots were removed. Other valid cores and empty socket positions were preserved. Ordinal now fits manuscripts only.',nativeArmorTotal:'Native armor from equipped items',nativeToughnessTotal:'Native toughness from equipped items',ownArmorExtra:'Additional native armor',ownToughnessExtra:'Additional native toughness',bookInnateAttack:'Innate manuscript attack HP (normal)',bookHealingBase:'Innate manuscript healing bonus',bookDurationBase:'Innate manuscript duration bonus',gearHelp:'Existing sockets/tiers with proposal compatibility. Ordinal fits manuscripts only; offhand books take priority. Legacy imports preserve valid cores and empty sockets.',combatAssumptions:'Actual armor/toughness = native attributes of equipped items + the additional inputs below. Full sets have16/4,18/8,20/12,22/16. There is no custom bare-armor factor and no fixed80% reduction assumption. Core tolerance applies separately. EPF must match the damage source; ordinal equipment cannot be enchanted. Shield blocking, distance, knockback and other mods are excluded.',debuffs:'On-hit effects (duration shown above)',burstAssumption:'Direct hits include cooldown/crit; bursts do not apply them again. Both hits pass protection separately and share absorption. Guogao duration includes book baseline and Ordinal; subsequent Poison/Wither damage, targeting and flight are not simulated. Expected armor wear uses the pre-hit loadout: native integer budget ÷ core tolerance ÷ wear protection, retaining fractions.'});
+const c = (type,level) => ({type,level});
+const defaultState = () => ({ version:1, lang:'zh', mode:'set', selected:'mainhand', snapshot:{...E.defaults(),miningApplicable:true,submerged:false,airborne:false}, combat:{cooldown:1,critical:false,projectileDamage:8,targetArmor:0,targetToughness:0,targetResistance:0,targetEpf:0,targetBurstEpf:0,targetFactor:1,targetAbsorption:0,incoming:10,source:'mob_attack',ownArmor:0,ownToughness:0,ownResistance:0,ownEpf:0,ownAbsorption:0,startY:-64,endY:-1000,health:0,tps:20,regen:true} });
+let state = defaultState();
+const t = (key, args={}) => Object.entries(args).reduce((s,[k,v]) => s.replaceAll('{'+k+'}',v),labels[state.lang][key] || key);
+const fmt = v => Number.isFinite(v) ? new Intl.NumberFormat(state.lang==='zh'?'zh-CN':'en-US',{maximumFractionDigits:3}).format(v) : t('infinite');
+function coreName(type) { return RULES.coreNames?.[state.lang]?.[type] || coreFallback[type]?.[state.lang==='zh'?0:1] || String(type); }
+function compatible(kind,type) { if(type===8)return kind===6; if (RULES.compatibility) return !!RULES.compatibility[kind]?.[type]; if(kind===6)return true; return [kind<2,kind===1,kind===0||kind===2,kind<2,kind<6,kind===1,kind>=2&&kind<=5,kind===1,false][type]; }
+function cap(g) { return g.tier<0?0:g.kind===6?(RULES.bookSlots||[0,2,3,4,6])[g.tier]:(RULES.gearSlots||[1,2,4,6,8])[g.tier]; }
+function grade(g,type) { if(type===8&&g.kind!==6)return 0; const a=g.kind===6?(type===8?(RULES.bookOrdinalGrades||[0,2,3,3,4]):(RULES.bookRegionalGrades||[0,1,2,2,3])):(RULES.regionalGrades||[1,1,2,2,3]); return Math.min(type===8?4:3,a[g.tier]||0); }
+function normalize(value) {
+  if(!value || value.version!==1 || typeof value.snapshot!=='object')throw Error('version / snapshot');
+  const fresh=defaultState(), next={...fresh,...value,snapshot:{...fresh.snapshot,...value.snapshot},combat:{...fresh.combat,...value.combat}};
+  next.lang=next.lang==='en'?'en':'zh'; next.mode=next.mode==='single'?'single':'set'; next.selected=slots.includes(next.selected)?next.selected:'mainhand'; next.snapshot.deep=!!next.snapshot.deep;next.snapshot.miningApplicable=next.snapshot.miningApplicable!==false;next.snapshot.submerged=!!next.snapshot.submerged;next.snapshot.airborne=!!next.snapshot.airborne;
+  let trimmed=false,removedOrdinal=false;
+  for(const key of slots){const d=fresh.snapshot[key],raw=next.snapshot[key]||d;const g={...d,...raw};g.tier=Math.max(-1,Math.min(4,Math.trunc(Number(g.tier)||0)));g.kind=key==='mainhand'?([0,1,6].includes(g.kind)?g.kind:0):d.kind;g.digit=Math.max(0,Math.min(9,Math.trunc(Number(g.digit)||0)));if(g.kind===6&&g.tier===0)g.tier=-1;for(const attr of ['baseAttack','baseMining'])if(attr in g)g[attr]=Number.isFinite(Number(g[attr]))?Math.max(0,Number(g[attr])):1;
+    g.silkTouch=!!g.silkTouch;g.nativeEfficiency=g.tier<=0?Math.max(0,Math.min(5,Math.trunc(Number(g.nativeEfficiency)||0))):0;g.nativeYield=g.tier<=0?Math.max(0,Math.min(3,Math.trunc(Number(g.nativeYield)||0))):0;
+    const cs=Array.isArray(g.sockets)?g.sockets:Array.isArray(g.cores)?g.cores:[];if(g.kind!==6&&cs.some(a=>a&&Number(a.type)===8))removedOrdinal=true;g.sockets=cs.slice(0,cap(g)).map(a=>{if(!a)return null;const core={type:Math.trunc(Number(a.type)),level:Math.trunc(Number(a.level))};return core.type>=0&&core.type<=8&&core.level>=1&&core.level<=grade(g,core.type)&&compatible(g.kind,core.type)?core:null;});while(g.sockets.length<cap(g))g.sockets.push(null);g.cores=g.sockets.filter(Boolean);trimmed ||= g.cores.length!==cs.filter(Boolean).length;next.snapshot[key]=g;}
+  for(const k of Object.keys(fresh.combat)){if(typeof fresh.combat[k]==='number'){next.combat[k]=Number.isFinite(Number(next.combat[k]))?Number(next.combat[k]):fresh.combat[k];}else if(typeof fresh.combat[k]==='boolean')next.combat[k]=!!next.combat[k];}
+  if(!E.SOURCES[next.combat.source])next.combat.source='mob_attack';
+  return {state:next,trimmed,removedOrdinal};
+}
+function encode(value) { return btoa(unescape(encodeURIComponent(JSON.stringify(value)))); }
+function decode(value) { return JSON.parse(decodeURIComponent(escape(atob(value)))); }
+function persist(){try{localStorage.setItem('guogaology-simulator-v1',JSON.stringify(state));}catch(_){}try{history.replaceState(null,'','#config='+encode(state));}catch(_){} }
+function activeSnapshot(){const s=JSON.parse(JSON.stringify(state.snapshot));if(state.mode==='single')for(const key of slots)if(key!==state.selected)s[key]=E.empty(s[key].kind);return s;}
+function notice(key){$('message').textContent=t(key);}
+function safeText(node,value){node.textContent=value;return node;}
+function option(value,label){const el=document.createElement('option');el.value=value;el.textContent=label;return el;}
+function gearLabel(g){if(g.tier<0)return g.vanilla?t('vanilla')+' '+t(g.kind===1?'sword':'pick'):t('empty');return (g.tier===0?t('digit')+' '+g.digit:['ω','ε','Γ','Ω'][g.tier-1])+' '+t(g.kind===6?'book':g.kind===0?'pick':g.kind===1?'sword':['helmet','chestplate','leggings','boots'][g.kind-2]);}
+function choices(key){const out=[['empty',t('empty')]];if(key==='mainhand'){for(const kind of [0,1]){out.push(['0:'+kind,t('digit')+' '+t(kind===0?'pick':'sword')]);for(let tier=1;tier<=4;tier++)out.push([tier+':'+kind,['ω','ε','Γ','Ω'][tier-1]+' '+t(kind===0?'pick':'sword')]);for(const metal of ['iron','diamond','netherite'])out.push(['vanilla:'+kind+':'+metal,t(metal)+' '+t(kind===0?'pick':'sword')]);out.push(['vanilla:'+kind+':custom',t('vanilla')+' '+t(kind===0?'pick':'sword')]);}for(let tier=1;tier<=4;tier++)out.push([tier+':6',['ω','ε','Γ','Ω'][tier-1]+' '+t('book')]);out.push(['hand',t('hand')]);}else for(let tier=1;tier<=4;tier++)out.push([tier+':'+state.snapshot[key].kind,['ω','ε','Γ','Ω'][tier-1]+' '+t(key==='offhand'?'book':key)]);return out;}
+function currentChoice(g){return g.tier>=0?g.tier+':'+g.kind:g.vanilla?(g.vanilla==='hand'?'hand':'vanilla:'+g.kind+':'+g.vanilla):'empty';}
+function renderEditor(){
+  const tabs=$('gearTabs');tabs.replaceChildren();for(const key of slots){const btn=document.createElement('button');btn.className=key===state.selected?'active':'';btn.setAttribute('aria-pressed',String(key===state.selected));btn.append(document.createTextNode(t(key)));const small=document.createElement('small');small.textContent=gearLabel(state.snapshot[key]);btn.append(small);btn.onclick=()=>{state.selected=key;render();};tabs.append(btn);}
+  const g=state.snapshot[state.selected],select=$('gearChoice');$('gearLabel').textContent=t(state.selected);select.replaceChildren(...choices(state.selected).map(([v,l])=>option(v,l)));select.value=currentChoice(g);
+  $('digitBox').classList.toggle('hidden',g.tier!==0);$('digit').value=g.digit;$('harvest').textContent=t(g.digit<5?'stone':g.digit<8?'iron':g.digit===8?'diamond':'netherite');
+  $('vanillaBox').classList.toggle('hidden',!g.vanilla);$('baseAttack').value=g.baseAttack??1;$('baseMining').value=g.baseMining??1;
+  $('nativeBox').classList.toggle('hidden',state.selected!=='mainhand'||g.kind>1||g.tier>0);$('nativeEfficiency').value=g.nativeEfficiency||0;$('nativeYield').value=g.nativeYield||0;
+  $('silkBox').classList.toggle('hidden',state.selected!=='mainhand'||g.kind!==0||!g.cores.some(c=>c.type===2));$('silkTouch').checked=!!g.silkTouch;
+  for(const el of document.querySelectorAll('[data-mining]'))el.checked=!!state.snapshot[el.dataset.mining];
+  const n=cap(g);$('socketInfo').textContent=n?t(g.kind===6?'socketGrade':'gearSocketGrade',{r:grade(g,0),o:grade(g,8)}):t('noSockets');$('gearHelp').textContent=t(g.vanilla?'vanillaHelp':'gearHelp');const container=$('cores');container.replaceChildren();
+  for(let i=0;i<n;i++){const row=document.createElement('div');row.className='core';const label=document.createElement('span');label.className='num';label.textContent=t('slot')+' '+(i+1);row.append(label);const type=document.createElement('select'),level=document.createElement('select');type.setAttribute('aria-label',t('slot')+' '+(i+1)+' '+t('cores'));level.setAttribute('aria-label',t('slot')+' '+(i+1)+' Lv');type.append(option(-1,t('coreEmpty')));for(let j=0;j<9;j++)if(compatible(g.kind,j))type.append(option(j,coreName(j)));const existing=g.sockets?g.sockets[i]:g.cores[i];type.value=existing?.type??-1;for(let j=1;j<=grade(g,existing?.type??0);j++)level.append(option(j,'Lv'+j));level.value=existing?.level??1;level.disabled=!existing;
+    const update=()=>{const selectedType=Number(type.value),cs=g.sockets?[...g.sockets]:[...g.cores];while(cs.length<n)cs.push(null);cs[i]=selectedType<0?null:c(selectedType,Math.min(Number(level.value)||1,grade(g,selectedType)));g.sockets=cs;g.cores=cs.filter(Boolean);render();};type.onchange=update;level.onchange=update;row.append(type,level);container.append(row);}
+}
+function metric(label,value,unit=''){const d=document.createElement('div');d.className='metric';d.append(safeText(document.createElement('span'),label),safeText(document.createElement('strong'),value),safeText(document.createElement('small'),unit));return d;}
+function details(node,pairs){node.replaceChildren();for(const [key,value] of pairs)node.append(safeText(document.createElement('dt'),t(key)),safeText(document.createElement('dd'),value));}
+function chart(f){const w=560,h=150,left=38,right=18,top=12,bottom=25,maxT=Math.max(f.seconds,.5),maxHP=Math.max(1,f.maxHealth);const x=v=>left+(w-left-right)*v/maxT,y=v=>h-bottom-(h-top-bottom)*v/maxHP;const points=f.history.map(p=>x(p.seconds).toFixed(2)+','+y(p.health).toFixed(2)).join(' ');$('voidChart').innerHTML='<title>'+t('voidTitle')+'</title><desc>'+t(f.reached?'survived':'died')+'</desc><path class="axis" d="M'+left+' '+top+' V'+(h-bottom)+' H'+(w-right)+'"/><polygon class="area" points="'+left+','+(h-bottom)+' '+points+' '+x(f.seconds)+','+(h-bottom)+'"/><polyline class="curve" points="'+points+'"/><text x="'+(left-7)+'" y="'+(top+4)+'" text-anchor="end">'+fmt(maxHP)+'</text><text x="'+(left-7)+'" y="'+(h-bottom)+'" text-anchor="end">0</text><text x="'+left+'" y="'+(h-4)+'">0s</text><text x="'+(w-right)+'" y="'+(h-4)+'" text-anchor="end">'+fmt(f.seconds)+'s</text>';}
+function renderResults(){
+  const s=activeSnapshot(),e=E.calculate(s),m=E.misc(s),p=state.combat;
+  $('scope').textContent=t(state.mode==='single'?'single':'set')+' · '+t(s.deep?'deep':'normal');$('metrics').replaceChildren(metric(t('attack'),fmt(e.attack),t('hp')),metric(t('speed'),s.mainhand.kind===0?fmt(e.miningFinal):'—'),metric(t('range'),fmt(e.extraBlocks),t('blocks')),metric(t('yield'),fmt(e.yieldLevel)),metric(t('reach'),'+'+fmt(e.reach),t('blocks')),metric(t('maxHealth'),fmt(m.maxHealth),t('hp')));
+  const immunity=m.immunities;const flight=m.flight==='creative'?(s.deep?'10.89 / 87.12 / 7.50 / 60':'10.89 / 21.78 / 7.50 / 7.50'):m.flight==='slow'?'3.6 / 3.6 / 2.5 / 2.5':'—';
+  details($('misc'),[['miningFinal',s.mainhand.kind===0&&(s.mainhand.tier>=0||(s.mainhand.vanilla&&s.mainhand.vanilla!=='hand'))?fmt(e.miningFinal):'—'],['blockReach',fmt(e.actualBlockReach)+' '+t('blocks')],['entityReach',fmt(e.actualEntityReach)+' '+t('blocks')],['healthBonus','+'+fmt(e.bonusHealth)+' HP'],['wear',fmt(e.wearFactor)+'×'],['wearChance',fmt(100/e.wearFactor)+'%'],['armorWear',m.armorWear.map(fmt).join(' / ')],['regen',fmt(e.regeneration)+' HP'],['defense',fmt(e.protectionFactor)+'×'],['defenseReduction',fmt((1-1/e.protectionFactor)*100)+'%'],['oxygen',m.oxygenConsumption===0?t('infinite'):fmt(1/m.oxygenConsumption)+'×'],['jump','+'+fmt(m.jumpExtra)+' '+t('blocks')],['flight',t(m.flight==='none'?'none':m.flight)],['flightSpeeds',flight+' '+(state.lang==='zh'?'格/s':'blocks/s')],['fall',fmt(m.fallFactor)+'×'],['wall',fmt(m.wallFactor)+'×'],['night',t(m.nightVision?'yes':'none')],['fire',t(m.fireResistance?'yes':'none')],['autoTotem',t(m.autoTotem?'yes':'none')],['immune',m.immuneLevel>=2?immunity.map(v=>t(v)).join(' / '):t('none')],['efficiency',fmt(e.efficiencyLevel)+' / +'+fmt(e.efficiencyBonus)],['totalBlocks',fmt(e.totalMinedBlocks)],['silkMode',t(e.silkTouch?'silkModeOn':'fortuneMode')],['aqua',t(m.aquaAffinity?'yes':'none')],['depthStrider',fmt(m.depthStrider)],['foodFloor',m.foodFloor?fmt(m.foodFloor):'—'],['activeBook',t(e.activeBookSlot==='none'?'noneBook':e.activeBookSlot)],['bookBaseline',fmt(e.bookBase)],['stealth',fmt(m.detectionFactor*100)+'%'],['retaliation',fmt(m.retaliationChance*100)+'%']]);$('formula').textContent=t(s.deep?'formulaDeep':'formulaNormal');
+  for(const [key,value] of [['nativeArmorTotal',e.nativeArmor||0],['nativeToughnessTotal',e.nativeToughness||0],['bookInnateAttack',e.bookInnateAttackHp||0],['bookHealingBase',100*(e.bookHealingBase||0)],['bookDurationBase',100*(e.bookDurationBase||0)]])$('misc').append(safeText(document.createElement('dt'),t(key)),safeText(document.createElement('dd'),fmt(value)+(key==='bookHealingBase'||key==='bookDurationBase'?'%':'')));
+  for(const [input,label] of [['ownArmor','ownArmorExtra'],['ownToughness','ownToughnessExtra']])document.querySelector('[data-combat="'+input+'"]').previousElementSibling.textContent=t(label);
+  const out=E.combat(e,p),incoming=E.damage(p.incoming,p.source,{armor:p.ownArmor+(e.nativeArmor||0),toughness:p.ownToughness+(e.nativeToughness||0),resistance:p.ownResistance,epf:p.ownEpf,factor:e.protectionFactor,absorption:p.ownAbsorption,...m});
+  $('damageMetrics').replaceChildren(metric(t('outgoing'),fmt(out.totalHealthDamage),'HP'),metric(t('received'),fmt(incoming.healthDamage),'HP'));
+  details($('damageDetails'),[['directRaw',fmt(out.directRaw)+' HP'],['burstRaw',fmt(out.burstRaw)+' HP'],['directFinal',fmt(out.direct.beforeAbsorption)+' HP'],['burstFinal',fmt(out.burst.beforeAbsorption)+' HP'],['absorbed',fmt(out.absorbed)+' HP'],['projectileBurst',fmt(p.projectileDamage*e.projectileBurstMultiplier)+' HP'],['control',fmt(e.controlSeconds)+' '+t('seconds')],['debuffs',m.debuffs.length?m.debuffs.map(a=>t(a.effect)+' '+a.level+(a.chance?' ('+fmt(a.chance*100)+'%)':'')).join(' / '):t('none')],['wearExpected',E.armorWearBudget(s,p.incoming,p.source).map(fmt).join(' / ')]]);
+  const stages={raw:'raw',ability:'ability',armor:'armorStage',vanilla:'vanillaStage',cores:'coresStage',health:'healthStage'};const bars=$('damageBars');bars.replaceChildren();for(const a of incoming.stages){const row=document.createElement('div');row.className='barrow';const name=document.createElement('span');name.textContent=t(stages[a.stage]);const track=document.createElement('div');track.className='track';const fill=document.createElement('div');fill.className='fill';fill.style.width=(Math.max(0,Math.min(100,100*a.value/Math.max(p.incoming,1e-10))))+'%';track.append(fill);const value=document.createElement('span');value.className='value';value.textContent=fmt(a.value);row.append(name,track,value);bars.append(row);}
+  if(p.endY>=p.startY){$('voidOutcome').textContent=t('invalidFall');$('voidOutcome').className='outcome failure';$('voidDetails').textContent='';$('voidChart').replaceChildren();return;}
+  const f=E.voidForecast(s,p);$('voidOutcome').textContent=t(f.reached?'survived':'died');$('voidOutcome').className='outcome '+(f.reached?'success':'failure');$('voidDetails').textContent=t('voidResult',{t:fmt(f.seconds),y:fmt(f.y),h:fmt(f.health),n:f.hits});chart(f);
+}
+function render(){document.documentElement.lang=state.lang==='zh'?'zh-CN':'en';document.title=t('title');for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=t(el.dataset.i18n);$('language').textContent=state.lang==='zh'?'English':'中文';$('coreReference').href='core-effects-reference.html?lang='+state.lang+'&realm='+(state.snapshot.deep?'deep':'normal');$('revision').textContent='Proposal '+RULES.proposalRevision;$('testStatus').textContent=t('test',{n:BUILD.caseCount});$('mode').value=state.mode;$('realm').value=state.snapshot.deep?'deep':'normal';for(const el of document.querySelectorAll('[data-combat]')){const v=state.combat[el.dataset.combat];if(el.type==='checkbox')el.checked=v;else el.value=v;}$('source').replaceChildren(...Object.keys(E.SOURCES).map(v=>option(v,t('source_'+v))));$('source').value=state.combat.source;renderEditor();renderResults();persist();}
+function selectGear(value){const key=state.selected,old=state.snapshot[key];let g=E.empty(old.kind);if(value==='hand')g={...E.empty(0),vanilla:'hand',baseAttack:1,baseMining:1};else if(value.startsWith('vanilla:')){const [,kind,metal]=value.split(':');const b={iron:[4,6,6],diamond:[5,7,8],netherite:[6,8,9],custom:[4,6,6]}[metal];g={...E.empty(Number(kind)),vanilla:metal,baseAttack:b[Number(kind)],baseMining:b[2]};}else if(value!=='empty'){const [tier,kind]=value.split(':').map(Number);g={tier,kind,digit:old.digit||0,silkTouch:!!old.silkTouch,cores:old.cores.filter(c=>compatible(kind,c.type))};}state.snapshot[key]=g;const n=normalize(state);state=n.state;render();if(n.trimmed)notice('trimmed');}
+function preset(name){const deep=state.snapshot.deep,lang=state.lang;state=defaultState();state.lang=lang;state.snapshot.deep=deep;for(const [i,key] of slots.entries())state.snapshot[key]={tier:4,kind:[0,6,2,3,4,5][i],digit:0,cores:[]};const s=state.snapshot;
+  if(name==='defense'){for(const key of ['helmet','chestplate','leggings','boots'])s[key].cores=Array.from({length:8},()=>c(6,3));s.offhand.cores=[c(7,3),c(7,3),c(4,3),c(6,3),c(8,4),c(8,4)];}
+  if(name==='mining'){s.mainhand.cores=[c(0,3),c(0,3),c(0,3),c(0,3),c(2,3),c(3,3),c(0,3),c(0,3)];s.offhand.cores=[c(0,3),c(2,3),c(4,3),c(6,3),c(8,4),c(8,4)];s.helmet.cores=[c(4,3)];s.boots.cores=[c(4,3)];}
+  if(name==='combat'){s.mainhand.kind=1;s.mainhand.cores=[c(1,3),c(1,3),c(1,3),c(5,3),c(5,3),c(7,3),c(3,3),c(1,3)];s.offhand.cores=[c(1,3),c(7,3),c(4,3),c(6,3),c(8,4),c(8,4)];for(const key of ['helmet','chestplate','leggings','boots'])s[key].cores=[c(6,3),c(6,3),c(3,3),c(6,3)];}
+  state=normalize(state).state;render();notice('saved');}
+for(let i=0;i<=9;i++)$('digit').append(option(i,i));$('language').onclick=()=>{state.lang=state.lang==='zh'?'en':'zh';render();};$('mode').onchange=()=>{state.mode=$('mode').value;render();};$('realm').onchange=()=>{state.snapshot.deep=$('realm').value==='deep';render();};$('gearChoice').onchange=()=>selectGear($('gearChoice').value);$('digit').onchange=()=>{state.snapshot[state.selected].digit=Number($('digit').value);render();};for(const key of ['baseAttack','baseMining'])$(key).oninput=()=>{state.snapshot[state.selected][key]=Math.max(0,Number($(key).value)||0);renderResults();persist();};
+$('silkTouch').onchange=()=>{state.snapshot[state.selected].silkTouch=$('silkTouch').checked;renderResults();persist();};
+for(const key of ['nativeEfficiency','nativeYield'])$(key).oninput=()=>{const g=state.snapshot[state.selected];g[key]=Math.max(0,Math.min(key==='nativeEfficiency'?5:3,Math.trunc(Number($(key).value)||0)));renderResults();persist();};
+for(const el of document.querySelectorAll('[data-mining]'))el.onchange=()=>{state.snapshot[el.dataset.mining]=el.checked;renderResults();persist();};
+for(const el of document.querySelectorAll('[data-combat]'))el.oninput=()=>{state.combat[el.dataset.combat]=el.type==='checkbox'?el.checked:Number(el.value)||0;renderResults();persist();};$('source').onchange=()=>{state.combat.source=$('source').value;renderResults();persist();};
+for(const btn of document.querySelectorAll('[data-preset]'))btn.onclick=()=>preset(btn.dataset.preset);$('reset').onclick=()=>{const lang=state.lang;state=defaultState();state.lang=lang;render();notice('saved');};$('copyDefense').onclick=()=>{const e=E.calculate(activeSnapshot()),p=state.combat;p.targetFactor=e.protectionFactor;p.targetArmor=p.ownArmor+(e.nativeArmor||0);p.targetToughness=p.ownToughness+(e.nativeToughness||0);p.targetResistance=p.ownResistance;p.targetEpf=p.ownEpf;p.targetBurstEpf=p.ownEpf;p.targetAbsorption=p.ownAbsorption;render();};
+function showJson(){ $('jsonText').value=JSON.stringify(state,null,2);$('jsonError').textContent=t('shareNote');$('jsonDialog').showModal(); }
+$('json').onclick=showJson;$('closeDialog').onclick=()=>$('jsonDialog').close();$('importJson').onclick=()=>{try{const n=normalize(JSON.parse($('jsonText').value));state=n.state;$('jsonDialog').close();render();notice(n.removedOrdinal?'ordinalRemoved':n.trimmed?'trimmed':'saved');}catch(error){$('jsonError').textContent=t('invalidJson')+error.message;}};$('downloadJson').onclick=()=>{const a=document.createElement('a');const u=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.href=u;a.download='guogaology-equipment.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};$('share').onclick=async()=>{persist();try{await navigator.clipboard.writeText(location.href);notice('shared');}catch(_){showJson();notice('shareFallback');}};
+let initialNotice='';try{const raw=location.hash.startsWith('#config=')?decode(location.hash.slice(8)):JSON.parse(localStorage.getItem('guogaology-simulator-v1')||'null');if(raw){const n=normalize(raw);state=n.state;initialNotice=n.removedOrdinal?'ordinalRemoved':n.trimmed?'trimmed':'';}}catch(_){}
+window.addEventListener('hashchange',()=>{try{const n=normalize(decode(location.hash.slice(8)));state=n.state;render();if(n.removedOrdinal||n.trimmed)notice(n.removedOrdinal?'ordinalRemoved':'trimmed');}catch(_){}});
+// Expose read-only calculator for offline verification, never a network endpoint.
+window.GuogaologySimulator={engine:E,rules:RULES,build:BUILD,getState:()=>JSON.parse(JSON.stringify(state)),normalize};
+render();if(initialNotice)notice(initialNotice);
+})();
+</script>
+</body>
+</html>

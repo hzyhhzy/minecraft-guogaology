@@ -9,10 +9,6 @@
     "minecraft:oak_wood",
     "minecraft:stripped_oak_log",
     "minecraft:stripped_oak_wood",
-    "googology:loquat_log",
-    "googology:loquat_wood",
-    "googology:loquat_stripped_log",
-    "googology:loquat_stripped_wood",
     "googology:laver_wood",
     "googology:laver_stripped_log",
     "googology:laver_stripped_wood",
@@ -20,9 +16,6 @@
     "minecraft:dark_oak_wood",
     "minecraft:stripped_dark_oak_log",
     "minecraft:stripped_dark_oak_wood",
-    "googology:hell_loquat_log",
-    "googology:hell_loquat_wood",
-    "googology:hell_loquat_stripped_log",
-    "googology:hell_loquat_stripped_wood"
+    "#googology:dread_logs"
   ]
 }

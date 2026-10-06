@@ -10,7 +10,7 @@ public final class TerrainField {
         public final double[] weights;
         public final WaterField.Basin water;
         private final WaterField.Basin naturalWater;
-        private final double broad,medium,detail,bottom,roofTop,floor,roof;
+        private final double broad,medium,detail,bottom,roofTop,floor,roof,lhoCut;
         private final boolean landmarks;
         private final UnderworldLakes.Column clearing;
         private CaveField.Column caves;
@@ -23,6 +23,7 @@ public final class TerrainField {
             this.landmarks=landmarks;
             this.seed=seed;this.x=x;this.z=z;this.underworld=underworld;
             weights=underworld?new double[BiomeRegions.COUNT]:BiomeRegions.weights(seed,x,z);
+            lhoCut=underworld?0:BiomeRegions.lhoCoastCut(weights);
             clearing=underworld&&landmarks?UnderworldLakes.column(seed,x,z):null;
             naturalWater=WaterField.sample(seed,x,z,underworld,weights);
             water=clearing!=null?clearing.water(naturalWater):naturalWater;
@@ -82,7 +83,10 @@ public final class TerrainField {
                 double sealedFloor=-42+WorldNoise.n2(seed+929,x,z,140)*5;
                 d=Math.max(sealedFloor-y,naturalWater.floor(Math.min(Math.min(top-y,hollow),rift),y));
             }
-            else for(int kind=0;kind<weights.length;kind++) if(weights[kind]>.0001) d+=weights[kind]*shape(kind,y);
+            else {
+                for(int kind=0;kind<weights.length;kind++) if(weights[kind]>.0001) d+=weights[kind]*shape(kind,y);
+                d-=lhoCut;
+            }
             if(clearing!=null)d=clearing.density(d,y);
             return Math.min(Math.min(d,y-bottom),roofTop-y);
         }

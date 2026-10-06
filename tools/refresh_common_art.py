@@ -132,6 +132,12 @@ def portals():
 
 def main():
     matrices();absence();slice_icon();portals()
+    from generate_return_portals import generate as return_portals
+    return_portals()
+    from generate_enhancement_art import generate as enhancement_art
+    enhancement_art()
+    from sanitize_core_shells import generate as sanitize_core_surfaces
+    sanitize_core_surfaces()
     from generate_core_lod import generate
     generate()
 if __name__=='__main__':main()

@@ -11,6 +11,7 @@ public final class GoogologyClient implements ClientModInitializer {
     @Override public void onInitializeClient() {
         net.fabricmc.loader.api.FabricLoader.getInstance().getEntrypoints("guogaology:outer_client",Runnable.class).forEach(Runnable::run);
         net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.googology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
+        net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.googology.mining.MiningContent.MANUSCRIPT_MENU,EnhancementScreen::new);
         PortalAppearance.initialize();
         CoreMeshModels.initialize();
         CoreAnimationRenderer.initialize();

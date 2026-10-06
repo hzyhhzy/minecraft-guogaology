@@ -1,8 +1,7 @@
 package dev.googology.mining;
 
 import dev.googology.GoogologyMod;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.*;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,85 +11,123 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.world.World;
 import net.minecraft.entity.effect.*;
+import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import java.util.*;
 
-/** No mana, charge counter, cooldown UI or extra input. All ownership is server-side. */
+/** Offhand effects are server-owned; movement prediction reads the same item profile on the client. */
 public final class ManuscriptEffects {
     private static final String OWNED_FLIGHT="guogaology_manuscript_flight";
-    private record Flight(float speed){}
+    private static final String OWNED_NIGHT="guogaology_manuscript_night",OWNED_FIRE="guogaology_manuscript_fire";
+    private record Flight(String world){}
     private static final Map<UUID,Flight> FLIGHTS=new HashMap<>();
     private static final Set<UUID> LANDING=new HashSet<>();
+    private static final Map<UUID,Map<RegistryEntry<StatusEffect>,StatusEffectInstance>> EFFECTS=new HashMap<>();
+    private static final List<RegistryEntry<StatusEffect>> LIGHT=List.of(StatusEffects.POISON,StatusEffects.HUNGER,StatusEffects.NAUSEA,StatusEffects.WEAKNESS,StatusEffects.SLOWNESS);
+    private static final List<RegistryEntry<StatusEffect>> STRONG=List.of(StatusEffects.WITHER,StatusEffects.BLINDNESS,StatusEffects.DARKNESS);
     private ManuscriptEffects(){}
     public static boolean deep(World world){return world.getRegistryKey().equals(GoogologyMod.DIMENSION)||world.getRegistryKey().equals(GoogologyMod.GUOGAO);}
-    public static ItemStack held(LivingEntity e){var s=e.getOffHandStack();return s.getItem() instanceof DenxiManuscript?s:ItemStack.EMPTY;}
-    public static int level(ItemStack book,int type){return GearData.cores(book).stream().filter(c->GearData.type(c)==type).mapToInt(GearData::level).max().orElse(0);}
-    public static double points(LivingEntity e,int type){return GearData.points(held(e),type);}
-    public static double miningMultiplier(PlayerEntity player,ItemStack tool){
-        double original=GearData.points(tool,8),book=points(player,0);
-        return EquipmentRules.multiplier(original+book,deep(player.getWorld()))/EquipmentRules.multiplier(original,tool.getOrDefault(MiningContent.DEEP,false));
+    public static ItemStack held(LivingEntity entity){var stack=entity.getOffHandStack();return stack.getItem() instanceof DenxiManuscript?stack:ItemStack.EMPTY;}
+    public static int level(ItemStack book,int type){return EquipmentRules.highest(GearData.profile(book),type);}
+    public static double points(LivingEntity entity,int type){return GearData.points(held(entity),type);}
+    public static double miningMultiplier(PlayerEntity player,ItemStack tool,net.minecraft.block.BlockState state){return EquipmentRules.miningMultiplier(GearData.minesWithPick(tool,state)?GearData.profile(tool):List.of(),GearData.profile(held(player)),deep(player.getWorld()));}
+    public static int jumpBlocks(LivingEntity player){int count=0;for(var core:GearData.profile(held(player)))if(core.type()==3&&core.level()==1)count++;return count;}
+    private static double rise(double velocity,double gravity){double height=0;for(int i=0;i<256&&velocity>0;i++){height+=velocity;velocity=(velocity-gravity)*.98;}return height;}
+    /** Solve discrete vanilla ascent so each Lv1 adds one block, including the underworld's lower gravity. */
+    public static float jumpVelocity(PlayerEntity player,float vanilla){
+        int extra=jumpBlocks(player);double gravity=player.getFinalGravity();if(extra==0||gravity<=0)return vanilla;
+        double target=rise(vanilla,gravity)+extra,low=vanilla,high=vanilla+Math.sqrt(2*gravity*extra)+1;
+        for(int i=0;i<24;i++){double mid=(low+high)/2;if(rise(mid,gravity)<target)low=mid;else high=mid;}return (float)high;
     }
-    private static void modifier(ServerPlayerEntity p,net.minecraft.registry.entry.RegistryEntry<EntityAttribute> attribute,String id,double amount){
-        var instance=p.getAttributeInstance(attribute);if(instance==null)return;
-        var key=GoogologyMod.id(id);var old=instance.getModifier(key);
-        if(old!=null&&Math.abs(old.value()-amount)<1e-8)return;
-        instance.removeModifier(key);
-        if(amount!=0)instance.addTemporaryModifier(new EntityAttributeModifier(key,amount,EntityAttributeModifier.Operation.ADD_VALUE));
+    public static boolean ownsFlight(PlayerEntity player){return player instanceof ManuscriptFlightAccess access&&access.googology$ownsManuscriptFlight();}
+    private static boolean customFlight(PlayerEntity player){return ownsFlight(player)&&player.getAbilities().flying&&!player.hasVehicle()&&!player.isCreative()&&!player.isSpectator();}
+    public static float horizontalSpeed(PlayerEntity player,float vanilla){
+        if(!customFlight(player))return vanilla;int grade=level(held(player),3);
+        if(grade==2)return .05f/3;
+        return grade>=3?.05f*(player.isSprinting()?(deep(player.getWorld())?8:2):1):vanilla;
     }
-    private static void release(ServerPlayerEntity p){
-        var flight=FLIGHTS.remove(p.getUuid());p.removeCommandTag(OWNED_FLIGHT);if(flight==null)return;
-        p.getAbilities().setFlySpeed(flight.speed());
-        if(!p.isCreative()&&!p.isSpectator()){
-            var a=p.getAbilities();boolean flying=a.flying;a.allowFlying=false;a.flying=false;
-            if(flying&&!p.isOnGround())LANDING.add(p.getUuid());
+    public static float verticalSpeed(PlayerEntity player,float vanilla){
+        if(!customFlight(player))return vanilla;int grade=level(held(player),3);
+        return grade==2?.05f/3:grade>=3?.05f*(deep(player.getWorld())&&player.isSprinting()?8:1):vanilla;
+    }
+    public static boolean immune(LivingEntity player,RegistryEntry<StatusEffect> effect){int grade=level(held(player),7);return grade>=2&&LIGHT.contains(effect)||grade>=3&&STRONG.contains(effect);}
+    private static String effectTag(RegistryEntry<StatusEffect> type){return type.equals(StatusEffects.NIGHT_VISION)?OWNED_NIGHT:OWNED_FIRE;}
+    /** Remove our layer before a real potion overwrites it, avoiding an owned infinite hidden effect. */
+    public static void beforeEffect(LivingEntity entity,StatusEffectInstance incoming){
+        if(!(entity instanceof ServerPlayerEntity player))return;var owned=EFFECTS.get(player.getUuid());if(owned==null)return;
+        var type=incoming.getEffectType();var ours=owned.get(type);
+        if(ours!=null&&ours!=incoming&&player.getStatusEffect(type)==ours){owned.remove(type);player.removeCommandTag(effectTag(type));if(owned.isEmpty())EFFECTS.remove(player.getUuid());player.removeStatusEffect(type);}
+    }
+    private static void effect(ServerPlayerEntity player,RegistryEntry<StatusEffect> type,boolean enabled){
+        var owned=EFFECTS.get(player.getUuid());var ours=owned==null?null:owned.get(type);var current=player.getStatusEffect(type);
+        if(ours!=null&&current!=ours){owned.remove(type);player.removeCommandTag(effectTag(type));ours=null;}
+        if(owned!=null&&owned.isEmpty())EFFECTS.remove(player.getUuid());
+        if(!enabled){if(ours!=null){owned.remove(type);player.removeCommandTag(effectTag(type));player.removeStatusEffect(type);}if(owned!=null&&owned.isEmpty())EFFECTS.remove(player.getUuid());return;}
+        if(current!=null)return;
+        var added=new StatusEffectInstance(type,-1,0,false,false,true);EFFECTS.computeIfAbsent(player.getUuid(),id->new HashMap<>()).put(type,added);if(player.addStatusEffect(added))player.addCommandTag(effectTag(type));
+    }
+    private static void clearEffects(ServerPlayerEntity player){
+        var owned=EFFECTS.remove(player.getUuid());if(owned!=null)for(var entry:owned.entrySet())if(player.getStatusEffect(entry.getKey())==entry.getValue())player.removeStatusEffect(entry.getKey());
+        player.removeCommandTag(OWNED_NIGHT);player.removeCommandTag(OWNED_FIRE);
+    }
+    /** Player saves can outlive in-memory ownership after a crash; real potion replacements remove the marker. */
+    private static void recoverEffects(ServerPlayerEntity player){
+        for(var type:List.of(StatusEffects.NIGHT_VISION,StatusEffects.FIRE_RESISTANCE))if(player.getCommandTags().contains(effectTag(type))){
+            var active=player.getStatusEffect(type);if(active!=null&&active.isInfinite()&&active.getAmplifier()==0&&!active.isAmbient()&&!active.shouldShowParticles())player.removeStatusEffect(type);
+            player.removeCommandTag(effectTag(type));
         }
-        p.sendAbilitiesUpdate();
     }
-    public static void tick(ServerPlayerEntity p){
-        if(!p.isAlive()){release(p);LANDING.remove(p.getUuid());return;}
-        var book=held(p);int flight=level(book,3);
-        modifier(p,EntityAttributes.GENERIC_MOVEMENT_SPEED,"manuscript_speed",Math.min(.06,.008*points(p,5)));
-        modifier(p,EntityAttributes.GENERIC_MAX_HEALTH,"manuscript_health",Math.min(20,2*points(p,7)));
-        if(p.getHealth()>p.getMaxHealth())p.setHealth(p.getMaxHealth());
-        if(!p.isCreative()&&!p.isSpectator()&&flight>=2){
-            var a=p.getAbilities();boolean changed=false;
-            if(!a.allowFlying){FLIGHTS.put(p.getUuid(),new Flight(a.getFlySpeed()));a.allowFlying=true;p.addCommandTag(OWNED_FLIGHT);changed=true;}
-            if(FLIGHTS.containsKey(p.getUuid())){float speed=(float)(.05+(flight>=3?.02:0)+Math.min(.03,points(p,5)*.003));if(a.getFlySpeed()!=speed){a.setFlySpeed(speed);changed=true;}}
-            if(changed)p.sendAbilitiesUpdate();
-        }else release(p);
-        if(p.isOnGround()||p.isTouchingWater())LANDING.remove(p.getUuid());
-        if((flight==1||LANDING.contains(p.getUuid()))&&!p.isOnGround()){
-            p.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING,40,0,false,false,true));
-        }
-        if(p.age%80==0&&points(p,2)>0&&p.getHealth()<p.getMaxHealth())p.heal((float)Math.min(3,points(p,2)*.25));
-        // Repair is passive and bounded; no durability multiplier is applied twice.
-        if(p.age%200==0&&points(p,8)>0)for(var slot:List.of(EquipmentSlot.MAINHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET)){
-            var gear=p.getEquippedStack(slot);if(gear.isDamaged())gear.setDamage(Math.max(0,gear.getDamage()-(int)Math.ceil(points(p,8))));
-        }
+    private static void modifier(ServerPlayerEntity player,RegistryEntry<EntityAttribute> attribute,String id,double amount){
+        var instance=player.getAttributeInstance(attribute);if(instance==null)return;var key=GoogologyMod.id(id);var old=instance.getModifier(key);
+        if(old!=null&&Math.abs(old.value()-amount)<1e-8)return;instance.removeModifier(key);if(amount!=0)instance.addTemporaryModifier(new EntityAttributeModifier(key,amount,EntityAttributeModifier.Operation.ADD_VALUE));
     }
+    private static void release(ServerPlayerEntity player){
+        var flight=FLIGHTS.remove(player.getUuid());player.removeCommandTag(OWNED_FLIGHT);if(player instanceof ManuscriptFlightAccess access)access.googology$setManuscriptFlight(false);
+        if(flight==null)return;
+        if(!player.isCreative()&&!player.isSpectator()){
+            var abilities=player.getAbilities();boolean flying=abilities.flying;abilities.allowFlying=false;abilities.flying=false;
+            if(flying&&!player.isOnGround())LANDING.add(player.getUuid());
+        }
+        player.sendAbilitiesUpdate();
+    }
+    public static void tick(ServerPlayerEntity player){
+        if(!player.isAlive()){release(player);clearEffects(player);LANDING.remove(player.getUuid());return;}
+        var book=held(player);int flight=level(book,3);var old=FLIGHTS.get(player.getUuid());
+        if(old!=null&&!old.world().equals(player.getWorld().getRegistryKey().getValue().toString())){release(player);clearEffects(player);}
+        modifier(player,EntityAttributes.GENERIC_MOVEMENT_SPEED,"manuscript_speed",0);
+        modifier(player,EntityAttributes.GENERIC_ATTACK_DAMAGE,"manuscript_attack",GearData.bookAttackBonus(player));
+        modifier(player,EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE,"manuscript_block_reach",GearData.bookReachBonus(player));
+        modifier(player,EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,"manuscript_entity_reach",GearData.bookReachBonus(player));
+        modifier(player,EntityAttributes.GENERIC_MAX_HEALTH,"manuscript_health",GearData.bonusHealth(player));
+        if(player.getHealth()>player.getMaxHealth())player.setHealth(player.getMaxHealth());
+        if(!player.isCreative()&&!player.isSpectator()&&flight>=2){
+            var abilities=player.getAbilities();
+            if(!abilities.allowFlying){FLIGHTS.put(player.getUuid(),new Flight(player.getWorld().getRegistryKey().getValue().toString()));abilities.allowFlying=true;player.addCommandTag(OWNED_FLIGHT);if(player instanceof ManuscriptFlightAccess access)access.googology$setManuscriptFlight(true);player.sendAbilitiesUpdate();}
+        }else release(player);
+        if(player.isOnGround()||player.isTouchingWater())LANDING.remove(player.getUuid());
+        effect(player,StatusEffects.NIGHT_VISION,level(book,4)>=2);effect(player,StatusEffects.FIRE_RESISTANCE,level(book,5)>=2);
+        for(var active:new ArrayList<>(player.getStatusEffects()))if(immune(player,active.getEffectType()))player.removeStatusEffect(active.getEffectType());
+        if(player.age%80==0&&player.getHealth()<player.getMaxHealth()){double healing=EquipmentRules.regen(GearData.profile(book));if(healing>0)player.heal((float)healing);}
+    }
+    public static boolean fallImmune(LivingEntity player){return level(held(player),3)>=2||LANDING.contains(player.getUuid());}
     public static void initialize(){
         ServerPlayConnectionEvents.JOIN.register((handler,sender,server)->{
-            var p=handler.player;
-            if(p.getCommandTags().contains(OWNED_FLIGHT)){
-                p.removeCommandTag(OWNED_FLIGHT);
-                if(!p.isCreative()&&!p.isSpectator()){p.getAbilities().allowFlying=false;p.getAbilities().flying=false;p.getAbilities().setFlySpeed(.05f);p.sendAbilitiesUpdate();p.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING,200,0,false,false,true));}
-            }
+            var player=handler.player;
+            recoverEffects(player);
+            if(player.getCommandTags().contains(OWNED_FLIGHT)){player.removeCommandTag(OWNED_FLIGHT);if(!player.isCreative()&&!player.isSpectator()){player.getAbilities().allowFlying=false;player.getAbilities().flying=false;LANDING.add(player.getUuid());player.sendAbilitiesUpdate();}}
+            tick(player);
         });
-
-        ServerTickEvents.END_SERVER_TICK.register(s->{for(var p:s.getPlayerManager().getPlayerList())tick(p);});
-        ServerPlayConnectionEvents.DISCONNECT.register((handler,server)->{release(handler.player);LANDING.remove(handler.player.getUuid());});
-        ServerLifecycleEvents.SERVER_STOPPING.register(s->{for(var p:s.getPlayerManager().getPlayerList())release(p);FLIGHTS.clear();LANDING.clear();});
+        ServerTickEvents.END_SERVER_TICK.register(server->{for(var player:server.getPlayerManager().getPlayerList())tick(player);});
+        ServerPlayConnectionEvents.DISCONNECT.register((handler,server)->{release(handler.player);clearEffects(handler.player);LANDING.remove(handler.player.getUuid());});
+        ServerLifecycleEvents.SERVER_STOPPING.register(server->{for(var player:server.getPlayerManager().getPlayerList()){release(player);clearEffects(player);}FLIGHTS.clear();LANDING.clear();EFFECTS.clear();});
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity,source,amount)->!(entity instanceof ServerPlayerEntity)||!(source.isOf(DamageTypes.FALL)&&fallImmune(entity)||source.isOf(DamageTypes.FLY_INTO_WALL)&&level(held(entity),3)>=3));
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity,source,damage)->{
-            if(!(entity instanceof ServerPlayerEntity p)||source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)||level(held(p),7)<2)return true;
-            // Vanilla hand-held totems are checked first by LivingEntity. Only a lethal hit
-            // that still reaches this callback may consume ONE inventory totem.
-            for(int i=0;i<p.getInventory().size();i++){
-                var stack=p.getInventory().getStack(i);if(!stack.isOf(Items.TOTEM_OF_UNDYING))continue;
-                stack.decrement(1);p.setHealth(1);p.clearStatusEffects();
-                p.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,900,1));
-                p.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION,100,1));
-                p.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE,800,0));
-                p.getWorld().sendEntityStatus(p,(byte)35);return false;
+            if(!(entity instanceof ServerPlayerEntity player)||source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)||level(held(player),7)<2)return true;
+            for(int i=0;i<player.getInventory().size();i++){
+                var stack=player.getInventory().getStack(i);if(!stack.isOf(Items.TOTEM_OF_UNDYING))continue;
+                stack.decrement(1);player.setHealth(1);clearEffects(player);player.clearStatusEffects();
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,900,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION,100,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE,800,0));player.getWorld().sendEntityStatus(player,(byte)35);return false;
             }
             return true;
         });

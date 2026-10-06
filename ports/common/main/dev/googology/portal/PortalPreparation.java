@@ -13,63 +13,104 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-/** Only schedules chunk work; never blocks the server tick by joining an unfinished future. */
+/** Bounded asynchronous loading; only a real travel request is allowed to build an exit. */
 public final class PortalPreparation {
-    private PortalPreparation() {}
+    public static final int MAX_PREPARATIONS=8,TIMEOUT_TICKS=600,SEARCH_BUDGET=8;
+    public enum Status { WAITING, READY, FAILED }
+    public record Result(Status status,BlockPos exit) {}
+    private static final Result WAITING=new Result(Status.WAITING,null),FAILED=new Result(Status.FAILED,null);
     private static final TicketType TICKET=net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.TICKET_TYPE,
             GoogologyMod.id("gate_prepare"),new TicketType(100,TicketType.FLAG_LOADING|TicketType.FLAG_KEEP_DIMENSION_ACTIVE));
-    /** Load and register the ticket before Minecraft freezes its registries. */
+    private static final Map<PortalState.Gate,Warming> CACHE=new LinkedHashMap<>();
+    private record TicketKey(ServerLevel world,ChunkPos chunk) {}
+    private static final Map<TicketKey,Integer> USERS=new HashMap<>();
+    private static long budgetTick=Long.MIN_VALUE;
+    private static int remaining;
+    private PortalPreparation() {}
     public static void initialize(){}
-    private static final Map<PortalState.Gate,Warming> CACHE=new HashMap<>();
     private static final class Warming {
-        final PortalTravel.Target target;final BlockPos planned;
+        final PortalTravel.Target target;
         final Map<ChunkPos,CompletableFuture<ChunkResult<ChunkAccess>>> chunks=new LinkedHashMap<>();
-        BlockPos exit;long touched,retryAfter;boolean failed;
-        Warming(PortalTravel.Target target){
-            this.target=target;
-            var known=PortalTravel.knownGate(target.world(),target.desired(),target.kind());
-            planned=known==null?PortalTravel.boundedCenter(target.desired()):known.center();
+        long started,touched;
+        boolean requested,failed;
+        PortalSiteSearch search;
+        BlockPos exit;
+        Warming(PortalTravel.Target target,long now){
+            this.target=target;started=touched=now;
+            int cx=target.desired().getX()>>4,cz=target.desired().getZ()>>4;
             var manager=target.world().getChunkSource();
-            for(int x=(planned.getX()-4)>>4;x<=(planned.getX()+4)>>4;x++)for(int z=(planned.getZ()-4)>>4;z<=(planned.getZ()+4)>>4;z++){
-                var pos=new ChunkPos(x,z);manager.addTicketWithRadius(TICKET,pos,2);
-                chunks.put(pos,manager.getChunkFuture(x,z,ChunkStatus.FULL,true));
+            for(int x=cx-1;x<=cx+1;x++)for(int z=cz-1;z<=cz+1;z++){
+                var chunk=new ChunkPos(x,z);USERS.merge(new TicketKey(target.world(),chunk),1,Integer::sum);
+                manager.addTicketWithRadius(TICKET,chunk,2);
+                try{chunks.put(chunk,manager.getChunkFuture(x,z,ChunkStatus.FULL,true));}
+                catch(RuntimeException error){chunks.put(chunk,CompletableFuture.failedFuture(error));}
             }
         }
+        void release(){
+            for(var chunk:chunks.keySet()){
+                var key=new TicketKey(target.world(),chunk);int left=USERS.getOrDefault(key,1)-1;
+                if(left<=0){USERS.remove(key);target.world().getChunkSource().removeTicketWithRadius(TICKET,chunk,2);}
+                else USERS.put(key,left);
+            }
+            // Minecraft may share these futures with other consumers: never cancel a chunk future.
+        }
     }
-    public static BlockPos ready(ServerLevel source,PortalState.Gate gate){
-        var target=PortalTravel.target(source,gate.kind(),gate.center());if(target==null)return null;
+    private static Warming warming(ServerLevel source,PortalState.Gate gate,boolean requested){
+        long now=source.getServer().getTickCount();var warm=CACHE.get(gate);
+        if(warm==null){
+            var target=PortalTravel.target(source,gate.kind(),gate.center());if(target==null)return null;
+            if(CACHE.size()>=MAX_PREPARATIONS){
+                var idle=CACHE.entrySet().stream().filter(e->!e.getValue().requested).min(Comparator.comparingLong(e->e.getValue().touched)).orElse(null);
+                if(idle==null)return null;cancel(idle.getKey());
+            }
+            warm=new Warming(target,now);CACHE.put(gate,warm);
+        }
+        if(requested&&!warm.requested)warm.started=now;
+        warm.touched=now;warm.requested|=requested;return warm;
+    }
+    public static void prewarm(ServerLevel source,PortalState.Gate gate){warming(source,gate,false);}
+    static void begin(ServerLevel source,PortalState.Gate gate){warming(source,gate,true);}
+    public static Result prepare(ServerLevel source,PortalState.Gate gate){
+        if(PortalTravel.target(source,gate.kind(),gate.center())==null)return FAILED;
+        var warm=warming(source,gate,true);if(warm==null)return WAITING;
         long now=source.getServer().getTickCount();
-        var warm=CACHE.computeIfAbsent(gate,k->new Warming(target));warm.touched=now;
-        if(warm.failed){if(now>=warm.retryAfter)CACHE.remove(gate);return null;}
-        warm.retryAfter=now+100;
-        for(var e:warm.chunks.entrySet()){
-            var manager=target.world().getChunkSource();manager.addTicketWithRadius(TICKET,e.getKey(),2);
-            if(!e.getValue().isDone())return null;
-            try{if(!e.getValue().join().isSuccess()){warm.failed=true;return null;}}
-            catch(RuntimeException error){warm.failed=true;GoogologyMod.LOGGER.warn("Gate destination could not finish loading",error);return null;}
-            if(manager.getChunkNow(e.getKey().x,e.getKey().z)==null){CACHE.remove(gate);return null;}
+        if(warm.failed||now-warm.started>TIMEOUT_TICKS)return FAILED;
+        for(var entry:warm.chunks.entrySet()){
+            var future=entry.getValue();if(!future.isDone())return WAITING;
+            try{if(!future.join().isSuccess()){warm.failed=true;return FAILED;}}
+            catch(RuntimeException error){warm.failed=true;GoogologyMod.LOGGER.debug("Gate destination loading failed",error);return FAILED;}
+            if(warm.target.world().getChunkSource().getChunkNow(entry.getKey().x,entry.getKey().z)==null)return WAITING;
         }
+        if(budgetTick!=now){budgetTick=now;remaining=SEARCH_BUDGET;}
         if(warm.exit!=null){
-            var exitGate=new PortalState.Gate(target.world().dimension().identifier().toString(),warm.exit,target.kind());
-            if(PortalRitual.complete(target.world(),exitGate)&&PortalTravel.isSafe(target.world(),warm.exit.offset(0,0,3)))return warm.exit;
-            warm.exit=null;
+            if(remaining==0)return WAITING;remaining--;
+            if(PortalRitual.complete(warm.target.world(),new PortalState.Gate(warm.target.world().dimension().identifier().toString(),warm.exit,warm.target.kind()))
+                    &&PortalTravel.isSafe(warm.target.world(),warm.exit.offset(0,0,3)))return new Result(Status.READY,warm.exit);
+            warm.exit=null;warm.search=null;
         }
-        long started=System.nanoTime();
-        warm.exit=PortalTravel.ensureGate(target.world(),warm.planned,target.kind());
-        GoogologyMod.LOGGER.debug("Gate exit prepared at {} in {} ms",warm.exit,(System.nanoTime()-started)/1_000_000);
-        warm.failed=warm.exit==null;return warm.exit;
+        if(warm.search==null)warm.search=new PortalSiteSearch(warm.target);
+        while(remaining>0&&!warm.search.finished()){remaining--;warm.search.step();}
+        if(!warm.search.finished())return WAITING;
+        warm.exit=warm.search.exit();if(warm.exit==null){warm.failed=true;return FAILED;}
+        return new Result(Status.READY,warm.exit);
     }
-    static void tick(MinecraftServer server){
-        if(server.getTickCount()%10!=0)return;
-        CACHE.entrySet().removeIf(e->server.getTickCount()-e.getValue().touched>200);
+    public static void cancel(PortalState.Gate gate){var warm=CACHE.remove(gate);if(warm!=null)warm.release();}
+    static void tick(MinecraftServer server,Set<PortalState.Gate> active){
+        long now=server.getTickCount();
+        for(var entry:new ArrayList<>(CACHE.entrySet())){
+            var warm=entry.getValue();warm.requested=active.contains(entry.getKey());
+            if(!warm.requested&&now-warm.touched>40){cancel(entry.getKey());continue;}
+            if(now%20==0)for(var chunk:warm.chunks.keySet())warm.target.world().getChunkSource().addTicketWithRadius(TICKET,chunk,2);
+        }
+        if(now%10!=0)return;
         var gates=PortalState.get(server).gates();
         for(var player:server.getPlayerList().getPlayers()){
             String dimension=player.level().dimension().identifier().toString();
             gates.stream().filter(g->g.dimension().equals(dimension)&&Math.abs(player.getY()-g.center().getY())<20
                     &&player.distanceToSqr(Vec3.atCenterOf(g.center()))<48*48)
                     .sorted(Comparator.comparingDouble(g->player.distanceToSqr(Vec3.atCenterOf(g.center())))).limit(2)
-                    .forEach(g->ready(player.level(),g));
+                    .filter(g->PortalRitual.complete(player.level(),g)).forEach(g->prewarm(player.level(),g));
         }
     }
-    static void clear(){CACHE.clear();}
+    static void clear(){for(var gate:new ArrayList<>(CACHE.keySet()))cancel(gate);USERS.clear();budgetTick=Long.MIN_VALUE;}
 }

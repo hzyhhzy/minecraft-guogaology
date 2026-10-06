@@ -15,6 +15,7 @@ import java.util.*;
 
 public final class MiningContent {
     public static final net.minecraft.screen.ScreenHandlerType<EnhancementMenu> ENHANCEMENT_MENU=Registry.register(Registries.SCREEN_HANDLER,GoogologyMod.id("enhancement"),new net.minecraft.screen.ScreenHandlerType<>(EnhancementMenu::new,net.minecraft.resource.featuretoggle.FeatureFlags.VANILLA_FEATURES));
+    public static final net.minecraft.screen.ScreenHandlerType<EnhancementMenu> MANUSCRIPT_MENU=Registry.register(Registries.SCREEN_HANDLER,GoogologyMod.id("manuscript"),new net.minecraft.screen.ScreenHandlerType<>(ManuscriptMenu::new,net.minecraft.resource.featuretoggle.FeatureFlags.VANILLA_FEATURES));
     public static final ComponentType<List<ItemStack>> CORES=Registry.register(Registries.DATA_COMPONENT_TYPE,GoogologyMod.id("installed_cores"),ComponentType.<List<ItemStack>>builder().codec(ItemStack.OPTIONAL_CODEC.listOf(0,EquipmentRules.MAX_SOCKETS)).build());
     public static final ComponentType<Double> DIGIT=Registry.register(Registries.DATA_COMPONENT_TYPE,GoogologyMod.id("tool_digit"),ComponentType.<Double>builder().codec(Codec.doubleRange(0,9)).build());
     public static final ComponentType<Integer> RULES=Registry.register(Registries.DATA_COMPONENT_TYPE,GoogologyMod.id("equipment_rules"),ComponentType.<Integer>builder().codec(Codec.INT).build());
@@ -47,7 +48,7 @@ public final class MiningContent {
                 item(id,gear);TOOLS[tier][kind]=gear;GEAR.put(gear,new GearSpec(tier,kind));
             }
         }
-        for(int rank=1;rank<=3;rank++){String id="enhancement_table"+(rank==1?"":"_"+rank);TABLES[rank-1]=block(id,new EnhancementTable(AbstractBlock.Settings.create().strength(3,6),rank));}
+        for(int rank=1;rank<=3;rank++){String id="enhancement_table"+(rank==1?"":"_"+rank);TABLES[rank-1]=block(id,new EnhancementTable(AbstractBlock.Settings.create().strength(3,6).nonOpaque(),rank));}
         for(int tier=1;tier<=4;tier++){String id=EquipmentRules.MINERALS[tier-1]+"_manuscript";
             Item book=item(id,new DenxiManuscript(new Item.Settings().maxCount(1).component(CORES,List.of()),tier));GEAR.put(book,new GearSpec(tier,6));
         }

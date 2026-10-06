@@ -1,6 +1,80 @@
 # Guogaology 验证记录
 
-最新验证日期：2026-10-05。
+最新验证日期：2026-10-06。
+
+## 0.3.11：九核职责、无耐久手稿与强化模拟器
+
+四版发行／源码JAR编译与打包通过；资源2,199项、双语387组键、132条配方、61份模板及28款晶核审计通过。14项Python回归、76项纯Java断言通过；模拟器与Java对612组配置完成9,192次数值检查，实际无头Edge中文／英文桌面及移动布局通过。
+
+独立隐藏 fo262 /26.2 的最终 `effects-041-g` 正常保存退出，累计1,729项计数断言。本轮450项检查覆盖实际采集增产、战斗爆裂、氧气、无耐久手稿直接存取、两手副手优先、跳跃／飞行、真实状态效果、虚空／声波伤害入口、耐久掉核与禁附魔。铁砧材料修理和改名保留；真实落点往返、安全取消、旧世界景物及64格内动画／外侧静态回归通过。最终手稿界面截图已核对。
+
+飞行竖直值与跨维度坠落阈值经函数／入口验证，未声称完成自然整段坠落或监守者AI战斗；速度为20TPS模型值。其他三版只编译／静态审计。详细证据、公式与范围见 [WORK-041.md](WORK-041.md)。
+
+正常游戏关闭后已将同一实测包安装到 fo262，SHA-256为 `9fb7dd96318afc964f15fffbe48948f370591a32ae4d2e761f876b2763e0c086`。旧包备份到 `build/backups/fo262-before-0.3.11/`，仅一个主Mod，其他55个文件未变。未推送或发布GitHub。
+
+All four targets compile. Hidden Minecraft 26.2 passes 1,729 counted assertions, including 450 new gameplay and manuscript checks, plus existing generation and rendering regressions. The offline simulator matches Java across 9,192 comparisons. The exact tested JAR is installed in normal fo262; the old main JAR is backed up and other 55 files remain unchanged. Natural full-descent survival and competing third-party flight grants are outside the verified runtime scope.
+
+## 0.3.10：静态远核、强化叠加与安全传送
+
+四版最终发行／源码包构建通过，资源2,199项、双语370组键、132条配方和14项Python回归通过。数字镐采集能力按0～4石、5～7铁、8钻石、9下界合金；工具与副手手稿挖速点数合并一次，原版挖速机制继续生效。基础最大耐久不变，装备分枝与副手序数点数相加后按D＝(1＋2p)²降低消耗概率，所有维度一致，原版耐久附魔保留。Laver经验加成移除，暂不启用替代强化功能，仍可演奏／融合，已有的可拆回。探索进度未加入。
+
+`fixes-040-b`在独立隐藏fo262 / 26.2使用最终发行JAR通过1,511项计数断言，另通过既有海岸、实际景物、手稿保命和晶核距离检查。实际传送往返与未访问目的地成功，箱子未被覆盖；失败、超时、破框、离开和切换世界均取消，附近预热不建出口。晶核12格处18个移动内核正常动画，65／100格处18个缓存静态内核实际提交且各一批；28款烘焙体完整，序数Lv2保留原固定模型。三张实拍已检查，正常保存退出。
+
+最终测试26.2包SHA-256为 `63499b1dacf15b10ee21576c320658dda936bd0d458a31cb82e370166e46984b`。其他三版只编译／静态检查，未启动客户端、服务器或GameTest。完整清单、测试修正和安装结果见 [WORK-040.md](WORK-040.md)。
+
+All four final targets build. Hidden Minecraft 26.2 passes 1,511 counted assertions, existing generation regressions, bounded silent travel and actual 12/65/100-block body submissions. Durability uses combined probabilistic wear protection, Laver enhancement is disabled, and exploration progression remains deferred.
+
+独立隐藏`voxy-040-a`使用同一最终包，实际Voxy烘焙通过208种方块、2,680种状态、2,265个模型及全部28款晶核，没有不可见模型或烘焙失败；近景截图已核对并正常退出。新鲜进程检查确认正常游戏已关闭，0.3.10已安装到fo262，与上述实测SHA-256一致。旧包备份至`build/backups/fo262-before-0.3.10/`，只有一个主Mod，其他55个文件哈希未变。
+
+The installed Voxy baker validates all 28 core appearances and 2,265 models. The exact tested release is installed in normal fo262 after a fresh process check, with the previous main JAR backed up and the other 55 files unchanged.
+
+## 0.3.9：固定返程框与归途签
+
+三种返程框的原料均保持4份基材＋1块木板，每次产出1个；归途签采用木板在上、木棍在下的有序配方，产出1张。十二个同款框架加一张归途签分别从表界返回主世界、里界返回表界、地府返回里界。旧石土框架、混搭框架与错误祭品不会激活，前进仪式及自动反向门保留。
+
+四版发行包／源码包构建与最终配方校验通过，资源图2,199项、双语369组键、132条配方和14项Python回归通过。`returns-039-b`在独立隐藏fo262 / 26.2中使用最终发行JAR，实际通过185项机制／模板、413项返程／配方、436项材质、145项维护及26项圣诞树检查，共1,205项断言，另通过既有海岸、真实景物生成与手稿保命回归。14种实际木板均能制作归途签；原版木棍和压力板配方不冲突。三套未激活门框、三套激活门面和最终归途签实拍已核对，测试正常保存退出。其他三版仅编译／资源验证，没有启动客户端、服务器或GameTest。
+
+最终测试包与安装包SHA-256均为 `c906fb4b7fba62fb72434b3fea5ce3a543a76b73f0c50a58639b28471e548dd6`。新鲜进程检查确认正常游戏已关闭，0.3.9已安装到fo262；旧主Mod备份在 `build/backups/fo262-before-0.3.9/`，只保留一个主Mod，其他55个文件哈希未变。本版包含下方0.3.8修复；详见 [WORK-039.md](WORK-039.md)。
+
+All four targets build. Hidden Minecraft 26.2 passes 1,205 assertions, existing world-generation regressions and clean shutdown; final frame outputs are one each and the token recipe preserves vanilla wood recipes. The exact tested release is installed in fo262, with the old main JAR backed up and other files unchanged.
+
+## 0.3.8：C1 立体浮雕与表界圣诞树材质
+
+已直接核对原0.2.16模型与C1展厅网格：332个长方体、1992个面，顶点集合相同。三阶空集恢复主层真实厚度、侧壁和原六面材质，不再以正视贴图替代；原74盒的180格占据、缺口、面积与体积核查通过。二／三级每个运动部件有闭合实体体积，固定外框无实质叠面。原始研究见 [C1-STRUCTURE.md](C1-STRUCTURE.md)。
+
+四版发行包／源码包构建与校验通过，14项Python回归、资源2179项、双语365组键通过。`corrections-038-a`通过810项机制／材质／维护／树形检查及原有海岸回归；已检查原树叶与云杉树干、空集近侧视和0／10／21秒动画实拍。`voxy-038-a`烘焙205方块／2677状态／2262模型及28款晶核，所有方向可见，没有空或不可见模型；近处截图已查看。两个独立隐藏26.2客户端均正常保存退出，其他三版仅编译／资源校验。
+
+实测与最终26.2包SHA-256均为 `3e83f941a123112751b16e7109cff5c6e5a990e6e4730c1a89b7147d15f9bd4f`。正常fo262仍在运行，安装器主动延期，当前唯一主Mod仍为0.3.7、哈希未变；不会强制关闭游戏。完整记录见 [WORK-038.md](WORK-038.md)。返程门仍使用现有规则，新固定材料方案只记录在 [RETURN-PORTAL-PROPOSAL.md](RETURN-PORTAL-PROPOSAL.md)。
+
+All four targets build. The hidden 26.2 release passes 810 assertions and boundary regressions; the installed Voxy baker validates every model and all 28 core grades. C1 occupied volume and directional material checks pass. Installation is deferred while normal fo262 remains open.
+
+## 0.3.7：木材清理、强化台与空集晶核
+
+四版构建和发行包校验通过：1.21.1、1.21.11、26.2、26.3。运行验证仍只用独立隐藏 fo262 / 26.2，不捕获鼠标，不使用正常存档。资源图2,179项、双语364组键，无缺失引用、未引用资源和格式冲突；14项Python回归通过。
+
+- `maintenance-037-a`：203项机制／模板、434项材质、145项维护、25项树形检查，共807项，另通过0.3.6海岸、真实空气间隙与混杂素面果糕回归。实际加载的高级／终极强化台和机柜配方、三种强化菜单、原版木板兼容、冥杉火焰／燃料／船实体规则，以及保留枇杷树叶的水果掉落均通过。
+- 表界小圣诞树实际生成保留7／8／9／10格树干样本，整体9～12格；底部树冠更宽、顶部更窄，保留原高度和放置分布。实拍核对层叠锥形树冠、三种新强化台、冥杉木板，以及空集晶核两个独立动画时刻。
+- 28款实际网格经过三角形级共面检查和独立GEOS复核，无实质同部件同向叠面，固定外壳也无实质叠面。保留505对正常双面结构，极微小坐标舍入残差单独记录；离线生成器可重复再生，二次处理不再变化。修复不依赖运行时模型加工。
+- `voxy-037-a`：使用用户安装的Voxy烘焙器检查204种方块、2,676种状态、2,261种不同模型；28款晶核六向均可见，没有空模型或不可见变体。已查看近处截图，游戏正常保存退出。
+- 从四版最终JAR重建配方总表：128条配方，无重复输入组、无无法解析的名称，四版逻辑配方一致。
+
+两轮实测与安装包SHA-256均为 `ce66c432916bc5b7ba9f20da2184040526f27796ca8c3c097bf9ed6a47e7bc43`。游戏关闭后已装入正常fo262，旧包备份至 `build/backups/fo262-before-0.3.7/`，确认只有一个主Mod，其他55个文件哈希不变。详见 [WORK-037.md](WORK-037.md)。
+
+All four targets build. Hidden Minecraft 26.2 passes 807 mechanics/material/maintenance/tree assertions plus the existing boundary regressions. The installed Voxy baker renders all 28 core grades and all current model variants. The tested release is installed in fo262; the old JAR is backed up. Other targets are compile/resource checked only.
+
+## 0.3.6：LHO 海岸与素面果糕
+
+四版构建及发行包校验通过；运行验证仅使用独立隐藏 fo262 / 26.2。`boundaries-036-d` 通过原有676项机制、模板与材质检查，以及新增的边界、真实区块和素面果糕检查，正常保存退出。资源图2402项、双语407组键，无缺失引用和格式冲突。
+
+- 表界仍为 `lho_edge`，只保留真实虚空周围48格内的边缘带；原来远离虚空的边缘片区恢复正常群系及其地表景物。对16.78 km²范围做每16格一次的群系源采样，原10030个边缘点中6342个恢复为普通陆地，3688个保留为海岸，7011个原虚空点不变。这里是群系源采样，不是完整生成16.78 km²区块。临界气候参数并列时按声明顺序选择，额外检查不受此前查询顺序影响。
+- 里界在现有LHO边界两侧连续削坡，不加群系，中心为真实空气。486根采样列通过4×8×4插值密度与水体检查；另外实际生成并完成装饰的一根区块列在376个检查高度上均为空气。大型景物与巨构整件避让。
+- 四色素面果糕保留原磨砂半透明主体，移除全部表情浮雕。表界每块果糕独立80%素面／20%表情，允许同桌混杂；不增加桌子的果糕数量。10000次选择中8034块为素面；真实桌子四朝向生成获得293块素面、67块表情，19张桌子同时包含两种。四种新方块的创造栏、掉落、食材标签和门框用途均通过检查，游戏截图已核对。
+
+完整清单、实现说明与检查记录见 [WORK-036.md](WORK-036.md)。只影响新生成地形和自然摆放；未修改旧存档或Voxy光照设置。
+
+`boundaries-036-close` 补拍了较近的里界交界，确认玻璃岸与相邻大陆之间是开放空隙；三幅专项截图和正常退出检查通过。确认游戏关闭后已安装0.3.6到正常fo262，SHA-256为 `2d11105d1726ec7b775ac54b80334e32bb41858274947b7d678db43b7f369f58`，与两轮实测包相同。旧包位于 `build/backups/fo262-before-0.3.6/`，仅一个主模组，其他55个文件哈希未变。
+
+All four targets build. Hidden Minecraft 26.2 passes the existing 676 checks plus bounded-coast, actual-air-gap, and mixed-gummy tests. Each outer-table gummy independently chooses 80% plain and 20% embossed, with the original quantity distribution preserved. Existing chunks are not rewritten.
 
 ## 0.3.5：统一命名空间、门与手稿美术、Voxy 远景
 

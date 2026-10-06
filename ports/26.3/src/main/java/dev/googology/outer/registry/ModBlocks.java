@@ -36,7 +36,9 @@ public final class ModBlocks {
    private static final Map<String, Block> BY_ID_BUILD = new LinkedHashMap<>();
    private static final List<Block> ORDERED_BUILD = new ArrayList<>();
    private static final Set<Block> NO_ITEM_BLOCKS = new HashSet<>();
-   public static final List<String> WOOD_IDS = List.of("christmas", "loquat", "laver", "hell_christmas", "hell_loquat");
+   public static final List<String> WOOD_IDS = List.of("laver", "dread");
+   public static final List<String> FOLIAGE_IDS = List.of("loquat", "hell_loquat");
+   public static final Block CHRISTMAS_LEAVES;
    public static final List<String> WOOD_SHAPES = List.of("log", "wood", "stripped_log", "stripped_wood", "planks", "leaves", "sapling", "stairs", "slab");
    public static final Block ORDINAL_STONE;
    public static final Block HELL_ORDINAL_STONE;
@@ -87,6 +89,7 @@ public final class ModBlocks {
    public static Block wood(String var0, String var1) {
       String var2 = woodBlockId(var0, var1);
       Block var3 = BY_ID.get(var2);
+      if (var3 == null && GoogologyMod.shared(var2)) return BuiltInRegistries.BLOCK.getValue(GoogologyMod.id(var2));
       if (var3 == null) {
          throw new IllegalArgumentException("Unregistered wood block: " + var2 + " (check woodId/shape)");
       } else {
@@ -104,6 +107,21 @@ public final class ModBlocks {
 
    public static void initialize() {
       ModWoodDecorBlocks.initialize();
+      net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(CHRISTMAS_LEAVES,30,60);
+      for (String family : FOLIAGE_IDS) {
+         net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(wood(family,"leaves"),30,60);
+         net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(wood(family,"sapling"),5,20);
+      }
+      net.fabricmc.fabric.api.item.v1.BlockTransformerHelper.registerStripping(wood("dread","log"),wood("dread","stripped_log"));
+      net.fabricmc.fabric.api.item.v1.BlockTransformerHelper.registerStripping(wood("dread","wood"),wood("dread","stripped_wood"));
+      for (String family : WOOD_IDS) {
+         if (family.equals("dread")) continue;
+         for (var entry : BY_ID.entrySet()) {
+            if (!entry.getKey().startsWith(family + "_")) continue;
+            boolean leaves=entry.getKey().endsWith("_leaves");
+            net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(entry.getValue(),leaves?30:5,leaves?60:20);
+         }
+      }
    }
 
    private static void registerWood(String var0, String var1) {
@@ -181,9 +199,23 @@ public final class ModBlocks {
          .isSuffocating((var0, var1, var2) -> false);
    }
 
+   public static net.minecraft.world.item.Item.Properties woodItemProperties(String name) {
+      var properties=new net.minecraft.world.item.Item.Properties();
+      return name.startsWith("dread_")?properties.fireResistant():properties;
+   }
+
+   public static Properties woodProperties(String name, Properties properties) {
+      if (name.equals("christmas_leaves")) return properties.ignitedByLava();
+      for (String family : WOOD_IDS)
+         if (name.startsWith(family + "_") && !family.equals("dread")) return properties.ignitedByLava();
+      for (String family : FOLIAGE_IDS)
+         if (name.startsWith(family + "_")) return properties.ignitedByLava();
+      return properties;
+   }
+
    private static Block registerItem(String var0, Function<Properties, Block> var1, Properties var2) {
       if(GoogologyMod.shared(var0))return index(var0,BuiltInRegistries.BLOCK.getValue(GoogologyMod.id(var0)));
-      return index(var0, register(BlockItemId.create(GoogologyMod.id(var0), GoogologyMod.id(var0)), var1, var2));
+      return index(var0, register(BlockItemId.create(GoogologyMod.id(var0), GoogologyMod.id(var0)), var1, woodProperties(var0,var2)));
    }
 
    private static Block registerNoItem(String var0, Function<Properties, Block> var1, Properties var2) {
@@ -196,7 +228,7 @@ public final class ModBlocks {
 
    private static Block register(BlockItemId var0, Function<Properties, Block> var1, Properties var2) {
       Block var3 = register(var0.block(), var1, var2);
-      BlockItem var4 = new BlockItem(var3, new net.minecraft.world.item.Item.Properties().useBlockDescriptionPrefix().setId(var0.item()));
+      BlockItem var4 = new BlockItem(var3, woodItemProperties(var0.item().identifier().getPath()).useBlockDescriptionPrefix().setId(var0.item()));
       Registry.register(BuiltInRegistries.ITEM, var0.item(), var4);
       return var3;
    }
@@ -227,6 +259,10 @@ public final class ModBlocks {
             registerWood(var1, var3);
          }
       }
+
+      for (String family : FOLIAGE_IDS) {registerWood(family,"leaves");registerWood(family,"sapling");}
+      CHRISTMAS_LEAVES = registerItem("christmas_leaves", Block::new,
+         Properties.of().strength(0.2F,0.2F).sound(SoundType.GRASS).noOcclusion());
 
       ORDINAL_STONE = registerItem("ordinal_stone", Block::new, stoneProperties(1.5F, 6.0F));
       HELL_ORDINAL_STONE = registerItem("hell_ordinal_stone", Block::new, stoneProperties(1.5F, 6.0F));

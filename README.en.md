@@ -4,11 +4,11 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.3 · Minecraft Java / Fabric**
+**v0.3.11 · Minecraft Java / Fabric**
 
 Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and passive offhand Denxi Manuscripts. No bosses are included.
 
-This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [choices for review](docs/MERGE-REVIEW-CHECKLIST.md).
+This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
 
 ## Installation
 
@@ -51,11 +51,11 @@ The first seven biomes belong to Inner Googology. Guogao Dreadwood is in the sep
 All rings are twelve blocks in a 5×5 frame without corners, with an empty 3×3 center.
 
 - Overworld: whole cakes (Guogao blocks may be mixed in) plus an apple → Outer.
-- Outer: local frame plus Ω mineral → Inner.
-- Inner: local frame plus a Guogao block → Underworld.
-- Return: a local frame plus one more local block → previous layer. No crystals or ores are required.
+- Outer: 12 mineral storage blocks, freely mixing ω/ε/Γ/Ω, plus one Ω mineral → Inner.
+- Inner: 12 Guogao blocks of any color plus one Guogao block → Underworld.
+- Return: 12 matching Return Frames plus one Return Token → previous layer.
 
-Return materials include dirt/planks in Outer, Number Stone/biome ground in Inner, and Guogao earth/rock/Dread Wood in Underworld. Horizontal scales are 1:1:4:16. Falling through the Inner void leads to the Underworld at Y=500. Underworld gravity is quarter strength and prevents fall damage. `/googology` displays help; `visit`, `inner`, `guogao`, and `return` are administrator subcommands.
+Outer Return Frames cost 4 cobblestone + 1 plank; Inner Return Frames cost 4 Ordinal Shards + 1 plank; Dread Forest Return Frames cost 4 Guogao Dreadsoil + 1 Dread Fir Plank. Each craft yields one frame; use any planks where unspecified. Twelve crafts make one ring. A Return Token costs one plank above one stick. Frame types cannot be mixed. All materials are locally obtainable; Lv1 Ordinal Crystals drop shards when broken by hand. Normal arrivals create directly usable reverse gates. Horizontal scales are 1:1:4:16. Falling to Y≤−1000 in Outer Googology leads to Inner; void damage remains active during the descent and is reduced by protection. Falling through the Inner void leads to the Underworld at Y=500. Underworld gravity is quarter strength and prevents fall damage. `/googology` displays help; `visit`, `inner`, `guogao`, and `return` are administrator subcommands.
 
 ## Building from source
 
@@ -77,7 +77,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.3/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.11/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
@@ -92,3 +92,5 @@ Since 0.3.1, original project content is licensed under **GNU GPL v3 only**, wit
 Earlier copies distributed under MIT retain their original license. Third-party components retain their own licenses.
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
+
+[Offline enhancement simulator](docs/enhancement-simulator.html)

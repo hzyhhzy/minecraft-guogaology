@@ -66,10 +66,17 @@ public final class SceneryPlacement {
                 if(house!=null){var bounds=AstraCity.bounds(house);if(bounds.intersects(box))houses.add(bounds);}
             }
         if(form==Form.BMS&&NaturalScenery.bmsBase(s)==Integer.MIN_VALUE)return false;
-        if(reserved.isEmpty()&&houses.isEmpty()&&!requireGeometry)return true;
+        boolean coast=false;
+        if(!s.underworld())for(int x=box.minX();x<=box.maxX()+8;x+=8)for(int z=box.minZ();z<=box.maxZ()+8;z+=8)
+            if(BiomeRegions.lhoGap(BiomeRegions.weights(s.seed(),x,z)))coast=true;
+        if(reserved.isEmpty()&&houses.isEmpty()&&!requireGeometry&&!coast)return true;
+        final boolean checkCoast=coast;
+        Map<Long,Boolean> gapColumns=new HashMap<>();
         boolean[] emitted={false};
         var brush=new SceneryBrush(box.minX(),box.maxX(),box.minZ(),box.maxZ(),(x,y,z,state)->{
             emitted[0]=true;
+            if(checkCoast&&gapColumns.computeIfAbsent(((long)x<<32)^(z&0xffffffffL),key->
+                    BiomeRegions.lhoGap(BiomeRegions.weights(s.seed(),x,z))))throw COLLISION;
             for(var r:reserved)if(r.contains(x,y,z))throw COLLISION;
             for(var h:houses)if(h.contains(x,y,z))throw COLLISION;
         });

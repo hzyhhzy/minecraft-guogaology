@@ -4,6 +4,10 @@
     "googology:amber_guogao",
     "googology:berry_guogao",
     "googology:lime_guogao",
-    "googology:azure_guogao"
+    "googology:azure_guogao",
+    "googology:plain_amber_guogao",
+    "googology:plain_berry_guogao",
+    "googology:plain_lime_guogao",
+    "googology:plain_azure_guogao"
   ]
 }

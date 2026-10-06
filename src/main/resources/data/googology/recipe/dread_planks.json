@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
+  "category": "building",
   "ingredients": [
     {
-      "item": "googology:dread_log"
+      "tag": "googology:dread_logs"
     }
   ],
   "result": {
-    "id": "minecraft:spruce_planks",
+    "id": "googology:dread_planks",
     "count": 4
   }
 }

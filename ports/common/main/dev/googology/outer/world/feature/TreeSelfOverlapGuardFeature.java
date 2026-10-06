@@ -35,7 +35,8 @@ public record TreeSelfOverlapGuardFeature(
    boolean ignoreVines,
    Optional<BlockStateProvider> belowTrunkProvider,
    int mainDy,
-   int adjDy
+   int adjDy,
+   boolean layeredChristmasCrown
 ) implements OuterFeatureConfig {
    public static final int DEFAULT_MAIN_DY = 6;
    public static final int DEFAULT_ADJ_DY = 3;
@@ -54,7 +55,8 @@ public record TreeSelfOverlapGuardFeature(
             Codec.BOOL.optionalFieldOf("ignore_vines", Boolean.FALSE).forGetter(TreeSelfOverlapGuardFeature::ignoreVines),
             BlockStateProvider.CODEC.optionalFieldOf("below_trunk_provider").forGetter(TreeSelfOverlapGuardFeature::belowTrunkProvider),
             Codec.intRange(0, 16).optionalFieldOf("main_dy", 6).forGetter(TreeSelfOverlapGuardFeature::mainDy),
-            Codec.intRange(0, 16).optionalFieldOf("adj_dy", 3).forGetter(TreeSelfOverlapGuardFeature::adjDy)
+            Codec.intRange(0, 16).optionalFieldOf("adj_dy", 3).forGetter(TreeSelfOverlapGuardFeature::adjDy),
+            Codec.BOOL.optionalFieldOf("layered_christmas_crown",false).forGetter(TreeSelfOverlapGuardFeature::layeredChristmasCrown)
          )
          .apply(var0, TreeSelfOverlapGuardFeature::new)
    );
@@ -80,6 +82,18 @@ public record TreeSelfOverlapGuardFeature(
          var5 = soilBeneathTree(var1);
       }
 
+      if(this.layeredChristmasCrown){
+         int height=this.trunkPlacer.getTreeHeight(var3);
+         var soil=var5;
+         boolean placed=LayeredChristmasCrown.place(var1,var3,var4,height,
+            this.foliagePlacer.foliageRadius(var3,height),var3.nextInt(2),
+            (random,pos)->this.trunkProvider.getState(random,pos),
+            (random,pos)->this.foliageProvider.getState(random,pos),
+            (random,pos)->soil.getState(random,pos));
+         LAST_REJECTED.set(Boolean.FALSE);
+         return placed;
+      }
+
       var builder=new net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration.TreeConfigurationBuilder(this.trunkProvider,this.trunkPlacer,this.foliageProvider,this.foliagePlacer,this.minimumSize,var5).decorators(this.decorators);
       if(this.ignoreVines)builder.ignoreVines();
       boolean var7=new TreeFeature(net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration.CODEC).place(new net.minecraft.world.level.levelgen.feature.FeaturePlaceContext<>(Optional.empty(),var1,var2,var3,var4,builder.build()));
@@ -100,16 +114,16 @@ public record TreeSelfOverlapGuardFeature(
 
    private static Block[] treeBlocks() {
       if (TREE_BLOCKS == null) {
-         String[] var0 = new String[]{"christmas", "loquat", "laver", "hell_christmas", "hell_loquat"};
-         Block[] var1 = new Block[var0.length * 2];
-         int var2 = 0;
-
-         for (String var6 : var0) {
-            var1[var2++] = blockById(var6 + "_log");
-            var1[var2++] = blockById(var6 + "_leaves");
-         }
-
-         TREE_BLOCKS = var1;
+         // Log / leaf pairs of actual live scenery, not retired registry names.
+         TREE_BLOCKS = new Block[]{
+            net.minecraft.world.level.block.Blocks.OAK_LOG,net.minecraft.world.level.block.Blocks.OAK_LEAVES,
+            net.minecraft.world.level.block.Blocks.SPRUCE_LOG,blockById("christmas_leaves"),
+            net.minecraft.world.level.block.Blocks.DARK_OAK_LOG,blockById("dread_leaves"),
+            net.minecraft.world.level.block.Blocks.OAK_LOG,blockById("loquat_leaves"),
+            net.minecraft.world.level.block.Blocks.OAK_LOG,blockById("hell_loquat_leaves"),
+            blockById("laver_log"),blockById("laver_leaves"),
+            blockById("dread_log"),blockById("dread_leaves")
+         };
       }
 
       return TREE_BLOCKS;

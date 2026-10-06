@@ -58,7 +58,6 @@ final class MergeMechanics {
     static void run(ServerPlayer p){
         var server=p.level().getServer();var ow=server.overworld();var outer=server.getLevel(GoogologyMod.OUTER);var inner=server.getLevel(GoogologyMod.DIMENSION);var hell=server.getLevel(GoogologyMod.GUOGAO);
         ritual(ow,new BlockPos(8,240,8),Blocks.CAKE,new ItemStack(Items.APPLE),PortalKind.GGG);
-        ritual(outer,new BlockPos(8,240,8),Blocks.DIRT,new ItemStack(Blocks.DIRT),PortalKind.GGG);
         var rejectPos=new BlockPos(24,240,8);clear(outer,rejectPos);
         for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++)if(PortalRitual.isFrameOffset(x,z))outer.setBlock(rejectPos.offset(x,0,z),Blocks.DIRT.defaultBlockState(),2);
         var denied=new ItemEntity(outer,24.5,240.6,8.5,new ItemStack(MiningContent.MATERIALS[3],2));
@@ -70,17 +69,22 @@ final class MergeMechanics {
         check(!PortalRitual.isFrameMaterial(outer,Blocks.CAKE.defaultBlockState(),PortalKind.INNER),"cake cannot bypass mineral gate");
         check(!PortalRitual.isFrameMaterial(outer,BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:omega_ore")).defaultBlockState(),PortalKind.INNER),"ore is not a storage block");
         ritual(outer,rejectPos,MiningContent.STORAGE,new ItemStack(MiningContent.MATERIALS[3]),PortalKind.INNER);
-        ritual(inner,new BlockPos(98,240,34),GoogologyBlocks.ABSENCE_GLASS,new ItemStack(GoogologyBlocks.ABSENCE_GLASS),PortalKind.INNER);
         ritual(inner,new BlockPos(116,240,32),GoogologyBlocks.AMBER_GUOGAO,new ItemStack(GoogologyBlocks.AMBER_GUOGAO),PortalKind.GUOGAO);
-        ritual(hell,new BlockPos(466,240,130),GoogologyBlocks.GUOGAO_LOAM,new ItemStack(GoogologyBlocks.GUOGAO_LOAM),PortalKind.GUOGAO);
         check(!PortalRitual.isOffering(new ItemStack(Items.STICK)),"irrelevant items ignored");
         for(var test:List.of(Blocks.DIRT,GoogologyBlocks.ABSENCE_GLASS,GoogologyBlocks.GUOGAO_LOAM)){
-            check(!test.defaultBlockState().requiresCorrectToolForDrops(),"return material needs no special tool");
-            check(Block.getDrops(test.defaultBlockState(),ow,new BlockPos(0,240,0),null,p,ItemStack.EMPTY).stream().anyMatch(s->s.is(test.asItem())),"return material drops itself barehanded");
+            check(!test.defaultBlockState().requiresCorrectToolForDrops(),"local raw material needs no special tool");
+            check(Block.getDrops(test.defaultBlockState(),ow,new BlockPos(0,240,0),null,p,ItemStack.EMPTY).stream().anyMatch(s->s.is(test.asItem())),"local raw material drops itself barehanded");
         }
+        // Existing-gate command travel is immediate; cold exits are covered by the tick-driven portal QA.
+        var outerExit=new BlockPos(8,240,8);clear(outer,outerExit);PortalRitual.fillPortal(outer,outerExit,PortalKind.GGG);
+        var innerExit=new BlockPos(100,240,36);clear(inner,innerExit);PortalRitual.fillPortal(inner,innerExit,PortalKind.INNER);
+        var hellExit=new BlockPos(468,240,132);clear(hell,hellExit);PortalRitual.fillPortal(hell,hellExit,PortalKind.GUOGAO);
         move(p,ow,new BlockPos(8,240,8));PortalTravel.travel(p);check(p.level()==outer,"travel Overworld -> outer");
+        ReturnPortalChecks.checkAutomaticArrival(p,PortalKind.GGG);
         move(p,outer,new BlockPos(24,240,8));PortalTravel.toInner(p);check(p.level()==inner,"travel outer -> inner");
+        ReturnPortalChecks.checkAutomaticArrival(p,PortalKind.INNER);
         move(p,inner,new BlockPos(116,240,32));PortalTravel.toGuogao(p);check(p.level()==hell,"travel inner -> underworld");
+        ReturnPortalChecks.checkAutomaticArrival(p,PortalKind.GUOGAO);
         PortalTravel.returnHome(p);check(p.level()==inner,"return underworld -> inner");
         PortalTravel.returnHome(p);check(p.level()==outer,"return inner -> outer");
         PortalTravel.returnHome(p);check(p.level()==ow,"return outer -> Overworld");
@@ -91,11 +95,11 @@ final class MergeMechanics {
         // Profile changes use the real equipment inventory hook.
         var pick=item("true_omega_pickaxe");GearData.setCores(pick,Collections.nCopies(8,item("ordinal_crystal_lv4")));
         ((OrdinalGear)pick.getItem()).inventoryTick(pick,outer,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-18*4)<.001,"outer maximum mining profile");
+        check(Math.abs(GearData.miningSpeed(pick)-18*(1+Math.sqrt(2)))<.001,"outer ordinal mining profile");
         ((OrdinalGear)pick.getItem()).inventoryTick(pick,inner,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-18*256)<.001,"inner maximum mining profile");
+        check(Math.abs(GearData.miningSpeed(pick)-18*9)<.001,"inner ordinal mining profile");
         ((OrdinalGear)pick.getItem()).inventoryTick(pick,ow,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-72)<.001,"leaving inner removes deep profile");
+        check(Math.abs(GearData.miningSpeed(pick)-18*(1+Math.sqrt(2)))<.001,"leaving inner removes deep profile");
         var book=item("true_omega_manuscript");
         check(GearData.install(book,item("lho_trace_lv2"),1)!=null,"low station rejects high core");
         check(GearData.install(book,item("lho_trace_lv2"),3)==null,"manuscript accepts flight core");
@@ -103,7 +107,7 @@ final class MergeMechanics {
         check(p.getAbilities().mayfly,"flight enabled by actual offhand book");
         p.getAbilities().flying=true;p.setOnGround(false);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);ManuscriptEffects.tick(p);
         check(!p.getAbilities().mayfly&&!p.getAbilities().flying,"flight removed with book");
-        check(p.hasEffect(net.minecraft.world.effect.MobEffects.SLOW_FALLING),"safe descent after flight removed");
+        check(ManuscriptEffects.fallImmune(p),"safe descent after flight removed");
         p.setGameMode(GameType.CREATIVE);p.setItemSlot(EquipmentSlot.OFFHAND,book);ManuscriptEffects.tick(p);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);ManuscriptEffects.tick(p);
         check(p.getAbilities().mayfly,"creative permission preserved");
         check(Math.abs(p.getAbilities().getFlyingSpeed()-.05f)<1e-5,"flight speed restored");

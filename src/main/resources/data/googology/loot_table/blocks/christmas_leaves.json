@@ -41,7 +41,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "googology:christmas_sapling",
+              "name": "minecraft:spruce_sapling",
               "conditions": [
                 {
                   "condition": "minecraft:all_of",

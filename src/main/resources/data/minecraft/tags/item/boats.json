@@ -1,10 +1,7 @@
 {
   "replace": false,
   "values": [
-    "googology:christmas_boat",
-    "googology:hell_christmas_boat",
-    "googology:hell_loquat_boat",
     "googology:laver_boat",
-    "googology:loquat_boat"
+    "googology:dread_boat"
   ]
 }

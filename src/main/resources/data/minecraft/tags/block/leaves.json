@@ -3,10 +3,9 @@
   "values": [
     "googology:dread_leaves",
     "googology:y_leaves",
-    "googology:christmas_leaves",
-    "googology:loquat_leaves",
     "googology:giant_laver",
-    "googology:hell_christmas_leaves",
-    "googology:hell_loquat_leaves"
+    "googology:loquat_leaves",
+    "googology:hell_loquat_leaves",
+    "googology:christmas_leaves"
   ]
 }

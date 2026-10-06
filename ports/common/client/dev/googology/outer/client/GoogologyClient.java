@@ -43,6 +43,8 @@ public class GoogologyClient implements ClientModInitializer {
       registerRenderers();
       // Earlier renderers require explicit alpha layers; 26.x uses sprite alpha.
       for(String wood:ModBlocks.WOOD_IDS){net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlocks(net.minecraft.client.renderer.chunk.ChunkSectionLayer.CUTOUT,ModBlocks.wood(wood,"leaves"),ModBlocks.wood(wood,"sapling"));}
+      for(String wood:ModBlocks.FOLIAGE_IDS){net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlocks(net.minecraft.client.renderer.chunk.ChunkSectionLayer.CUTOUT,ModBlocks.wood(wood,"leaves"),ModBlocks.wood(wood,"sapling"));}
+      net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlocks(net.minecraft.client.renderer.chunk.ChunkSectionLayer.CUTOUT,ModBlocks.CHRISTMAS_LEAVES);
       net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlocks(net.minecraft.client.renderer.chunk.ChunkSectionLayer.CUTOUT,ModBlocks.GRAHAM,ModBlocks.GRAHAM_FLOWER,ModBlocks.GRAHAM_VINE);
       net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlock(ModBlocks.LHO_GLASS,net.minecraft.client.renderer.chunk.ChunkSectionLayer.TRANSLUCENT);
    }

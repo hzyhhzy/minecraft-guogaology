@@ -53,7 +53,7 @@
           {
             "type": "minecraft:would_survive",
             "state": {
-              "Name": "googology:hell_christmas_sapling"
+              "Name": "minecraft:dark_oak_sapling"
             }
           },
           {

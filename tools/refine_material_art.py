@@ -116,40 +116,15 @@ def mesh_box(a,b,t,part=0):
         [[x,Y,z],[x,Y,Z],[X,Y,Z],[X,Y,z]],[[x,y,Z],[x,y,z],[X,y,z],[X,y,Z]]]]
 
 def absence():
-    # Use the original FOS/fffZ translucent palette, not an unrelated mottled
-    # overlay. Gaps belong to the geometry / original glyph, not random holes.
-    color=(170,222,212)
-    for kind,alpha in [('frame',98),('ink',182),('ghost',34)]:
-        im=Image.new('RGBA',(16,16),color+(alpha,))
-        if kind=='frame':ImageDraw.Draw(im).line((0,15,0,0,15,0),fill=(225,247,248,146))
-        im.save(T/f'block/absence_{kind}_fragments.png')
-    Image.open(S/'empty_set_mask.png').save(T/'block/absence_sigil.png')
-    textures={k:f'googology:block/absence_{k}_fragments' for k in ('frame','ink','ghost')}
-    textures.update(sigil='googology:block/absence_sigil',particle='googology:block/absence_sigil')
-    # Lv1 restores the old broken cubic cage, with ONE centered inscription.
-    # A texture plane preserves the old detailed fragment mask in just one quad.
-    rng=random.Random('lho_trace:cage');quads=[]
-    for axis in range(3):
-        other=[i for i in range(3) if i!=axis]
-        for a in (1,14.4):
-            for b in (1,14.4):
-                split=5+rng.random()*4
-                for lo,hi in [(1,split),(split+1.7,15)]:
-                    p=[0]*3;q=[0]*3;p[axis]=lo;q[axis]=hi
-                    p[other[0]]=a;q[other[0]]=a+.6;p[other[1]]=b;q[other[1]]=b+.6
-                    quads.extend(mesh_box(p,q,'frame'))
-    # One face only: no rear duplicate relief showing through the front.
-    quads.append(quad([[14,14,8],[2,14,8],[2,2,8],[14,2,8]],'sigil',normal=[0,0,1]))
-    lv1={'textures':textures,'motion':'still','motion_scale':1,'extended':False,'quads':quads}
-    for suffix in ('','_lv2','_lv3'):
-        p=A/f'core_meshes/lho_trace{suffix}.json';v=lv1 if not suffix else json.loads(p.read_text('utf8'))
-        v['textures']=textures
-        for q in v['quads']:q['c']=[0xffffffff]*4
-        write(p,v)
-        model=json.loads((A/f'models/block/lho_trace{suffix}.json').read_text('utf8'));model['textures']=textures;write(A/f'models/block/lho_trace{suffix}.json',model)
+    # The old C1 relief is the source of truth. Do not replace it with a font
+    # mask or recolor the animated higher-grade rings independently.
+    from generate_absence_core import generate
+    generate()
 
 def main():
     epsilon();manuscripts();absence()
+    from sanitize_core_shells import generate as sanitize_core_surfaces
+    sanitize_core_surfaces()
     from generate_core_lod import generate
     generate()
 if __name__=='__main__':main()

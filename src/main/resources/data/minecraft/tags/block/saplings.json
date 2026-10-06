@@ -1,10 +1,8 @@
 {
   "replace": false,
   "values": [
-    "googology:christmas_sapling",
-    "googology:loquat_sapling",
     "googology:laver_sapling",
-    "googology:hell_christmas_sapling",
+    "googology:loquat_sapling",
     "googology:hell_loquat_sapling"
   ]
 }

@@ -9,6 +9,7 @@ public final class GoogologyClient implements ClientModInitializer {
     @Override public void onInitializeClient() {
         new dev.googology.outer.client.GoogologyClient().onInitializeClient();
         net.minecraft.client.gui.screens.MenuScreens.register(dev.googology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
+        net.minecraft.client.gui.screens.MenuScreens.register(dev.googology.mining.MiningContent.MANUSCRIPT_MENU,EnhancementScreen::new);
         PortalAppearance.initialize();
         CoreMeshModels.initialize();
         CoreAnimationRenderer.initialize();

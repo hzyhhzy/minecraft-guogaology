@@ -11,13 +11,33 @@ import net.minecraft.component.type.AttributeModifierSlot;
 import java.util.*;
 
 public final class GearData {
+    private record ProfileCache(List<ItemStack> source,List<EquipmentRules.Core> value){}
+    private static final Map<ItemStack,ProfileCache> PROFILES=Collections.synchronizedMap(new WeakHashMap<>());
+    public static List<EquipmentRules.Core> profile(ItemStack stack){
+        var source=coreSlots(stack);var old=PROFILES.get(stack);if(old!=null&&old.source()==source)return old.value();
+        var value=source.stream().filter(c->!c.isEmpty()&&type(c)>=0).map(c->new EquipmentRules.Core(type(c),Math.clamp(level(c),1,type(c)==8?4:3))).toList();
+        PROFILES.put(stack,new ProfileCache(source,value));return value;
+    }
+    public static EquipmentRules.Gear gear(ItemStack stack,int emptyKind){var spec=MiningContent.GEAR.get(stack.getItem());return spec==null?EquipmentRules.Gear.empty(emptyKind):new EquipmentRules.Gear(spec.tier(),spec.kind(),digit(stack),profile(stack));}
+    public static EquipmentRules.Snapshot snapshot(LivingEntity owner){return new EquipmentRules.Snapshot(gear(owner.getMainHandStack(),0),gear(owner.getOffHandStack(),-1),gear(owner.getEquippedStack(EquipmentSlot.HEAD),2),gear(owner.getEquippedStack(EquipmentSlot.CHEST),3),gear(owner.getEquippedStack(EquipmentSlot.LEGS),4),gear(owner.getEquippedStack(EquipmentSlot.FEET),5),ManuscriptEffects.deep(owner.getWorld()));}
+    public static double bonusHealth(LivingEntity owner){var state=snapshot(owner);return EquipmentRules.bonusHealth(state.armor(),state.book(),state.deep());}
+    public static boolean forbidsEnchantments(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.tier()>0;}
     public static int capacity(ItemStack gear){var spec=MiningContent.GEAR.get(gear.getItem());return spec==null?0:EquipmentRules.slots(spec.tier(),spec.kind());}
     public static List<ItemStack> coreSlots(ItemStack s){return s.getOrDefault(MiningContent.CORES,List.of());}
     public static List<ItemStack> cores(ItemStack s){return coreSlots(s).stream().filter(c->!c.isEmpty()).toList();}
     public static int digit(ItemStack s){return EquipmentRules.digit(s.getOrDefault(MiningContent.DIGIT,0d));}
     public static int totalLevels(ItemStack s){int sum=0;for(var c:cores(s))sum+=EquipmentRules.denxiLevel(type(c),level(c));return sum;}
     public static double denxi(ItemStack s){return miningSpeed(s);}
-    public static double miningSpeed(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());return spec==null||spec.kind()!=0?1:EquipmentRules.baseMining(spec.tier(),digit(s))*EquipmentRules.multiplier(points(s,8),s.getOrDefault(MiningContent.DEEP,false));}
+    public static double miningSpeed(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());return spec==null||spec.kind()!=0?1:EquipmentRules.baseMining(spec.tier(),digit(s))*EquipmentRules.miningMultiplier(profile(s),List.of(),s.getOrDefault(MiningContent.DEEP,false));}
+    public static boolean minesWithPick(ItemStack s,net.minecraft.block.BlockState state){var spec=MiningContent.GEAR.get(s.getItem());return spec!=null&&spec.kind()==0&&(state.isIn(net.minecraft.registry.tag.BlockTags.PICKAXE_MINEABLE)||state.getBlock() instanceof OrdinalOre);}
+    public static double miningPoints(ItemStack s,net.minecraft.block.BlockState state){return minesWithPick(s,state)?points(s,8):0;}
+    public static double wearPoints(ItemStack stack,LivingEntity owner){return wearFactor(stack,owner);}
+    public static double wearFactor(ItemStack stack,LivingEntity owner){var spec=MiningContent.GEAR.get(stack.getItem());var own=spec!=null&&spec.kind()!=6?profile(stack):List.<EquipmentRules.Core>of();var book=List.<EquipmentRules.Core>of();if(owner!=null)for(var slot:List.of(EquipmentSlot.MAINHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET))if(owner.getEquippedStack(slot)==stack){book=profile(ManuscriptEffects.held(owner));break;}return EquipmentRules.wearFactor(own,book);}
+    public static int wearCost(ItemStack stack,int amount,LivingEntity owner,java.util.function.DoubleSupplier random){
+        var spec=MiningContent.GEAR.get(stack.getItem());
+        if(spec!=null&&spec.kind()!=6&&stack.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION)refresh(stack);
+        return EquipmentRules.wearCostForFactor(amount,wearFactor(stack,owner),random);
+    }
     public static void setCores(ItemStack s,List<ItemStack> slots){
         if(slots.size()>EquipmentRules.MAX_SOCKETS)throw new IllegalArgumentException("Too many sockets");
         var prior=coreSlots(s);boolean same=prior.size()==slots.size();
@@ -29,14 +49,14 @@ public final class GearData {
     public static int level(ItemStack s){return EquipmentRules.coreLevel(Registries.ITEM.getId(s.getItem()).getPath());}
     public static double points(List<ItemStack> cores,int type){double sum=0;for(var c:cores)if(type(c)==type)sum+=EquipmentRules.weight(type,level(c));return sum;}
     public static double points(ItemStack gear,int type){return points(cores(gear),type);}
-    public static double power(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());if(spec==null||spec.kind()==6)return 0;double base=spec.kind()>=2?EquipmentRules.basePower(spec.tier()):EquipmentRules.baseAttack(spec.tier(),spec.kind(),digit(s));return base*EquipmentRules.multiplier(points(s,8)+(spec.kind()==1?points(s,1):spec.kind()>=2?points(s,6):0),s.getOrDefault(MiningContent.DEEP,false));}
+    public static double power(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());if(spec==null||spec.kind()==6)return 0;if(spec.kind()>=2)return EquipmentRules.basePower(spec.tier());return EquipmentRules.attack(EquipmentRules.baseAttack(spec.tier(),spec.kind(),digit(s)),spec.kind()==1?profile(s):EquipmentRules.without(profile(s),1),List.of(),s.getOrDefault(MiningContent.DEEP,false));}
+    public static double baseAttack(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());if(spec!=null&&spec.kind()<2)return EquipmentRules.baseAttack(spec.tier(),spec.kind(),digit(s));double[] a={1,0,1};s.applyAttributeModifiers(EquipmentSlot.MAINHAND,(attribute,modifier)->{if(attribute.equals(EntityAttributes.GENERIC_ATTACK_DAMAGE))switch(modifier.operation()){case ADD_VALUE->a[0]+=modifier.value();case ADD_MULTIPLIED_BASE->a[1]+=modifier.value();case ADD_MULTIPLIED_TOTAL->a[2]*=1+modifier.value();}});return Math.max(.1,a[0]*(1+a[1])*a[2]);}
+    public static double attackWithBook(ItemStack stack,LivingEntity owner){var spec=MiningContent.GEAR.get(stack.getItem());var own=spec!=null&&spec.kind()<2?(spec.kind()==1?profile(stack):EquipmentRules.without(profile(stack),1)):List.<EquipmentRules.Core>of();return EquipmentRules.attack(baseAttack(stack),own,profile(ManuscriptEffects.held(owner)),ManuscriptEffects.deep(owner.getWorld()));}
+    public static double bookAttackBonus(LivingEntity owner){var stack=owner.getMainHandStack();var spec=MiningContent.GEAR.get(stack.getItem());double own=spec!=null&&spec.kind()<2?power(stack):baseAttack(stack);return attackWithBook(stack,owner)-own;}
+    public static double bookReachBonus(LivingEntity owner){var stack=owner.getMainHandStack();var spec=MiningContent.GEAR.get(stack.getItem());var own=spec!=null&&spec.kind()<2?profile(stack):List.<EquipmentRules.Core>of();return EquipmentRules.reach(own,profile(ManuscriptEffects.held(owner)))-EquipmentRules.reach(own,List.of());}
+    public static int yieldLevel(ItemStack stack,LivingEntity owner,boolean mob){var spec=MiningContent.GEAR.get(stack.getItem());var own=spec!=null&&spec.kind()==(mob?1:0)?profile(stack):List.<EquipmentRules.Core>of();return EquipmentRules.yieldLevel(own,owner==null?List.of():profile(ManuscriptEffects.held(owner)));}
     public static double defense(LivingEntity e){
-        double base=0,points=0,ownHealth=0;
-        for(var slot:List.of(EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET)){var s=e.getEquippedStack(slot);var spec=MiningContent.GEAR.get(s.getItem());if(spec!=null&&spec.kind()>=2&&spec.kind()<6){double share=EquipmentRules.armorShare(spec.kind());base+=EquipmentRules.basePower(spec.tier())*share;points+=(points(s,6)+points(s,7)+points(s,8))*share;ownHealth+=60*Math.min(1,points(s,7)/16)*share;}}
-        points+=ManuscriptEffects.points(e,6)+ManuscriptEffects.points(e,7);
-        double multiplier=EquipmentRules.multiplier(points,ManuscriptEffects.deep(e.getWorld()));
-        double healthRatio=1+(ownHealth+Math.min(20,2*ManuscriptEffects.points(e,7)))/20;
-        return 8*Math.max(0,(1+base/8)*multiplier/healthRatio-1);
+        var state=snapshot(e);return 8*(EquipmentRules.protectionFactor(state.armor(),state.book(),state.deep())-1);
     }
     public static int armorDisplay(LivingEntity e){int total=0;for(var slot:List.of(EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET)){var spec=MiningContent.GEAR.get(e.getEquippedStack(slot).getItem());if(spec!=null)total+=EquipmentRules.visualArmor(spec.tier(),spec.kind());}return total;}
     public static AttributeModifiersComponent attributes(int tier,int kind,List<ItemStack> cores,double digit){return attributes(tier,kind,cores,digit,false);}
@@ -44,23 +64,24 @@ public final class GearData {
         var b=AttributeModifiersComponent.builder();
         AttributeModifierSlot slot=switch(kind){case 2->AttributeModifierSlot.HEAD;case 3->AttributeModifierSlot.CHEST;case 4->AttributeModifierSlot.LEGS;case 5->AttributeModifierSlot.FEET;default->AttributeModifierSlot.MAINHAND;};
         double base=kind>=2?EquipmentRules.basePower(tier):EquipmentRules.baseAttack(tier,kind,digit);
-        double power=base*EquipmentRules.multiplier(points(cores,8)+(kind==1?points(cores,1):0),deep);
+        var profile=cores.stream().filter(c->!c.isEmpty()&&type(c)>=0).map(c->new EquipmentRules.Core(type(c),level(c))).toList();double power=EquipmentRules.attack(base,kind==1?profile:EquipmentRules.without(profile,1),List.of(),deep);
         if(kind<2){
-            b.add(EntityAttributes.GENERIC_ATTACK_DAMAGE,new EntityAttributeModifier(Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,Math.min(1023,Math.max(.1,power))-1,EntityAttributeModifier.Operation.ADD_VALUE),slot);
+            b.add(EntityAttributes.GENERIC_ATTACK_DAMAGE,new EntityAttributeModifier(Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,Math.min(2048,Math.max(.1,power))-1,EntityAttributeModifier.Operation.ADD_VALUE),slot);
             b.add(EntityAttributes.GENERIC_ATTACK_SPEED,new EntityAttributeModifier(Item.BASE_ATTACK_SPEED_MODIFIER_ID,kind==1?-2.4:-2.8,EntityAttributeModifier.Operation.ADD_VALUE),slot);
-            double reach=.5*points(cores,3);
+            double reach=EquipmentRules.reach(profile,List.of());
             b.add(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE,new EntityAttributeModifier(GoogologyMod.id("reach"),reach,EntityAttributeModifier.Operation.ADD_VALUE),slot);
             b.add(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,new EntityAttributeModifier(GoogologyMod.id("reach"),reach,EntityAttributeModifier.Operation.ADD_VALUE),slot);
-        }else {b.add(EntityAttributes.GENERIC_ARMOR,new EntityAttributeModifier(GoogologyMod.id("armor_"+kind),EquipmentRules.visualArmor(tier,kind),EntityAttributeModifier.Operation.ADD_VALUE),slot);b.add(EntityAttributes.GENERIC_MAX_HEALTH,new EntityAttributeModifier(GoogologyMod.id("health_"+kind),60*Math.min(1,points(cores,7)/16)*EquipmentRules.armorShare(kind),EntityAttributeModifier.Operation.ADD_VALUE),slot);}
+        }else b.add(EntityAttributes.GENERIC_ARMOR,new EntityAttributeModifier(GoogologyMod.id("armor_"+kind),EquipmentRules.visualArmor(tier,kind),EntityAttributeModifier.Operation.ADD_VALUE),slot);
         return b.build();
     }
     public static void refresh(ItemStack s){
         var spec=MiningContent.GEAR.get(s.getItem());if(spec==null)return;
+        if(forbidsEnchantments(s))s.set(net.minecraft.component.DataComponentTypes.ENCHANTMENTS,net.minecraft.component.type.ItemEnchantmentsComponent.DEFAULT);
         if(spec.kind()==6){s.set(MiningContent.RULES,EquipmentRules.REVISION);return;}
         if(spec.tier()==0)s.set(MiningContent.DIGIT,(double)digit(s));
-        double worn=s.getMaxDamage()==0?0:(double)s.getDamage()/s.getMaxDamage();
-        int max=(int)Math.round(EquipmentRules.durability(spec.tier(),spec.kind(),digit(s))*Math.pow(1+points(s,2),2));
-        s.set(DataComponentTypes.MAX_DAMAGE,max);s.setDamage(Math.min(max-1,(int)Math.ceil(worn*max)));
+        int priorMax=s.getMaxDamage(),damage=s.getDamage();
+        int max=EquipmentRules.durability(spec.tier(),spec.kind(),digit(s));
+        s.set(DataComponentTypes.MAX_DAMAGE,max);s.setDamage(EquipmentRules.rescaledDamage(damage,priorMax,max));
         s.set(MiningContent.RULES,EquipmentRules.REVISION);
         s.set(DataComponentTypes.ATTRIBUTE_MODIFIERS,attributes(spec.tier(),spec.kind(),cores(s),s.getOrDefault(MiningContent.DIGIT,0d),s.getOrDefault(MiningContent.DEEP,false)));
     }

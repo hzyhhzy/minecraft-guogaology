@@ -2,6 +2,6 @@
   "required": true,
   "package": "dev.googology.client.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["GoogologyFogMixin", "GoogologySkyLightMixin"],
+  "client": ["GoogologyFogMixin", "GoogologySkyLightMixin", "ManuscriptVerticalFlightMixin"],
   "injectors": { "defaultRequire": 1 }
 }

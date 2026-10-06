@@ -12,18 +12,19 @@ import net.minecraft.world.level.Level;
 import java.util.*;
 import java.util.function.Supplier;
 
-/** Same five hulls as the newer Boat(type, level, dropSupplier) constructor. */
+/** Shared wood hulls as the newer Boat(type, level, dropSupplier) constructor. */
 public final class ModBoats {
     private static final Map<String,EntityType<Boat>> BOATS=new LinkedHashMap<>();
     public static void initialize(){
         if(!BOATS.isEmpty())return;
         for(String wood:ModBlocks.WOOD_IDS){
             var id=GoogologyMod.id(wood+"_boat");
-            EntityType<Boat> type=Registry.register(BuiltInRegistries.ENTITY_TYPE,id,
-                EntityType.Builder.<Boat>of((t,w)->new WoodenBoat(t,w,()->ModItems.get(wood+"_boat")),MobCategory.MISC)
-                    .sized(1.375F,.5625F).clientTrackingRange(10).build(id.toString()));
+            EntityType.Builder<Boat> hull=EntityType.Builder.<Boat>of((t,w)->new WoodenBoat(t,w,()->ModItems.get(wood+"_boat")),MobCategory.MISC)
+                .sized(1.375F,.5625F).clientTrackingRange(10);
+            if(wood.equals("dread"))hull.fireImmune();
+            EntityType<Boat> type=Registry.register(BuiltInRegistries.ENTITY_TYPE,id,hull.build(id.toString()));
             BOATS.put(wood,type);
-            ModItems.registerTracked(wood+"_boat",p->new dev.googology.outer.item.OuterBoatItem(type,p),new Item.Properties().stacksTo(1));
+            ModItems.registerTracked(wood+"_boat",p->new dev.googology.outer.item.OuterBoatItem(type,p),ModBlocks.woodItemProperties(wood+"_boat").stacksTo(1));
         }
     }
     public static EntityType<Boat> boat(String wood){return Objects.requireNonNull(BOATS.get(wood));}

@@ -9,9 +9,20 @@ import java.util.function.Consumer;
 public final class DenxiManuscript extends Item {
     public final int tier;
     public DenxiManuscript(Settings props,int tier){super(props);this.tier=tier;}
+    @Override public net.minecraft.util.TypedActionResult<ItemStack> use(net.minecraft.world.World world,net.minecraft.entity.player.PlayerEntity player,net.minecraft.util.Hand hand){
+        var selectedHand=player.getOffHandStack().getItem() instanceof DenxiManuscript?net.minecraft.util.Hand.OFF_HAND:hand;
+        var book=player.getStackInHand(selectedHand);
+        if(!world.isClient){
+            int slot=selectedHand==net.minecraft.util.Hand.OFF_HAND?40:player.getInventory().selectedSlot;
+            player.openHandledScreen(new net.minecraft.screen.SimpleNamedScreenHandlerFactory((id,inventory,p)->new ManuscriptMenu(id,inventory,world,slot,book),book.getName()));
+        }
+        return net.minecraft.util.TypedActionResult.success(player.getStackInHand(hand),world.isClient);
+    }
     @Override public void appendTooltip(ItemStack stack,TooltipContext context,java.util.List<Text> out,TooltipType flag){
         out.add(Text.translatable("mining.googology.manuscript.passive"));
+        out.add(Text.translatable("mining.googology.manuscript.open"));
         out.add(Text.translatable("mining.googology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,6),EquipmentRules.grade(tier)));
+
         for(var core:GearData.cores(stack))out.add(Text.literal("• ").append(core.getName()).append(" — ").append(Text.translatable("mining.googology.manuscript.effect."+GearData.type(core))));
         if(ManuscriptEffects.level(stack,7)>=2)out.add(Text.translatable("mining.googology.manuscript.totem"));
     }

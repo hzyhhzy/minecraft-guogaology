@@ -51,6 +51,11 @@ public final class CoreMeshModels {
         }));
     }
     public static boolean polished(BakedModel model){return model instanceof GemModel;}
+    /** Read-only geometry inspection for the separate QA mod. No per-frame baking. */
+    public record DistanceGeometryInfo(int shellFaces,int staticFaces,int fallbackFaces,int movingFaces){}
+    public static DistanceGeometryInfo distanceInfo(BakedModel model){
+        return model instanceof GemModel gem?new DistanceGeometryInfo(gem.shell.size(),gem.staticInterior.size(),gem.fallback.size(),gem.interior.values().stream().mapToInt(List::size).sum()):null;
+    }
     static GemModel animated(BakedModel model){return model instanceof GemModel gem?gem:null;}
     static final class GemModel implements BakedModel,FabricBakedModel {
         private final BakedModel base;
@@ -59,6 +64,8 @@ public final class CoreMeshModels {
         final String motion;
         final float motionScale;
         final boolean extended;
+        final List<BakedQuad> staticInterior;
+        final float animationRadius,staticRadius;
         private final List<BakedQuad> shell;
         private final List<BakedQuad> fallback;
         private final RenderMaterial material;
@@ -108,7 +115,34 @@ public final class CoreMeshModels {
                 return radius;
             }));
             general=List.copyOf(all);shell=List.copyOf(fixed);fallback=List.copyOf(distant);interior.replaceAll((part,list)->List.copyOf(list));
+            var still=new ArrayList<BakedQuad>();float movingRadius=.866026f,stillRadius=.866026f;
+            for(var entry:interior.entrySet()){
+                float scale=entry.getKey()>=10?1:motionScale;
+                var pose=entry.getKey()<10?CoreStaticPose.matrix(motion,entry.getKey(),motionScale):null;
+                for(var quad:entry.getValue()){
+                    movingRadius=Math.max(movingRadius,radius(quad)*scale);
+                    // Ordinary-distance static bodies match the zero-phase
+                    // interior, not Voxy's clamped cell/material approximation.
+                    if(pose!=null){var posed=staticQuad(quad,pose);still.add(posed);stillRadius=Math.max(stillRadius,radius(posed));}
+                }
+            }
+            staticInterior=List.copyOf(still);animationRadius=movingRadius;staticRadius=stillRadius;
             culled.replaceAll((side,list)->List.copyOf(list));
+        }
+        private static float radius(BakedQuad quad){
+            float radius=0;int[] v=quad.getVertexData();
+            for(int i=0;i<4;i++){float x=Float.intBitsToFloat(v[i*8])-.5f,y=Float.intBitsToFloat(v[i*8+1])-.5f,z=Float.intBitsToFloat(v[i*8+2])-.5f;radius=Math.max(radius,(float)Math.sqrt(x*x+y*y+z*z));}
+            return radius;
+        }
+        private static BakedQuad staticQuad(BakedQuad quad,org.joml.Matrix4f pose){
+            int[] vertices=quad.getVertexData().clone();var normalMatrix=pose.normal(new org.joml.Matrix3f());float nx=0,ny=0,nz=0;
+            for(int i=0;i<4;i++){
+                int offset=i*8;var point=new org.joml.Vector3f(Float.intBitsToFloat(vertices[offset]),Float.intBitsToFloat(vertices[offset+1]),Float.intBitsToFloat(vertices[offset+2]));pose.transformPosition(point);
+                vertices[offset]=Float.floatToRawIntBits(point.x);vertices[offset+1]=Float.floatToRawIntBits(point.y);vertices[offset+2]=Float.floatToRawIntBits(point.z);
+                int packed=vertices[offset+7];var normal=new org.joml.Vector3f((byte)packed/127f,(byte)(packed>>>8)/127f,(byte)(packed>>>16)/127f);normalMatrix.transform(normal).normalize();
+                vertices[offset+7]=(Math.round(normal.x*127)&255)|((Math.round(normal.y*127)&255)<<8)|((Math.round(normal.z*127)&255)<<16);nx+=normal.x;ny+=normal.y;nz+=normal.z;
+            }
+            return new BakedQuad(vertices,-1,Direction.getFacing(nx,ny,nz),quad.getSprite(),false);
         }
         @Override public List<BakedQuad> getQuads(BlockState state,Direction face,Random random){
             // Ordinary quad consumers (including LOD renderers) get the complete

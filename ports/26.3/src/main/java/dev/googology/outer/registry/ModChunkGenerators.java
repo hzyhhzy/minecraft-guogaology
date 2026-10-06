@@ -17,6 +17,7 @@ public final class ModChunkGenerators {
       if (!registered) {
          registered = true;
          Registry.register(BuiltInRegistries.CHUNK_GENERATOR, ID, LhoChunkGenerator.CODEC);
+         Registry.register(BuiltInRegistries.BIOME_SOURCE, GoogologyMod.id("lho_border"), dev.googology.outer.world.LhoBorderBiomeSource.CODEC);
          GoogologyMod.LOGGER.info("[outer] Registered chunk generator {}", ID);
       }
    }

@@ -26,7 +26,8 @@ def state_blob(identity,properties,modern):
 class MaterialMapping(unittest.TestCase):
     def test_shared_registry_and_vanilla(self):
         for old,new in [('ordinal_stone','minecraft:stone'),('hell_ordinal_stone','minecraft:netherrack'),
-                        ('christmas_log','minecraft:oak_log'),('hell_christmas_log','minecraft:dark_oak_log'),
+                        ('christmas_log','minecraft:spruce_log'),('christmas_leaves','googology:christmas_leaves'),
+                        ('christmas_sapling','minecraft:spruce_sapling'),('hell_christmas_log','minecraft:dark_oak_log'),
                         ('lho_glass','googology:absence_glass'),('laver_log','googology:laver_vein'),
                         ('bashicu_block','googology:ordinal_bricks'),('loquat','googology:loquat')]:
             self.assertEqual(remap_id('googology:'+old),new)

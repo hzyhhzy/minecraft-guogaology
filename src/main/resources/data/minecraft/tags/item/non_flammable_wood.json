@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "googology:dread_log",
+    "googology:dread_wood",
+    "googology:dread_stripped_log",
+    "googology:dread_stripped_wood",
+    "googology:dread_planks",
+    "googology:dread_stairs",
+    "googology:dread_slab",
+    "googology:dread_fence",
+    "googology:dread_fence_gate",
+    "googology:dread_door",
+    "googology:dread_trapdoor",
+    "googology:dread_button",
+    "googology:dread_pressure_plate",
+    "googology:dread_sign",
+    "googology:dread_boat",
+    "googology:dread_leaves",
+    "googology:dread_sapling"
+  ]
+}

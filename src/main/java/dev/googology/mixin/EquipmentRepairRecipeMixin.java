@@ -17,7 +17,7 @@ public abstract class EquipmentRepairRecipeMixin {
     }
     @Inject(method="craft",at=@At("RETURN"))
     private void googology$numericRepair(CraftingRecipeInput input,RegistryWrapper.WrapperLookup lookup,CallbackInfoReturnable<ItemStack> result){
-        var output=result.getReturnValue();if(output.isEmpty()||!output.contains(MiningContent.DIGIT))return;
+        var output=result.getReturnValue();if(GearData.forbidsEnchantments(output))output.set(net.minecraft.component.DataComponentTypes.ENCHANTMENTS,net.minecraft.component.type.ItemEnchantmentsComponent.DEFAULT);if(output.isEmpty()||!output.contains(MiningContent.DIGIT))return;
         double sum=0;int count=0;for(int i=0;i<input.getSize();i++)if(!input.getStackInSlot(i).isEmpty()){sum+=input.getStackInSlot(i).getOrDefault(MiningContent.DIGIT,0d);count++;}
         if(count>0){output.set(MiningContent.DIGIT,(double)EquipmentRules.digit(sum/count));GearData.refresh(output);}
     }

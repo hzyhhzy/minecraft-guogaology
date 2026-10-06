@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "googology:block/dread_planks",
+    "top": "googology:block/dread_planks",
+    "side": "googology:block/dread_planks"
+  }
+}

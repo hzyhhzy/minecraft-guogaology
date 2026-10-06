@@ -2,8 +2,8 @@
 
 26.3 consumes the original world-generation contracts. Earlier engines receive
 format/API translations, using their built-in Overworld noise router (the donor
-also delegates to Overworld noise). No biome thresholds, feature counts, template
-coordinates, cave dimensions or LHO field constants are retuned here.
+also delegates to Overworld noise). Climate thresholds, template coordinates and cave settings are retained.
+0.3.6 wraps the climate source to restrict the LHO edge to a 48 m coast.
 """
 import json,re
 from pathlib import Path
@@ -180,9 +180,18 @@ def prepare(target,out):
         if p.suffix=='.nbt':write(data/rel,nbt_transform(p.read_bytes(),legacy=target!='26.3'));continue
         if p.suffix!='.json':continue
         v=walk(load(p));folder=rel.parts[0]
+        if rel.parts==('worldgen','feature','trees_christmas.json'):
+            v['layered_christmas_crown']=True
         if folder in ('dimension','dimension_type'):continue
         if folder=='advancement':continue
         if folder=='recipe':
+            # Retired Christmas carpentry resolves to vanilla blocks for scenery,
+            # never to a second recipe for vanilla planks. The old stone aliases
+            # otherwise turn into free cobblestone/stone conversion recipes.
+            if rel.stem.startswith(('christmas_','hell_christmas_','loquat_','hell_loquat_')) or rel.stem in {
+                'cobblestone_from_ordinal_stone','cobblestone_from_ordinal_stone_smelting',
+                'ordinal_stone_from_cobbled_ordinal_stone','ordinal_stone_from_cobblestone',
+                'epsilon_block_unpack','gamma_block_unpack','omega_block_unpack','laver_log_to_planks'}:continue
             text=json.dumps(v)
             if re.search(r'(?:_den\b|_axe\b|_hoe\b|_shovel\b|ordinal_heart|raw_omega|portal_generator|guide_book|hydra)',text):continue
             # Our common equipment recipes replace duplicate donor gear and ore recipes.
@@ -238,6 +247,12 @@ def prepare(target,out):
             if isinstance(v,dict):return [v['min'],v['max']] if set(v)=={'min','max'} else {k:climate(x) for k,x in v.items()}
             return v
         dimension=climate(dimension)
+    # Preserve Alice's climate regions, but only keep the barren edge close to
+    # actual void. The filtered source restores proper inland biome features.
+    source={k:v for k,v in dimension['generator']['biome_source'].items() if k!='type'}
+    inland={**source,'biomes':[b for b in source['biomes'] if b['biome'] not in
+            ('googology:lho_edge','googology:lho_void','googology:underworld')]}
+    dimension['generator']['biome_source']={'type':'googology:lho_border','source':source,'inland':inland}
     write(out/'data/googology/dimension/outer.json',dimension)
     dim=walk(load(SOURCE/'dimension_type/googology.json'))
     if target=='1.21.1':

@@ -26,26 +26,17 @@ public final class PortalRitual {
         return Math.abs(x)==2 && Math.abs(z)<=1 || Math.abs(z)==2 && Math.abs(x)<=1;
     }
     public static boolean isFruit(ItemStack stack) {
-        for(Block jelly:GoogologyBlocks.JELLIES) if(stack.is(jelly.asItem())) return true;
+        for(Block jelly:GoogologyBlocks.ALL_JELLIES) if(stack.is(jelly.asItem())) return true;
         return false;
     }
-    public static boolean isOffering(ItemStack stack) { return anyReturnMaterial(stack)||stack.is(Items.APPLE)||isFruit(stack)||stack.is(dev.googology.mining.MiningContent.MATERIALS[3]); }
+    public static boolean isOffering(ItemStack stack) { return stack.is(GoogologyBlocks.RETURN_TOKEN)||stack.is(Items.APPLE)||isFruit(stack)||stack.is(dev.googology.mining.MiningContent.MATERIALS[3]); }
 
-    private static final net.minecraft.tags.TagKey<Block> OUTER_MATERIALS=net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,GoogologyMod.id("portal_outer_materials"));
-    private static final net.minecraft.tags.TagKey<Block> INNER_MATERIALS=net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,GoogologyMod.id("portal_inner_materials"));
-    private static final net.minecraft.tags.TagKey<Block> HELL_MATERIALS=net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,GoogologyMod.id("portal_guogao_materials"));
-    private static boolean localMaterial(ServerLevel world,BlockState state){
-        var source=world.dimension();
-        return source.equals(GoogologyMod.OUTER)?state.is(OUTER_MATERIALS):source.equals(GoogologyMod.DIMENSION)?state.is(INNER_MATERIALS):source.equals(GoogologyMod.GUOGAO)&&state.is(HELL_MATERIALS);
-    }
-    private static boolean localOffering(ServerLevel world,ItemStack stack){return stack.getItem() instanceof net.minecraft.world.item.BlockItem item&&localMaterial(world,item.getBlock().defaultBlockState());}
-    private static boolean anyReturnMaterial(ItemStack stack){if(!(stack.getItem() instanceof net.minecraft.world.item.BlockItem item))return false;var state=item.getBlock().defaultBlockState();return state.is(OUTER_MATERIALS)||state.is(INNER_MATERIALS)||state.is(HELL_MATERIALS);}
     public static PortalKind ritualKind(ServerLevel world,ItemStack stack){
         var source=world.dimension();
         if(source.equals(net.minecraft.world.level.Level.OVERWORLD))return stack.is(Items.APPLE)?PortalKind.GGG:null;
-        if(source.equals(GoogologyMod.OUTER))return localOffering(world,stack)?PortalKind.GGG:stack.is(dev.googology.mining.MiningContent.MATERIALS[3])?PortalKind.INNER:null;
-        if(source.equals(GoogologyMod.DIMENSION))return localOffering(world,stack)?PortalKind.INNER:isFruit(stack)?PortalKind.GUOGAO:null;
-        return source.equals(GoogologyMod.GUOGAO)&&localOffering(world,stack)?PortalKind.GUOGAO:null;
+        if(source.equals(GoogologyMod.OUTER))return stack.is(GoogologyBlocks.RETURN_TOKEN)?PortalKind.GGG:stack.is(dev.googology.mining.MiningContent.MATERIALS[3])?PortalKind.INNER:null;
+        if(source.equals(GoogologyMod.DIMENSION))return stack.is(GoogologyBlocks.RETURN_TOKEN)?PortalKind.INNER:isFruit(stack)?PortalKind.GUOGAO:null;
+        return source.equals(GoogologyMod.GUOGAO)&&stack.is(GoogologyBlocks.RETURN_TOKEN)?PortalKind.GUOGAO:null;
     }
 
     /** The offering selects the route before any frame is accepted. */
@@ -54,7 +45,7 @@ public final class PortalRitual {
         if(source.equals(net.minecraft.world.level.Level.OVERWORLD)) {
             if(kind!=PortalKind.GGG)return false;
             if(state.is(Blocks.CAKE))return state.getValue(CakeBlock.BITES)==0;
-            for(Block jelly:GoogologyBlocks.JELLIES)if(state.is(jelly))return true;
+            for(Block jelly:GoogologyBlocks.ALL_JELLIES)if(state.is(jelly))return true;
             return false;
         }
         if(source.equals(GoogologyMod.OUTER)&&kind==PortalKind.INNER) {
@@ -62,13 +53,12 @@ public final class PortalRitual {
             return false;
         }
         if(source.equals(GoogologyMod.DIMENSION)&&kind==PortalKind.GUOGAO) {
-            for(Block jelly:GoogologyBlocks.JELLIES)if(state.is(jelly))return true;
+            for(Block jelly:GoogologyBlocks.ALL_JELLIES)if(state.is(jelly))return true;
             return false;
         }
-        boolean returning=source.equals(GoogologyMod.OUTER)&&kind==PortalKind.GGG
-            ||source.equals(GoogologyMod.DIMENSION)&&kind==PortalKind.INNER
-            ||source.equals(GoogologyMod.GUOGAO)&&kind==PortalKind.GUOGAO;
-        return returning&&localMaterial(world,state);
+        if(source.equals(GoogologyMod.OUTER)&&kind==PortalKind.GGG)return state.is(GoogologyBlocks.OUTER_RETURN_FRAME);
+        if(source.equals(GoogologyMod.DIMENSION)&&kind==PortalKind.INNER)return state.is(GoogologyBlocks.INNER_RETURN_FRAME);
+        return source.equals(GoogologyMod.GUOGAO)&&kind==PortalKind.GUOGAO&&state.is(GoogologyBlocks.GUOGAO_RETURN_FRAME);
     }
     public static boolean isValidRing(ServerLevel world,BlockPos center,PortalKind kind) {
         if(!world.getWorldBorder().isWithinBounds(center.offset(-2,0,-2)) || !world.getWorldBorder().isWithinBounds(center.offset(2,0,2))) return false;
@@ -110,6 +100,7 @@ public final class PortalRitual {
 
     }
     public static boolean complete(ServerLevel world,PortalState.Gate gate) {
+        if(!PortalTravel.loaded(world,gate.center().offset(-2,0,-2),gate.center().offset(2,0,2)))return false;
         for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
             var state=world.getBlockState(gate.center().offset(x,0,z));
             if(isFrameOffset(x,z) && !state.is(GoogologyBlocks.PORTAL_FRAME)) return false;
@@ -122,6 +113,7 @@ public final class PortalRitual {
         var gate=data.gateAt(world.dimension().identifier().toString(),position);
         if(gate!=null) return gate;
         // Upgrade complete pre-1.2 portals on first contact, without resetting the save.
+        if(!PortalTravel.loaded(world,position.offset(-4,0,-4),position.offset(4,0,4)))return null;
         for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
             var center=position.offset(x,0,z);var state=world.getBlockState(center);
             if(!PortalKind.isPortal(state)) continue;
@@ -134,6 +126,7 @@ public final class PortalRitual {
         var data=PortalState.get(world.getServer());
         var gate=data.gateAt(world.dimension().identifier().toString(),position);
         if(gate==null && COLLAPSING.isEmpty()) {
+            if(!PortalTravel.loaded(world,position.offset(-4,0,-4),position.offset(4,0,4)))return;
             // A pre-1.2 gate may be broken before anybody has stepped into it.
             search: for(int cx=-2;cx<=2;cx++) for(int cz=-2;cz<=2;cz++) {
                 var center=position.offset(cx,0,cz);PortalKind kind=null;
@@ -153,6 +146,9 @@ public final class PortalRitual {
         }
         if(gate==null || !COLLAPSING.add(gate)) return;
         try {
+            PortalTravel.cancelGate(world,gate);
+            // A damaged edge gate is rechecked on contact after its other chunk loads.
+            if(!PortalTravel.loaded(world,gate.center().offset(-2,0,-2),gate.center().offset(2,0,2)))return;
             data.removeGate(gate);
             for(int x=-2;x<=2;x++) for(int z=-2;z<=2;z++) {
                 if(!isFrameOffset(x,z) && !(Math.abs(x)<=1 && Math.abs(z)<=1)) continue;

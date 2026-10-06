@@ -32,26 +32,35 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
     private void line(GuiGraphics graphics,Component text,int y,int color){graphics.drawString(font,font.plainSubstrByWidth(text.getString(),156),194,y,color,false);}
     @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
         graphics.drawString(font,title,12,12,0xffe5eee9,false);
-        graphics.drawString(font,tr("gear_label"),49,42,0xff445753,false);
+        graphics.drawString(font,tr(menu.manuscript()?"manuscript_label":"gear_label"),49,42,0xff445753,false);
         graphics.drawString(font,tr("socket_count",menu.installed(),menu.capacity()),18,64,0xff354e4a,false);
-        graphics.drawString(font,tr("drag_hint"),14,124,0xff59716d,false);
+        graphics.drawString(font,tr(menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
         graphics.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,0xff445753,false);
         line(graphics,tr("status"),34,0xffecdec0);
         var gear=menu.gear();var spec=MiningContent.GEAR.get(gear.getItem());
         if(spec==null){line(graphics,tr("insert_gear"),55,0xffc2d9d0);return;}
         int y=52;
         line(graphics,tr("grade_limit",Math.min(menu.rank(),menu.gearGrade())),y,0xffc2d9d0);y+=14;
-        line(graphics,tr("level_sum",GearData.totalLevels(gear)),y,0xffc2d9d0);y+=14;
-        if(spec.kind()==0){
-            line(graphics,tr("denxi",EquipmentRules.format(GearData.denxi(gear))),y,0xfff2d38a);y+=14;
-            line(graphics,tr("mining_speed",EquipmentRules.format(GearData.miningSpeed(gear))),y,0xffc2d9d0);y+=14;
+        var preview=menu.preview();var values=preview.effects();
+        double attack=values.attack();
+        if(menu.manuscript()&&minecraft.player!=null&&!MiningContent.GEAR.containsKey(minecraft.player.getMainHandItem().getItem()))attack=EquipmentRules.attack(GearData.baseAttack(minecraft.player.getMainHandItem()),java.util.List.of(),preview.book(),preview.deep());
+        double wear=spec.kind()>=2&&spec.kind()<6?EquipmentRules.wearFactor(GearData.profile(gear),preview.book()):values.wearFactor();
+        if(spec.kind()<2||spec.kind()==6){
+            line(graphics,tr("status_attack",EquipmentRules.format(attack)),y,0xffc2d9d0);y+=14;
+            line(graphics,tr("status_mining",EquipmentRules.format(values.miningMultiplier())),y,0xffc2d9d0);y+=14;
+            line(graphics,tr("status_yield",values.yieldLevel()),y,0xffc2d9d0);y+=14;
         }
-        if(spec.kind()<2){line(graphics,tr("attack",EquipmentRules.format(GearData.power(gear))),y,0xffc2d9d0);y+=14;}
-        else if(spec.kind()<6){line(graphics,tr("defense",EquipmentRules.format(GearData.power(gear)*EquipmentRules.armorShare(spec.kind()))),y,0xffc2d9d0);y+=14;}
-        if(spec.kind()<6)line(graphics,tr("durability",gear.getMaxDamage()-gear.getDamageValue(),gear.getMaxDamage()),y,0xffc2d9d0);y+=18;
-        if(menu.installed()>0){line(graphics,tr("effect_points"),y,0xffecdec0);y+=12;}
-        for(int type=0;type<9;type++)if(GearData.points(gear,type)>0){
-            line(graphics,tr("effect_value",tr("effect."+type),EquipmentRules.format(GearData.points(gear,type))),y,0xff9cd6cd);y+=12;
+        if(spec.kind()==0){line(graphics,tr("status_range",values.extraBlocks()),y,0xffc2d9d0);y+=14;}
+        if(values.reach()>0){line(graphics,tr("status_reach",EquipmentRules.format(values.reach())),y,0xffc2d9d0);y+=14;}
+        if(values.regeneration()>0){line(graphics,tr("status_healing",EquipmentRules.format(values.regeneration())),y,0xffc2d9d0);y+=14;}
+        if(values.bonusHealth()>0){line(graphics,tr("status_health",EquipmentRules.format(values.bonusHealth())),y,0xffc2d9d0);y+=14;}
+        if(values.protectionFactor()>1){line(graphics,tr("status_defense",EquipmentRules.format(1/values.protectionFactor())),y,0xffc2d9d0);y+=14;}
+        if(wear>1){line(graphics,tr("status_wear",EquipmentRules.format(wear)),y,0xffc2d9d0);y+=14;}
+        if(spec.kind()==6){
+            int jump=0;for(var core:GearData.profile(gear))if(core.type()==3&&core.level()==1)jump++;
+            if(jump>0){line(graphics,tr("status_jump",jump),y,0xffc2d9d0);y+=14;}
+            int flight=EquipmentRules.highest(GearData.profile(gear),3);
+            if(flight>=2)line(graphics,tr("status_flight",tr(flight>=3?preview.deep()?"flight_deep":"flight_normal":"flight_slow")),y,0xffc2d9d0);
         }
     }
 }

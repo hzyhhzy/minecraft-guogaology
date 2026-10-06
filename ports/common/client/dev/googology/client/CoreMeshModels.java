@@ -61,6 +61,10 @@ public final class CoreMeshModels {
         });
     }
     public static boolean polished(BlockStateModel model){return model instanceof GemModel;}
+    public record DistanceGeometryInfo(int shellFaces,int staticFaces,int fallbackFaces,int movingFaces){}
+    public static DistanceGeometryInfo distanceInfo(BlockStateModel model){
+        return model instanceof GemModel gem?new DistanceGeometryInfo(gem.geometry.fixedFaces,gem.geometry.staticInterior.size(),gem.geometry.fallback.size(),gem.geometry.interior.values().stream().mapToInt(List::size).sum()):null;
+    }
     static GemModel animated(BlockStateModel model){return model instanceof GemModel gem?gem:null;}
     static final class GemModel implements BlockStateModel {
         final Geometry geometry;
@@ -79,6 +83,9 @@ public final class CoreMeshModels {
         final String motion;
         final float motionScale;
         final boolean extended;
+        final List<Surface> staticInterior;
+        final float animationRadius,staticRadius;
+        final int fixedFaces;
         Geometry(JsonObject mesh,SpriteGetter sprites,ModelDebugName debug){
             motion=mesh.has("motion")?mesh.get("motion").getAsString():"rotate";
             motionScale=mesh.has("motion_scale")?mesh.get("motion_scale").getAsFloat():1;
@@ -89,10 +96,12 @@ public final class CoreMeshModels {
             QuadEmitter everyOut=every.emitter(),shellOut=shell.emitter();
             Map<Integer,List<Surface>> moving=new TreeMap<>();
             List<JsonObject> vanilla=new ArrayList<>();
+            int fixedCount=0;float movingRadius=.866026f;
             for(var element:mesh.getAsJsonArray("quads")){
                 JsonObject q=element.getAsJsonObject();Surface face=new Surface(q,textures.get(q.get("t").getAsString()));
                 face.emit(everyOut);
                 int part=q.has("part")?q.get("part").getAsInt():1;
+                if(part==0)fixedCount++;else movingRadius=Math.max(movingRadius,face.radius()*(part>=10?1:motionScale));
                 // LOD cells retain the shell and static interior. Orbiting outer
                 // ornaments cannot be represented faithfully within one cell.
                 if(part<10)vanilla.add(q);
@@ -104,6 +113,12 @@ public final class CoreMeshModels {
             vanilla.sort(Comparator.comparingDouble(CoreFallbackPart::radiusSquared));
             fallback=vanilla.stream().map(q->CoreFallbackPart.bake(q,textures.get(q.get(q.has("lod_t")?"lod_t":"t").getAsString()))).toList();
             moving.replaceAll((key,value)->List.copyOf(value));interior=Collections.unmodifiableMap(moving);
+            var still=new ArrayList<Surface>();float stillRadius=.866026f;
+            for(var entry:moving.entrySet())if(entry.getKey()<10){
+                var pose=CoreStaticPose.matrix(motion,entry.getKey(),motionScale);
+                for(var surface:entry.getValue()){var posed=new Surface(surface,pose);still.add(posed);stillRadius=Math.max(stillRadius,posed.radius());}
+            }
+            staticInterior=List.copyOf(still);animationRadius=movingRadius;staticRadius=stillRadius;fixedFaces=fixedCount;
         }
     }
     static final class Surface {
@@ -126,6 +141,16 @@ public final class CoreMeshModels {
                     Math.abs(ny)>=Math.abs(nz)?(ny<0?Direction.DOWN:Direction.UP):(nz<0?Direction.NORTH:Direction.SOUTH);
             cull=q.has("cull")?Direction.byName(q.get("cull").getAsString()):null;
         }
+        Surface(Surface source,org.joml.Matrix4f pose){
+            cull=source.cull;face=source.face;System.arraycopy(source.uv,0,uv,0,8);System.arraycopy(source.argb,0,argb,0,4);
+            var normals=pose.normal(new org.joml.Matrix3f());
+            for(int i=0;i<4;i++){
+                var point=new org.joml.Vector3f(source.xyz[i*3],source.xyz[i*3+1],source.xyz[i*3+2]);pose.transformPosition(point);
+                xyz[i*3]=point.x;xyz[i*3+1]=point.y;xyz[i*3+2]=point.z;
+                var n=new org.joml.Vector3f(source.normal[i*3],source.normal[i*3+1],source.normal[i*3+2]);normals.transform(n).normalize();normal[i*3]=n.x;normal[i*3+1]=n.y;normal[i*3+2]=n.z;
+            }
+        }
+        float radius(){float r=0;for(int i=0;i<4;i++){float x=xyz[i*3]-.5f,y=xyz[i*3+1]-.5f,z=xyz[i*3+2]-.5f;r=Math.max(r,(float)Math.sqrt(x*x+y*y+z*z));}return r;}
         void emit(QuadEmitter emitter){
             emitter.cullFace(cull).nominalFace(face).renderLayer(ChunkSectionLayer.TRANSLUCENT).diffuseShade(false).ambientOcclusion(TriState.FALSE);
             for(int i=0;i<4;i++)emitter.pos(i,xyz[i*3],xyz[i*3+1],xyz[i*3+2]).normal(i,normal[i*3],normal[i*3+1],normal[i*3+2]).color(i,argb[i]).uv(i,uv[i*2],uv[i*2+1]);

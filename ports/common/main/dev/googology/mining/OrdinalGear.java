@@ -17,19 +17,24 @@ public final class OrdinalGear extends Item {
     public OrdinalGear(Properties properties,int tier,int kind){super(properties);this.tier=tier;this.kind=kind;}
     @Override public void inventoryTick(ItemStack s,net.minecraft.server.level.ServerLevel world,Entity entity,EquipmentSlot slot){if((s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION||s.getOrDefault(MiningContent.DEEP,false)!=ManuscriptEffects.deep(world))){s.set(MiningContent.DEEP,ManuscriptEffects.deep(world));GearData.refresh(s);}}
     @Override public float getDestroySpeed(ItemStack stack,BlockState state){return kind==0&&(state.is(BlockTags.MINEABLE_WITH_PICKAXE)||state.getBlock() instanceof OrdinalOre)?(float)GearData.miningSpeed(stack):1;}
-    @Override public boolean isCorrectToolForDrops(ItemStack stack,BlockState state){return kind==0&&(state.is(BlockTags.MINEABLE_WITH_PICKAXE)||state.getBlock() instanceof OrdinalOre);}
+    @Override public boolean isCorrectToolForDrops(ItemStack stack,BlockState state){
+        if(!GearData.minesWithPick(stack,state))return false;
+        var incorrect=switch(EquipmentRules.harvestLevel(tier,GearData.digit(stack))){case 0->BlockTags.INCORRECT_FOR_STONE_TOOL;case 1->BlockTags.INCORRECT_FOR_IRON_TOOL;case 2->BlockTags.INCORRECT_FOR_DIAMOND_TOOL;default->BlockTags.INCORRECT_FOR_NETHERITE_TOOL;};
+        return !state.is(incorrect);
+    }
     @Override public boolean mineBlock(ItemStack stack,Level world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClientSide())stack.hurtAndBreak(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
-    @Override public void hurtEnemy(ItemStack stack,LivingEntity target,LivingEntity attacker){stack.hurtAndBreak(kind==1?1:2,attacker,EquipmentSlot.MAINHAND);if(kind==1)MiningEffects.burst(stack,target,attacker);}
+    @Override public void hurtEnemy(ItemStack stack,LivingEntity target,LivingEntity attacker){if(kind==1){MiningEffects.burst(stack,target,attacker);MiningEffects.control(stack,target,attacker);}stack.hurtAndBreak(kind==1?1:2,attacker,EquipmentSlot.MAINHAND);}
     @Override public float getAttackDamageBonus(Entity target,float current,DamageSource source){
         if(!(source.getEntity() instanceof Player p)||p.getMainHandItem().getItem()!=this)return 0;
-        double actual=Math.max(.1,GearData.power(p.getMainHandItem()));
-        return (float)(current*(actual/Math.min(1023,actual)-1));
+        double actual=Math.max(.1,GearData.attackWithBook(p.getMainHandItem(),p));
+        return (float)(current*(actual/Math.min(2048,actual)-1));
     }
     @Override public void appendHoverText(ItemStack s,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
         if(kind>=2)out.accept(Component.translatable("mining.googology.defense",EquipmentRules.format(GearData.power(s)*EquipmentRules.armorShare(kind))));
         if(kind==0)out.accept(Component.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.accept(Component.translatable("mining.googology.digit",GearData.digit(s)));
         out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
+        if(GearData.points(s,4)>0||GearData.points(s,8)>0)out.accept(Component.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
         for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable("mining.googology.effect."+GearData.type(c))));
         if(kind==0)out.accept(Component.translatable("mining.googology.sneak"));
     }

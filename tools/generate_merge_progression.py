@@ -50,8 +50,22 @@ def generate():
         model(metal+'_manuscript','minecraft:item/generated','googology:item/'+metal+'_manuscript')
         shaped(metal+'_manuscript',[' M ','MBM',' M '],{'M':'googology:'+metal+'_material','B':'minecraft:book'})
     shaped('enhancement_table',[' M ','BWB','SSS'],{'M':'googology:omega_material','B':'minecraft:book','W':'minecraft:crafting_table','S':'#minecraft:stone_crafting_materials'})
-    for tier,metal in ((2,'gamma'),(3,'true_omega')):
-        shaped('enhancement_table_'+str(tier),['MCM','STS','MCM'],{'M':'googology:'+metal+'_material','C':'googology:ordinal_crystal'+('_lv2' if tier==3 else ''),'T':'googology:enhancement_table'+('_2' if tier==3 else ''),'S':'googology:epsilon_block'})
+    # The first station remains craftable in the Outer world. Upgrades use
+    # Inner-world universal crystals, never biome-specific materials.
+    for tier in (2,3):
+        shaped('enhancement_table_'+str(tier),['CCC','CTC','CCC'],{
+            'C':'googology:ordinal_crystal'+('_lv2' if tier==3 else ''),
+            'T':'googology:enhancement_table'+('_2' if tier==3 else '')})
+    # Salvage always yields two chips. Forward assembly pays at least that
+    # amount as well as chassis / display materials, so no recipe loop can
+    # manufacture extra chips or reclaim free metals.
+    shaped('server_rack',['ICI','CRC','ICI'],{
+        'I':'minecraft:iron_ingot','C':'googology:compute_chip','R':'minecraft:redstone'})
+    shaped('office_monitor',['GGG','CIC','RIR'],{
+        'G':'minecraft:glass','C':'googology:compute_chip',
+        'I':'minecraft:iron_ingot','R':'minecraft:redstone'})
+    for machine in ('server_rack','office_monitor'):
+        simple('circuit_from_'+machine,['googology:'+machine],'googology:compute_chip',2)
     for name in ('mineable/pickaxe','needs_iron_tool'):
         p=RES/f'data/minecraft/tags/block/{name}.json';v=read(p)
         v['values']=list(dict.fromkeys(v['values']+[f'googology:{prefix}{m}_ore' for prefix in ('','nether_') for m in METALS]))
@@ -86,12 +100,17 @@ def generate():
             'profile.outer':('表界／原版维度：温和强化','Outer / vanilla dimensions: additive enhancement'),
             'profile.inner':('里界／地府：深层强化','Inner / underworld: deep enhancement')}
         for k,v in extra.items():values['mining.googology.'+k]=v[0 if zh else 1]
-        for i,(cn,en) in enumerate([('挖掘加速','Mining speed'),('武器攻击','Weapon attack'),('被动恢复','Passive recovery'),('缓降／飞行','Slow falling / flight'),('经验加成','Experience gain'),('移动速度','Movement speed'),('被动防护','Passive protection'),('生命／不死图腾','Health / totems'),('装备自修复','Equipment repair')]):values['mining.googology.manuscript.effect.'+str(i)]=cn if zh else en
+        for i,(cn,en) in enumerate([('增产','Yield'),('攻击力','Attack'),('挖掘速度','Mining speed'),('跳跃／飞行','Jump / flight'),('治疗／夜视','Healing / night vision'),('投射爆裂／防火','Projectile burst / fire resistance'),('防护','Protection'),('生命／免疫','Health / immunity'),('通用增强','Universal enhancement')]):values['mining.googology.manuscript.effect.'+str(i)]=cn if zh else en
     catalog['removed']=sorted(set(catalog['removed']));write(ROOT/'tools/copy_catalog.json',catalog)
     from copy_catalog import normalize
     for locale in ('zh_cn','en_us'):
         p=A/f'lang/{locale}.json';v=read(p)
         for key in catalog['removed']:v.pop(key,None)
         v.update(catalog['translations'][locale]);write(p,v)
+    # Restore the tag-aware return recipe unlocks after the broad equipment pass.
+    from generate_return_portals import generate_data as return_portal_data
+    return_portal_data()
+    from update_core_effect_copy import generate as update_core_effect_copy
+    update_core_effect_copy()
     print('Four-tier recipes, drops, models and translations updated')
 if __name__=='__main__':generate()

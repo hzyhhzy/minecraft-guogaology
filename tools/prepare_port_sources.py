@@ -34,6 +34,7 @@ def adapt(text, target, name):
         'recipe.assemble(input,world.registryAccess())': 'recipe.assemble(input)',
         'CompostingChanceRegistry': 'CompostableRegistry',
         'p.getTags()': 'p.entityTags()',
+        'player.getTags()': 'player.entityTags()',
         'IntProvider.codec(0,64)': 'IntProviders.codec(0,64)',
         'FloatProvider.CODEC': 'FloatProviders.CODEC',
         'PayloadTypeRegistry.playS2C()': 'PayloadTypeRegistry.clientboundPlay()',
@@ -43,11 +44,21 @@ def adapt(text, target, name):
         'net.minecraft.world.entity.EntityType.PARROT': 'net.minecraft.world.entity.EntityTypes.PARROT',
         'net.minecraft.world.entity.EntityType.ZOMBIE': 'net.minecraft.world.entity.EntityTypes.ZOMBIE',
         'e.getKey().x,e.getKey().z': 'e.getKey().x(),e.getKey().z()',
+        'entry.getKey().x,entry.getKey().z': 'entry.getKey().x(),entry.getKey().z()',
         '.emissiveRendering((state,world,pos)->true)': '.emissiveRendering(state->true)',
         'new net.minecraft.world.level.saveddata.SavedDataType<>("googology_portals",': 'new net.minecraft.world.level.saveddata.SavedDataType<>(dev.googology.GoogologyMod.id("portals"),',
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
+    if name == 'BlockYieldMixin.java':
+        text = text.replace('Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;', 'Lnet/minecraft/world/item/ItemInstance;)Ljava/util/List;')
+        text = text.replace('Entity owner,ItemStack tool,', 'Entity owner,net.minecraft.world.item.ItemInstance tool,')
+    if target == '26.2' and name == 'TreeSelfOverlapGuardFeature.java':
+        # Shared 1.21.x providers take (random, pos). 26.2 also requires
+        # the level, including the named lambda arguments of the cone crown.
+        # 26.3 has an explicit Holder-provider implementation of this feature.
+        for provider in ('this.trunkProvider','this.foliageProvider','soil'):
+            text=text.replace(provider+'.getState(random,pos)',provider+'.getState(var1,random,pos)')
     for expression in ('p', 'pos', 'context.origin()'):
         for prefix in ('', 'net.minecraft.world.level.'):
             text = text.replace('new ' + prefix + 'ChunkPos(' + expression + ')', prefix + 'ChunkPos.containing(' + expression + ')')
@@ -92,6 +103,7 @@ def adapt(text, target, name):
             'Map<String,TextureAtlasSprite> textures': 'Map<String,Material.Baked> textures',
             'new Material(ATLAS,Identifier.parse(e.getValue().getAsString()))': 'new Material(Identifier.parse(e.getValue().getAsString()),true)',
             'Surface(JsonObject q,TextureAtlasSprite sprite){': 'final Material.Baked material;\n        Surface(JsonObject q,Material.Baked material){\n            this.material=material;var sprite=material.sprite();',
+            'Surface(Surface source,org.joml.Matrix4f pose){': 'Surface(Surface source,org.joml.Matrix4f pose){\n            this.material=source.material;',
             '.renderLayer(ChunkSectionLayer.TRANSLUCENT)': '.chunkLayer(ChunkSectionLayer.TRANSLUCENT)',
             'emitter.emit();': 'emitter.postMaterialBake(material);emitter.emit();',
             '@Override public void collectParts': '@Override public int materialFlags(){return new MeshQuadCollection(geometry.fixed).materialFlags();}\n        @Override public void collectParts',
@@ -108,6 +120,12 @@ def adapt(text, target, name):
         text = text.replace('WorldRenderEvents.END_EXTRACTION', 'LevelRenderEvents.END_EXTRACTION')
         text = text.replace('.renderer.state.CameraRenderState', '.renderer.state.level.CameraRenderState')
         text = text.replace('.getBlockRenderer().getBlockModel(', '.getModelManager().getBlockStateModelSet().get(')
+        # 26.x carries the culling frustum in the submitted camera state;
+        # LevelExtractionContext intentionally no longer exposes frustum().
+        text = text.replace('frameFrustum=context.frustum()==null?null:new net.minecraft.client.renderer.culling.Frustum(context.frustum());',
+                            'frameFrustum=null; // Use the camera snapshot during submission below.')
+        text = text.replace('frameFrustum!=null&&!frameFrustum.isVisible(state.bounds)',
+                            'camera.cullFrustum!=null&&!camera.cullFrustum.isVisible(state.bounds)')
     if name == 'GoogologyAtmosphere.java':
         text = text.replace('.client.rendering.v1.world.World', '.client.rendering.v1.level.Level')
         text = text.replace('WorldExtractionContext', 'LevelExtractionContext').replace('WorldRenderContext','LevelRenderContext').replace('WorldRenderEvents','LevelRenderEvents')
@@ -116,6 +134,8 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'MiningEffects.java':
+            text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
         if name == 'CoreFallbackPart.java':
             text = text.replace('new BakedQuad.MaterialInfo(sprite,ChunkSectionLayer.TRANSLUCENT,RenderTypes.translucentMovingBlock(),-1,false,0)',
                                 'BakedQuad.MaterialInfo.of(material,com.mojang.blaze3d.platform.Transparency.TRANSLUCENT,-1,Direction.UP,0)')

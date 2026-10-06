@@ -13,6 +13,13 @@ import net.minecraft.sound.*;
 import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.effect.*;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.enchantment.*;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.registry.RegistryKeys;
+import dev.googology.mixin.ExtraDamageAccessor;
 
 public final class MiningEffects {
     private static final Set<Block> VANILLA_ORES=Set.of(
@@ -25,7 +32,7 @@ public final class MiningEffects {
         PlayerBlockBreakEvents.AFTER.register((world,player,pos,state,entity)->{
             if(EXTRA.get()||!(player instanceof ServerPlayerEntity p)||p.isCreative()||p.isSneaking()||entity!=null)return;
             var tool=p.getMainHandStack();var spec=MiningContent.GEAR.get(tool.getItem());if(spec==null||spec.kind()!=0)return;
-            int budget=EquipmentRules.spreadBudget(GearData.points(tool,0));if(budget==0)return;
+            int budget=EquipmentRules.spreadBudget(GearData.profile(tool),GearData.profile(ManuscriptEffects.held(p)),ManuscriptEffects.deep(world));if(budget==0)return;
             var look=p.getRotationVec(1f);Direction normal=Direction.getFacing(look.x,look.y,look.z);
             var candidates=new ArrayList<BlockPos>();
             for(int a=-4;a<=4;a++)for(int b=-4;b<=4;b++)if(a!=0||b!=0)candidates.add(switch(normal.getAxis()){case X->pos.add(0,a,b);case Y->pos.add(a,0,b);case Z->pos.add(a,b,0);});
@@ -47,12 +54,39 @@ public final class MiningEffects {
         return next.isIn(BlockTags.BASE_STONE_OVERWORLD)||next.isIn(BlockTags.BASE_STONE_NETHER)||next.getBlock() instanceof dev.googology.block.NumberStoneBlock||next.getBlock()==dev.googology.GoogologyBlocks.ROOTBOUND_STONE||next.isIn(net.minecraft.registry.tag.TagKey.of(net.minecraft.registry.RegistryKeys.BLOCK,dev.googology.GoogologyMod.id("ores")));
     }
     public static void burst(ItemStack weapon,LivingEntity target,LivingEntity attacker){
-        double points=GearData.points(weapon,5);if(points<=0||!(attacker instanceof ServerPlayerEntity p)||!(target.getWorld() instanceof ServerWorld world))return;
+        double coefficient=EquipmentRules.criticalCoefficient(GearData.profile(weapon),List.of(),false);if(coefficient<=0||!(attacker instanceof ServerPlayerEntity p)||!(target.getWorld() instanceof ServerWorld world))return;
+        explode(world,target,p,p,(float)(GearData.attackWithBook(weapon,p)*coefficient));
+    }
+    public static void projectileBurst(ProjectileEntity projectile,LivingEntity target,float actualDamage){
+        if(!(projectile.getOwner() instanceof ServerPlayerEntity player)||!(target.getWorld() instanceof ServerWorld world))return;
+        double extra=EquipmentRules.projectileBurst(actualDamage,GearData.profile(ManuscriptEffects.held(player)),ManuscriptEffects.deep(world));
+        if(extra>0)explode(world,target,player,projectile,(float)extra);
+    }
+    private static void explode(ServerWorld world,LivingEntity target,ServerPlayerEntity p,Entity source,float amount){
         world.spawnParticles(ParticleTypes.EXPLOSION,target.getX(),target.getY()+.5,target.getZ(),1,0,0,0,0);
         world.playSound(null,target.getBlockPos(),SoundEvents.ENTITY_GENERIC_EXPLODE.value(),SoundCategory.PLAYERS,.55f,1.25f);
-        for(var other:world.getEntitiesByClass(LivingEntity.class,target.getBoundingBox().expand(3),e->e!=target&&e!=p&&!e.isTeammate(p))){
-            if(other.squaredDistanceTo(target)>9||!p.canSee(other))continue;
-            other.damage(p.getDamageSources().playerAttack(p),(float)(GearData.power(weapon)*points*.15));
+        var damage=p.getDamageSources().explosion(source,p);
+        for(var other:world.getEntitiesByClass(LivingEntity.class,target.getBoundingBox().expand(3),e->e!=p&&!e.isTeammate(p))){
+            if(other.squaredDistanceTo(target)>9||other!=target&&!target.canSee(other))continue;
+            if(other==target){int timer=other.timeUntilRegen;var accessor=(ExtraDamageAccessor)other;float previous=accessor.googology$lastDamage();other.timeUntilRegen=0;try{other.damage(damage,amount);}finally{other.timeUntilRegen=timer;accessor.googology$lastDamage(previous);}}
+            else other.damage(damage,amount);
         }
+    }
+    public static void control(ItemStack weapon,LivingEntity target,LivingEntity attacker){
+        if(!(attacker instanceof ServerPlayerEntity)||!target.isAlive()||target.isTeammate(attacker))return;
+        var cores=GearData.profile(weapon);int level=EquipmentRules.highest(cores,7);if(level==0)return;int ticks=(int)Math.round(20*EquipmentRules.controlDuration(cores));
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ticks,level-1));
+        if(level>=2)target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ticks,level-2));
+    }
+    /** Fortune participates only in the existing loot-table calculation; never duplicate drops. */
+    public static ItemStack lootTool(BlockState state,ServerWorld world,Entity entity,ItemStack tool){
+        if(tool.isEmpty()||!(entity instanceof LivingEntity owner)||state.hasBlockEntity())return tool;
+        var id=net.minecraft.registry.Registries.BLOCK.getId(state.getBlock());
+        if(id.getNamespace().equals("googology")&&(EquipmentRules.coreType(id.getPath())>=0||Arrays.stream(MiningContent.STORAGE).anyMatch(b->b==state.getBlock())))return tool;
+        for(var property:state.getProperties())if(property.getName().equals("player_placed")&&Boolean.TRUE.equals(state.get(property)))return tool;
+        int level=GearData.yieldLevel(tool,owner,false);if(level<=0)return tool;
+        var fortune=world.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+        if(EnchantmentHelper.getLevel(fortune,tool)>=level)return tool;
+        var copy=tool.copy();var builder=new ItemEnchantmentsComponent.Builder(copy.getOrDefault(DataComponentTypes.ENCHANTMENTS,ItemEnchantmentsComponent.DEFAULT));builder.set(fortune,level);copy.set(DataComponentTypes.ENCHANTMENTS,builder.build());return copy;
     }
 }

@@ -30,16 +30,12 @@ public final class ModBoats {
          for (String var1 : ModBlocks.WOOD_IDS) {
             Identifier var2 = GoogologyMod.id(var1 + "_boat");
             ResourceKey var3 = ResourceKey.create(Registries.ENTITY_TYPE, var2);
-            EntityType var4 = (EntityType)Registry.register(
-               BuiltInRegistries.ENTITY_TYPE,
-               var3,
-               Builder.<Boat>of((var1x, var2x) -> new Boat(var1x, var2x, () -> ModItems.get(var1 + "_boat")), MobCategory.MISC)
-                  .sized(1.375F, 0.5625F)
-                  .clientTrackingRange(10)
-                  .build(var3)
-            );
+            Builder<Boat> hull = Builder.<Boat>of((type, level) -> new Boat(type, level, () -> ModItems.get(var1 + "_boat")), MobCategory.MISC)
+               .sized(1.375F, 0.5625F).clientTrackingRange(10);
+            if (var1.equals("dread")) hull.fireImmune();
+            EntityType var4 = (EntityType)Registry.register(BuiltInRegistries.ENTITY_TYPE,var3,hull.build(var3));
             BOATS.put(var1, var4);
-            ModItems.registerTracked(var1 + "_boat", var1x -> new BoatItem(var4, var1x), new Properties().stacksTo(1));
+            ModItems.registerTracked(var1 + "_boat", var1x -> new BoatItem(var4, var1x), ModBlocks.woodItemProperties(var1+"_boat").stacksTo(1));
          }
       }
    }

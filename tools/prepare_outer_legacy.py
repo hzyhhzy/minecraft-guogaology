@@ -64,6 +64,7 @@ def legacy(s,name):
     # Only simple local key variables are passed to setId in the reconstructed source.
     s=re.sub(r'\.setId\((?:var\d+|key|var\d+\.(?:block|item)\(\))\)','',s)
     s=s.replace('new StandingAndWallBlockItem(var6, var4, Direction.DOWN, new Properties())','new StandingAndWallBlockItem(var6, var4, new Properties(), Direction.DOWN)')
+    s=s.replace('new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1))','new StandingAndWallBlockItem(var6, var4, ModBlocks.woodItemProperties(var1), Direction.DOWN)')
     s=re.sub(r'\.getRandomOrThrow\((\w+)\)',r'.getRandomValue(\1).orElseThrow()',s)
     s=s.replace('Monster::checkMonsterSpawnRules','(type, world, reason, pos, random) -> Monster.checkMonsterSpawnRules((EntityType)type, world, reason, pos, random)')
     s=s.replace('net.minecraft.client.model.object.boat.BoatModel','net.minecraft.client.model.BoatModel').replace('BoatModel::createBoatModel','BoatModel::createBodyModel')

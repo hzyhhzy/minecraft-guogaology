@@ -68,6 +68,13 @@ public final class SanctuaryPlacement {
                 if(near)continue;
                 // Locate against untouched terrain, never against a sanctuary's clearing.
                 var layout=SanctuaryLayout.of(theme);
+                if(!under){
+                    boolean crossesGap=false;
+                    for(int dx=-layout.width/2-8;dx<=layout.width/2+8;dx+=8)
+                        for(int dz=-layout.depth/2-8;dz<=layout.depth/2+8;dz+=8)
+                            if(BiomeRegions.lhoGap(BiomeRegions.weights(seed,x+dx,z+dz)))crossesGap=true;
+                    if(crossesGap)continue;
+                }
                 int ground=WaterField.UNDERWORLD_LEVEL;
                 if(!under){
                     var column=TerrainField.rawColumn(seed,x,z,false);ground=column.surface(false,100);

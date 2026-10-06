@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "P  ",
+    "PP ",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "googology:dread_planks"
+    }
+  },
+  "result": {
+    "id": "googology:dread_stairs",
+    "count": 4
+  }
+}

@@ -14,7 +14,6 @@ public abstract class EquipmentDefenseMixin {
     @Inject(method="getDamageAfterArmorAbsorb",at=@At("RETURN"),cancellable=true)
     private void googology$defense(DamageSource source,float input,CallbackInfoReturnable<Float> result){
         boolean bypass=source.is(DamageTypeTags.BYPASSES_ARMOR);
-        if(bypass&&!source.is(DamageTypeTags.IS_FALL)&&!source.is(DamageTypeTags.IS_FIRE))return;
         var e=(LivingEntity)(Object)this;double total=GearData.defense(e);
         if(total>0){
             float vanilla=bypass?input:net.minecraft.world.damagesource.CombatRules.getDamageAfterAbsorb(e,input,source,Math.max(0,e.getArmorValue()-GearData.armorDisplay(e)),(float)e.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS));

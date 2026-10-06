@@ -1,14 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_material": {
+    "ingredient_0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "googology:dread_log"
-            ]
+            "items": "#googology:dread_logs"
           }
         ]
       }
@@ -22,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_material",
+      "ingredient_0",
       "has_recipe"
     ]
   ],

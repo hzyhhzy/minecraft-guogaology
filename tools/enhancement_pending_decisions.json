@@ -1,0 +1,283 @@
+{
+  "recordedOn": "2026-10-06",
+  "status": "applied_to_offline_simulator_revision46_not_to_mod",
+  "supersedes": "Simulator revisions 42-45 attack/defense models. The user authorized revision46 simulator implementation; main Mod remains 0.3.11.",
+  "confirmed": {
+    "armorSets": [
+      {
+        "material": "omega",
+        "armor": 16,
+        "toughness": 4
+      },
+      {
+        "material": "epsilon",
+        "armor": 18,
+        "toughness": 8
+      },
+      {
+        "material": "gamma",
+        "armor": 20,
+        "toughness": 12
+      },
+      {
+        "material": "true_omega",
+        "armor": 22,
+        "toughness": 16
+      }
+    ],
+    "armorBase": "Use the real vanilla armor/toughness damage calculation in every realm; remove the old custom bare-armor factors 2/2.5/3/4.",
+    "ordinalCrystal": {
+      "allowedOn": [
+        "manuscript"
+      ],
+      "effects": [
+        "attack",
+        "protection",
+        "multiply_existing_laver_healing",
+        "extend_existing_guogao_sword_debuff_duration"
+      ],
+      "attackProtectionGrades": [
+        0.05,
+        0.1,
+        0.2,
+        0.4
+      ],
+      "healingGrades": [
+        0.1,
+        0.2,
+        0.3,
+        0.5
+      ],
+      "guogaoSwordDebuffDurationGrades": [
+        0.25,
+        0.5,
+        0.75,
+        1.25
+      ],
+      "sameItemHealingDurationAggregation": "root_sum_square",
+      "removedEffects": [
+        "mining_speed",
+        "wear_protection",
+        "reach",
+        "maximum_health",
+        "yield",
+        "extra_mining",
+        "ability_grades"
+      ],
+      "sameItemAttackProtectionAggregation": "root_sum_square"
+    },
+    "manuscriptInnate": {
+      "equivalentOrdinalLv1Multiples": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "attackProtectionContribution": [
+        0.05,
+        0.1,
+        0.15,
+        0.2
+      ],
+      "healingContribution": [
+        0.1,
+        0.2,
+        0.3,
+        0.4
+      ],
+      "guogaoSwordDebuffDurationContribution": [
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "realmInvariant": true,
+      "healingRequiresLaver": true,
+      "debuffDurationRequiresGuogaoSword": true,
+      "noIndependentHealingOrDebuff": true
+    },
+    "powerAndBoundary": {
+      "attackProtectionGrades": [
+        0.25,
+        0.5,
+        1.0
+      ],
+      "sameTypeSameItemAggregation": "root_sum_square",
+      "armorSharesHelmetChestLegsBoots": [
+        0.2,
+        0.4,
+        0.25,
+        0.15
+      ],
+      "crossArmorAggregation": "weighted_sum_of_per_item_results",
+      "armorProtectionContributionScale": 2,
+      "armorScaleDoesNotApplyToManuscript": true
+    },
+    "normalAttack": {
+      "mode": "fixed_hp_additions_to_base_attack",
+      "powerTowerGrades": [
+        1,
+        2,
+        3
+      ],
+      "ordinalCrystalGrades": [
+        0.5,
+        1,
+        1.5,
+        2.5
+      ],
+      "sameTypeSameItemAggregation": "root_sum_square",
+      "crossSourceAggregation": "sum",
+      "manuscriptInnateHpByTier": [
+        0.5,
+        1,
+        1.5,
+        2
+      ],
+      "deepAttackRetainsPreviousPercentMultipliers": true
+    },
+    "health": {
+      "source": "guogao_heart_in_the_single_active_manuscript_only",
+      "formula": "20 + sqrt(sum((4 * core_level)^2))",
+      "realmInvariant": true,
+      "noOrdinalOrArmorHealth": true
+    },
+    "realmAggregation": {
+      "normal": "Attack uses fixed HP additions. Extra protection is (1+2*weightedArmorBoundaryRSS)*(1+b+bookBoundaryRSS+bookOrdinalRSS).",
+      "deep": "Attack multiplies base by innate/bookOrdinal/bookPower/toolPower factors. Extra protection is (1+2*weightedArmorBoundaryRSS)*(1+b)*(1+bookBoundaryRSS)*(1+bookOrdinalRSS). Native armor is a separate preceding stage; equipment Ordinal is forbidden."
+    },
+    "equipmentSockets": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "manuscriptSockets": [
+      2,
+      3,
+      4,
+      6
+    ],
+    "activeManuscriptPriority": [
+      "offhand",
+      "mainhand"
+    ],
+    "otherCoreRoles": {
+      "sequence_core": {
+        "equipment": "pick_extra_mining",
+        "manuscript": "efficiency"
+      },
+      "power_tower_core": {
+        "equipment": "sword_attack",
+        "manuscript": "attack"
+      },
+      "hydra_bud": {
+        "equipment": "pick_fortune_and_silk_toggle_or_sword_looting",
+        "manuscript": "block_and_entity_reach"
+      },
+      "lho_trace": {
+        "equipment": "reduced_wear",
+        "manuscript": "ordinary_targeting_suppression_and_high_grade_night_vision"
+      },
+      "laver_core": {
+        "equipment": "helmet_breathing_aqua_affinity_or_boots_underwater_movement",
+        "manuscript": "healing_and_high_grade_food_floor"
+      },
+      "astra_critical_core": {
+        "equipment": "sword_burst",
+        "manuscript": "projectile_burst_and_high_grade_fire_resistance"
+      },
+      "boundary_core": {
+        "equipment": "armor_protection",
+        "manuscript": "protection_jump_safe_fall_and_flight"
+      },
+      "guogao_heart": {
+        "equipment": "sword_debuffs",
+        "manuscript": "health_immunities_and_inventory_totem_use"
+      }
+    }
+  },
+  "implementationNotes": [
+    "Normal-realm innate manuscript attack follows the retained 1/2/3/4 times Ordinal Lv1 equivalence, now +0.5/+1/+1.5/+2 HP. Deep innate attack and protection retain their previous coefficients.",
+    "The user requested fixed 80% bare-armor reduction only to simplify this round's numerical comparisons; this is not a replacement for the actual vanilla armor/toughness mechanic.",
+    "Deep manuscript innate, Boundary and Ordinal factors multiply independently; normal manuscript factors add. Both realms multiply the complete manuscript factor by the complete armor factor. The armor contribution scale2 does not apply to the manuscript.",
+    "The new Guogao sword percentage is interpreted as extending the existing debuff duration, following the user's immediately preceding definition of the Ordinal crystal effect. It does not increase debuff level or proc probability.",
+    "Healing and Guogao debuff-duration use the same coefficients in both realms. With the earlier additive innate baseline retained, their multipliers are 1 + innate contribution + RSS(actual Ordinal contributions); this is distinct from deep attack/protection source multiplication.",
+    "Boundary protection remains applicable to the previously agreed damage types, including fall, fire, sonic boom and void. Bare vanilla armor does not acquire protection against damage types that bypass armor."
+  ],
+  "unresolved": [],
+  "modSyncPending": true,
+  "nextDesign": {
+    "recordedOn": "2026-10-06",
+    "status": "design_record_only_not_applied_to_simulator_or_mod",
+    "supersedes": "Criticality manuscript and fire-resistance roles in simulator revision46. The following confirmed bow and manuscript design takes precedence when synchronized later.",
+    "ordinalBowsConfirmed": {
+      "tiers": ["omega", "epsilon", "gamma", "true_omega"],
+      "namesZh": ["ω弓", "ε弓", "Γ弓", "Ω弓"],
+      "recipe": "Vanilla bow layout; replace its three sticks with three matching ordinal mineral materials; retain three strings.",
+      "socketCounts": [2, 4, 6, 8],
+      "regionalCaps": [1, 2, 2, 3],
+      "enchantable": false,
+      "arrowSpeedMultipliers": [1.1, 1.2, 1.3, 1.5],
+      "fullDrawArrowSpeedBlocksPerTick": [3.3, 3.6, 3.9, 4.5],
+      "speedScope": "Confirmed multiplier on vanilla charge-dependent launch speed; keep vanilla arrow gravity and air/water drag. Shooter motion remains a separate inherited velocity contribution.",
+      "damageRule": "Confirmed: retain the vanilla ordinary-arrow base damage coefficient2, velocity-dependent impact damage and full-draw random critical bonus. No independent tier-specific base HP targets and no compensation that cancels the damage gained from the tier launch-speed bonus. Previously agreed Power/manuscript enhancements remain separate.",
+      "baseDurabilityMultipliers": [2, 3, 4, 6],
+      "baseDurability": [768, 1152, 1536, 2304],
+      "baseDurabilityReference": "Vanilla bow384. Custom wear protection is applied as a consumption probability to this durability pool.",
+      "power": "Copy sword attack contribution and per-item RSS; the active manuscript attack participates once.",
+      "branch": "Confirmed: Lv1 Infinity; Lv2 inherits Infinity and fires three arrows; Lv3 inherits both and each arrow can pass through one creature and hit a second. Duplicate cores use the highest grade, with no extra arrows or penetration.",
+      "absence": "Copy sword wear protection4/16/64 and additive per-item wear budget.",
+      "critical": "Copy sword impact burst at arrow impact, including the directly hit target. Criticality cores are forbidden in manuscripts; remove their manuscript projectile-burst and fire-resistance channels on implementation.",
+      "guogao": "Copy sword on-hit debuffs, highest core grade only, including manuscript Ordinal/baseline duration extension.",
+      "ordinal": "Forbidden on the bow, as on the sword."
+    },
+    "bowImplementationRecommendations": [
+      "Use ordinary-arrow Infinity behavior; retain arrow-type consumption rules and prevent pickup duplication of free arrows.",
+      "Lock the bow, active manuscript and source realm contribution at launch so swapping equipment cannot change an in-flight arrow.",
+      "Apply charge scaling to the complete enhanced shot so rapid low-charge shots do not receive full fixed-HP additions.",
+      "Apply on-hit Guogao once to the directly hit target; burst damage must not recursively trigger another burst or spread Guogao debuffs.",
+      "Retain vanilla bow draw time, arrow gravity, drag and ordinary-arrow base damage coefficient2. Apply the confirmed launch-speed multipliers once; retain their natural velocity-dependent damage effect without adding another tier-specific damage multiplier."
+    ],
+    "criticalManuscriptReplacement": {
+      "status": "confirmed_forbidden_in_manuscripts",
+      "reasonZh": "用户决定核物质不应离人太近；手稿不再允许临界核晶，也不再设计替代手稿功能。",
+      "resourceSensing": "Rejected; do not implement.",
+      "fireResistance": "Confirmed transfer to Boundary in the active manuscript at Lv2 and Lv3."
+    },
+    "fireResistanceProposal": {
+      "status": "confirmed_pending_simulator_and_mod_sync",
+      "recommendedCore": "boundary_core",
+      "carrier": "active_manuscript",
+      "minimumLevel": 2,
+      "effect": "Lv2 and Lv3 grant fire/lava immunity equivalent to Fire Resistance. Use highest applicable grade; extra cores do not improve immunity. Armor Boundary continues its existing damage protection without acquiring immunity by itself.",
+      "reasonZh": "界限晶核已有防护和飞行，让它统一负责危险环境中的移动与保护。"
+    },
+    "bowBranchLv3Proposal": {
+      "status": "confirmed_pending_simulator_and_mod_sync",
+      "recommendedZh": "贯枝",
+      "effect": "Retain Infinity and three-arrow Multishot; each arrow can pass through one creature and hit a second creature behind it.",
+      "duplicateCores": "Highest grade only; no additional arrows or penetration from duplicate cores.",
+      "confirmedHitRule": "One volley must not apply multiple direct hits or repeatedly trigger Criticality burst on the same target merely because its arrows overlap.",
+      "ammoRule": "Free arrows produced by Infinity cannot be picked up; keep the ordinary-arrow requirement. Special ammunition and side-arrow recovery rules require explicit finalization."
+    },
+    "bowRemainingDesign": {
+      "status": "unconfirmed_details_not_applied",
+      "baseNumbers": "Resolved: retain vanilla arrow damage rules and confirmed launch-speed multipliers1.1/1.2/1.3/1.5. Bow durability is768/1152/1536/2304. The earlier proposed fixed8/10/12/16HP bow targets are rejected; crystal attack enhancements still follow the agreed attack rules.",
+      "multishotAndPiercing": "Finalize side-arrow damage and whether both distinct pierced targets trigger Criticality bursts. Same-volley direct-hit deduplication is confirmed; overlapping explosion damage across distinct impact sites still needs one consistent rule.",
+      "burstRecommendation": "Each arrow emits one burst at its first valid hit. For one volley, any target can take at most one direct arrow hit and one burst contribution. Guogao may apply to each distinct directly hit target; bursts do not spread debuffs or recursively cause bursts.",
+      "specialAmmoRecommendation": "Ordinary arrows inherit Infinity. Tipped or spectral arrows consume one per volley; only the central arrow keeps the special effect, and side arrows are ordinary and cannot be picked up.",
+      "syncPending": ["Add ordinal bows to the simulator and effects reference", "Remove Criticality from manuscript compatibility and effects", "Move manuscript fire resistance to Boundary Lv2/3", "Audit ranged burst and damage under the confirmed vanilla velocity-dependent damage model"]
+    }
+  },
+  "audit": {
+    "revision": 46,
+    "normalMaximumDirectAttack": 36.020815280171306,
+    "deepMaximumDirectAttack": 345.2608828624567,
+    "normalMaximumExtraProtection": 25.53614541736112,
+    "deepMaximumExtraProtection": 37.52114282798983,
+    "report": "docs/enhancement-numeric-audit.html",
+    "comparisonNativeArmorReduction": 0.8,
+    "comparisonOnly": true
+  }
+}

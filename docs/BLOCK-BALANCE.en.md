@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.3.3
+# Block harvesting reference · 0.3.11
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
@@ -14,6 +14,7 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 |---|---|---:|---:|---|---|---:|---|---|
 | Absence Glass | `absence_glass` | 0.35 | 0.5 | Hand | None | 2 | Full block | Block itself |
 | Amber Apple Guogao | `amber_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
+| Plain Amber Apple Guogao | `plain_amber_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
 | Amber Inlay Bricks | `amber_inlay` | 1.5 | 5 | Pickaxe | None | 10 | Full block | Block itself |
 | Astra Condensed Cloud | `astra_cloud` | 0.4 | 0.5 | Shears | None | 2 | Full block | Block itself |
 | Astra Cloud Billow | `astra_cloud_shade` | 0.4 | 0.5 | Shears | None | 2 | Full block | Block itself |
@@ -24,8 +25,10 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | Astra Pale-Green Jade | `astra_mint` | 1.8 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Braided Crystal Porcelain | `astra_weave` | 1.3 | 4 | Pickaxe | None | 5 | Full block | Block itself |
 | Azure Guogao | `azure_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
+| Plain Azure Guogao | `plain_azure_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
 | Laver Vein Panel | `basic_laver_pattern` | 1.6 | 3 | Axe | None | 3 | Full block | Block itself |
 | Berry Guogao | `berry_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
+| Plain Berry Guogao | `plain_berry_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
 | Guogao Lantern · Cyan | `cyan_guogao_lantern` | 0.6 | 1.5 | Pickaxe | None | 15 | Full block | Block itself |
 | Dread Fir Leaves | `dread_leaves` | 0.2 | 0.2 | Hoe | None | 0 | Full block | Block itself |
 | Dread Fir Log | `dread_log` | 2 | 3 | Axe | None | 0 | Full block | Block itself |
@@ -50,7 +53,7 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | iBLP Empty Cell | `iblp_blank` | 1.6 | 3 | Axe | None | 3 | Full block | Block itself |
 | iBLP Marked Point · * | `iblp_marked` | 1.6 | 3 | Axe | None | 3 | Full block | Block itself |
 | iBLP Ordinary Point · ○ | `iblp_node` | 1.6 | 3 | Axe | None | 3 | Full block | Block itself |
-| Laver Core · Lv1 | `laver_core` | 2.5 | 5 | Axe | None | 8 | Full block | Block itself |
+| Laver Condensation Core · Lv1 | `laver_core` | 2.5 | 5 | Axe | None | 8 | Full block | Block itself |
 | Laver Plain Jade | `laver_court_blank` | 3.5 | 9 | Pickaxe | Iron | 4 | Full block | Block itself |
 | Laver Ring Jade | `laver_court_node` | 3.5 | 9 | Pickaxe | Iron | 4 | Full block | Block itself |
 | Laver Inlay | `laver_inlay` | 1.5 | 6 | Pickaxe | None | 2 | Full block | Block itself |
@@ -64,6 +67,7 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | LHO Glass · O | `lho_letter_o` | 0.35 | 0.5 | Hand | None | 2 | Full block | Block itself |
 | Empty Set Core · Lv1 | `lho_trace` | 0.15 | 0.1 | Pickaxe | None | 5 | None | Intact when anchored |
 | Lime Guogao | `lime_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
+| Plain Lime Guogao | `plain_lime_guogao` | 0.5 | 1 | Hand | None | 3 | Inset Guogao shape | Block itself |
 | Guogao Lantern · Lime | `lime_guogao_lantern` | 0.6 | 1.5 | Pickaxe | None | 15 | Full block | Block itself |
 | LTY Tianyi Yarn | `lty_yarn` | 0.5 | 0.5 | Shears | None | 2 | Full block | Block itself |
 | Matrix Archive Ceramic | `matrix_archive_ceramic` | 3.5 | 9 | Pickaxe | Iron | 4 | Full block | Block itself |
@@ -134,8 +138,8 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | Hydra Bud · Lv3 | `hydra_bud_lv3` | 6 | 18 | Pickaxe | Iron | 9 | Full block | Block itself |
 | Empty Set Core · Lv2 | `lho_trace_lv2` | 4.5 | 12 | Pickaxe | Iron | 6 | Full block | Block itself |
 | Empty Set Core · Lv3 | `lho_trace_lv3` | 6 | 18 | Pickaxe | Iron | 7 | Full block | Block itself |
-| Laver Core · Lv2 | `laver_core_lv2` | 4.5 | 12 | Pickaxe | Iron | 9 | Full block | Block itself |
-| Laver Core · Lv3 | `laver_core_lv3` | 6 | 18 | Pickaxe | Iron | 10 | Full block | Block itself |
+| Laver Condensation Core · Lv2 | `laver_core_lv2` | 4.5 | 12 | Pickaxe | Iron | 9 | Full block | Block itself |
+| Laver Condensation Core · Lv3 | `laver_core_lv3` | 6 | 18 | Pickaxe | Iron | 10 | Full block | Block itself |
 | Criticality Core · Lv2 | `astra_critical_core_lv2` | 4.5 | 12 | Pickaxe | Iron | 11 | Full block | Block itself |
 | Criticality Core · Lv3 | `astra_critical_core_lv3` | 6 | 18 | Pickaxe | Iron | 12 | Full block | Block itself |
 | Boundary Core · Lv2 | `boundary_core_lv2` | 4.5 | 12 | Pickaxe | Iron | 10 | Full block | Block itself |
@@ -154,3 +158,6 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | Number Stone 7 | `ordinal_stone_7` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Number Stone 8 | `ordinal_stone_8` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Number Stone 9 | `ordinal_stone_9` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
+| Outer Return Frame | `outer_return_frame` | 0.8 | 3 | Hand | None | 0 | Low pedestal and corner posts | Block itself |
+| Inner Return Frame | `inner_return_frame` | 0.8 | 3 | Hand | None | 0 | Low pedestal and corner posts | Block itself |
+| Dread Forest Return Frame | `guogao_return_frame` | 0.8 | 3 | Hand | None | 0 | Low pedestal and corner posts | Block itself |

@@ -69,7 +69,7 @@ def audit(root, prune=False):
     imported=assets
     for name in ('snake','deepseek_whale','busy_beaver','fly_y','fruit_cake_slime','fruit_slime','evil_pig'):
         add(imported/f'textures/entity/{name}.png')
-    for wood in ('christmas','loquat','laver','hell_christmas','hell_loquat'):
+    for wood in ('laver','dread'):
         add(imported/f'textures/entity/boat/{wood}_boat.png')
         add(imported/f'textures/gui/signs/{wood}.png')
     while pending:

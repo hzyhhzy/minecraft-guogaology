@@ -18,6 +18,7 @@ import java.util.*;
 
 public final class MiningContent {
     public static final net.minecraft.world.inventory.MenuType<EnhancementMenu> ENHANCEMENT_MENU=Registry.register(BuiltInRegistries.MENU,GoogologyMod.id("enhancement"),new net.minecraft.world.inventory.MenuType<>(EnhancementMenu::new,net.minecraft.world.flag.FeatureFlags.VANILLA_SET));
+    public static final net.minecraft.world.inventory.MenuType<EnhancementMenu> MANUSCRIPT_MENU=Registry.register(BuiltInRegistries.MENU,GoogologyMod.id("manuscript"),new net.minecraft.world.inventory.MenuType<>(ManuscriptMenu::new,net.minecraft.world.flag.FeatureFlags.VANILLA_SET));
     public static final DataComponentType<List<ItemStack>> CORES=Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE,GoogologyMod.id("installed_cores"),DataComponentType.<List<ItemStack>>builder().persistent(ItemStack.OPTIONAL_CODEC.listOf(0,EquipmentRules.MAX_SOCKETS)).build());
     public static final DataComponentType<Double> DIGIT=Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE,GoogologyMod.id("tool_digit"),DataComponentType.<Double>builder().persistent(Codec.doubleRange(0,9)).build());
     public static final DataComponentType<Integer> RULES=Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE,GoogologyMod.id("equipment_rules"),DataComponentType.<Integer>builder().persistent(Codec.INT).build());
@@ -54,7 +55,7 @@ public final class MiningContent {
             props.attributes(GearData.attributes(tier,kind,List.of(),0));
             Item gear=item(id,new OrdinalGear(props,tier,kind));TOOLS[tier][kind]=gear;GEAR.put(gear,new GearSpec(tier,kind));
         }
-        for(int rank=1;rank<=3;rank++){String id="enhancement_table"+(rank==1?"":"_"+rank);TABLES[rank-1]=block(id,new EnhancementTable(blockSettings(id),rank));}
+        for(int rank=1;rank<=3;rank++){String id="enhancement_table"+(rank==1?"":"_"+rank);TABLES[rank-1]=block(id,new EnhancementTable(blockSettings(id).noOcclusion(),rank));}
         for(int tier=1;tier<=4;tier++){String id=EquipmentRules.MINERALS[tier-1]+"_manuscript";
             Item book=item(id,new DenxiManuscript(itemSettings(id).stacksTo(1).component(CORES,List.of()),tier));GEAR.put(book,new GearSpec(tier,6));
         }

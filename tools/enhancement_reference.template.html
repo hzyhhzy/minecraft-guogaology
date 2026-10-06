@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>果糕逻辑 · 晶核作用与数值</title>
+<style>
+:root{color-scheme:light dark;--bg:#f3f5fa;--card:#fff;--ink:#202638;--muted:#627084;--line:#dfe5ef;--accent:#5145c5;--tint:#efedff}
+@media(prefers-color-scheme:dark){:root{--bg:#151923;--card:#1e2431;--ink:#edf0f7;--muted:#abb6c8;--line:#343e51;--accent:#aca3ff;--tint:#302b50}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--accent)}button,select{font:inherit;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px}button{cursor:pointer}button:hover{border-color:var(--accent)}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}h1,h2,h3,p{margin:0}h1{font-size:27px;letter-spacing:-.5px}h2{font-size:20px}h3{font-size:15px}.wrap{max-width:1560px;margin:auto;padding:28px 30px 40px}.top,.actions,.section-title{display:flex;align-items:center;justify-content:space-between;gap:14px}.actions{justify-content:flex-end;flex-wrap:wrap}.muted{color:var(--muted);font-size:13px}.notice{padding:14px 18px;border-left:4px solid var(--accent);border-radius:8px;background:var(--tint);margin:20px 0}.panel{border:1px solid var(--line);border-radius:15px;background:var(--card);padding:20px;margin-top:18px}.table-wrap{overflow-x:auto;margin-top:15px}table{width:100%;border-collapse:collapse;text-align:left;line-height:1.6}caption{text-align:left;color:var(--muted);font-size:13px;margin-bottom:9px}th,td{padding:12px 14px;vertical-align:top;border-bottom:1px solid var(--line)}thead th{font-size:12px;color:var(--muted);background:var(--bg)}tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}tbody th{font-weight:600;text-align:left;min-width:118px}.overview td{min-width:190px}.overview th{width:145px}.overview .role{width:175px;min-width:175px}.filters{display:flex;align-items:end;flex-wrap:wrap;gap:18px;background:var(--bg);border-radius:11px;padding:13px 15px;margin-top:16px}.filters fieldset{border:0;padding:0;margin:0}.filters legend,.filters label.field{font-size:12px;font-weight:600}.levels{display:flex;gap:7px;margin-top:6px}.levels label{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:13px;cursor:pointer}.levels input{accent-color:var(--accent);margin:0}.filters label.field{display:grid;gap:6px}.filters .grow{flex:1}.tag{display:inline-block;border-radius:5px;padding:1px 6px;font-size:12px;color:var(--accent);background:var(--tint);white-space:nowrap}.details-table .effect{min-width:230px}.details-table .aggregation{min-width:215px;width:25%}.details-table .level{width:64px;min-width:64px}.details-table .name{min-width:122px}.details-table p+p{margin-top:5px}.details-table p:not(:first-child){color:var(--muted);font-size:12px}.group-start>*{border-top:2px solid var(--line)}.count{font-size:12px;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:30px}.formula-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.formula-card{background:var(--bg);border-radius:10px;padding:15px}.formula-card p{margin-top:8px}.formula{display:block;font:13px/1.75 ui-monospace,"Cascadia Mono",Consolas,monospace;overflow-wrap:anywhere;margin-top:8px}details{margin-top:18px}summary{cursor:pointer;font-weight:600}.slots{max-width:760px}footer{margin-top:23px;color:var(--muted);font-size:12px}.hidden{display:none!important}noscript{display:block;margin:20px 0}
+@media(max-width:950px){.wrap{padding:20px}.top{align-items:flex-start}h1{font-size:24px}.formula-grid{grid-template-columns:1fr}.panel{padding:17px}.overview td{min-width:170px}}
+@media(max-width:540px){.wrap{padding:16px 12px}.top{display:block}.actions{justify-content:flex-start;margin-top:12px}.panel{padding:14px}.section-title{align-items:flex-start}h1{font-size:22px}h2{font-size:18px}.filters{gap:12px;padding:12px}.filters .grow{display:none}.levels{gap:5px}.levels label{padding:6px 7px}.filters select{max-width:245px}th,td{padding:10px 11px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top"><div><h1 data-i18n="title">晶核作用与数值</h1><p class="muted" id="mode"></p></div><nav class="actions"><a id="back" href="enhancement-simulator.html" data-i18n="back">返回强化模拟器</a><button id="language" aria-label="切换语言 / Change language">English</button></nav></header>
+  <p class="notice" id="notice"></p>
+  <noscript>请启用 JavaScript 查看双语表格及筛选。 / Enable JavaScript to view the bilingual tables and filters.</noscript>
+  <section class="panel" aria-labelledby="overviewTitle"><h2 id="overviewTitle" data-i18n="overviewTitle"></h2><p class="muted" data-i18n="overviewHelp"></p><div class="table-wrap"><table class="overview"><caption data-i18n="overviewCaption"></caption><thead><tr><th scope="col" data-i18n="core"></th><th scope="col" data-i18n="role"></th><th scope="col" data-i18n="equipment"></th><th scope="col" data-i18n="book"></th></tr></thead><tbody id="overviewBody"></tbody></table></div></section>
+  <section class="panel" aria-labelledby="detailsTitle"><div class="section-title"><h2 id="detailsTitle" data-i18n="detailsTitle"></h2><span id="count" class="count" aria-live="polite"></span></div><p class="muted" data-i18n="detailsHelp"></p>
+    <form class="filters" id="filters"><fieldset><legend data-i18n="levels"></legend><div class="levels"><label><input type="checkbox" value="1" name="level" checked>Lv1</label><label><input type="checkbox" value="2" name="level" checked>Lv2</label><label><input type="checkbox" value="3" name="level" checked>Lv3</label><label><input type="checkbox" value="4" name="level" checked>Lv4</label></div></fieldset><label class="field"><span data-i18n="realm"></span><select id="realm"><option value="normal" data-i18n="normal"></option><option value="deep" data-i18n="deep"></option><option value="both" data-i18n="both"></option></select></label><label class="field"><span data-i18n="coreFilter"></span><select id="coreFilter"></select></label><span class="grow"></span><button id="reset" type="button" data-i18n="reset"></button></form>
+    <div class="table-wrap"><table class="details-table"><caption id="detailsCaption"></caption><thead id="detailsHead"></thead><tbody id="detailsBody"></tbody></table></div>
+  </section>
+  <section class="panel" aria-labelledby="rulesTitle"><h2 id="rulesTitle" data-i18n="rulesTitle"></h2><div class="formula-grid" id="formulas"></div><details><summary data-i18n="limitsTitle"></summary><p class="muted" data-i18n="limitsHelp" style="margin-top:9px"></p><div class="table-wrap"><table class="slots"><thead id="slotsHead"></thead><tbody id="slotsBody"></tbody></table></div></details></section>
+  <footer id="footer"></footer>
+</main>
+<script type="application/json" id="ruleData">__RULES_JSON__</script>
+<script type="application/json" id="buildData">__BUILD_JSON__</script>
+<script>
+'use strict';
+const RULES=JSON.parse(document.getElementById('ruleData').textContent), BUILD=JSON.parse(document.getElementById('buildData').textContent);
+const $=id=>document.getElementById(id), query=new URLSearchParams(location.search);
+let lang=query.get('lang')==='en'?'en':'zh', realm=['normal','deep','both'].includes(query.get('realm'))?query.get('realm'):'normal';
+let levels=query.has('levels')?new Set(query.get('levels').split(',').map(Number).filter(n=>n>=1&&n<=4)):new Set([1,2,3,4]);
+let coreFilter=/^[0-8]$/.test(query.get('core')||'')?Number(query.get('core')):-1;
+const text={
+ zh:{title:'晶核作用与数值',back:'返回强化模拟器',overviewTitle:'九种晶核 · 用途概览',overviewHelp:'先看各自负责什么，再用下方筛选查看具体等级。',overviewCaption:'装备栏只列允许镶嵌的部位；九种晶核都可装入手稿。',core:'晶核',role:'主要作用',equipment:'装备',book:'生效手稿',detailsTitle:'逐级数值',detailsHelp:'以下为单颗、无其他晶核时的效果；多颗和跨装备的叠加规则列在最后一栏。',levels:'显示等级',realm:'环境',normal:'表界 / 原版三维度',deep:'里界 / 地府',both:'里外对照',coreFilter:'晶核种类',all:'全部九种',reset:'重置筛选',level:'等级',stack:'多颗叠加 / 适用范围',noRows:'没有符合筛选的项目，请调整晶核种类或等级。',count:'显示 {n} / 28 项',detailsCaption:'Lv4仅存在于序数晶体。HP为生命值，2 HP = 1颗心。',rulesTitle:'组合计算与边界',limitsTitle:'槽位、材料等级与基础装备',limitsHelp:'每颗晶核占一槽。强化台与手稿菜单可逆拆装；手稿无耐久，序数装备不可附魔。',tier:'材料',gearSlots:'单件装备槽位',bookSlots:'手稿槽位',regionalMax:'群系晶核上限',ordinalMax:'序数晶体上限',footer:'离线参考页 · 筛选写入本页链接，可刷新保留 · 数值与模拟器使用同一份规则导出',noticePreview:'生命部分采用待实施方案：护甲及其镶嵌物不增加生命，果糕之心的基值在所有维度一致；只有生效手稿提供生命加成。主 Mod 仍为 0.3.11，尚未应用这些生命修改。其他作用沿用 0.3.11。',noticeCurrent:'此页使用当前 0.3.11 规则；生命仍包含护甲序数加成与深层果糕的旧数值。',modePreview:'__MODE_ZH__',modeCurrent:'0.3.11 · 当前 Mod 规则'},
+ en:{title:'Core effects & values',back:'Back to enhancement simulator',overviewTitle:'Nine cores · At a glance',overviewHelp:'See each role first, then filter the exact values below.',overviewCaption:'The equipment column lists compatible items. All nine core types fit manuscripts.',core:'Core',role:'Primary role',equipment:'Equipment',book:'Active manuscript',detailsTitle:'Values by level',detailsHelp:'Effects below are for one core without other cores. The last column explains stacking and scope.',levels:'Show levels',realm:'Realm',normal:'Outer / vanilla realms',deep:'Inner / Underworld',both:'Compare both',coreFilter:'Core type',all:'All nine types',reset:'Reset filters',level:'Level',stack:'Stacking / scope',noRows:'No matching entries. Adjust the core type or selected levels.',count:'Showing {n} / 28 entries',detailsCaption:'Only Ordinal Crystal has Lv4. 2 HP = 1 heart.',rulesTitle:'Combined formulas and limits',limitsTitle:'Sockets, grade limits and base equipment',limitsHelp:'Each core occupies one socket. Stations and manuscript menus allow reversible removal. Manuscripts have no durability; ordinal equipment cannot be enchanted.',tier:'Material',gearSlots:'Sockets per gear item',bookSlots:'Manuscript sockets',regionalMax:'Regional grade cap',ordinalMax:'Ordinal grade cap',footer:'Offline reference · Filters stay in this page URL across refreshes · Values share the simulator rule export',noticePreview:'Health follows the pending proposal: armor and its cores grant no health; Guogao Heart has the same base in every realm. Only the active manuscript grants health. The main Mod remains 0.3.11 and does not contain these health changes. Other effects follow 0.3.11.',noticeCurrent:'This page uses current 0.3.11 rules. Health still includes armor Ordinal contributions and the old deep-realm Guogao values.',modePreview:'__MODE_EN__',modeCurrent:'0.3.11 · Current Mod rules'}
+};
+const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll('{'+k+'}',String(v)),text[lang][key]||key);
+const b=(zh,en)=>lang==='zh'?zh:en;
+const fmt=n=>Number(n.toFixed(4)).toLocaleString(lang==='zh'?'zh-CN':'en-US',{maximumFractionDigits:4});
+const coreName=type=>RULES.coreNames[lang][type];
+const deepScales=RULES.deepScales||{projectileBurst:4};
+const powerHp=RULES.normalPowerAttackGrades||[1,2,3],ordinalHp=RULES.normalOrdinalAttackGrades||[.5,1,1.5,2.5],powerPct=RULES.powerPercentGrades||[.25,.5,1],ordinalPct=RULES.ordinalPercentGrades||[.05,.1,.2,.4],ordinalHeal=RULES.ordinalHealingGrades||[.1,.2,.3,.5],ordinalDuration=RULES.ordinalDurationGrades||[.25,.5,.75,1.25];
+const proposal=RULES.proposalModel==='core_design_043'||BUILD.proposalPreview===true;
+const preview=proposal||RULES.healthModel==='manuscript_only_rms';
+text.zh.detailsHelp='以下列出单颗晶核自身的作用，不计其他晶核或手稿固有通用值b。完整手稿效果请用模拟器；叠加规则见末栏。';
+text.en.detailsHelp='Each entry shows the core itself, excluding other cores and the manuscript baseline b. Use the simulator for complete manuscript effects; stacking is in the last column.';
+text.zh.noticeProposal='九核重排方案预览：此页与模拟器演示最新设计，尚未应用于主Mod 0.3.11。单颗表不包含手稿自身的基础加成；部分数值仍在平衡审计中。';
+text.en.noticeProposal='Nine-core proposal preview: this page and the simulator describe the latest design, not the installed 0.3.11 Mod. Per-core entries exclude manuscript baseline bonuses. Some values remain under balance review.';
+text.zh.modeProposal='九核设计方案 · 尚未应用于Mod';
+text.en.modeProposal='Nine-core design proposal · Not applied to the Mod';
+text.zh.footer='离线方案参考 · 筛选随本页链接保存 · 与模拟器共用方案规则，不代表0.3.11实装效果';
+text.en.footer='Offline proposal reference · Filters persist in the page URL · Shared proposal rules with the simulator, not installed 0.3.11 behavior';
+text.zh.nativeArmor='完整套装原版护甲';text.en.nativeArmor='Full-set native armor';text.zh.nativeToughness='完整套装原版韧性';text.en.nativeToughness='Full-set native toughness';text.zh.ordinalMax='手稿序数晶体上限';text.en.ordinalMax='Book Ordinal grade cap';
+const cell=(tag,value,cls='')=>{const e=document.createElement(tag);e.className=cls;if(Array.isArray(value)){for(const [i,line] of value.entries()){const p=document.createElement('p');if(i===0){const strong=document.createElement('strong');strong.textContent=line;p.append(strong);}else p.textContent=line;e.append(p);}}else e.textContent=value;return e;};
+const overview=[
+ ['开采 / 效率','Mining / efficiency','镐：额外开采多个方块','Pickaxe: extra mined blocks','等价效率II / IV / VI','Equivalent Efficiency II / IV / VI'],
+ ['攻击','Attack','剑：增加攻击值','Sword: higher attack','增加主手攻击，与剑相加','Adds attack alongside the weapon'],
+ ['增产 / 触距','Yield / reach','镐：时运和精准开关；剑：抢夺','Pickaxe: Fortune and Silk Touch toggle; sword: Looting','延长挖掘与攻击触距','Longer mining and attack reach'],
+ ['耐久 / 隐蔽','Durability / stealth','工具与四件护甲：减少耐久消耗','Tools and all armor: reduced wear','抑制普通索敌；高阶夜视','Suppress ordinary targeting; high-grade night vision'],
+ ['水域 / 补给','Water / recovery','头盔：呼吸、速掘；靴子：水下移动','Helmet: breathing and mining; boots: underwater movement','周期治疗与饥饿值保障','Periodic healing and a minimum food level'],
+ ['爆裂','Burst','剑：命中后范围爆裂','Sword: area burst on hit','箭与三叉戟爆裂；高阶火焰抗性','Arrow/trident bursts; higher grades add fire resistance'],
+ ['防护 / 移动','Protection / movement','四件护甲：合并减伤','All armor: combined damage reduction','防护、跳跃、防摔、飞行','Protection, jumping, safe falling and flight'],
+ ['控制 / 生命','Control / health','剑：短时负面状态','Sword: short negative effects','增加生命、状态免疫、调用背包图腾','Health, effect immunity and inventory totem use'],
+ ['综合增强','Universal enhancement','不可镶嵌：序数晶体仅用于手稿','Not compatible: Ordinal fits manuscripts only','增强攻击、防护、已有治疗与果糕剑状态持续','Enhances attack, protection, existing healing and Guogao sword duration']
+];
+function entry(type,l,deep){
+ const gear=[],book=[],stack=[];
+ switch(type){
+ case 0:
+  gear.push(b(`镐额外开采 ${deep?(RULES.deepSpreadGrades||[1,4,9])[l-1]:l} 格`,`Pickaxe mines ${deep?(RULES.deepSpreadGrades||[1,4,9])[l-1]:l} extra blocks`));
+  book.push(b(`等价效率 ${2*l} 级；适用工具挖速额外 +${4*l*l+1}`,`Equivalent Efficiency ${2*l}; eligible tool mining speed +${4*l*l+1}`),b('原版效率式加值，并非2 / 4 / 6倍速度。','Efficiency-style addition, not a 2 / 4 / 6× multiplier.'));
+  stack.push(deep?b('额外开采=floor(RSS单颗预算)，预算1 / 4 / 9；8槽最高档共25额外格。','Extra mining=floor(RSS individual budgets), using1 / 4 / 9;8 top-grade sockets grant25 extra blocks.'):b('额外开采=floor(RSS等级)；8槽最高档共8额外格。','Extra mining=floor(RSS grades);8 top-grade sockets grant8 extra blocks.'),b('书效率同源取最高，与原版效率取max。挖速=基础+效率加项；序数晶体与裸书不提供挖速倍率。','Book Efficiency uses the maximum, combined with native Efficiency by max. Mining speed=base+Efficiency bonus; Ordinal and bare books grant no mining multiplier.'),b('仍检查硬度、权限与采集能力；潜行关闭额外开采，各方块共用精准开关。','Hardness, access and harvest checks remain. Sneaking disables extra mining; all blocks use the same Silk Touch mode.'));
+  break;
+ case 1:
+  gear.push(deep?b(`剑攻击倍率项 +${fmt(100*powerPct[l-1])}%`,`Sword attack factor term +${fmt(100*powerPct[l-1])}%`):b(`剑攻击 +${powerHp[l-1]} HP`,`Sword attack +${powerHp[l-1]} HP`));
+  book.push(deep?b(`主手攻击倍率项 +${fmt(100*powerPct[l-1])}%`,`Main-hand attack factor term +${fmt(100*powerPct[l-1])}%`):b(`主手攻击 +${powerHp[l-1]} HP`,`Main-hand attack +${powerHp[l-1]} HP`));
+  stack.push(b('同一剑或书内按单颗值平方求和开根号；剑与书分开聚合。','Apply root-sum-square to per-core values separately within the sword and book.'),deep?b('最终攻击=基础×(1+b)×(1+书序数RSS)×(1+书幂塔RSS)×(1+剑幂塔RSS)。同源多颗不逐颗连乘。','Attack=base×(1+b)×(1+book Ordinal RSS)×(1+book Power RSS)×(1+sword Power RSS). Cores in one source do not each multiply the total.'):b('最终攻击=基础+书固有攻击+剑幂塔RSS+书幂塔RSS+书序数HP的RSS。','Attack=base+innate book HP+sword Power RSS+book Power RSS+book Ordinal HP RSS.'));
+  break;
+ case 2:
+  gear.push(b(`镐时运 / 剑抢夺 ${2*l} 级`,`Pickaxe Fortune / sword Looting ${2*l}`),b('Lv1即解锁强化台的精准开关，选项保存在镐上。','Lv1 unlocks the station Silk Touch switch, stored on the pickaxe.'));
+  book.push(b(`挖掘与攻击触距 +${l} 格`,`Mining and attack reach +${l} blocks`));
+  stack.push(b('同一工具取最高2×等级，与原版同类等级相加；不表示固定产量倍数。','A tool uses the highest2×grade, adding native enchantment levels; not a fixed yield multiplier.'),b('精准模式替代时运；移除全部分枝后精准失效。手稿不提供增产。','Silk Touch replaces Fortune and requires a Branch core. Manuscripts grant no yield bonus.'),b('书触距=RSS分枝等级，两界一致；序数与裸书不增加触距。','Book reach=RSS Branch grades in both realms; Ordinal and bare books add no reach.'));
+  break;
+ case 3:{
+  const d=(RULES.wearGrades||[4,16,64])[l-1];
+  gear.push(b(`耐久保护 ${d} 倍；每点原始损耗消耗概率1/${d}。`,`Wear protection ${d}×; each original wear point has1/${d} consumption chance.`));
+  if(l===1)book.push(b('普通野怪主动发现距离为30%；受击反击正常。','Ordinary mob discovery range is30%; retaliation remains normal.'));
+  else if(l===2)book.push(b('普通野怪不主动索敌，攻击仍可触发反击；夜视。','Ordinary mobs do not proactively target; attacking can still trigger retaliation. Night vision.'));
+  else book.push(b('普通主动索敌与新增受击仇恨触发率均为0%；夜视。','Ordinary proactive targeting and new retaliation trigger chance are0%; night vision.'));
+  stack.push(b('本件耐久预算4 / 16 / 64直接相加；W=max(1,总预算)，不修复、不增加容量。','Item wear budgets4 / 16 / 64 add;W=max(1,total budget), without repair or more capacity.'),b('书隐蔽取最高；外观不变，不处理特殊索敌、不清除已有仇恨。被拦截的普通反击不触发同类呼援。','Book stealth uses the highest grade. Appearance, special targeting and existing aggro are unchanged. Suppressed ordinary retaliation does not alert allies.'),b('所有维度一致；书序数和书基值不增加耐久。','Same in every realm; book Ordinal and baseline grant no wear protection.'));
+  break;}
+ case 4:{
+  const oxy=(RULES.oxygenGrades||[.25,1/16,0])[l-1],r=(RULES.regenGrades||[1,2,3])[l-1];
+  gear.push(oxy===0?b('头盔不耗氧，水下速掘。','Helmet: no oxygen depletion; Aqua Affinity.'):b(`头盔耗氧概率${fmt(oxy*100)}%，约${fmt(1/oxy)}倍呼吸时间；水下速掘。`,`Helmet: ${fmt(oxy*100)}% oxygen-use chance, about${fmt(1/oxy)}× breathing time; Aqua Affinity.`),b(`靴子等价深海探索者${l}级。`,`Boots: equivalent Depth Strider ${l}.`));
+  book.push(b(`每4秒治疗 ${r} HP（未计书固有加成）`,`Heal${r} HP every4 seconds (excluding innate book bonus)`));
+  if(l>=2)book.push(b(`饥饿下限${l===2?10:19}/20，不补饱和度。`,`Food floor${l===2?10:19}/20; no saturation refill.`));
+  stack.push(b('治疗=RSS紫菜等级×(1+书治疗基值+RSS序数治疗)，两界一致；没有紫菜时为0。','Healing=RSS Laver grades×(1+innate book healing+RSS Ordinal healing), identical in both realms and zero without Laver.'),b('呼吸、移动、饥饿保障取最高；水下速掘为布尔效果。19留出吃食物空间，自然回血另循原版规则。','Breathing, movement and food floors use the highest grade; Aqua Affinity is boolean.19 leaves room to eat; native regeneration follows its own rules.'));
+  break;}
+ case 5:{
+  const pct=fmt(100*.075*(l+1)),projectilePct=fmt(100*.075*(l+1)*(deep?(deepScales.projectileBurst||4):1));
+  gear.push(b(`剑爆裂=强化攻击的${pct}%`,`Sword burst=${pct}% of enhanced attack`));
+  book.push(b(`箭 / 三叉戟爆裂=攻击的${projectilePct}%`,`Arrow / trident burst=${projectilePct}% of attack`));if(l>=2)book.push(b('火焰抗性','Fire resistance'));
+  stack.push(b('单颗系数RSS，半径3格，含命中目标，不毁地形、不伤自己与友方。','RSS per-core coefficients;3-block radius including the hit target, with no terrain/self/friendly damage.'),b('剑爆裂不再乘暴击或冷却；书序数与裸书不再额外放大爆裂系数。','Sword burst does not scale again with criticals or cooldown; book Ordinal and baseline do not further multiply burst coefficients.'));
+  break;}
+ case 6:{
+  const p=powerPct[l-1];
+  gear.push(b(`本件防护核心值${fmt(100*p)}%；护甲贡献=2×部位份额×本件RSS。`,`Item Boundary value${fmt(100*p)}%; armor contribution=2×slot share×item RSS.`),b('头 / 胸 / 腿 / 靴份额0.20 / 0.40 / 0.25 / 0.15。','Head / chest / legs / boots shares0.20 / 0.40 / 0.25 / 0.15.'));
+  book.push(b(`书防护项${fmt(100*p)}%，单颗无基值时承伤倍率${fmt(1+p)}。`,`Book protection term${fmt(100*p)}%; one core without baseline gives tolerance${fmt(1+p)}.`));
+  if(l===1)book.push(b('每颗跳高+1格；摔落伤害×0.25。','Each core adds one jump block; fall damage×0.25.'));
+  else if(l===2)book.push(b('慢飞，免疫摔落；冲刺不加速。','Slow flight, fall immunity; sprint adds no speed.'));
+  else book.push(b('创造式飞行，免疫摔落与撞墙。','Creative-style flight, fall and wall-impact immunity.'),deep?b('水平和升降冲刺均为普通飞行8倍。','Horizontal and vertical sprint are8× normal flight.'):b('水平冲刺2倍，升降不额外加速。','Horizontal sprint2×; no additional vertical boost.'));
+  stack.push(b('先在每件甲内RSS，再乘份额相加形成C；四件不能逐件乘算。裸甲无自定义倍率，原版护甲韧性另算。','RSS within each armor item, then weight and add into C. Do not multiply four armor factors. Bare armor has no custom multiplier; native armor/toughness remain separate.'),deep?b('F=(1+C)(1+b)(1+RSS书界限)(1+RSS书序数)。','F=(1+C)(1+b)(1+RSS book Boundary)(1+RSS book Ordinal).'):b('F=(1+C)(1+b+RSS书界限+RSS书序数)。','F=(1+C)(1+b+RSS book Boundary+RSS book Ordinal).'),b('防护覆盖音爆与虚空。Lv1跳跃与高阶飞行共存，Lv3覆盖Lv2；免摔不重复相乘。','Protection includes sonic boom and void. Lv1 jumps coexist with higher flight;Lv3 overrides Lv2, without repeatedly multiplying fall immunity.'));
+  break;}
+ case 7:
+  gear.push([b('缓慢I＋中毒II，基础2秒。','Slowness I + Poison II; base2 seconds.'),b('缓慢II＋凋零II＋虚弱I，基础2秒。','Slowness II + Wither II + Weakness I; base2 seconds.'),b('缓慢III＋凋零III＋虚弱II＋反胃，20%失明；基础2秒。','Slowness III + Wither III + Weakness II + Nausea;20% Blindness, base2 seconds.')][l-1]);
+  book.push(b(`额外生命 +${4*l} HP，里外一致。`,`Additional health+${4*l} HP, identical across realms.`));
+  if(l>=2)book.push(b('免疫中毒、饥饿、虚弱；可调用背包真实图腾。','Immune to Poison, Hunger and Weakness; may use a real inventory totem.'));
+  if(l===3)book.push(b('另免疫反胃、缓慢、凋零、失明、黑暗。','Also immune to Nausea, Slowness, Wither, Blindness and Darkness.'));
+  stack.push(b('生命=20+4RSS书果糕等级；甲、序数与裸书不加生命。','Health=20+4RSS book Guogao grades; armor, Ordinal and bare books grant no health.'),b('控制/免疫取最高；多颗不叠加状态等级或失明概率。状态持续=2×(1+书延时基值+RSS序数延时)，但必须剑本身有果糕核心。','Control/immunity use the highest grade; extra cores do not raise effect grades or Blindness chance. Duration=2×(1+innate book duration+RSS Ordinal duration), requiring Guogao in the sword itself.'),b('图腾必须是真实物品，不能救虚空或/kill。','A real totem is required; it does not rescue void or /kill.'));
+  break;
+ case 8:
+  gear.push(b('不可镶嵌：序数晶体仅用于手稿。','Not compatible: Ordinal fits manuscripts only.'));
+  book.push(deep?b(`攻击倍率项${fmt(100*ordinalPct[l-1])}%`,`Attack factor term${fmt(100*ordinalPct[l-1])}%`):b(`攻击 +${fmt(ordinalHp[l-1])} HP`,`Attack+${fmt(ordinalHp[l-1])} HP`),b(`防护项${fmt(100*ordinalPct[l-1])}%；已有紫菜治疗项${fmt(100*ordinalHeal[l-1])}%；已有果糕剑延时项${fmt(100*ordinalDuration[l-1])}%。`,`Protection term${fmt(100*ordinalPct[l-1])}%; existing Laver healing term${fmt(100*ordinalHeal[l-1])}%; existing Guogao sword duration term${fmt(100*ordinalDuration[l-1])}%.`));
+  stack.push(b('每个属性用本属性的单颗值RSS，不共享一个万能u。没有紫菜或果糕剑时，不凭空获得治疗或控制。','Each attribute uses RSS of its own per-core values, not one universal u. Without Laver or a Guogao sword core, no healing or control is created.'),deep?b('攻防按来源分别形成倍率项；同源序数核心先RSS，不逐颗连乘。','Attack/protection use separate source factors. Aggregate Ordinal with RSS first, not one multiplier per core.'):b('攻击加算HP；防护与书基值、书界限加算后成为同一个书因子。','Attack adds HP; protection adds with book baseline and book Boundary inside one book factor.'),b('序数不加挖速、耐久、触距、生命、时运/抢夺、额外开采或布尔能力。','Ordinal grants no mining speed, wear protection, reach, health, Fortune/Looting, extra mining or boolean abilities.'));
+  break;
+ }
+ return {gear,book,stack};
+}
+function persist(){const url=new URL(location.href);url.searchParams.set('lang',lang);url.searchParams.set('realm',realm);url.searchParams.set('levels',[...levels].sort().join(','));if(coreFilter>=0)url.searchParams.set('core',coreFilter);else url.searchParams.delete('core');try{history.replaceState(null,'',url.href);}catch{}}
+function renderOverview(){const rows=[];for(let type=0;type<9;type++){const r=document.createElement('tr'),d=overview[type];r.dataset.core=type;r.append(cell('th',coreName(type)),cell('td',b(d[0],d[1]),'role'),cell('td',b(d[2],d[3])),cell('td',b(d[4],d[5])));r.firstChild.scope='row';rows.push(r);} $('overviewBody').replaceChildren(...rows);}
+function renderDetails(){
+ const realms=realm==='both'?['normal','deep']:[realm],head=document.createElement('tr');head.append(cell('th',t('core'),'name'),cell('th',t('level'),'level'));
+ for(const r of realms)for(const key of ['equipment','book'])head.append(cell('th',t(key)+(realm==='both'?' · '+t(r):''),'effect'));
+ head.append(cell('th',t('stack'),'aggregation'));for(const h of head.children)h.scope='col';$('detailsHead').replaceChildren(head);
+ const rows=[];let previous=-1;
+ for(let type=0;type<9;type++)for(let l=1;l<=(type===8?4:3);l++)if(levels.has(l)&&(coreFilter<0||coreFilter===type)){
+  const row=document.createElement('tr');row.dataset.core=type;row.dataset.level=l;if(previous!==type&&previous>=0)row.className='group-start';previous=type;
+  row.append(cell('th',coreName(type),'name'),cell('td','Lv'+l,'level'));row.firstChild.scope='row';
+  for(const r of realms){const e=entry(type,l,r==='deep');row.append(cell('td',e.gear,'effect'),cell('td',e.book,'effect'));}
+  const e=entry(type,l,realm==='deep');if(realm==='both'){const other=entry(type,l,true),original=e.stack.slice();e.stack=e.stack.map(line=>other.stack.includes(line)?line:b('普通：','Normal: ')+line);for(const line of other.stack)if(!original.includes(line))e.stack.push(b('深层：','Deep: ')+line);}
+  row.append(cell('td',e.stack,'aggregation'));rows.push(row);
+ }
+ $('count').textContent=t('count',{n:rows.length});$('detailsCaption').textContent=t('detailsCaption');
+ if(!rows.length){const r=document.createElement('tr'),c=cell('td',t('noRows'),'empty');c.colSpan=3+realms.length*2;r.append(c);rows.push(r);}
+ $('detailsBody').replaceChildren(...rows);
+}
+function formulaCard(title,paragraphs,formulas=[]){const e=document.createElement('article');e.className='formula-card';e.append(cell('h3',title));for(const p of paragraphs)e.append(cell('p',p));for(const f of formulas)e.append(cell('code',f,'formula'));return e;}
+function renderFormulas(){
+ const armorShares=RULES.armorShares.map(fmt).join(' / '),bookAttack=(RULES.bookInnateAttackHp||[0,.5,1,1.5,2]).slice(1).map(fmt).join(' / '),bookB=(RULES.bookInnateAttackProtection||[0,.05,.1,.15,.2]).slice(1).map(n=>fmt(100*n)+'%').join(' / '),bookHeal=(RULES.bookInnateHealing||[0,.1,.2,.3,.4]).slice(1).map(n=>fmt(100*n)+'%').join(' / '),bookDuration=(RULES.bookInnateDuration||[0,.25,.5,.75,1]).slice(1).map(n=>fmt(100*n)+'%').join(' / ');
+ const cards=[
+ formulaCard(b('来源与合法镶嵌','Sources and legal sockets'),[b('普通环境是主世界、下界、末地、表界；特殊环境是里界、地府。序数晶体仅能装入手稿。导入旧配置时清空装备中的序数槽，其余合法核心与孔位保留。','Normal realms are Overworld, Nether, End and Outer; deep realms are Inner and Underworld. Ordinal fits manuscripts only. Legacy imports clear equipment Ordinal sockets while preserving other legal cores and socket positions.'),b('副手手稿优先；副手无书时主手书生效。双持不叠加，闲置背包和未穿戴装备不计。RSS表示单颗值平方求和开根号；剑和书中的同类攻核必须分别算。','Offhand books take priority; otherwise a main-hand book applies. Two books never stack; idle inventory and unequipped items do not contribute. RSS means root-sum-square of per-core values; calculate weapon and book attack sources separately.')],['RSS(values) = sqrt(sum(value²))']),
+ formulaCard(b('四档手稿的固有加成','Innate bonuses of four manuscript tiers'),[b(`表界固有攻击=${bookAttack} HP；里界攻击与两界防护b=${bookB}。裸书无挖速、耐久、触距、生命或独立治疗。`,`Innate normal attack=${bookAttack} HP;deep attack and both-realm protection b=${bookB}. Bare books grant no mining speed, wear, reach, health or independent healing.`),b(`治疗基值=${bookHeal}，状态延时基值=${bookDuration}；它们只放大已有紫菜治疗或果糕剑状态。`,`Healing baseline=${bookHeal};duration baseline=${bookDuration}. They only amplify existing Laver healing or Guogao sword effects.`)]),
+ formulaCard(b('攻击：表界加算，里界按来源乘算','Attack: normal addition, deep source factors'),[b('表界幂塔Lv1/2/3单颗+1/2/3HP，序数Lv1/2/3/4单颗+0.5/1/1.5/2.5HP。各来源内部RSS后相加。里界幂塔单颗25%/50%/100%，序数5%/10%/20%/40%。同源先RSS，再形成一个倍率。','Normal Power values are1/2/3HP;Ordinal values are0.5/1/1.5/2.5HP. Add separately aggregated source RSS values. Deep Power values are25%/50%/100%;Ordinal values are5%/10%/20%/40%. RSS within each source, then form one multiplier.')],['NormalAttack = Base + BookInnateAttackHP + RSS(SwordPowerHP) + RSS(BookPowerHP) + RSS(BookOrdinalHP)','DeepAttack = Base·(1+b)·(1+RSS(BookOrdinalPct))·(1+RSS(BookPowerPct))·(1+RSS(SwordPowerPct))']),
+ formulaCard(b('防护与真实原版护甲','Protection and native armor'),[b(`甲界限单颗值25%/50%/100%，每件先RSS，再按份额${armorShares}加权求和，整体乘2形成C。书界限单颗值同样是25%/50%/100%；书序数防护5%/10%/20%/40%。`,`Armor Boundary values are25%/50%/100%. RSS within each item, weight by shares${armorShares}, sum and multiply by2 to form C. Book Boundary values also use25%/50%/100%;book Ordinal protection uses5%/10%/20%/40%.`),b('四套原版护甲/韧性为16/4、18/8、20/12、22/16，混搭按实际部位相加。裸甲不再有自定义F0。真正原版减伤按本击伤害、护甲与韧性计算，并非固定80%。晶核倍率随后独立应用，也保护声波与虚空。','Full-set native armor/toughness are16/4,18/8,20/12,22/16;mixing uses actual equipped-piece contributions. Bare armor has no custom F0. Native reduction uses this hit’s damage, armor and toughness, not a fixed80%. Core tolerance then applies separately, also to sonic boom and void.'),b('甲损耗按受击前配置并乘防护衰减；H×F只描述晶核防护前的生命预算，不包含原版甲，也不能自动视为实际原始伤害阈值。','Armor wear uses the pre-hit configuration and protection attenuation. H×F describes a health budget before core protection;it excludes native armor and is not automatically the raw incoming damage threshold.')],['C = 2·sum(ArmorSlotShare·RSS(ItemBoundaryPct))','NormalCoreTolerance = (1+C)·(1+b+RSS(BookBoundaryPct)+RSS(BookOrdinalPct))','DeepCoreTolerance = (1+C)·(1+b)·(1+RSS(BookBoundaryPct))·(1+RSS(BookOrdinalPct))','FinalDamage = SourceSpecificNativeDamage / CoreTolerance']),
+ formulaCard(b('生命、治疗与状态延时','Health, healing and status duration'),[b('最大生命仅取生效书的果糕之心，两界一致；甲、序数与裸书不加生命。紫菜每80刻治疗，序数和书基值只放大已有治疗。饥饿保障10/19取最高且不补饱和度；自然回血仍是另一个机制。','Maximum health uses only Guogao in the active book and matches across realms. Armor, Ordinal and bare books grant no health. Laver heals every80 ticks;Ordinal and baseline only amplify existing healing. Food floors10/19 use the highest grade without saturation;native regeneration remains separate.'),b('果糕剑的基础状态为2秒。书固有延时和序数延时相加后乘到这2秒；剑没有果糕核心时不产生状态，书中只有果糕也不代替剑核心。','Guogao sword base effects last2 seconds. Innate and Ordinal duration terms add, then multiply those2 seconds. No Guogao in the sword means no on-hit effects;book Guogao alone does not substitute for it.')],['HP = 20 + 4·RSS(BookGuogaoGrades)','HealingPer4s = RSS(BookLaverGrades)·(1+BookHealingBase+RSS(BookOrdinalHealingValues))','GuogaoSwordSeconds = 2·(1+BookDurationBase+RSS(BookOrdinalDurationValues))']),
+ formulaCard(b('挖掘、触距与耐久','Mining, reach and wear'),[b('序列书效率同源取max，并与原版效率取max；e>0时加e²+1，仅适用工具生效。序数不提供挖速倍率。额外开采两界都RSS再取整，单颗预算普通1/2/3、里界1/4/9。分枝时运/抢夺取最高2×等级并加原版同类等级，精准模式替代时运。','Sequence book Efficiency uses same-source max and max with native Efficiency. With e>0,add e²+1 for an eligible tool. Ordinal grants no mining multiplier. Extra mining uses RSS and floor in both realms,with budgets1/2/3 normal and1/4/9 deep. Branch yield uses the highest2×grade plus native levels;Silk Touch replaces Fortune.'),b('分枝书触距=RSS等级；空集本件耐久预算4/16/64直接相加，用耗损概率实现。两界相同，裸书和序数都不参与。','Branch book reach=RSS grades. Absence item wear budgets4/16/64 add and act through consumption chance. Both match across realms;bare books and Ordinal do not contribute.')],['MiningSpeed = BaseMining + (EfficiencyLevel>0 ? EfficiencyLevel²+1 : 0)','ExtraBlocks = floor(RSS(PickSequenceBudgets))','ReachExtra = RSS(BookBranchGrades)','WearFactor = max(1,sum(ItemAbsenceWearBudgets)); WearChance = 1/WearFactor']),
+ formulaCard(b('爆裂与分级能力','Bursts and grade-based abilities'),[b('剑临界系数15%/22.5%/30%，书投射物系数普通相同、里界乘4，多颗RSS。爆裂不再额外读取书基值或序数，剑爆裂不再次乘暴击或冷却。','Sword Critical coefficients are15%/22.5%/30%;book projectile coefficients match in normal realms and are4× in deep realms. Combine with RSS. No additional book-baseline or Ordinal scaling; sword bursts do not apply critical/cooldown again.'),b('飞行、隐蔽、水域能力、饥饿和免疫各自取最高；界限Lv1跳跃按颗数相加并与高阶飞行共存。特殊维度Lv3水平和升降冲刺8倍。效率与水域细则仍是方案选择，非已安装行为。','Flight,stealth,aquatic perks,food floor and immunity each use the highest applicable grade. Boundary Lv1 jumps add per core and coexist with higher flight. Deep Lv3 horizontal/vertical sprint are8×. Efficiency and aquatic details remain proposal choices,not installed behavior.'),b('空集不清已有仇恨、不处理特殊索敌；所有将来实装的效果应按玩家分别由服务器确认。','Absence does not clear existing aggro or handle special targeting. Any future implementation should be server-authoritative and per-player.')],['BurstCoefficient = RSS(IndividualCoefficients)','SwordBurst = EnhancedAttack·SwordBurstCoefficient','ProjectileBurst = EffectiveProjectileDamage·BookBurstCoefficient'])
+ ];$('formulas').replaceChildren(...cards);
+ const head=document.createElement('tr');for(const key of ['tier','gearSlots','bookSlots','regionalMax','ordinalMax','nativeArmor','nativeToughness'])head.append(cell('th',t(key)));$('slotsHead').replaceChildren(head);
+ const rows=[];for(let tier=1;tier<=4;tier++){const row=document.createElement('tr');row.append(cell('th',['ω','ε','Γ','Ω'][tier-1]),cell('td',RULES.gearSlots[tier]),cell('td',RULES.bookSlots[tier]),cell('td','Lv'+RULES.regionalGrades[tier]),cell('td',b('仅手稿Lv','Book only Lv')+RULES.bookOrdinalGrades[tier]),cell('td',(RULES.nativeArmorByTier||[16,18,20,22])[tier-1]),cell('td',(RULES.nativeToughnessByTier||[4,8,12,16])[tier-1]));rows.push(row);}$('slotsBody').replaceChildren(...rows);
+}
+function render(){
+ document.documentElement.lang=lang==='zh'?'zh-CN':'en';document.title=b('果糕逻辑 · '+t('title'),'Guogaology · '+t('title'));
+ for(const e of document.querySelectorAll('[data-i18n]'))e.textContent=t(e.dataset.i18n);
+ $('language').textContent=lang==='zh'?'English':'中文';$('mode').textContent=t(proposal?'modeProposal':preview?'modePreview':'modeCurrent');$('notice').textContent=t(proposal?'noticeProposal':preview?'noticePreview':'noticeCurrent');$('realm').value=realm;
+ for(const e of document.querySelectorAll('input[name="level"]'))e.checked=levels.has(Number(e.value));
+ const options=[new Option(t('all'),'-1')];for(let type=0;type<9;type++)options.push(new Option(coreName(type),String(type)));$('coreFilter').replaceChildren(...options);$('coreFilter').value=String(coreFilter);
+ renderOverview();renderDetails();renderFormulas();$('footer').textContent=t('footer')+' · Rules '+BUILD.revision;persist();
+}
+for(const e of document.querySelectorAll('input[name="level"]'))e.onchange=()=>{const l=Number(e.value);if(e.checked)levels.add(l);else levels.delete(l);render();};
+$('realm').onchange=()=>{realm=$('realm').value;render();};$('coreFilter').onchange=()=>{coreFilter=Number($('coreFilter').value);render();};$('language').onclick=()=>{lang=lang==='zh'?'en':'zh';render();};$('reset').onclick=()=>{levels=new Set([1,2,3,4]);realm='normal';coreFilter=-1;render();};$('filters').onsubmit=e=>e.preventDefault();
+render();
+</script>
+</body>
+</html>

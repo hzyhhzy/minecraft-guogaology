@@ -29,7 +29,8 @@ final class MaterialChecks {
         check(!level.getServer().getResourceManager().getNamespaces().contains("googology_outer"),"no retired data namespace");
         check(ModBlocks.ORDINAL_STONE==Blocks.STONE&&ModBlocks.HELL_ORDINAL_STONE==Blocks.NETHERRACK,"vanilla mother rock");
         check(ModBlocks.ANDESITE_ORDINAL_STONE==Blocks.ANDESITE&&ModBlocks.COBBLED_ORDINAL_STONE==Blocks.COBBLESTONE,"vanilla surface stones");
-        check(ModBlocks.wood("christmas","log")==Blocks.OAK_LOG&&ModBlocks.wood("hell_christmas","log")==Blocks.DARK_OAK_LOG,"vanilla Christmas logs");
+        check(ModBlocks.wood("christmas","log")==Blocks.SPRUCE_LOG&&ModBlocks.wood("hell_christmas","log")==Blocks.DARK_OAK_LOG,"vanilla Christmas logs");
+        check(ModBlocks.CHRISTMAS_LEAVES==ModBlocks.wood("christmas","leaves")&&ModBlocks.CHRISTMAS_LEAVES!=Blocks.SPRUCE_LEAVES,"dedicated original Outer Christmas leaves");
         check(ModBlocks.wood("laver","leaves")==GoogologyBlocks.GIANT_LAVER&&ModBlocks.wood("laver","log")==GoogologyBlocks.LAVER_VEIN,"one Laver family");
         check(GoogologyBlocks.LAVER_VEIN.defaultBlockState().hasProperty(RotatedPillarBlock.AXIS),"Laver log keeps orientation");
         check(ModBlocks.LHO_GLASS==GoogologyBlocks.ABSENCE_GLASS,"one void glass");
@@ -60,10 +61,13 @@ final class MaterialChecks {
         System.out.println("MATERIALS_035_OK checks="+checks);
     }
     static void display(ServerPlayer player,int scene){
+        if(scene==9){ReturnPortalChecks.display(player);return;}
+        if(scene>=6){BoundaryChecks.display(player,scene-2);return;}
         var level=player.level().getServer().overworld();int z=350+scene*50;
         for(int cx=-2;cx<=2;cx++)for(int cz=(z-20)>>4;cz<=(z+30)>>4;cz++)level.getChunk(cx,cz);
         for(var p:BlockPos.betweenClosed(new BlockPos(-20,219,z-15),new BlockPos(20,227,z+20)))level.setBlock(p,p.getY()==219?Blocks.SMOOTH_QUARTZ.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
         if(scene==0){
+            dev.googology.client.CoreAnimationRenderer.previewSeconds=0;
             for(var q:BlockPos.betweenClosed(new BlockPos(-9,220,z-2),new BlockPos(9,225,z-2)))level.setBlock(q,Blocks.DEEPSLATE_TILES.defaultBlockState(),2);
             String[] names={"fffz_trace","lho_trace","lho_trace_lv2","lho_trace_lv3","fos_trace"};
             for(int i=0;i<names.length;i++){var p=new BlockPos((i-2)*3,221,z);level.setBlock(p.below(),Blocks.DEEPSLATE_TILES.defaultBlockState(),2);var b=BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:"+names[i]));level.setBlock(p,b.defaultBlockState(),2);}
@@ -72,21 +76,30 @@ final class MaterialChecks {
             for(int i=0;i<3;i++)PortalRitual.fillPortal(level,new BlockPos((i-1)*7,220,z),PortalKind.values()[new int[]{0,2,1}[i]]);
             move(player,level,.5,230,z+19,180,28);
         }else if(scene==2){
-            Block[] row={Blocks.OAK_LOG,Blocks.DARK_OAK_LOG,GoogologyBlocks.DREAD_LOG,GoogologyBlocks.LAVER_VEIN,GoogologyBlocks.LAVER_PLANKS,GoogologyBlocks.GIANT_LAVER,GoogologyBlocks.ABSENCE_GLASS};
+            Block[] row={Blocks.OAK_LOG,Blocks.DARK_OAK_LOG,GoogologyBlocks.DREAD_LOG,BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:dread_planks")),GoogologyBlocks.LAVER_VEIN,GoogologyBlocks.LAVER_PLANKS,GoogologyBlocks.GIANT_LAVER};
             for(int i=0;i<row.length;i++)for(int y=220;y<=222;y++)level.setBlock(new BlockPos((i-3)*2,y,z),row[i].defaultBlockState(),2);
             for(int n=0;n<16;n++)level.setBlock(new BlockPos(n-8,220,z+3),GoogologyBlocks.ordinalBrick(n),2);
             for(int n=0;n<6;n++){level.setBlock(new BlockPos((n-3)*2,220,z+6),GoogologyBlocks.SEQUENCE_LIGHTS[n].defaultBlockState(),2);level.setBlock(new BlockPos((n-3)*2,221,z+6),GoogologyBlocks.SEQUENCE_LIGHTS[n].defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,n*6),2);}
+            for(int n=0;n<3;n++)level.setBlock(new BlockPos((n-1)*4,220,z+10),dev.googology.mining.MiningContent.TABLES[n].defaultBlockState(),2);
             move(player,level,.5,228,z+21,180,20);
+        }else if(scene==3){
+            dev.googology.client.CoreAnimationRenderer.previewSeconds=10;
+            for(var q:BlockPos.betweenClosed(new BlockPos(-9,220,z-2),new BlockPos(9,225,z-2)))level.setBlock(q,Blocks.DEEPSLATE_TILES.defaultBlockState(),2);
+            String[] names={"fffz_trace","lho_trace","lho_trace_lv2","lho_trace_lv3","fos_trace"};
+            for(int i=0;i<names.length;i++){var q=new BlockPos((i-2)*3,221,z);level.setBlock(q.below(),Blocks.DEEPSLATE_TILES.defaultBlockState(),2);level.setBlock(q,BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:"+names[i])).defaultBlockState(),2);}
+            move(player,level,3.5,223,z+10,163,9);
+        }else if(scene==4){
+            // A close, strongly oblique view exposes the real C1 relief sides.
+            dev.googology.client.CoreAnimationRenderer.previewSeconds=0;
+            for(var q:BlockPos.betweenClosed(new BlockPos(-2,220,z-2),new BlockPos(-2,225,z+4)))level.setBlock(q,Blocks.DEEPSLATE_TILES.defaultBlockState(),2);
+            level.setBlock(new BlockPos(0,220,z),Blocks.DEEPSLATE_TILES.defaultBlockState(),2);
+            level.setBlock(new BlockPos(0,221,z),GoogologyBlocks.LHO_TRACE.defaultBlockState(),2);
+            move(player,level,5.8,222.8,z-2.4,61,10);
         }else{
-            String[] minerals={"epsilon_ore","nether_epsilon_ore","epsilon_block"};
-            for(int i=0;i<minerals.length;i++)level.setBlock(new BlockPos((i-1)*3,221,z),BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:"+minerals[i])).defaultBlockState(),2);
-            for(int i=0;i<4;i++){
-                var q=new BlockPos((i*3)-4,221,z+4);level.setBlock(q,Blocks.DEEPSLATE_TILES.defaultBlockState(),2);
-                var frame=new net.minecraft.world.entity.decoration.ItemFrame(level,q.south(),Direction.SOUTH);
-                frame.setItem(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse("googology:"+new String[]{"omega","epsilon","gamma","true_omega"}[i]+"_manuscript"))));
-                level.addFreshEntity(frame);
-            }
-            move(player,level,.5,224,z+14,180,12);
+            dev.googology.client.CoreAnimationRenderer.previewSeconds=21;
+            String[] names={"lho_trace","lho_trace_lv2","lho_trace_lv3"};
+            for(int i=0;i<names.length;i++){var q=new BlockPos((i-1)*3,221,z);level.setBlock(q.below(),Blocks.DEEPSLATE_TILES.defaultBlockState(),2);level.setBlock(q,BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:"+names[i])).defaultBlockState(),2);}
+            move(player,level,5.5,223,z+11,155,9);
         }
     }
 }

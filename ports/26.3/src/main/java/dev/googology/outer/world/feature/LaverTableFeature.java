@@ -188,6 +188,14 @@ public record LaverTableFeature(WeightedList<TemplateEntry> templates, Optional<
       return var1;
    }
 
+   /** Independent appearance per gummy: mixed tables are allowed. */
+   public static Block tableGummy(RandomSource random, Block embossed) {
+      if(random.nextInt(5)==0)return embossed;
+      var id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(embossed);
+      var plain=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(dev.googology.outer.GoogologyMod.id("plain_"+id.getPath()));
+      return plain==Blocks.AIR?embossed:plain;
+   }
+
    public int placeGummies(WorldGenLevel var1, RandomSource var2, StructureTemplate var3, BlockPos var4, StructurePlaceSettings var5, Block var6) {
       List var7 = tableSurface(var3, var4, var5);
       int var8 = Math.min(gummyCount(var2), var7.size());
@@ -199,11 +207,10 @@ public record LaverTableFeature(WeightedList<TemplateEntry> templates, Optional<
          var7.set(var10, var11);
       }
 
-      BlockState var12 = var6.defaultBlockState();
       int var13 = 0;
 
       for (int var14 = 0; var14 < var8; var14++) {
-         var1.setBlock(((BlockPos)var7.get(var14)).above(), var12, 2);
+         var1.setBlock(((BlockPos)var7.get(var14)).above(), tableGummy(var2,var6).defaultBlockState(), 2);
          var13++;
       }
 

@@ -29,4 +29,20 @@ public final class BiomeRegions {
     }
     public static int kind(long seed,int x,int z) { return dominant(weights(seed,x,z)); }
     public static int dominant(double[] weights) { int best=0;for(int i=1;i<weights.length;i++) if(weights[i]>weights[best]) best=i;return best; }
+
+    /** LHO's actual dominant-biome boundary, including junctions of three regions. */
+    public static double lhoContrast(double[] weights) {
+        double other=0;
+        for(int i=0;i<weights.length;i++)if(i!=3)other=Math.max(other,weights[i]);
+        return weights[3]-other;
+    }
+    public static boolean lhoGap(double[] weights) {
+        return weights[3]>0 && Math.abs(lhoContrast(weights))<=.24;
+    }
+    /** Smoothly erode both coasts; the middle band is empty throughout world height. */
+    public static double lhoCoastCut(double[] weights) {
+        if(weights[3]<=0)return 0;
+        double t=Math.clamp((Math.abs(lhoContrast(weights))-.24)/.61,0,1);
+        return 416*(1-t*t*(3-2*t));
+    }
 }
