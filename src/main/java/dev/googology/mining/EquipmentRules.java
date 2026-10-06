@@ -41,7 +41,10 @@ public final class EquipmentRules {
     }
     public static int digit(double value){return (int)Math.floor(Math.max(0,Math.min(9,value)));}
     public static int coreType(String id){for(int i=0;i<CORES.length;i++)if(id.equals(CORES[i])||id.startsWith(CORES[i]+"_lv"))return i;return -1;}
+    /** Internal material stage: Ordinal remains 1..4 so recipes/effects do not shift on a display rename. */
     public static int coreLevel(String id){int p=id.lastIndexOf("_lv");return p<0?1:Integer.parseInt(id.substring(p+3));}
+    /** Visible grade. Ordinal stage1 is an ungraded crystal; stages2..4 are core grades1..3. */
+    public static int displayedCoreGrade(int type,int materialStage){return type==8?materialStage-1:materialStage;}
     public static int stationGrade(int type,int level){return type==8?Math.max(1,level-1):level;}
     public static int denxiLevel(int type,int level){return Math.max(0,type==8?level-1:level);}
     public static double weight(int type,int level){return type==8?level*.5:1+(level-1)*.5;}
@@ -70,6 +73,7 @@ public final class EquipmentRules {
     public static double bookHealingBase(int tier){return .1*Math.clamp(tier,0,4);}
     public static double bookDurationBase(int tier){return .25*Math.clamp(tier,0,4);}
     /** Minecraft-free input model, also used by the equipment simulator. */
+    /** level stores the internal material stage, not the Ordinal Core display grade. */
     public record Core(int type,int level){}
     public record Gear(int tier,int kind,int digit,List<Core> cores){
         public Gear{cores=cores.stream().filter(c->compatible(kind,c.type())).toList();}

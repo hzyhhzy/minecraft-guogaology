@@ -31,14 +31,14 @@ def link(record, lang, selected="mainhand", critical=False):
 
 def configuration(record, lang, only_book=False):
     labels = ["剑／镐", "手稿", "头", "胸", "腿", "靴"] if lang == "zh" else ["Tool", "Book", "Head", "Chest", "Legs", "Feet"]
-    names = DATA["rules"]["coreNames"][lang]
+    names = DATA["rules"]["coreStageNames"][lang]
     parts = []
     for label, key in zip(labels, ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"]):
         if only_book and key != "offhand":
             continue
         counts = {}
         for core in record["configuration"][key].get("cores", []):
-            name = names[core["type"]] + " Lv" + str(core["level"])
+            name = names[core["type"]][core["level"] - 1]
             counts[name] = counts.get(name, 0) + 1
         if counts:
             parts.append(label + ": " + "; ".join(f"{count}×{name}" for name, count in counts.items()))
@@ -106,7 +106,7 @@ def section(lang):
     ordinal_rows = []
     r = DATA["rules"]
     for i in range(4):
-        ordinal_rows.append(["Lv" + str(i + 1), number(r["normalOrdinalAttackGrades"][i]) + "HP", number(r["ordinalPercentGrades"][i] * 100) + "%", number(r["ordinalHealingGrades"][i] * 100) + "%", number(r["ordinalDurationGrades"][i] * 100) + "%"])
+        ordinal_rows.append([r["coreStageNames"][lang][8][i], number(r["normalOrdinalAttackGrades"][i]) + "HP", number(r["ordinalPercentGrades"][i] * 100) + "%", number(r["ordinalHealingGrades"][i] * 100) + "%", number(r["ordinalDurationGrades"][i] * 100) + "%"])
     ranged_rows = []
     for example in DATA["rangedExamples"]:
         shot = example["shot"]
@@ -140,11 +140,11 @@ def section(lang):
 <p class="notice">{tr("0.3.12生产规则revision47。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.3.12 rules, revision47. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
 <nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=1,2,3,4">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
-<p>{tr("Ω装备每件8槽、手稿6槽；群系Lv3／序数Lv4。序数晶体只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regionalLv3 / OrdinalLv4. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
+<p>{tr("Ω装备每件8槽、手稿6槽；群系晶核Lv3／序数晶核Lv3。序数晶体与晶核只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regional Core Lv3 / Ordinal Core Lv3. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
 {table([tr("指标", "Metric"), realm_names["normal"], realm_names["deep"]], metric_rows)}
 <p>{tr("固定80%口径是用户指定的数学对比：裸甲减伤80%相当于5倍，所以总防护为5F，单次原始致死阈值为5HF。等于阈值会耗尽生命，必须略小才存活。真实模拟器仍按原版护甲与韧性计算，不能把此假设当作所有伤害的实际减伤；虚空、摔落等不吃原版护甲的伤害也没有这个5倍。", "The requested fixed80% convention is a comparison assumption: bare armor contributes5×, total protection is5F, and lethal input is5HF. Equality exhausts health; survival needs less. The simulator still calculates native armor/toughness. This assumption is not actual mitigation for all hits, or for armor-bypassing sources such as void/fall.")}</p>
 <details><summary>{tr("最优配装详情", "Optimal loadout details")}</summary>{table([tr("目标", "Metric"), realm_names["normal"], realm_names["deep"]], config_rows)}</details>
-<h3>{tr("仅使用二阶群系核／三阶序数晶体", "Using regionalLv2 / OrdinalLv3 only")}</h3>
+<h3>{tr("仅使用群系晶核Lv2／序数晶核Lv2", "Using regional Core Lv2 / Ordinal Core Lv2 only")}</h3>
 <p>{tr("此表保留Ω装备和Ω手稿的8／6槽，只降低镶嵌晶核等级，并非ε档装备。", "This keepsOmega gear/book with8 /6 sockets and lowers only the socketed core grades; it does not useEpsilon gear.")}</p>
 {table([tr("环境", "Realm"), tr("二阶总防护5F", "Lv2 total5F"), tr("二阶手稿", "Lv2 book"), tr("三阶总防护5F", "Lv3 total5F"), tr("三阶手稿", "Lv3 book")], lower_rows)}
 </article>
@@ -161,7 +161,7 @@ def section(lang):
 <p>{tr("表攻击幂塔单颗加1／2／3HP，表攻击序数单颗加0.5／1／1.5／2.5HP；里攻击幂塔为25%／50%／100%，序数为5%／10%／20%／40%。界限防护两界单颗都是25%／50%／100%。没有旧的裸甲本体倍率，没有装备序数乘区。", "Outer Power adds1 /2 /3HP per core; Ordinal adds0.5 /1 /1.5 /2.5HP. Inner Power contributes25% /50% /100%, Ordinal5% /10% /20% /40%. Boundary protection is25% /50% /100% in both realms. Old bare-armor multipliers and gear Ordinal channels are removed.")}</p>
 <h3>{tr("四档裸手稿（里外一样的输入）", "Four bare manuscripts (identical inputs across realms)")}</h3>
 {table([tr("档位", "Tier"), tr("表攻击a", "Outer attack a"), tr("里攻击／防护b", "Inner attack / protection b"), tr("治疗放大", "Healing amplification"), tr("果糕剑延时", "Guogao extension")], book_rows)}
-<h3>{tr("仅手稿序数晶体", "Manuscript-only Ordinal crystals")}</h3>
+<h3>{tr("仅手稿序数晶体与晶核", "Manuscript-only Ordinal Crystal and Cores")}</h3>
 {table([tr("等级", "Level"), tr("表攻击", "Outer attack"), tr("里攻击／防护", "Inner attack / protection"), tr("治疗量", "Healing amount"), tr("果糕剑延时", "Guogao extension")], ordinal_rows)}
 <p><code>{tr("紫菜每4秒治疗", "Laver healing every4s")}=RSS(紫菜等级)×(1+治疗基础+RSS(序数治疗%))<br>{tr("果糕剑秒数", "Guogao sword seconds")}=2×(1+延时基础+RSS(序数延时%))</code></p>
 <p>{tr("没有紫菜核就不回血；没有果糕剑就不产生负面状态。序数只保留攻、防、治疗乘算和状态延时，不加生命、挖速、耐久或触距。延时不提高状态等级或失明触发率。", "No Laver means no healing; no Guogao sword means no debuff. Ordinal retains only attack, protection, multiplicative healing and debuff duration. It grants no health, mining, wear or reach. Extension changes neither status potency nor blindness chance.")}</p>
@@ -178,7 +178,7 @@ def section(lang):
 <p>{tr("通用目标基线：下界合金锋利V剑普通攻击11HP、暴击15HP；四件保护IV为EPF16，保护附魔后保留36%伤害。统一按固定80%裸甲口径，原版总防护5/0.36≈13.889，20HP原始致死阈值约277.778HP。不是原版任意重击的真实阈值，也不考虑亡灵杀手专用目标、药水、盾牌或图腾。", "Generic-target baseline: Netherite SharpnessV ordinary11HP / critical15HP. Four ProtectionIV pieces giveEPF16 and retain36% damage after native armor. With fixed80% armor, vanilla protection=5/0.36≈13.889 and20HP lethal input≈277.778HP. This is not the actual threshold for arbitrary heavy hits; specialized Smite targets, potions, shields and totems are excluded.")}</p>
 </article>
 <article><h2>{tr("合法性与单调性复核", "Legality and monotonicity checks")}</h2>
-<p>{tr(f"全部审计候选禁止装备序数晶体；共{len(examples)}项加核单调性检查，均只填空槽，不替换别的晶核。每件甲分别计算再加权，手稿与套装分开，添正贡献不会反而降低防护。以下显示各部位示例与手稿项。", f"All audited candidates prohibit gear Ordinal. {len(examples)} empty-socket monotonicity checks add a core without replacing another. Per-piece weighted armor and independent book/set contributions cannot reduce defense when a positive core is added. Slot/book examples follow.")}</p>
+<p>{tr(f"全部审计候选禁止装备序数材料；共{len(examples)}项加核单调性检查，均只填空槽，不替换别的晶核。每件甲分别计算再加权，手稿与套装分开，添正贡献不会反而降低防护。以下显示各部位示例与手稿项。", f"All audited candidates prohibit gear Ordinal. {len(examples)} empty-socket monotonicity checks add a core without replacing another. Per-piece weighted armor and independent book/set contributions cannot reduce defense when a positive core is added. Slot/book examples follow.")}</p>
 {table([tr("环境", "Realm"), tr("部位", "Slot"), tr("加核前F", "F before"), tr("加核后F", "F after"), tr("结果", "Result")], monotonic_rows)}
 <details><summary>{tr("防护与省耐久联合最优", "Joint protection and wear optima")}</summary><p>{tr("每行是单独最优配装，不能一套甲同时取得各行。F×W是相对原版耐久损耗预算的期望缩小倍数，不是固定免疫时间。", "Each row has its own optimal loadout; one set cannot simultaneously realize all rows. F×W reduces expected native wear budget, not guaranteed invulnerability time.")}</p>{table([tr("部位", "Slot"), realm_names["normal"], realm_names["deep"]], wear_rows)}</details>
 <details><summary>{tr("同档镐＋手稿挖速", "Matching pick/book tier mining")}</summary>{table([tr("档位", "Tier"), realm_names["normal"], realm_names["deep"]], mining_rows)}<p>{tr("序列手稿效率II／IV／VI加5／17／37，重复取最高。序数不再参与挖速，所有矿硬度、采集权限、水下与站稳状态仍另算。", "Sequence manuscript EfficiencyII /IV /VI adds5 /17 /37 and uses max. Ordinal no longer boosts mining; hardness, permissions, water and airborne penalties remain separate.")}</p></details>

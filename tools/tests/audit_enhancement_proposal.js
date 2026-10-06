@@ -74,7 +74,8 @@ function finish(best) {
     const g = best.configuration[key], counts = {};
     for (const c of g.cores || []) {
       const name = (rules.coreNames?.zh || [])[c.type] || Object.keys(T).find(k => T[k] === c.type);
-      const label = name + ' Lv' + c.level;
+      const label = rules.coreStageNames?.zh?.[c.type]?.[c.level-1]
+        || (c.type===8&&c.level===1?'序数晶体':name+' Lv'+(c.type===8?c.level-1:c.level));
       counts[label] = (counts[label] || 0) + 1;
     }
     return [key, counts];

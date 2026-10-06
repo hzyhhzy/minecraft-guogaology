@@ -74,6 +74,13 @@ EXTRA = {
 
 def core_copy(index):
     values = {}
+    # Registry/material stages stay 1..4. The natural base crystal is ungraded;
+    # its three crafted upgrades display as Ordinal Core grades 1..3.
+    for material_stage in range(1, 5):
+        suffix = '' if material_stage == 1 else f'_lv{material_stage}'
+        values[f'block.googology.ordinal_crystal{suffix}'] = (
+            ('序数晶体' if index == 0 else 'Ordinal Crystal') if material_stage == 1
+            else ('序数晶核' if index == 0 else 'Ordinal Core') + f' · Lv{material_stage - 1}')
     for level in range(1, 4):
         suffix = '' if level == 1 else f'_lv{level}'
         values[f'block.googology.laver_core{suffix}'] = (

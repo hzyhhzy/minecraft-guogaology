@@ -153,11 +153,16 @@ public final class Core047Checks {
         int icons=0;
         for(int type=0;type<9;type++)for(int level=1;level<=(type==8?4:3);level++){
             String id=EquipmentRules.CORES[type]+(level==1?"":"_lv"+level);var stack=item(id);var expected=type==8?new Rarity[]{Rarity.COMMON,Rarity.UNCOMMON,Rarity.RARE,Rarity.EPIC}[level-1]:new Rarity[]{Rarity.UNCOMMON,Rarity.RARE,Rarity.EPIC}[level-1];check(stack.getRarity()==expected,"real item rarity "+id);
-            icons++;
+            check(EquipmentRules.displayedCoreGrade(type,level)==(type==8?level-1:level),"material stage/display grade mapping "+id);icons++;
         }check(icons==28,"all28 core items present without world-model mutation");
     }
     public static void auditIcons(net.minecraft.client.Minecraft client)throws Exception{
         var resources=client.getResourceManager();int icons=0;
+        for(String language:List.of("zh_cn","en_us"))try(var reader=resources.getResourceOrThrow(Identifier.parse("googology:lang/"+language+".json")).openAsReader()){
+            var text=JsonParser.parseReader(reader).getAsJsonObject();String crystal=language.equals("zh_cn")?"序数晶体":"Ordinal Crystal",core=language.equals("zh_cn")?"序数晶核":"Ordinal Core";
+            check(text.get("block.googology.ordinal_crystal").getAsString().equals(crystal),"ungraded crystal display "+language);
+            for(int stage=2;stage<=4;stage++)check(text.get("block.googology.ordinal_crystal_lv"+stage).getAsString().equals(core+" · Lv"+(stage-1)),"ordinal displayed grade "+language+" / "+stage);
+        }
         for(int type=0;type<9;type++)for(int level=1;level<=(type==8?4:3);level++){
             String id=EquipmentRules.CORES[type]+(level==1?"":"_lv"+level);
             try(var reader=resources.getResourceOrThrow(Identifier.parse("googology:models/item/"+id+".json")).openAsReader()){var model=JsonParser.parseReader(reader).getAsJsonObject();boolean original=type==8&&level==1;check(model.get("parent").getAsString().equals(original?"googology:block/ordinal_crystal":"minecraft:item/generated"),"client inventory model and original OrdinalLv1 exception "+id);check(resources.getResource(Identifier.parse("googology:textures/item/"+id+".png")).isPresent()!=original,"own flat texture except original OrdinalLv1 "+id);}
@@ -181,7 +186,7 @@ public final class Core047Checks {
         System.out.println("CORE047_LOOT_OK tables=16 actualChestFills=8192 mainRegional+OrdinalLv3=1+1 sideRegionalLv1=6..12 ordinalLv1=30..60");
     }
     public static void displayIcons(ServerPlayer p){
-        p.closeContainer();var icons=new SimpleContainer(54);int n=0;for(int type=0;type<9;type++)for(int level=1;level<=(type==8?4:3);level++)icons.setItem(n++,item(EquipmentRules.CORES[type]+(level==1?"":"_lv"+level)));for(var tier:TIERS)icons.setItem(n++,item(tier+"_bow"));p.openMenu(new SimpleMenuProvider((id,inventory,who)->ChestMenu.sixRows(id,inventory,icons),Component.literal("晶核等级与四档序数弓 · Rev47")));
+        p.closeContainer();var icons=new SimpleContainer(54);int n=0;for(int type=0;type<9;type++)for(int level=1;level<=(type==8?4:3);level++){var stack=item(EquipmentRules.CORES[type]+(level==1?"":"_lv"+level));stack.setCount(new int[]{16,32,64,64}[level-1]);icons.setItem(n++,stack);}for(var tier:TIERS)icons.setItem(n++,item(tier+"_bow"));p.openMenu(new SimpleMenuProvider((id,inventory,who)->ChestMenu.sixRows(id,inventory,icons),Component.literal("晶核等级与四档序数弓 · Rev47")));
     }
     public static void displaySilk(ServerPlayer p){
         p.closeContainer();var pos=p.blockPosition();p.level().setBlock(pos,MiningContent.TABLES[2].defaultBlockState(),2);p.openMenu(new SimpleMenuProvider((id,inventory,who)->new EnhancementMenu(id,inventory,p.level(),pos,3),Component.translatable("block.googology.enhancement_table_3")));var menu=(EnhancementMenu)p.containerMenu;menu.getSlot(0).set(gear("true_omega_pickaxe","hydra_bud_lv3","lho_trace_lv3","sequence_core_lv3"));menu.clickMenuButton(p,0);menu.broadcastChanges();for(int type=0;type<9;type++)p.getInventory().setItem(9+type,item(EquipmentRules.CORES[type]+"_lv3"));menu.broadcastChanges();

@@ -18,6 +18,11 @@ for (const item of payload.cases) {
 }
 // Independent channel and ranged checks accompany the Java golden comparison.
 assert.equal(payload.rules.revision,47,'Latest production rules required');
+assert.deepStrictEqual(payload.rules.coreNames.zh[8],'序数晶核','Ordinal family name is the core');
+assert.deepStrictEqual(payload.rules.coreNames.en[8],'Ordinal Core','English Ordinal family name');
+assert.deepStrictEqual(payload.rules.coreStageNames.zh[8],['序数晶体','序数晶核 · Lv1','序数晶核 · Lv2','序数晶核 · Lv3'],'Ordinal stages retain separate display names');
+assert.deepStrictEqual(payload.rules.coreStageNames.en[8],['Ordinal Crystal','Ordinal Core · Lv1','Ordinal Core · Lv2','Ordinal Core · Lv3'],'English Ordinal stage names');
+for(const lang of ['zh','en'])for(let type=0;type<9;type++)assert.equal(payload.rules.coreStageNames[lang][type].length,type===8?4:3,'all families export every stage name');
 for(const deep of [false,true]){
  const state=engine.defaults();state.deep=deep;state.mainhand={tier:4,kind:6,cores:[{type:7,level:3}]};
  near(engine.calculate(state).actualMaxHealth,32,'main-hand manuscript is active '+deep);
@@ -86,6 +91,12 @@ context.navigator={clipboard:{writeText:async()=>{}}};context.addEventListener=(
 vm.createContext(context);
 for(const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(!script[1].includes('application/json'))new vm.Script(script[2]).runInContext(context);
 assert(context.GuogaologySimulator,'UI calculator initialized');
+const displayImport=context.GuogaologySimulator.getState();displayImport.selected='offhand';displayImport.snapshot.offhand={tier:4,kind:6,cores:[{type:8,level:4}]};
+elements.get('jsonText').value=JSON.stringify(displayImport);elements.get('importJson').onclick();
+assert.equal(context.GuogaologySimulator.getState().snapshot.offhand.cores[0].level,4,'display rename preserves raw stage4 configs');
+assert.equal(elements.get('cores').children[0].children[2].children[3].textContent,'序数晶核 · Lv3','raw stage4 displays Core Lv3');
+assert.equal(elements.get('cores').children[0].children[2].children[0].textContent,'序数晶体','raw stage1 has no level');
+elements.get('reset').onclick();
 assert.equal(elements.get('metrics').children.length,6,'Initial metrics');
 assert(i18n.every(el=>el.textContent!==el.dataset.i18n),'Chinese static UI labels translated');
 for(const preset of presets){preset.onclick();const state=context.GuogaologySimulator.getState();for(const key of ['mainhand','offhand','helmet','chestplate','leggings','boots'])assert(state.snapshot[key].cores.length<=(key==='offhand'?6:8),'preset socket bound');assert(engine.calculate(state.snapshot).attack>0,'preset computed');}

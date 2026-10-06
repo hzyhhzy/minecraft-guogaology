@@ -1,13 +1,14 @@
 """Reproducible native-pixel inventory art, independent of the world core meshes.
 
 Generate 27 perspective core sprites and four mineral bows (idle + three draw stages).
-Ordinal Lv1 retains its original three-dimensional block-model item.
+The ungraded natural Ordinal Crystal retains its original 3D block-model item.
 World block models, animation surfaces and Voxy atlases are never written here.
 """
 from pathlib import Path
 import json
 from PIL import Image, ImageDraw
 from generate_brand import globe_face
+from core_item_projection import project
 
 ROOT = Path(__file__).resolve().parents[1]
 A = ROOT / 'src/main/resources/assets/googology'
@@ -53,29 +54,6 @@ def rgb(color):
 
 def mix(a, b, weight):
     return tuple(round(x*(1-weight)+y*weight) for x,y in zip(rgb(a), rgb(b)))
-
-
-def cube(d, cx, top, width, height, colors, fill=True, line=1):
-    dark, mid, light, edge = colors
-    half = width//2
-    peak=(cx,top); left=(cx-width,top+half); right=(cx+width,top+half)
-    front=(cx,top+width); low=(cx,top+width+height)
-    ll=(cx-width,top+half+height); rr=(cx+width,top+half+height)
-    if fill:
-        d.polygon([peak,right,front,left],fill=light)
-        d.polygon([left,front,low,ll],fill=mid)
-        d.polygon([right,front,low,rr],fill=dark)
-    d.line([peak,left,ll,low,rr,right,peak],fill=edge,width=line)
-    d.line([left,front,right],fill=edge,width=line)
-    d.line([front,low],fill=edge,width=line)
-
-
-def sphere(d, cx, cy, radius, colors):
-    dark,mid,light,white=colors
-    d.ellipse((cx-radius,cy-radius,cx+radius,cy+radius),fill=dark)
-    d.ellipse((cx-radius+1,cy-radius+1,cx+radius-2,cy+radius-2),fill=mid)
-    d.ellipse((cx-radius+2,cy-radius+2,cx+2,cy+1),fill=light)
-    d.line((cx-radius+3,cy-radius+2,cx-1,cy-radius+2),fill=white,width=2)
 
 
 def crystal_case(d, colors, foreground=False):
@@ -130,79 +108,29 @@ def core_icon(family, level):
     im = Image.new('RGBA', (64, 64)); d = ImageDraw.Draw(im)
     dark, mid, light, white = colors = PALETTES[family]
     crystal_case(d, colors)
-    if family == 'sequence_core':
-        # Four warm sage/ivory matrix cells suspended between solid brackets.
-        for x, y in ((20, 15), (35, 15), (20, 31), (35, 31)):
-            cube(d, x, y, 5, 5, colors, True, 1)
-            d.line((x-4, y+3, x-4, y+6), fill=white)
-        for path in (((14, 16), (10, 18), (10, 40), (14, 42)),
-                     ((40, 16), (42, 18), (42, 40), (40, 42))):
-            d.line([(x+1,y+1) for x,y in path], fill=dark, width=5)
-            d.line(path, fill=light, width=3)
-            d.line(path, fill=white, width=1)
-    elif family == 'power_tower_core':
-        cube(d, 29, 32, 13, 6, colors, True, 2)
-        cube(d, 29, 22, 9, 12, colors, True, 2)
-        cube(d, 29, 11, 5, 14, colors, True, 2)
-        d.polygon([(29,9),(34,13),(29,17),(24,13)],fill=white)
-        d.line((25,18,25,24),fill=light,width=2)
-        d.line((21,30,21,37),fill=light,width=2)
-        d.line((17,40,17,44),fill=white,width=2)
-    elif family == 'hydra_bud':
-        paths = (((17,17),(17,29),(29,38)), ((41,17),(41,29),(29,38)),
-                 ((29,13),(29,47)))
-        for path in paths:
-            d.line([(x+2,y+2) for x,y in path],fill=dark,width=7)
-            d.line(path,fill=mid,width=7)
-            d.line([(x-1,y-1) for x,y in path],fill=light,width=3)
-        for x,y in ((17,16),(41,16),(29,12)):
-            d.polygon([(x-3,y),(x,y-2),(x+3,y),(x,y+2)],fill=white)
-        d.line((28,38,28,46),fill=white,width=1)
-    elif family == 'lho_trace':
-        ring = [(16,23),(19,17),(27,13),(35,13),(41,17),(44,24),
-                (43,34),(39,42),(31,47),(23,47),(17,42),(14,33),(16,23)]
-        d.line([(x+2,y+2) for x,y in ring],fill=dark,width=7)
-        d.line(ring,fill=mid,width=6)
-        d.line([(x-1,y-1) for x,y in ring],fill=light,width=3)
-        d.line((17,46,42,14),fill=dark,width=8)
-        d.line((16,45,41,13),fill=mid,width=6)
-        d.line((15,44,40,12),fill=white,width=2)
-        d.line((21,16,27,13),fill=white,width=1)
-    elif family == 'laver_core':
-        cube(d,29,10,17,17,(dark,mid,mix(mid,light,.25),light),True,2)
-        # Original circle/point semantics placed on separate perspective faces.
-        ring=[(18,23),(22,24),(25,29),(25,35),(22,38),(18,35),(16,30),(18,23)]
-        d.line(ring,fill=dark,width=5)
-        d.line([(x-1,y-1) for x,y in ring],fill=white,width=3)
-        d.polygon([(38,28),(41,30),(41,34),(38,36),(35,34),(35,30)],fill=dark)
-        d.polygon([(37,27),(40,29),(40,32),(37,34),(34,32),(34,29)],fill=white)
-        d.line((29,28,29,43),fill=light,width=2)
-        d.line((14,20,14,37),fill=light,width=1)
-    elif family == 'astra_critical_core':
-        # A turquoise three-lobed radiation core, following the bright Lv1 body.
-        d.ellipse((12,13,46,47),outline=mid,width=2)
-        lobes = (((24,23),(21,15),(25,12),(33,12),(37,15),(34,23)),
-                 ((36,29),(44,28),(47,34),(43,41),(37,44),(32,37)),
-                 ((23,29),(15,28),(12,34),(16,41),(22,44),(27,37)))
-        for poly in lobes:
-            d.polygon([(x+1,y+2) for x,y in poly],fill=dark)
-            d.polygon(poly,fill=light)
-            d.line(poly[:3],fill=white,width=2)
-        sphere(d,29,30,7,colors)
-        d.rectangle((25,26,28,28),fill=white)
-        d.line((16,19,19,16),fill=white,width=1)
-    elif family == 'boundary_core':
-        cube(d,29,10,18,17,(dark,mid,light,mid),False,3)
-        cube(d,29,17,12,11,(dark,mid,light,light),False,3)
-        cube(d,29,24,6,5,(dark,mid,light,'#ead595'),False,3)
-        d.polygon([(29,29),(33,31),(33,35),(29,37),(25,35),(25,31)],fill=white)
-        d.line((12,20,12,36),fill=light,width=1)
-        d.line((18,25,18,33),fill=white,width=1)
-    elif family == 'guogao_heart':
+    if family != 'guogao_heart':
+        # Enlarge the real Lv1 geometry uniformly for inventory readability.
+        # Shape, face UVs and intrinsic colour all come from the world mesh;
+        # no theme-based replacement facets, branches or marks are invented.
+        scale = {
+            'sequence_core': 1.7,
+            'power_tower_core': 1.0,
+            'hydra_bud': 1.5,
+            'lho_trace': 1.3,
+            'laver_core': 1.3,
+            'astra_critical_core': 1.2,
+            'boundary_core': .92,
+            'ordinal_crystal': 1.25,
+        }[family]
+        source = 'ordinal_crystal_lv2' if family == 'ordinal_crystal' else family
+        im.alpha_composite(project(source, magnify=scale))
+    else:
         # Reuse the original giant-globe/brand face geometry and palette: raised
         # inner brows, oval open eyes and the sweat drop inside the left cheek.
         d.ellipse((12,13,46,47),fill='#6b643c')
-        face=globe_face(34)
+        # Odd diameter puts the sampled sphere's exact centre at (29,30), the
+        # same model origin as every projected core and the surrounding case.
+        face=globe_face(35)
         # Increase facial contrast at inventory size while keeping the motif's
         # actual positions; the warm globe brown is too close to its yellow face.
         for y in range(face.height):
@@ -211,27 +139,7 @@ def core_icon(family, level):
                     face.putpixel((x,y),(0x24,0x31,0x3b,255))
         im.alpha_composite(face,(12,13))
         # A slightly fuller worried opening remains visible in the 16px sample.
-        d.ellipse((24,35,34,41),fill='#24313b')
-        d.line((27,40,31,40),fill='#eca116',width=1)
-    else:
-        # Uneven cut shards keep the original crystal's teal/blue-violet facets.
-        pieces = (
-            [(17,19),(24,23),(23,39),(17,44),(12,37),(11,27)],
-            [(30,10),(39,17),(37,39),(29,49),(23,36),(22,19)],
-            [(43,28),(48,32),(45,43),(39,46),(37,35)])
-        for points in pieces:
-            d.polygon([(x+1,y+1) for x,y in points],fill=dark)
-            d.polygon(points,fill=mid)
-        d.polygon([(17,19),(24,23),(17,29),(11,27)],fill=light)
-        d.polygon([(17,29),(23,24),(23,39),(17,44)],fill='#627699')
-        d.polygon([(30,10),(39,17),(30,26),(22,19)],fill=light)
-        d.polygon([(30,26),(37,19),(37,39),(29,49)],fill='#657692')
-        d.polygon([(23,20),(29,26),(29,47),(23,36)],fill='#8cacc0')
-        d.polygon([(43,28),(48,32),(42,37),(37,35)],fill=light)
-        d.polygon([(42,37),(47,33),(45,43),(39,46)],fill='#5f678f')
-        d.line((30,11,37,17),fill=white,width=2)
-        d.line((13,26,16,22),fill=white,width=2)
-        d.line((24,24,24,32),fill=white,width=1)
+        d.ellipse((24,34,34,42),fill='#2c2627')
     crystal_case(d, colors, True)
     grade_badge(d, level-1 if family == 'ordinal_crystal' else level)
     return im
@@ -344,6 +252,23 @@ def generate():
     draft=ROOT/'build/art-0312-next'; draft.mkdir(parents=True,exist_ok=True)
     sheet.save(draft/'core-icons.png')
     small_sheet.save(draft/'core-icons-16px.png')
+    reference = Image.new('RGB', (816, 9*160+40), '#202631'); rd=ImageDraw.Draw(reference)
+    rd.text((12,8),'Authoritative WORLD mesh / inner mesh / 64px inventory sketch + actual 16px sample',fill='#eeeeee')
+    for row,family in enumerate(FAMILIES):
+        y=40+row*160
+        rd.text((12,y+12),family,fill='#eeeeee')
+        source='ordinal_crystal_lv2' if family=='ordinal_crystal' else family
+        native=core_icon(family,2 if family=='ordinal_crystal' else 1)
+        samples=(project(source,128,True,False), project(source,128,False,False),
+                 native.resize((128,128),Image.Resampling.NEAREST))
+        for col,sample in enumerate(samples):
+            reference.paste(sample,(200+col*184,y),sample)
+        small=native.resize((16,16),Image.Resampling.NEAREST)
+        zoom=small.resize((48,48),Image.Resampling.NEAREST)
+        reference.paste(zoom,(748,y+40),zoom)
+        for x,label in ((200,'WORLD full mesh'),(384,'WORLD inner only'),(568,'Inventory sketch')):
+            rd.text((x,y+136),label,fill='#a8bdc8')
+    reference.save(draft/'source-and-sketch.png')
     sheet = Image.new('RGB',(4*176,4*192),'#202631'); d=ImageDraw.Draw(sheet)
     for row,metal in enumerate(METALS):
         d.text((12,row*192+4),metal,fill='#eeeeee')
@@ -352,7 +277,7 @@ def generate():
             sheet.paste(im,(col*176+12,row*192+24),im)
             d.text((col*176+12,row*192+172),'idle' if stage<0 else f'pull {stage}',fill='#eeeeee')
     sheet.save(out/'bows.png')
-    print('Generated 27 perspective core sprites + original Ordinal Lv1 3D model + 16 bow images/models; world meshes untouched')
+    print('Generated 27 perspective core sprites + original Ordinal Crystal 3D model + 16 bow images/models; world meshes untouched')
 
 
 if __name__ == '__main__':

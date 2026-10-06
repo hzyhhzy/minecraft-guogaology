@@ -360,7 +360,7 @@
       "临界核晶",
       "界限晶核",
       "果糕之心",
-      "序数晶体"
+      "序数晶核"
     ],
     "en": [
       "Sequence Core",
@@ -371,7 +371,105 @@
       "Criticality Core",
       "Boundary Core",
       "Heart of Guogao",
-      "Ordinal Crystal"
+      "Ordinal Core"
+    ]
+  },
+  "coreStageNames": {
+    "zh": [
+      [
+        "序列晶核 · Lv1",
+        "序列晶核 · Lv2",
+        "序列晶核 · Lv3"
+      ],
+      [
+        "幂塔晶核 · Lv1",
+        "幂塔晶核 · Lv2",
+        "幂塔晶核 · Lv3"
+      ],
+      [
+        "分枝芽核 · Lv1",
+        "分枝芽核 · Lv2",
+        "分枝芽核 · Lv3"
+      ],
+      [
+        "空集晶核 · Lv1",
+        "空集晶核 · Lv2",
+        "空集晶核 · Lv3"
+      ],
+      [
+        "紫菜凝核 · Lv1",
+        "紫菜凝核 · Lv2",
+        "紫菜凝核 · Lv3"
+      ],
+      [
+        "临界核晶 · Lv1",
+        "临界核晶 · Lv2",
+        "临界核晶 · Lv3"
+      ],
+      [
+        "界限晶核 · Lv1",
+        "界限晶核 · Lv2",
+        "界限晶核 · Lv3"
+      ],
+      [
+        "果糕之心 · Lv1",
+        "果糕之心 · Lv2",
+        "果糕之心 · Lv3"
+      ],
+      [
+        "序数晶体",
+        "序数晶核 · Lv1",
+        "序数晶核 · Lv2",
+        "序数晶核 · Lv3"
+      ]
+    ],
+    "en": [
+      [
+        "Sequence Core · Lv1",
+        "Sequence Core · Lv2",
+        "Sequence Core · Lv3"
+      ],
+      [
+        "Power Tower Core · Lv1",
+        "Power Tower Core · Lv2",
+        "Power Tower Core · Lv3"
+      ],
+      [
+        "Hydra Bud · Lv1",
+        "Hydra Bud · Lv2",
+        "Hydra Bud · Lv3"
+      ],
+      [
+        "Empty Set Core · Lv1",
+        "Empty Set Core · Lv2",
+        "Empty Set Core · Lv3"
+      ],
+      [
+        "Laver Condensation Core · Lv1",
+        "Laver Condensation Core · Lv2",
+        "Laver Condensation Core · Lv3"
+      ],
+      [
+        "Criticality Core · Lv1",
+        "Criticality Core · Lv2",
+        "Criticality Core · Lv3"
+      ],
+      [
+        "Boundary Core · Lv1",
+        "Boundary Core · Lv2",
+        "Boundary Core · Lv3"
+      ],
+      [
+        "Heart of Guogao · Lv1",
+        "Heart of Guogao · Lv2",
+        "Heart of Guogao · Lv3"
+      ],
+      [
+        "Ordinal Crystal",
+        "Ordinal Core · Lv1",
+        "Ordinal Core · Lv2",
+        "Ordinal Core · Lv3"
+      ]
     ]
   }
 }

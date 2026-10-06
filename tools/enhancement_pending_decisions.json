@@ -1,6 +1,6 @@
 {
   "recordedOn": "2026-10-06",
-  "status": "implemented_revision47_source_and_offline_simulator_pending_release_validation",
+  "status": "completed_revision47_four_builds_verified_fo262_tested_and_installed",
   "supersedes": "Revisions42–46 previews. Revision47 implements the confirmed attack/defense, manuscript restrictions and ordinal bows for0.3.12.",
   "confirmed": {
     "armorSets": [
@@ -26,48 +26,8 @@
       }
     ],
     "armorBase": "Use the real vanilla armor/toughness damage calculation in every realm; remove the old custom bare-armor factors 2/2.5/3/4.",
-    "ordinalCrystal": {
-      "allowedOn": [
-        "manuscript"
-      ],
-      "effects": [
-        "attack",
-        "protection",
-        "multiply_existing_laver_healing",
-        "extend_existing_guogao_sword_and_bow_debuff_duration"
-      ],
-      "attackProtectionGrades": [
-        0.05,
-        0.1,
-        0.2,
-        0.4
-      ],
-      "healingGrades": [
-        0.1,
-        0.2,
-        0.3,
-        0.5
-      ],
-      "guogaoSwordDebuffDurationGrades": [
-        0.25,
-        0.5,
-        0.75,
-        1.25
-      ],
-      "sameItemHealingDurationAggregation": "root_sum_square",
-      "removedEffects": [
-        "mining_speed",
-        "wear_protection",
-        "reach",
-        "maximum_health",
-        "yield",
-        "extra_mining",
-        "ability_grades"
-      ],
-      "sameItemAttackProtectionAggregation": "root_sum_square"
-    },
     "manuscriptInnate": {
-      "equivalentOrdinalLv1Multiples": [
+      "equivalentBaseOrdinalCrystalMultiples": [
         1,
         2,
         3,
@@ -120,12 +80,6 @@
         2,
         3
       ],
-      "ordinalCrystalGrades": [
-        0.5,
-        1,
-        1.5,
-        2.5
-      ],
       "sameTypeSameItemAggregation": "root_sum_square",
       "crossSourceAggregation": "sum",
       "manuscriptInnateHpByTier": [
@@ -134,7 +88,13 @@
         1.5,
         2
       ],
-      "deepAttackRetainsPreviousPercentMultipliers": true
+      "deepAttackRetainsPreviousPercentMultipliers": true,
+      "ordinalMaterialStageHp": [
+        0.5,
+        1,
+        1.5,
+        2.5
+      ]
     },
     "health": {
       "source": "guogao_heart_in_the_single_active_manuscript_only",
@@ -195,6 +155,46 @@
         "equipment": "sword_and_bow_debuffs",
         "manuscript": "health_immunities_and_inventory_totem_use"
       }
+    },
+    "ordinalMaterials": {
+      "allowedOn": [
+        "manuscript"
+      ],
+      "effects": [
+        "attack",
+        "protection",
+        "multiply_existing_laver_healing",
+        "extend_existing_guogao_sword_and_bow_debuff_duration"
+      ],
+      "attackProtectionGrades": [
+        0.05,
+        0.1,
+        0.2,
+        0.4
+      ],
+      "healingGrades": [
+        0.1,
+        0.2,
+        0.3,
+        0.5
+      ],
+      "guogaoSwordDebuffDurationGrades": [
+        0.25,
+        0.5,
+        0.75,
+        1.25
+      ],
+      "sameItemHealingDurationAggregation": "root_sum_square",
+      "removedEffects": [
+        "mining_speed",
+        "wear_protection",
+        "reach",
+        "maximum_health",
+        "yield",
+        "extra_mining",
+        "ability_grades"
+      ],
+      "sameItemAttackProtectionAggregation": "root_sum_square"
     }
   },
   "implementationNotes": [
@@ -320,5 +320,25 @@
     "comparisonNativeArmorReduction": 0.8,
     "comparisonOnly": true,
     "attackScope": "Sword extrema; bows use velocity-dependent examples and simulator inputs, not a fixed base-HP optimization."
+  },
+  "displayNaming": {
+    "backupCommit": "8dbc201",
+    "backupBranch": "codex/backup-0.3.12-before-ordinal-renaming",
+    "rawMaterialStages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "displayedCoreGrades": [
+      null,
+      1,
+      2,
+      3
+    ],
+    "baseCrystalUngraded": true,
+    "formulasAndRecipeCountsUnchanged": true,
+    "registeredIdsUnchanged": true,
+    "configLevelsAreMaterialStages": true
   }
 }

@@ -63,9 +63,16 @@ def main() -> None:
         raise SystemExit("EquipmentRules revision47 golden cases are required.")
     rules = dict(exported["rules"])
     rules["coreNames"] = {}
+    rules["coreStageNames"] = {}
     for code, language in [("zh", "zh_cn"), ("en", "en_us")]:
         translations = json.loads((ROOT / f"src/main/resources/assets/googology/lang/{language}.json").read_text(encoding="utf-8"))
-        rules["coreNames"][code] = [re.sub(r"\s*·\s*Lv1\s*$", "", translations[key]) for key in rules["coreTranslationKeys"]]
+        stages = [[translations[key if stage == 1 else f"{key}_lv{stage}"]
+                   for stage in range(1, 5 if core == 8 else 4)]
+                  for core, key in enumerate(rules["coreTranslationKeys"])]
+        rules["coreStageNames"][code] = stages
+        # Ordinal stage1 is a crystal; its family name comes from the first core.
+        rules["coreNames"][code] = [re.sub(r"\s*·\s*Lv1\s*$", "", names[1 if core == 8 else 0])
+                                     for core, names in enumerate(stages)]
     exported["rules"] = rules
     golden = work / "java-golden-cases.json"
     golden.write_text(json.dumps(exported, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

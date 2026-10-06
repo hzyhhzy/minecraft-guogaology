@@ -1,10 +1,10 @@
-# Block harvesting reference · 0.3.11
+# Block harvesting reference · 0.3.12
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
 This table uses the same `block_balance.json` as the running mod. “Tool” is the tool that speeds up mining; “Minimum tier” describes natural-block harvesting requirements. Appearance variants retain their saved number, color, and lantern tile when picked up and placed again. Collision shapes are separate from item drops.
 
-Player-placed regional cores, TREE nodes, landmark relics, rare LHO materials, and higher-grade Ordinal Crystals can be recovered intact by hand or with any tool. Player-placed LHO materials do not vanish. Lv1 Ordinal Crystals instead follow glowstone rules: normally 2–4 shards, a Fortune cap of four, intact blocks with Silk Touch, and vanilla explosion decay.
+Player-placed regional cores, TREE nodes, landmark relics, rare LHO materials, and Ordinal Cores can be recovered intact by hand or with any tool. Player-placed LHO materials do not vanish. Base Ordinal Crystals instead follow glowstone rules: normally 2–4 shards, a Fortune cap of four, intact blocks with Silk Touch, and vanilla explosion decay.
 
 Natural LHO fragments and ψ/Z branches require an Ordinal Crystal anchor in the offhand or within a 5×5×5 neighborhood. Their natural harvesting also requires a pickaxe.
 
@@ -76,7 +76,7 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | Astra Terminal | `office_monitor` | 3 | 8 | Pickaxe | Iron | 3 | Full block (furniture model) | Block itself |
 | Omega Twinbell | `omega_bloom` | 0 | 0 | Hand | None | 3 | None | Block itself |
 | ω Symbol Branchstone | `omega_symbol` | 1.2 | 3 | Pickaxe | Stone | 5 | Full block | Block itself |
-| Ordinal Crystal · Lv1 | `ordinal_crystal` | 3 | 5 | Hand | None | 15 | Full block | Silk Touch: block; otherwise shards |
+| Ordinal Crystal | `ordinal_crystal` | 3 | 5 | Hand | None | 15 | Full block | Silk Touch: block; otherwise shards |
 | Number Stone 0 | `ordinal_stone` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Phi Ringflower | `phi_bloom` | 0 | 0 | Hand | None | 3 | None | Block itself |
 | φ Symbol Branchstone | `phi_symbol` | 1.2 | 3 | Pickaxe | Stone | 5 | Full block | Block itself |
@@ -146,9 +146,9 @@ Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe
 | Boundary Core · Lv3 | `boundary_core_lv3` | 6 | 18 | Pickaxe | Iron | 11 | Full block | Block itself |
 | Heart of Guogao · Lv2 | `guogao_heart_lv2` | 4.5 | 12 | Pickaxe | Iron | 13 | Full block | Block itself |
 | Heart of Guogao · Lv3 | `guogao_heart_lv3` | 6 | 18 | Pickaxe | Iron | 14 | Full block | Block itself |
-| Ordinal Crystal · Lv2 | `ordinal_crystal_lv2` | 4.5 | 12 | Pickaxe | Iron | 15 | Full block | Block itself |
-| Ordinal Crystal · Lv3 | `ordinal_crystal_lv3` | 6 | 18 | Pickaxe | Iron | 15 | Full block | Block itself |
-| Ordinal Crystal · Lv4 | `ordinal_crystal_lv4` | 8 | 24 | Pickaxe | Iron | 15 | Full block | Block itself |
+| Ordinal Core · Lv1 | `ordinal_crystal_lv2` | 4.5 | 12 | Pickaxe | Iron | 15 | Full block | Block itself |
+| Ordinal Core · Lv2 | `ordinal_crystal_lv3` | 6 | 18 | Pickaxe | Iron | 15 | Full block | Block itself |
+| Ordinal Core · Lv3 | `ordinal_crystal_lv4` | 8 | 24 | Pickaxe | Iron | 15 | Full block | Block itself |
 | Number Stone 1 | `ordinal_stone_1` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Number Stone 2 | `ordinal_stone_2` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |
 | Number Stone 3 | `ordinal_stone_3` | 1.5 | 6 | Pickaxe | Stone | 0 | Full block | Block itself |

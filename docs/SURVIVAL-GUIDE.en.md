@@ -19,7 +19,7 @@ Every ring has twelve blocks in a 5×5 outline without corners and an empty 3×3
 | Inner, 12 Inner Return Frames | One Return Token | Outer |
 | Underworld, 12 Dread Forest Return Frames | One Return Token | Inner |
 
-Return frames have fixed recipes: 4 cobblestone + 1 plank for Outer, 4 Ordinal Shards + 1 plank for Inner, and 4 Guogao Dreadsoil + 1 Dread Fir Plank for Underworld. Each recipe yields one frame, so craft twelve times for one ring. Use any planks where unspecified. The three frame types cannot be mixed. One plank above one stick crafts one Return Token, and activation consumes one token. All materials are locally obtainable; Lv1 Ordinal Crystals drop shards when broken by hand. No mineral, intact core or carried apple is required. Ordinary terrain blocks and wood no longer qualify as return frames or offerings. Outer-to-Inner specifically requires the nine-mineral storage blocks, not ores, and an Ω offering. Normal arrivals also create a reverse gate. Breaking a frame disables the entire gate.
+Return frames have fixed recipes: 4 cobblestone + 1 plank for Outer, 4 Ordinal Shards + 1 plank for Inner, and 4 Guogao Dreadsoil + 1 Dread Fir Plank for Underworld. Each recipe yields one frame, so craft twelve times for one ring. Use any planks where unspecified. The three frame types cannot be mixed. One plank above one stick crafts one Return Token, and activation consumes one token. All materials are locally obtainable; Ordinal Crystals drop shards when broken by hand. No mineral, intact core or carried apple is required. Ordinary terrain blocks and wood no longer qualify as return frames or offerings. Outer-to-Inner specifically requires the nine-mineral storage blocks, not ores, and an Ω offering. Normal arrivals also create a reverse gate. Breaking a frame disables the entire gate.
 
 Destination styles are ivory/gold Omega for surface/home, indigo matrix-and-mountain for Inner, and dark jade Guogao for Underworld. The portal surface sits approximately 0.3 blocks above its cell's bottom.
 
@@ -44,9 +44,9 @@ Native full-set armor is 16/18/20/22 and toughness 4/8/12/16. Bare armor has no 
 
 ## Enhancement and Manuscripts
 
-Enhancement tables have reversible sockets and highlight eligible cores in the inventory. Basic/Advanced/Ultimate tables accept regional Lv1/2/3 and ordinal Lv2/3/4, within the equipment's tier limit. Mineral equipment has 2/4/6/8 sockets; manuscripts have 2/3/4/6. Removing cores preserves wear; broken equipment releases installed cores.
+Enhancement tables have reversible sockets and highlight eligible cores in the inventory. Basic/Advanced/Ultimate tables accept core grades1/2/3; the ungraded Ordinal Crystal is also accepted. Ordinal Cores fit manuscripts only. Mineral equipment has2/4/6/8 sockets; manuscripts have2/3/4/6, with grade caps1/2/2/3. Removing cores preserves wear; broken equipment releases installed cores.
 
-Manuscripts have no durability and open their own socket menu by right-clicking. They work in either hand; **the offhand takes priority when both hands hold manuscripts**. Ordinal Crystals are manuscript-only, and Criticality cannot enter manuscripts. Ordinal equipment, bows and manuscripts reject enchantments; numeric and vanilla tools remain enchantable. Normal realms are Outer and the vanilla dimensions; deep realms are Inner and Underworld.
+Manuscripts have no durability and open their own socket menu by right-clicking. They work in either hand; **the offhand takes priority when both hands hold manuscripts**. Ordinal Crystals and Ordinal Cores are manuscript-only, and Criticality cannot enter manuscripts. Ordinal equipment, bows and manuscripts reject enchantments; numeric and vanilla tools remain enchantable. Normal realms are Outer and the vanilla dimensions; deep realms are Inner and Underworld.
 
 | Core | Equipment | Manuscript |
 |---|---|---|
@@ -58,7 +58,7 @@ Manuscripts have no durability and open their own socket menu by right-clicking.
 | Criticality | Sword/bow burst within 3 blocks including the target; 15%/22.5%/30%, root-sum-squares | Incompatible |
 | Boundary | Armor protection | Protection; Lv1 jump/fall protection, Lv2 slow flight, Lv3 creative-style flight; Lv2+ fire resistance |
 | Heart of Guogao | Sword/bow harmful effects, highest copy | Health +4/8/12 HP, root-sum-squares; immunity; Lv2+ real inventory Totem rescue |
-| Ordinal Crystal | Incompatible | Attack, protection, multiplies Laver healing, extends Guogao effects; no mining/wear/reach/health bonuses |
+| Ordinal Core (including the base crystal) | Incompatible | Attack, protection, multiplies Laver healing, extends Guogao effects; no mining/wear/reach/health bonuses |
 
 Identical attack/protection cores within an item use root-sum-squares in both realm types. Each armor piece calculates its Boundary amount independently, then head/chest/legs/feet combine with weights 20%/40%/25%/15%. Native armor and toughness apply first; custom protection then divides damage, including fall, fire, sonic and void damage. Bare armor has no extra custom multiplier.
 
@@ -74,7 +74,7 @@ Boundary Lv1 adds one jump-height block per copy and multiplies fall damage by 0
 
 Empty Set affects ordinary hostile proactive/revenge goals only: appearance and existing targets stay unchanged; special anger/brain mechanics are untouched. Branch yield copies use max; applicable native Fortune/Looting adds to it. The table's Silk Touch switch replaces Fortune. Extra excavation respects tool and region permissions, excludes containers/relics, and stops while sneaking.
 
-Core inventory icons are simple perspective drawings of each family's Lv1 three-dimensional form. Grades within a family share the same shape with different colors; the Ordinal Lv1 icon remains unchanged. Regional Lv1/2/3 use yellow/aqua/purple rarity names; Ordinal Lv1–4 uses white/yellow/aqua/purple. World models remain three-dimensional, animated within 64 blocks, cached static beyond that, and approximated statically by Voxy.
+Core inventory icons are 64×64 native-pixel perspective sketches of each family's actual first-grade form. Family colors and silhouettes remain identical across grades; top-right numerals 1/2/3 identify grades. The ungraded Ordinal Crystal keeps its original item model and white name. All nine core families use yellow/aqua/purple rarity names for Lv1/2/3. World models remain three-dimensional, animated within 64 blocks, cached static beyond that, and approximated statically by Voxy.
 
 [Enhancement simulator](enhancement-simulator.html?lang=en) · [Core effects](core-effects-reference.html?lang=en) · [Numeric audit](enhancement-numeric-audit.html?lang=en)
 
@@ -84,13 +84,13 @@ Four bows use the vanilla bow layout with three matching minerals replacing stic
 
 Hydra Bud Lv1 provides Infinity in Survival, requiring one ordinary arrow; Lv2 fires three arrows without duplicate direct damage on one target; Lv3 allows each arrow to hit at most two creatures, passing through the first to hit the second. Special ammunition costs one per volley and only the center arrow retains its effects. Critical bursts include the direct target without destroying terrain or harming allies; a target takes at most one direct hit plus one burst per volley.
 
-Every main chest in the eight giant sanctuaries guarantees one matching regional Lv3 core and one Ordinal Lv3, plus generous higher-quality thematic goods. Secondary chests contain 6–12 matching Lv1 cores, 30–60 Ordinal Lv1, and fewer lower-grade thematic goods. Harvestable core displays remain.
+Every main chest in the eight giant sanctuaries guarantees one matching regional Lv3 core and one Ordinal Core Lv2, plus generous higher-quality thematic goods. Secondary chests contain 6–12 matching Lv1 cores, 30–60 Ordinal Crystals, and fewer lower-grade thematic goods. Harvestable core displays remain.
 
 ## Core fusion and existing interactions
 
-Eight regional families have Lv1–3; Ordinal Crystal has Lv1–4. Regional Lv2 costs eight Lv1 plus one ordinal Lv2, except Power Tower (five tower + one of each TREE color + ordinal Lv2) and Empty Set (two each Empty Set/fffZ/FOS, one ψ, one Z, ordinal Lv2). Regional Lv3 costs eight matching Lv2 plus ordinal Lv3. Ordinal tiers fuse/split nine-to-one, with four shards ↔ Lv1. Lv1 mining follows glowstone's 2–4 shard/Fortune/Silk Touch behavior.
+All nine core families display Lv1–3; the natural Ordinal Crystal is ungraded. Old Ordinal Crystal Lv2–4 is renamed Ordinal Core Lv1–3 without changing effects or ingredient counts. Regional Lv2 costs eight Lv1 plus one Ordinal Core Lv1, except Power Tower (five tower + one of each TREE color + Ordinal Core Lv1) and Empty Set (two each Empty Set/fffZ/FOS, one ψ, one Z, Ordinal Core Lv1). Regional Lv3 costs eight matching Lv2 plus Ordinal Core Lv2. Four shards ↔ one Ordinal Crystal; nine crystals ↔ one Ordinal Core Lv1; nine cores of the preceding grade ↔ Lv2 or Lv3. Ordinal fusion is reversible. Base-crystal harvesting follows glowstone's 2–4 shard/Fortune/Silk Touch behavior.
 
-Player-placed regional cores and higher ordinal tiers can be recovered with any tool; ordinal Lv1 still uses its shard drops. Natural cores remain restricted to Inner and Underworld. Donor ordinary surface tables keep their original wool patterns; the Inner iBLP tables use the shared Laver Condensation Core and live pattern playback. Numbers, laver wood, Guogao sweets and lamps use shared items. Turing tape, anchored LHO fragments, giant landmarks and the final chamber remain available.
+Player-placed regional and Ordinal Cores can be recovered with any tool; the base Ordinal Crystal still drops shards. Natural cores remain restricted to Inner and Underworld. Donor ordinary surface tables keep their original wool patterns; the Inner iBLP tables use the shared Laver Condensation Core and live pattern playback. Numbers, laver wood, Guogao sweets and lamps use shared items. Turing tape, anchored LHO fragments, giant landmarks and the final chamber remain available.
 
 Right-click Matrix Number Bricks to cycle 0–15, or colored number lamps to cycle 0–32. A blank lamp changes to 0 on its first click. Number Stones do not cycle. Mined items preserve their edited number and color. The three portal designs follow their actual destination, including return trips.
 
