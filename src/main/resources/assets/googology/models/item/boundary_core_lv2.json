@@ -1,1 +1,6 @@
-{"parent":"googology:block/boundary_core_lv2"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology:item/boundary_core_lv2"
+  }
+}

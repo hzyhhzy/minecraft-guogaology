@@ -12,7 +12,7 @@ import java.util.*;
 public class EnhancementMenu extends AbstractContainerMenu {
     public static final int GEAR=0,FIRST_CORE=1,INVENTORY=11;
     private final SimpleContainer contents=new SimpleContainer(INVENTORY){@Override public void setChanged(){super.setChanged();synchronizeCores();}};
-    private final ContainerData data=new SimpleContainerData(3);
+    private final ContainerData data=new SimpleContainerData(4);
     private final Level world;
     private final BlockPos pos;
     private final Player owner;
@@ -58,10 +58,16 @@ public class EnhancementMenu extends AbstractContainerMenu {
         var snapshot=GearData.snapshot(owner);var spec=MiningContent.GEAR.get(gear().getItem());
         if(spec==null)return snapshot;
         var current=new EquipmentRules.Gear(spec.tier(),spec.kind(),GearData.digit(gear()),GearData.profile(gear()));
-        var main=snapshot.mainhand().kind()==6?EquipmentRules.Gear.empty(-1):snapshot.mainhand();var off=snapshot.offhand();
+        var main=snapshot.mainhand();var off=snapshot.offhand();
         var head=snapshot.helmet();var chest=snapshot.chestplate();var legs=snapshot.leggings();var feet=snapshot.boots();
-        switch(spec.kind()){case 0,1->main=current;case 2->head=current;case 3->chest=current;case 4->legs=current;case 5->feet=current;case 6->off=current;}
+        switch(spec.kind()){case 0,1,7->main=current;case 2->head=current;case 3->chest=current;case 4->legs=current;case 5->feet=current;case 6->off=current;}
         return new EquipmentRules.Snapshot(main,off,head,chest,legs,feet,deep());
+    }
+    public boolean canToggleSilk(){var spec=MiningContent.GEAR.get(gear().getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(GearData.profile(gear()),2)>0;}
+    public boolean silkTouch(){return data.get(3)!=0;}
+    @Override public boolean clickMenuButton(Player player,int button){
+        if(button!=0||!stillValid(player)||!canToggleSilk())return false;
+        GearData.setSilkTouch(gear(),!GearData.silkTouch(gear()));data.set(3,GearData.silkTouch(gear())?1:0);broadcastChanges();return true;
     }
     public boolean canInsertCore(ItemStack stack){
         if(stack.isEmpty())return false;for(int i=0;i<capacity();i++)if(contents.getItem(FIRST_CORE+i).isEmpty()&&accepts(i,stack))return true;return false;
@@ -82,6 +88,7 @@ public class EnhancementMenu extends AbstractContainerMenu {
             }else{
                 var saved=new ArrayList<ItemStack>();for(int i=0;i<capacity();i++)saved.add(contents.getItem(FIRST_CORE+i).copy());GearData.setCores(current,saved);
             }
+            data.set(3,GearData.silkTouch(gear())?1:0);
         }finally{syncing=false;}
     }
     @Override public void clicked(int slot,int button,ClickType type,Player player){

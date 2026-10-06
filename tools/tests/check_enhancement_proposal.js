@@ -1,4 +1,4 @@
-/* Independent revision 46 requirements; never a Minecraft/game build. */
+/* Independent production revision47 channel requirements; no Minecraft/game execution. */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
 const root=path.resolve(__dirname,'../..');
@@ -18,7 +18,7 @@ function calc(s){const copy=JSON.parse(JSON.stringify(s)),e=E.calculate(s);eq(s,
 function equipArmor(s,cores=[],tier=4){armorKeys.forEach((key,i)=>s[key]=gear(i+2,JSON.parse(JSON.stringify(cores)),tier));return s;}
 function withoutSlot(e){const r={...e};delete r.activeBookSlot;delete r.totalMinedBlocks;return r;}
 
-eq(rules.proposalRevision,46,'Current proposal revision');
+eq(rules.proposalRevision,47,'Current production revision');
 for(let kind=0;kind<6;kind++)eq(rules.compatibility[kind][8],false,'Ordinal incompatible with gear kind '+kind);
 eq(rules.compatibility[6][8],true,'Ordinal remains manuscript-compatible');
 eq(rules.nativeArmorByTier,[16,18,20,22],'Native armor totals');
@@ -189,8 +189,8 @@ move.offhand.cores.pop();eq(E.misc(move).flight,'slow','Lv2 flight fallback');
 move.offhand.cores.pop();near(E.misc(move).fallFactor,.25,'Duplicate Lv1 fall reduction max');
 const burst=state(true,[core(5),core(5)],[core(5),core(8,4)]);burst.mainhand.kind=1;
 near(calc(burst).criticalCoefficient,.3*Math.sqrt(2),'Sword burst RSS');
-near(calc(burst).projectileBurstMultiplier,1.2,'Deep projectile quantity without universal boost');
-eq(E.misc(burst).fireResistance,true,'Critical II+ fire resistance');
+near(calc(burst).projectileBurstMultiplier,0,'Retired manuscript projectile channel');
+eq(E.misc(burst).fireResistance,false,'Critical cannot grant manuscript fire resistance');burst.offhand.cores=[core(6,2)];eq(E.misc(burst).fireResistance,true,'Boundary II fire resistance');
 
 // Source flags keep native protection and custom extra protection separate.
 near(E.damage(10,'player_attack',{armor:20,toughness:8}).healthDamage,3,'Native damage equation');
@@ -219,10 +219,10 @@ const htmlPath=process.argv[3];
 if(htmlPath){
  const html=fs.readFileSync(htmlPath,'utf8');ok(html.startsWith('<!doctype html>'),'Standalone HTML');ok(!/<script\b[^>]*\bsrc=/i.test(html),'No external scripts');
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
- const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Independent pending-design engine'));
- ok(script,'Proposal engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
+ const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision47 mirror'));
+ ok(script,'Production engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
  vm.createContext(context);new vm.Script(script[2]).runInContext(context);context.EnhancementEngine.setRules(rules);
  for(const c of recorded)eq(JSON.parse(JSON.stringify(context.EnhancementEngine.calculate(c.snapshot))),c.effects,'Embedded engine parity');
 }
-console.log('ENHANCEMENT_PROPOSAL_CHECK_OK assertions='+checks+' configurations='+recorded.length+(htmlPath?' embeddedHtml=true':''));
+console.log('ENHANCEMENT_CHANNEL_CHECK_OK assertions='+checks+' configurations='+recorded.length+(htmlPath?' embeddedHtml=true':''));
 

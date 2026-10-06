@@ -10,5 +10,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EnchantmentHelper.class)
 public abstract class LootingCoreMixin {
     @Inject(method="getEquipmentLevel",at=@At("RETURN"),cancellable=true)
-    private static void googology$looting(RegistryEntry<Enchantment> enchantment,LivingEntity owner,CallbackInfoReturnable<Integer> result){if(enchantment.matchesKey(Enchantments.LOOTING)&&owner instanceof PlayerEntity)result.setReturnValue(Math.max(result.getReturnValueI(),GearData.yieldLevel(owner.getMainHandStack(),owner,true)));}
+    private static void googology$looting(RegistryEntry<Enchantment> enchantment,LivingEntity owner,CallbackInfoReturnable<Integer> result){if(enchantment.matchesKey(Enchantments.LOOTING)&&owner instanceof PlayerEntity)result.setReturnValue(result.getReturnValueI()+GearData.yieldLevel(owner.getMainHandStack(),owner,true));}
 }

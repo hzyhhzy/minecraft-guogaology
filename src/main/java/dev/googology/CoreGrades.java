@@ -28,13 +28,19 @@ public final class CoreGrades {
                 var block=new AnimatedCoreBlock(BlockBalance.apply(name,AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK).nonOpaque()));
                 Registry.register(Registries.BLOCK,GoogologyMod.id(name),block);
                 Registry.register(Registries.ITEM,GoogologyMod.id(name),new BlockItem(block,
-                        new Item.Settings().fireproof().rarity(level>=3?Rarity.EPIC:Rarity.RARE)));
+                        new Item.Settings().fireproof().rarity(rarity(root,level))));
                 GoogologyBlocks.ALL.add(block);GoogologyBlocks.TRANSLUCENT.add(block);UPPER.add(block);levels.add(block);
             }
             FAMILIES.put(root,List.copyOf(levels));
         }
         ENTITY=Registry.register(Registries.BLOCK_ENTITY_TYPE,GoogologyMod.id("animated_core"),
                 FabricBlockEntityTypeBuilder.create(AnimatedCoreBlock.CoreEntity::new,UPPER.toArray(Block[]::new)).build());
+    }
+    /** Regional grades are yellow/cyan/purple; universal grades start at white. */
+    public static Rarity rarity(String root,int level){
+        if(!ROOTS.contains(root))return Rarity.RARE;
+        int rank=level-(root.equals("ordinal_crystal")?1:0);
+        return switch(rank){case 0->Rarity.COMMON;case 1->Rarity.UNCOMMON;case 2->Rarity.RARE;default->Rarity.EPIC;};
     }
     public static List<Block> levels(String root){return FAMILIES.getOrDefault(root,List.of());}
     public static boolean upper(Block block){return UPPER.contains(block);}

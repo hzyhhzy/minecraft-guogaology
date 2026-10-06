@@ -1,23 +1,18 @@
 package dev.googology.mixin;
-
 import dev.googology.mining.*;
-import net.minecraft.world.entity.*;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.tags.DamageTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 @Mixin(LivingEntity.class)
 public abstract class EquipmentDefenseMixin {
-    @Inject(method="getDamageAfterArmorAbsorb",at=@At("RETURN"),cancellable=true)
-    private void googology$defense(DamageSource source,float input,CallbackInfoReturnable<Float> result){
-        boolean bypass=source.is(DamageTypeTags.BYPASSES_ARMOR);
-        var e=(LivingEntity)(Object)this;double total=GearData.defense(e);
-        if(total>0){
-            float vanilla=bypass?input:net.minecraft.world.damagesource.CombatRules.getDamageAfterAbsorb(e,input,source,Math.max(0,e.getArmorValue()-GearData.armorDisplay(e)),(float)e.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS));
-            result.setReturnValue((float)(vanilla/(1+total/8)));
-        }
+    @WrapMethod(method="getDamageAfterArmorAbsorb")
+    private float googology$defense(DamageSource source,float input,Operation<Float> original){
+        var entity=(LivingEntity)(Object)this;double factor=ArmorProtectionContext.factor(entity);
+        var prior=ArmorProtectionContext.enter(entity,factor);
+        try{return (float)(original.call(source,input)/factor);}
+        finally{ArmorProtectionContext.restore(prior);}
     }
 }

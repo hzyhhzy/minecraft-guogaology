@@ -40,7 +40,7 @@ public final class MiningEffects {
             EXTRA.set(true);
             try{for(var q:candidates){if(budget<=0||p.getMainHandStack()!=tool||tool.isEmpty())break;if(!world.isChunkLoaded(q))continue;var other=world.getBlockState(q);
                 if(!eligible(state,other)||world.getBlockEntity(q)!=null||!world.getWorldBorder().contains(q))continue;
-                if(other.getHardness(world,q)<0)continue;
+                if(other.getHardness(world,q)<0||!tool.isSuitableFor(other))continue;
                 if(!world.canPlayerModifyAt(p,q))continue;
                 if(p.interactionManager.tryBreakBlock(q))budget--;
             }}finally{EXTRA.set(false);}
@@ -57,11 +57,8 @@ public final class MiningEffects {
         double coefficient=EquipmentRules.criticalCoefficient(GearData.profile(weapon),List.of(),false);if(coefficient<=0||!(attacker instanceof ServerPlayerEntity p)||!(target.getWorld() instanceof ServerWorld world))return;
         explode(world,target,p,p,(float)(GearData.attackWithBook(weapon,p)*coefficient));
     }
-    public static void projectileBurst(ProjectileEntity projectile,LivingEntity target,float actualDamage){
-        if(!(projectile.getOwner() instanceof ServerPlayerEntity player)||!(target.getWorld() instanceof ServerWorld world))return;
-        double extra=EquipmentRules.projectileBurst(actualDamage,GearData.profile(ManuscriptEffects.held(player)),ManuscriptEffects.deep(world));
-        if(extra>0)explode(world,target,player,projectile,(float)extra);
-    }
+    /** Kept for old callers; manuscripts no longer grant projectile bursts. */
+    public static void projectileBurst(ProjectileEntity projectile,LivingEntity target,float actualDamage){}
     private static void explode(ServerWorld world,LivingEntity target,ServerPlayerEntity p,Entity source,float amount){
         world.spawnParticles(ParticleTypes.EXPLOSION,target.getX(),target.getY()+.5,target.getZ(),1,0,0,0,0);
         world.playSound(null,target.getBlockPos(),SoundEvents.ENTITY_GENERIC_EXPLODE.value(),SoundCategory.PLAYERS,.55f,1.25f);
@@ -73,20 +70,31 @@ public final class MiningEffects {
         }
     }
     public static void control(ItemStack weapon,LivingEntity target,LivingEntity attacker){
-        if(!(attacker instanceof ServerPlayerEntity)||!target.isAlive()||target.isTeammate(attacker))return;
-        var cores=GearData.profile(weapon);int level=EquipmentRules.highest(cores,7);if(level==0)return;int ticks=(int)Math.round(20*EquipmentRules.controlDuration(cores));
+        if(!(attacker instanceof ServerPlayerEntity)||!target.isAlive()||target==attacker||target.isTeammate(attacker))return;
+        int level=EquipmentRules.highest(GearData.profile(weapon),7);if(level==0)return;int ticks=(int)Math.round(20*GearData.controlDuration(weapon,attacker));
         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,ticks,level-1));
-        if(level>=2)target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ticks,level-2));
+        if(level==1)target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON,ticks,1));
+        else{
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER,ticks,level==2?1:2));
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS,ticks,level-2));
+            if(level>=3){target.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA,ticks,0));if(attacker.getRandom().nextFloat()<.2f)target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,ticks,0));}
+        }
     }
-    /** Fortune participates only in the existing loot-table calculation; never duplicate drops. */
+    /** Modifies a loot-context copy; the real tool and its enchantments are untouched. */
     public static ItemStack lootTool(BlockState state,ServerWorld world,Entity entity,ItemStack tool){
         if(tool.isEmpty()||!(entity instanceof LivingEntity owner)||state.hasBlockEntity())return tool;
+        var lookup=world.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        var fortune=lookup.getOrThrow(Enchantments.FORTUNE);
+        if(GearData.silkTouch(tool)){
+            if(state.isToolRequired()&&!tool.isSuitableFor(state))return tool;
+            var copy=tool.copy();var builder=new ItemEnchantmentsComponent.Builder(copy.getOrDefault(DataComponentTypes.ENCHANTMENTS,ItemEnchantmentsComponent.DEFAULT));
+            builder.set(fortune,0);builder.set(lookup.getOrThrow(Enchantments.SILK_TOUCH),1);copy.set(DataComponentTypes.ENCHANTMENTS,builder.build());return copy;
+        }
         var id=net.minecraft.registry.Registries.BLOCK.getId(state.getBlock());
         if(id.getNamespace().equals("googology")&&(EquipmentRules.coreType(id.getPath())>=0||Arrays.stream(MiningContent.STORAGE).anyMatch(b->b==state.getBlock())))return tool;
         for(var property:state.getProperties())if(property.getName().equals("player_placed")&&Boolean.TRUE.equals(state.get(property)))return tool;
         int level=GearData.yieldLevel(tool,owner,false);if(level<=0)return tool;
-        var fortune=world.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
-        if(EnchantmentHelper.getLevel(fortune,tool)>=level)return tool;
+        level+=EnchantmentHelper.getLevel(fortune,tool);
         var copy=tool.copy();var builder=new ItemEnchantmentsComponent.Builder(copy.getOrDefault(DataComponentTypes.ENCHANTMENTS,ItemEnchantmentsComponent.DEFAULT));builder.set(fortune,level);copy.set(DataComponentTypes.ENCHANTMENTS,builder.build());return copy;
     }
 }

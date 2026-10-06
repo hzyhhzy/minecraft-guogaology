@@ -1,1 +1,6 @@
-{"parent":"googology:block/sequence_core"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology:item/sequence_core"
+  }
+}

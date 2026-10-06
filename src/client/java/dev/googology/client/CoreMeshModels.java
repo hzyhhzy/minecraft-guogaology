@@ -44,9 +44,13 @@ public final class CoreMeshModels {
             return Map.copyOf(data);
         },executor),(data,context)->context.modifyModelAfterBake().register((model,event)->{
             if(model==null||model instanceof GemModel)return model;
+            // Ordinal Lv1 keeps its original three-dimensional inventory mesh.
+            // Every other core has an independent flat item/generated sprite.
+            if(event.topLevelId()!=null&&event.topLevelId().variant().equals("inventory")&&!event.topLevelId().id().equals(GoogologyMod.id("ordinal_crystal")))return model;
             Identifier id=event.resourceId();if(id==null&&event.topLevelId()!=null)id=event.topLevelId().id();
             if(id==null||!id.getNamespace().equals("googology"))return model;
-            String path=id.getPath();if(path.startsWith("block/")||path.startsWith("item/"))path=path.substring(path.indexOf('/')+1);
+            String path=id.getPath();if(path.startsWith("item/")&&!path.equals("item/ordinal_crystal"))return model;
+            if(path.startsWith("block/")||path.startsWith("item/"))path=path.substring(path.indexOf('/')+1);
             var geometry=data.get(path);return geometry==null?model:new GemModel(model,geometry,event.textureGetter());
         }));
     }

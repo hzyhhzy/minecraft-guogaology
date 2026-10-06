@@ -1,4 +1,4 @@
-/* Independent pending-design engine. Never compiled into the Minecraft Mod. */
+/* Production revision47 mirror of EquipmentRules, verified against Java golden cases. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -10,7 +10,7 @@
   // Legacy saved configurations may still contain equipment Ordinal cores.
   // Ignore them here as well as disallowing them in the editor compatibility table.
   const list = g => g && g.tier >= 0 && Array.isArray(g.cores)
-    ? g.cores.filter(c=>c.type!==8||g.kind===6) : [];
+    ? g.cores.filter(c=>(c.type!==8||g.kind===6)&&(g.kind!==6||c.type!==5)&&(!rules.compatibility||rules.compatibility[g.kind]?.[c.type])) : [];
   const sum = (cs, type, square = false) => cs.reduce((n,c) => n+(c.type===type ? (square?c.level*c.level:c.level):0),0);
   const highest = (cs,type) => cs.reduce((n,c) => c.type===type?Math.max(n,c.level):n,0);
   const empty = kind => ({tier:-1,kind,digit:0,cores:[]});
@@ -30,7 +30,7 @@
   const scale = (field,deep) => deep?(rules.deepScales||{})[field]||1:1;
   const armorShare = kind => (rules.armorShares||[.2,.4,.25,.15])[kind-2]||0;
   function baseAttack(g) {
-    if(!g||g.kind===6||g.kind>=2)return 1;
+    if(!g||(g.kind!==0&&g.kind!==1))return 1;
     if(g.tier<0)return g.baseAttack===undefined?1:Number(g.baseAttack);
     if(g.tier===0)return (g.kind===1?5:3)+clamp(Math.floor(g.digit),0,9)/3;
     return (g.kind===1?rules.baseSwordAttack||[8,10,12,16]:rules.basePickAttack||[6,8,10,12])[g.tier-1];
@@ -83,7 +83,7 @@
   }
   function critical(cs) {return Math.sqrt(cs.reduce((n,c)=>c.type===5?n+(.075*(c.level+1))**2:n,0));}
   const criticalCoefficient = gear => critical(gear);
-  const projectileCoefficient = (book,deep=false) => critical(book)*scale('projectileBurst',deep);
+  const projectileCoefficient = () => 0;
   const projectileBurst = (value,book,deep,b=0) => value*projectileCoefficient(book,deep);
   const controlDuration = (gear,book=[],durationBase=0) => highest(gear,7)
     ?(rules.baseControlSeconds||2)*(1+durationBase+rss(book,8,'ordinalDurationGrades')):0;
@@ -91,7 +91,7 @@
   function calculate(snapshot) {
     const s={...defaults(),...snapshot},m=s.mainhand,armor=[s.helmet,s.chestplate,s.leggings,s.boots],bg=activeBook(s),book=list(bg),b=bookBase(bg),deep=!!s.deep;
     const innateHp=bookChannelBase(bg,'bookInnateAttackHp'),healingBase=bookChannelBase(bg,'bookInnateHealing'),durationBase=bookChannelBase(bg,'bookInnateDuration');
-    const gear=m.kind>=0&&m.kind<2?list(m):[],pick=m.kind===0,sword=m.kind===1;
+    const gear=(m.kind>=0&&m.kind<2)||m.kind===7?list(m):[],pick=m.kind===0,sword=m.kind===1,bow=m.kind===7;
     const nativeEfficiency=m.tier<=0?clamp(m.nativeEfficiency,0,255):0;
     const manuscriptEfficiency=(rules.efficiencyGrades||[2,4,6])[highest(book,0)-1]||0;
     const efficiencyLevel=Math.max(nativeEfficiency,manuscriptEfficiency),baseSpeed=baseMining(m);
@@ -104,7 +104,7 @@
     const silkTouch=pick&&highest(gear,2)>0&&!!m.silkTouch;
     const nativeYield=m.tier<=0?clamp(m.nativeYield,0,255):0;
     const effects={
-      attack:attack(baseAttack(m),sword?gear:gear.filter(c=>c.type!==1),book,deep,b,innateHp),
+      attack:attack(baseAttack(m),(sword||bow)?gear:gear.filter(c=>c.type!==1),book,deep,b,innateHp),
       miningMultiplier:miningMultiplierValue,efficiencyLevel,efficiencyBonus,rawMining:baseSpeed+efficiencyBonus,
       miningFinal:(baseSpeed+efficiencyBonus)*miningMultiplierValue*waterPenalty*airPenalty,
       extraBlocks:pick?spreadBudget(gear,book,deep):0,
@@ -112,9 +112,9 @@
       reach:reach(gear,book),wearFactor:wearFactor(gear,book),regeneration:regen(book,healingBase),
       bonusHealth:bonusHealth(armor,book,deep,b),protectionFactor:protectionFactor(armor,book,deep,b),
       ...nativeArmorStats(armor),
-      criticalCoefficient:sword?criticalCoefficient(gear):0,projectileCoefficient:projectileCoefficient(book,deep),
+      criticalCoefficient:(sword||bow)?criticalCoefficient(gear):0,projectileCoefficient:projectileCoefficient(book,deep),
       projectileBurstMultiplier:projectileCoefficient(book,deep),
-      controlSeconds:sword?controlDuration(gear,book,durationBase):0,bookBase:b,
+      controlSeconds:(sword||bow)?controlDuration(gear,book,durationBase):0,bookBase:b,
       bookInnateAttackHp:innateHp,bookHealingBase:healingBase,bookDurationBase:durationBase,
       activeBookSlot:bg.tier<0?'none':bg===s.offhand?'offhand':'mainhand'
     };
@@ -126,7 +126,7 @@
   }
   function misc(snapshot) {
     const s={...defaults(),...snapshot},bg=activeBook(s),book=list(bg),b=bookBase(bg),mode=highest(book,6),g=highest(book,7),hidden=highest(book,3),laver=highest(book,4);
-    const sword=s.mainhand.kind===1?highest(list(s.mainhand),7):0;
+    const sword=[1,7].includes(s.mainhand.kind)?highest(list(s.mainhand),7):0;
     const debuffs=[[],[{effect:'slowness',level:1},{effect:'poison',level:2}],
       [{effect:'slowness',level:2},{effect:'wither',level:2},{effect:'weakness',level:1}],
       [{effect:'slowness',level:3},{effect:'wither',level:3},{effect:'weakness',level:2},{effect:'nausea',level:1},{effect:'blindness',level:1,chance:.2}]][sword];
@@ -134,7 +134,7 @@
       aquaAffinity:highest(list(s.helmet),4)>0,depthStrider:highest(list(s.boots),4),foodFloor:laver>=3?19:laver>=2?10:0,
       jumpExtra:book.filter(c=>c.type===6&&c.level===1).length,
       flight:mode>=3?'creative':mode===2?'slow':'none',fallFactor:mode>=2?0:mode===1?.25:1,
-      wallFactor:mode>=3?0:1,nightVision:hidden>=2,fireResistance:highest(book,5)>=2,
+      wallFactor:mode>=3?0:1,nightVision:hidden>=2,fireResistance:highest(book,6)>=2,
       stealthLevel:hidden,detectionFactor:hidden>=2?0:hidden===1?.3:1,retaliationChance:hidden>=3?0:1,
       autoTotem:g>=2,immuneLevel:g,debuffs,debuffSeconds:calculate(s).controlSeconds,
       immunities:g>=3?['poison','hunger','weakness','nausea','slowness','wither','blindness','darkness']:g>=2?['poison','hunger','weakness']:[],
@@ -151,13 +151,15 @@
   };
   function damage(raw, source, defense = {}) {
     const flags = SOURCES[source] || {}, values = [{ stage: 'raw', value: Math.max(0, Number(raw) || 0) }];
+    const armorAttribute=Math.max(0,Number(defense.armor)||0),effectiveArmor=Math.floor(armorAttribute),armorApplied=flags.armor!==false;
     let d = values[0].value;
     if (flags.fire && defense.fireResistance) d = 0;
     if (flags.fall) d *= defense.fallFactor === undefined ? 1 : defense.fallFactor;
     if (flags.wall) d *= defense.wallFactor === undefined ? 1 : defense.wallFactor;
     values.push({ stage: 'ability', value: d });
     if (flags.armor !== false) {
-      const a = Math.max(0, Number(defense.armor) || 0), t = Math.max(0, Number(defense.toughness) || 0);
+      // LivingEntity.getArmor/getArmorValue floors the complete attribute sum once.
+      const a = effectiveArmor, t = Math.max(0, Number(defense.toughness) || 0);
       d *= 1 - Math.min(20, Math.max(a / 5, a - d / (2 + t / 4))) / 25;
     }
     values.push({ stage: 'armor', value: d });
@@ -168,7 +170,7 @@
     values.push({ stage: 'cores', value: d });
     const absorbed = Math.min(d, Math.max(0, Number(defense.absorption) || 0));
     d -= absorbed; values.push({ stage: 'health', value: d });
-    return { healthDamage: d, absorbed, beforeAbsorption: d + absorbed, stages: values };
+    return { healthDamage: d, absorbed, beforeAbsorption: d + absorbed, stages: values,armorAttribute,effectiveArmor,armorApplied };
   }
   function combat(effects, params) {
     const p = params || {}, cooldown = clamp(p.cooldown === undefined ? 1 : p.cooldown, 0, 1), scale = .2 + .8 * cooldown ** 2;
@@ -178,6 +180,25 @@
     const direct = damage(directRaw, 'player_attack', target), burst = damage(burstRaw, 'explosion', { ...target, epf: p.targetBurstEpf === undefined ? p.targetEpf : p.targetBurstEpf });
     const total = direct.beforeAbsorption + burst.beforeAbsorption, absorbed = Math.min(total, Math.max(0, Number(p.targetAbsorption) || 0));
     return { directRaw, burstRaw, direct, burst, totalHealthDamage: total - absorbed, absorbed };
+  }
+  function ranged(snapshot,params={}) {
+    const s={...defaults(),...snapshot},bow=s.mainhand,bg=activeBook(s),book=list(bg),gear=bow.kind===7?list(bow):[];
+    const draw=clamp(params.bowCharge===undefined?1:params.bowCharge,0,1),speedMultiplier=(rules.bowSpeedMultipliers||[1.1,1.2,1.3,1.5])[bow.tier-1]||1;
+    const launchSpeed=3*draw*speedMultiplier,impactSpeed=params.impactSpeed>0?Number(params.impactSpeed):launchSpeed;
+    const released=bow.kind===7&&bow.tier>0&&draw>=.1,vanillaBase=released?Math.ceil(Math.max(0,impactSpeed)*2):0,criticalMaximum=released&&draw>=1?Math.floor(vanillaBase/2)+1:0;
+    const criticalBonus=clamp(Math.floor(Number(params.arrowCriticalBonus)||0),0,criticalMaximum),tier=bg.tier;
+    const extra=attack(0,gear,book,false,bookBase(bg),bookChannelBase(bg,'bookInnateAttackHp'));
+    const factor=attack(1,gear,book,true,bookBase(bg),bookChannelBase(bg,'bookInnateAttackHp'));
+    const enhance=raw=>!released?0:s.deep?raw*factor:raw+extra*draw;
+    const directRaw=enhance(vanillaBase+criticalBonus),coefficient=criticalCoefficient(gear),burstRaw=directRaw*coefficient;
+    const target={armor:params.targetArmor,toughness:params.targetToughness,resistance:params.targetResistance,epf:params.targetEpf,factor:params.targetFactor};
+    const direct=damage(directRaw,'arrow',target),burst=damage(burstRaw,'explosion',{...target,epf:params.targetBurstEpf===undefined?params.targetEpf:params.targetBurstEpf});
+    const total=direct.beforeAbsorption+burst.beforeAbsorption,absorbed=Math.min(total,Math.max(0,Number(params.targetAbsorption)||0));
+    const branch=highest(gear,2);
+    return {directRaw,burstRaw,direct,burst,totalHealthDamage:total-absorbed,absorbed,released,draw,launchSpeed,impactSpeed,vanillaBase,criticalBonus,criticalMaximum,
+      directMinimum:enhance(vanillaBase),directMaximum:enhance(vanillaBase+criticalMaximum),speedMultiplier,
+      normalBonus:extra,deepFactor:factor,infinity:branch>=1,arrowCount:!released?0:branch>=2?3:1,targetsPerArrow:branch>=3?2:1,
+      controlSeconds:controlDuration(gear,book,bookChannelBase(bg,'bookInnateDuration')),durability:(rules.durabilityBows||[768,1152,1536,2304])[bow.tier-1]||384};
   }
   function voidForecast(snapshot, params = {}) {
     const e = calculate(snapshot), max = e.actualMaxHealth;
@@ -211,6 +232,6 @@
   }
   return {setRules,defaults,empty,calculate,misc,damage,combat,voidForecast,SOURCES,baseAttack,baseMining,
     activeBook,bookBase,attack,miningMultiplier,spreadBudget,yieldLevel,reach,wearFactor,regen,bonusHealth,protectionFactor,
-    criticalCoefficient,projectileCoefficient,projectileBurst,controlDuration,oxygenConsumption,universal,highest,armorWearBudget,
+    ranged,criticalCoefficient,projectileCoefficient,projectileBurst,controlDuration,oxygenConsumption,universal,highest,armorWearBudget,
     nativeArmorStats,bookChannelBase};
 });

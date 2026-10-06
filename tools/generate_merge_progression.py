@@ -112,5 +112,7 @@ def generate():
     return_portal_data()
     from update_core_effect_copy import generate as update_core_effect_copy
     update_core_effect_copy()
+    from generate_bow_recipes import generate as generate_bow_recipes
+    generate_bow_recipes()
     print('Four-tier recipes, drops, models and translations updated')
 if __name__=='__main__':generate()

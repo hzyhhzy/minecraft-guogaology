@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
 
-/** Reload-time meshes preserve vertex colour in both Fabric's chunk and item pipelines. */
+/** Reload-time world meshes; Ordinal Lv1 inherits its original block geometry in inventory. */
 public final class CoreMeshModels {
     private static final Identifier ATLAS=Identifier.withDefaultNamespace("textures/atlas/blocks.png");
     private CoreMeshModels(){}
@@ -41,6 +41,7 @@ public final class CoreMeshModels {
             Map<String,Geometry> baked=new ConcurrentHashMap<>();
             context.modifyModelOnLoad().register((model,event)->{
                 Identifier id=event.id();
+                // Flat icons do not inherit a block model; original Ordinal Lv1 still does.
                 if(!id.getNamespace().equals("googology")||!id.getPath().startsWith("block/"))return model;
                 String name=id.getPath().substring(6);JsonObject mesh=data.get(name);
                 if(mesh==null)return model;

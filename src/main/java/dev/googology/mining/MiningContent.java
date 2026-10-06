@@ -26,6 +26,7 @@ public final class MiningContent {
     public static final Block[][] ORES=new Block[2][4];
     public static final Block[] STORAGE=new Block[4],TABLES=new Block[3];
     public static final Item[][] TOOLS=new Item[5][6];
+    public static final Item[] BOWS=new Item[4];
     public record GearSpec(int tier,int kind){}
     private static Item item(String id,Item item){Registry.register(Registries.ITEM,GoogologyMod.id(id),item);ITEMS.add(item);return item;}
     private static Block block(String id,Block block){Registry.register(Registries.BLOCK,GoogologyMod.id(id),block);item(id,new BlockItem(block,new Item.Settings()));return block;}
@@ -51,6 +52,11 @@ public final class MiningContent {
         for(int rank=1;rank<=3;rank++){String id="enhancement_table"+(rank==1?"":"_"+rank);TABLES[rank-1]=block(id,new EnhancementTable(AbstractBlock.Settings.create().strength(3,6).nonOpaque(),rank));}
         for(int tier=1;tier<=4;tier++){String id=EquipmentRules.MINERALS[tier-1]+"_manuscript";
             Item book=item(id,new DenxiManuscript(new Item.Settings().maxCount(1).component(CORES,List.of()),tier));GEAR.put(book,new GearSpec(tier,6));
+        }
+        for(int tier=1;tier<=4;tier++){
+            String id=EquipmentRules.MINERALS[tier-1]+"_bow";
+            Item bow=item(id,new OrdinalBowItem(new Item.Settings().maxDamage(EquipmentRules.durability(tier,7)).component(CORES,List.of()),tier));
+            BOWS[tier-1]=bow;GEAR.put(bow,new GearSpec(tier,7));
         }
         NumericRecipe.register();MiningEffects.initialize();ManuscriptEffects.initialize();
     }

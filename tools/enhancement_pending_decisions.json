@@ -1,7 +1,7 @@
 {
   "recordedOn": "2026-10-06",
-  "status": "applied_to_offline_simulator_revision46_not_to_mod",
-  "supersedes": "Simulator revisions 42-45 attack/defense models. The user authorized revision46 simulator implementation; main Mod remains 0.3.11.",
+  "status": "implemented_revision47_source_and_offline_simulator_pending_release_validation",
+  "supersedes": "Revisions42–46 previews. Revision47 implements the confirmed attack/defense, manuscript restrictions and ordinal bows for0.3.12.",
   "confirmed": {
     "armorSets": [
       {
@@ -34,7 +34,7 @@
         "attack",
         "protection",
         "multiply_existing_laver_healing",
-        "extend_existing_guogao_sword_debuff_duration"
+        "extend_existing_guogao_sword_and_bow_debuff_duration"
       ],
       "attackProtectionGrades": [
         0.05,
@@ -93,8 +93,8 @@
       ],
       "realmInvariant": true,
       "healingRequiresLaver": true,
-      "debuffDurationRequiresGuogaoSword": true,
-      "noIndependentHealingOrDebuff": true
+      "noIndependentHealingOrDebuff": true,
+      "debuffDurationRequiresGuogaoSwordOrBow": true
     },
     "powerAndBoundary": {
       "attackProtectionGrades": [
@@ -168,11 +168,11 @@
         "manuscript": "efficiency"
       },
       "power_tower_core": {
-        "equipment": "sword_attack",
+        "equipment": "sword_and_bow_attack",
         "manuscript": "attack"
       },
       "hydra_bud": {
-        "equipment": "pick_fortune_and_silk_toggle_or_sword_looting",
+        "equipment": "pick_fortune_and_silk_toggle_or_sword_looting_or_bow_infinity_multishot_piercing",
         "manuscript": "block_and_entity_reach"
       },
       "lho_trace": {
@@ -184,15 +184,15 @@
         "manuscript": "healing_and_high_grade_food_floor"
       },
       "astra_critical_core": {
-        "equipment": "sword_burst",
-        "manuscript": "projectile_burst_and_high_grade_fire_resistance"
+        "equipment": "sword_and_bow_burst",
+        "manuscript": "forbidden"
       },
       "boundary_core": {
         "equipment": "armor_protection",
-        "manuscript": "protection_jump_safe_fall_and_flight"
+        "manuscript": "protection_jump_safe_fall_flight_and_lv2_lv3_fire_resistance"
       },
       "guogao_heart": {
-        "equipment": "sword_debuffs",
+        "equipment": "sword_and_bow_debuffs",
         "manuscript": "health_immunities_and_inventory_totem_use"
       }
     }
@@ -206,36 +206,76 @@
     "Boundary protection remains applicable to the previously agreed damage types, including fall, fire, sonic boom and void. Bare vanilla armor does not acquire protection against damage types that bypass armor."
   ],
   "unresolved": [],
-  "modSyncPending": true,
+  "modSyncPending": false,
   "nextDesign": {
     "recordedOn": "2026-10-06",
-    "status": "design_record_only_not_applied_to_simulator_or_mod",
-    "supersedes": "Criticality manuscript and fire-resistance roles in simulator revision46. The following confirmed bow and manuscript design takes precedence when synchronized later.",
+    "status": "implemented_in_revision47_source_and_simulator",
+    "supersedes": "Criticality manuscript/fire roles in revision46. This section records the implemented0.3.12 bow and manuscript decisions.",
     "ordinalBowsConfirmed": {
-      "tiers": ["omega", "epsilon", "gamma", "true_omega"],
-      "namesZh": ["ω弓", "ε弓", "Γ弓", "Ω弓"],
+      "tiers": [
+        "omega",
+        "epsilon",
+        "gamma",
+        "true_omega"
+      ],
+      "namesZh": [
+        "ω弓",
+        "ε弓",
+        "Γ弓",
+        "Ω弓"
+      ],
       "recipe": "Vanilla bow layout; replace its three sticks with three matching ordinal mineral materials; retain three strings.",
-      "socketCounts": [2, 4, 6, 8],
-      "regionalCaps": [1, 2, 2, 3],
+      "socketCounts": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "regionalCaps": [
+        1,
+        2,
+        2,
+        3
+      ],
       "enchantable": false,
-      "arrowSpeedMultipliers": [1.1, 1.2, 1.3, 1.5],
-      "fullDrawArrowSpeedBlocksPerTick": [3.3, 3.6, 3.9, 4.5],
+      "arrowSpeedMultipliers": [
+        1.1,
+        1.2,
+        1.3,
+        1.5
+      ],
+      "fullDrawArrowSpeedBlocksPerTick": [
+        3.3,
+        3.6,
+        3.9,
+        4.5
+      ],
       "speedScope": "Confirmed multiplier on vanilla charge-dependent launch speed; keep vanilla arrow gravity and air/water drag. Shooter motion remains a separate inherited velocity contribution.",
       "damageRule": "Confirmed: retain the vanilla ordinary-arrow base damage coefficient2, velocity-dependent impact damage and full-draw random critical bonus. No independent tier-specific base HP targets and no compensation that cancels the damage gained from the tier launch-speed bonus. Previously agreed Power/manuscript enhancements remain separate.",
-      "baseDurabilityMultipliers": [2, 3, 4, 6],
-      "baseDurability": [768, 1152, 1536, 2304],
+      "baseDurabilityMultipliers": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "baseDurability": [
+        768,
+        1152,
+        1536,
+        2304
+      ],
       "baseDurabilityReference": "Vanilla bow384. Custom wear protection is applied as a consumption probability to this durability pool.",
       "power": "Copy sword attack contribution and per-item RSS; the active manuscript attack participates once.",
       "branch": "Confirmed: Lv1 Infinity; Lv2 inherits Infinity and fires three arrows; Lv3 inherits both and each arrow can pass through one creature and hit a second. Duplicate cores use the highest grade, with no extra arrows or penetration.",
       "absence": "Copy sword wear protection4/16/64 and additive per-item wear budget.",
-      "critical": "Copy sword impact burst at arrow impact, including the directly hit target. Criticality cores are forbidden in manuscripts; remove their manuscript projectile-burst and fire-resistance channels on implementation.",
+      "critical": "Copy sword impact burst at first valid living arrow impact, including the directly hit target. Manuscripts forbid Criticality. No self, allied or terrain damage.",
       "guogao": "Copy sword on-hit debuffs, highest core grade only, including manuscript Ordinal/baseline duration extension.",
       "ordinal": "Forbidden on the bow, as on the sword."
     },
     "bowImplementationRecommendations": [
       "Use ordinary-arrow Infinity behavior; retain arrow-type consumption rules and prevent pickup duplication of free arrows.",
       "Lock the bow, active manuscript and source realm contribution at launch so swapping equipment cannot change an in-flight arrow.",
-      "Apply charge scaling to the complete enhanced shot so rapid low-charge shots do not receive full fixed-HP additions.",
+      "Outer flat-HP additions scale with draw; inner factors multiply the actual velocity/critical native arrow amount, whose draw scaling is already inherent.",
       "Apply on-hit Guogao once to the directly hit target; burst damage must not recursively trigger another burst or spread Guogao debuffs.",
       "Retain vanilla bow draw time, arrow gravity, drag and ordinary-arrow base damage coefficient2. Apply the confirmed launch-speed multipliers once; retain their natural velocity-dependent damage effect without adding another tier-specific damage multiplier."
     ],
@@ -246,7 +286,7 @@
       "fireResistance": "Confirmed transfer to Boundary in the active manuscript at Lv2 and Lv3."
     },
     "fireResistanceProposal": {
-      "status": "confirmed_pending_simulator_and_mod_sync",
+      "status": "implemented_revision47",
       "recommendedCore": "boundary_core",
       "carrier": "active_manuscript",
       "minimumLevel": 2,
@@ -254,30 +294,31 @@
       "reasonZh": "界限晶核已有防护和飞行，让它统一负责危险环境中的移动与保护。"
     },
     "bowBranchLv3Proposal": {
-      "status": "confirmed_pending_simulator_and_mod_sync",
+      "status": "implemented_revision47",
       "recommendedZh": "贯枝",
       "effect": "Retain Infinity and three-arrow Multishot; each arrow can pass through one creature and hit a second creature behind it.",
       "duplicateCores": "Highest grade only; no additional arrows or penetration from duplicate cores.",
       "confirmedHitRule": "One volley must not apply multiple direct hits or repeatedly trigger Criticality burst on the same target merely because its arrows overlap.",
-      "ammoRule": "Free arrows produced by Infinity cannot be picked up; keep the ordinary-arrow requirement. Special ammunition and side-arrow recovery rules require explicit finalization."
+      "ammoRule": "Survival ordinary Infinity requires an arrow; Creative can fire ordinary arrows from an empty inventory. Infinity produces no recoverable free arrows. Tipped/spectral ammo consumes one per volley; the centre keeps its special effect, side arrows are ordinary and cannot be picked up."
     },
     "bowRemainingDesign": {
-      "status": "unconfirmed_details_not_applied",
+      "status": "all_details_resolved_and_implemented_revision47",
       "baseNumbers": "Resolved: retain vanilla arrow damage rules and confirmed launch-speed multipliers1.1/1.2/1.3/1.5. Bow durability is768/1152/1536/2304. The earlier proposed fixed8/10/12/16HP bow targets are rejected; crystal attack enhancements still follow the agreed attack rules.",
-      "multishotAndPiercing": "Finalize side-arrow damage and whether both distinct pierced targets trigger Criticality bursts. Same-volley direct-hit deduplication is confirmed; overlapping explosion damage across distinct impact sites still needs one consistent rule.",
-      "burstRecommendation": "Each arrow emits one burst at its first valid hit. For one volley, any target can take at most one direct arrow hit and one burst contribution. Guogao may apply to each distinct directly hit target; bursts do not spread debuffs or recursively cause bursts.",
-      "specialAmmoRecommendation": "Ordinary arrows inherit Infinity. Tipped or spectral arrows consume one per volley; only the central arrow keeps the special effect, and side arrows are ordinary and cannot be picked up.",
-      "syncPending": ["Add ordinal bows to the simulator and effects reference", "Remove Criticality from manuscript compatibility and effects", "Move manuscript fire resistance to Boundary Lv2/3", "Audit ranged burst and damage under the confirmed vanilla velocity-dependent damage model"]
+      "multishotAndPiercing": "All three arrows use equal native/enhanced damage and full-draw critical rules. Every arrow bursts only at its first valid living hit. A volley ledger limits each target to one direct hit and one burst; second pierced targets can receive Guogao directly.",
+      "syncPending": [],
+      "burstRule": "Each arrow emits one burst at its first valid hit. For one volley, any target can take at most one direct arrow hit and one burst contribution. Guogao may apply to each distinct directly hit target; bursts do not spread debuffs or recursively cause bursts.",
+      "specialAmmoRule": "Ordinary arrows inherit Infinity. Tipped or spectral arrows consume one per volley; only the central arrow keeps the special effect, and side arrows are ordinary and cannot be picked up."
     }
   },
   "audit": {
-    "revision": 46,
+    "revision": 47,
     "normalMaximumDirectAttack": 36.020815280171306,
     "deepMaximumDirectAttack": 345.2608828624567,
     "normalMaximumExtraProtection": 25.53614541736112,
     "deepMaximumExtraProtection": 37.52114282798983,
     "report": "docs/enhancement-numeric-audit.html",
     "comparisonNativeArmorReduction": 0.8,
-    "comparisonOnly": true
+    "comparisonOnly": true,
+    "attackScope": "Sword extrema; bows use velocity-dependent examples and simulator inputs, not a fixed base-HP optimization."
   }
 }

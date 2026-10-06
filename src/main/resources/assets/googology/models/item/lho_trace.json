@@ -1,1 +1,6 @@
-{"parent":"googology:block/lho_trace"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology:item/lho_trace"
+  }
+}

@@ -1,1 +1,6 @@
-{"parent":"googology:block/guogao_heart_lv2"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology:item/guogao_heart_lv2"
+  }
+}

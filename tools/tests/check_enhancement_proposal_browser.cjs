@@ -21,9 +21,9 @@ async function apply(page,value){
   const page=await browser.newPage({viewport:{width:1440,height:1100},colorScheme:'light'});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(pathToFileURL(path.join(root,'docs/enhancement-simulator.html')).href);
-  check((await page.locator('body').innerText()).includes('尚未应用'),'proposal notice visible');
-  check(!(await page.locator('#testStatus').innerText()).includes('Java'),'no false production-parity claim');
-  check(await page.evaluate(()=>GuogaologySimulator.rules.proposalRevision)===46,'revision46 payload');
+  check((await page.locator('body').innerText()).includes('0.3.12'),'current production version visible');
+  check((await page.locator('#testStatus').innerText()).includes('Java'),'Java golden parity status');
+  check(await page.evaluate(()=>GuogaologySimulator.rules.revision)===47,'revision47 payload');
   await apply(page,config([],[],{mainhand:{tier:4,kind:1,sockets:[crystal(1),crystal(8,4),null,crystal(5)]},helmet:{tier:4,kind:2,sockets:[crystal(8,4),null,crystal(6)]}}));
   let imported=await page.evaluate(()=>GuogaologySimulator.getState().snapshot);
   check(imported.mainhand.sockets[1]===null&&imported.mainhand.sockets[2]===null&&imported.mainhand.sockets[3].type===5&&imported.helmet.sockets[2].type===6,'legacy Ordinal removal preserves valid cores and holes');
@@ -90,7 +90,27 @@ async function apply(page,value){
   await page.locator('#copyDefense').click();
   combat=await page.evaluate(()=>GuogaologySimulator.getState().combat);
   close(combat.targetArmor,25,'manual additional armor and selected armor sum once');
-  for(const name of ['defense','combat','mining']){
+  const mixedArmor=Object.fromEntries(['helmet','chestplate','leggings','boots'].map((key,i)=>[key,{tier:i+1,kind:i+2,cores:[]}]));
+  await apply(page,config([],[],{...mixedArmor,offhand:{tier:-1,kind:6,cores:[]}}));
+  const mixedEffects=await page.evaluate(()=>{const a=GuogaologySimulator;return a.engine.calculate(a.getState().snapshot);});
+  close(mixedEffects.nativeArmor,18.7,'mixed native armor attribute remains fractional');close(mixedEffects.nativeToughness,9.4,'mixed native toughness remains fractional');
+  await page.locator('[data-combat="ownArmor"]').fill('0.4');await page.locator('[data-combat="ownToughness"]').fill('0.2');
+  await page.locator('#copyDefense').click();combat=await page.evaluate(()=>GuogaologySimulator.getState().combat);
+  close(combat.targetArmor,19.1,'manual fraction added before native flooring');close(combat.targetToughness,9.6,'toughness is not floored');
+  check((await page.locator('#damageDetails').innerText()).includes('19.1 → 19'),'effective integer armor shown with original attribute');
+  await apply(page,config([],[],{mainhand:{tier:4,kind:7,cores:[crystal(2),crystal(5),crystal(7)]},offhand:{tier:-1,kind:6,cores:[]}}));
+  check(await page.locator('#gearChoice').inputValue()==='4:7','ordinal bow selectable');
+  check(await page.locator('#bowInputs').isVisible()&&!await page.locator('#meleeInputs').isVisible(),'bow conditions replace melee cooldown');
+  const shot=await page.evaluate(()=>{const a=GuogaologySimulator;return a.engine.ranged(a.getState().snapshot,a.getState().combat);});
+  close(shot.directRaw,9,'bare Omega bow uses vanilla velocity damage');close(shot.burstRaw,2.7,'bow burst owns its payload');
+  check(shot.arrowCount===3&&shot.targetsPerArrow===2,'Multishot and piercing shown without stacking');
+  close(shot.totalHealthDamage,11.7,'one target damage not multiplied by three');
+  await page.locator('[data-combat="bowCharge"]').fill('0.5');
+  const partial=await page.evaluate(()=>{const a=GuogaologySimulator;return a.engine.ranged(a.getState().snapshot,a.getState().combat);});
+  check(partial.criticalMaximum===0,'partial draw disables vanilla critical bonus');
+  await apply(page,config([], [crystal(6,2)],{mainhand:{tier:4,kind:7,cores:[]}}));
+  check(await page.evaluate(()=>GuogaologySimulator.engine.misc(GuogaologySimulator.getState().snapshot).fireResistance),'Boundary manuscript fire resistance');
+  for(const name of ['defense','combat','ranged','mining']){
    await page.locator('[data-preset="'+name+'"]').click();
    imported=await page.evaluate(()=>GuogaologySimulator.getState().snapshot);
    check(['mainhand','helmet','chestplate','leggings','boots'].every(k=>!imported[k].cores.some(c=>c.type===8)),'legal preset '+name);
@@ -109,7 +129,8 @@ async function apply(page,value){
   check(await ref.locator('#overviewBody tr').count()===9,'nine overview rows');
   check(await ref.locator('#detailsBody tr[data-core]').count()===28,'28 grade rows');
   check(await ref.locator('#detailsHead th').count()===7,'both realm columns');
-  check((await ref.locator('#notice').innerText()).includes('0.3.11'),'reference proposal disclaimer');
+  check((await ref.locator('#notice').innerText()).includes('0.3.12'),'reference current rule notice');
+  check((await ref.locator('#overviewBody').innerText()).includes('弓'),'reference includes bows');
   for(const [level,value]of[[1,25],[2,50],[3,100]])
    check((await ref.locator('#detailsBody tr[data-core="1"][data-level="'+level+'"]').innerText()).includes('+'+value+'%'),'reference actual deep Power '+level);
   const ordinalIV=await ref.locator('#detailsBody tr[data-core="8"][data-level="4"]').innerText();
@@ -142,7 +163,8 @@ async function apply(page,value){
   check(auditText.includes('16')&&auditText.includes('22')&&auditText.includes('韧性'),'native armor table present');
   check(!auditText.includes('1,222')&&!auditText.includes('517.578'),'obsolete deep calibration absent');
   const auditData=JSON.parse(fs.readFileSync(path.join(root,'build/enhancement-simulator/proposal-audit.json'),'utf8'));
-  check(auditData.rules.proposalRevision===46,'audit recalculated from revision46');
+  check(auditData.rules.revision===47,'audit recalculated from revision47');
+  check(auditData.rangedExamples.length===8,'bow audit scenarios use four tiers and two realms');
   await audit.screenshot({path:path.join(out,'audit-zh.png'),fullPage:true});
   const firstLink=await audit.locator('[data-lang="zh"] table').first().locator('tbody tr').first().locator('a').first().getAttribute('href');
   const load=await browser.newPage();await load.goto(new URL(firstLink,audit.url()).href);

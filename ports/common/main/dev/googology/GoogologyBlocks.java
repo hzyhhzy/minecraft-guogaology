@@ -184,6 +184,7 @@ public final class GoogologyBlocks {
     private static Block block(String name, Block block) {
         Registry.register(BuiltInRegistries.BLOCK, GoogologyMod.id(name), block);
         var settings=itemSettings(name).useBlockDescriptionPrefix();
+        if(CoreGrades.ROOTS.contains(name))settings.rarity(CoreGrades.rarity(name,1));
         if(name.equals("dread_log")||name.equals("dread_leaves"))settings.fireResistant();
         Registry.register(BuiltInRegistries.ITEM, GoogologyMod.id(name), block instanceof dev.googology.block.StatefulDecorBlock
                 ? new dev.googology.block.VariantDecorItem(block,settings) : new BlockItem(block, settings));
@@ -196,7 +197,7 @@ public final class GoogologyBlocks {
         Block block=clear?new dev.googology.block.PortableRelicBlock(settings.noOcclusion()):new dev.googology.block.PortableRelicBlock(settings);
         if(clear)TRANSLUCENT.add(block);
         Registry.register(BuiltInRegistries.BLOCK,GoogologyMod.id(name),block);
-        Registry.register(BuiltInRegistries.ITEM,GoogologyMod.id(name),new BlockItem(block,itemSettings(name).useBlockDescriptionPrefix().rarity(net.minecraft.world.item.Rarity.RARE).fireResistant()));
+        Registry.register(BuiltInRegistries.ITEM,GoogologyMod.id(name),new BlockItem(block,itemSettings(name).useBlockDescriptionPrefix().rarity(CoreGrades.rarity(name,1)).fireResistant()));
         ALL.add(block);return block;
     }
 

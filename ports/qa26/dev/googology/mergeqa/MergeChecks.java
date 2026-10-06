@@ -36,7 +36,7 @@ public final class MergeChecks implements ClientModInitializer {
         c.options.pauseOnLostFocus=false;if(!c.gui.hud.isHidden())c.gui.hud.toggle();c.options.renderDistance().set(8);c.options.framerateLimit().set(60);
         if(c.level==null){if(!opening&&c.isGameLoadFinished()&&c.gui.overlay()==null){opening=true;c.createWorldOpenFlows().openWorld("port-qa",c::stop);}return;}
         if(c.player==null||c.getSingleplayerServer()==null)return;
-        if(!BOUNDARIES_ONLY&&!distanceAudited){CoreDistance040Checks.audit(c);distanceAudited=true;}
+        if(!BOUNDARIES_ONLY&&!distanceAudited){CoreDistance040Checks.audit(c);Core047Checks.auditIcons(c);distanceAudited=true;}
         if(!queued){queued=true;ready=false;var id=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{setup(c.getSingleplayerServer().getPlayerList().getPlayer(id),scene);ready=true;}catch(Throwable e){failure=e;}});return;}
         if(!ready)return;
         if(!BOUNDARIES_ONLY&&scene==0){if(Portal040Checks.failure()!=null)throw new RuntimeException(Portal040Checks.failure());if(!Portal040Checks.done())return;}
@@ -45,7 +45,7 @@ public final class MergeChecks implements ClientModInitializer {
         if(!BOUNDARIES_ONLY&&scene>=SITES.size()+12&&scene<=SITES.size()+14)CoreDistance040Checks.assertRendered(new int[]{12,65,100}[scene-SITES.size()-12]);
         var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int frame=scene;
         Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),i->{try(i){i.writeToFile(folder.resolve("merge-"+frame+".png"));}catch(Exception e){failure=e;}});
-        if(++scene>(BOUNDARIES_ONLY?2:SITES.size()+15)){done=true;Files.writeString(Path.of("port-client-ok.txt"),BOUNDARIES_ONLY?"BOUNDARY_RUNTIME_OK: generation, mixed gummies, harvesting, portal offerings, and focused screenshots.\n":"MERGE_RUNTIME_OK: 0.3.11 final core roles, direct manuscript sockets, flight/jump, yield/bursts/oxygen, void and sonic protection; existing portals, registries, three worlds and 64-block static/animated bodies.\n");c.stop();return;}
+        if(++scene>(BOUNDARIES_ONLY?2:SITES.size()+17)){done=true;Files.writeString(Path.of("port-client-ok.txt"),BOUNDARIES_ONLY?"BOUNDARY_RUNTIME_OK: generation, mixed gummies, harvesting, portal offerings, and focused screenshots.\n":"MERGE_RUNTIME_OK: 0.3.12 Rev47 core roles, direct manuscript sockets, armor/toughness, four realms, private inventory icons, bows, yield/silk/oxygen/stealth, void and sonic protection; existing portals, registries and 64-block static/animated bodies.\n");c.stop();return;}
         ticks=0;queued=false;
       }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
     }
@@ -59,15 +59,13 @@ public final class MergeChecks implements ClientModInitializer {
         ReturnPortalChecks.run(p);
         MaterialChecks.run(p);
         MaintenanceChecks.run(p);
-        Mining041Checks.run(p);
-        Manuscript041Checks.run(p);
-        Combat041Checks.run(p);
+        Core047Checks.run(p);
         Portal040Checks.run(p);
         OuterChristmasChecks.run(p);
         BoundaryChecks.run(p);
         require(s.getLevel(GoogologyMod.DIMENSION)!=null&&s.getLevel(GoogologyMod.GUOGAO)!=null,"inner and underworld present");
         require(EquipmentRules.MINERALS.length==4&&MiningContent.MATERIALS.length==4,"four mineral tiers");
-        require(EquipmentRules.REVISION==41&&EquipmentRules.compatible(6,4),"current final core roles and enabled Laver");
+        require(EquipmentRules.REVISION==47&&EquipmentRules.compatible(6,4)&&!EquipmentRules.compatible(6,5),"current final core roles and enabled Laver");
         require(PortalTravel.destination(Level.OVERWORLD,PortalKind.GGG).equals(GoogologyMod.OUTER),"apple outward");
         require(PortalTravel.destination(GoogologyMod.OUTER,PortalKind.INNER).equals(GoogologyMod.DIMENSION),"omega inward");
         require(PortalTravel.destination(GoogologyMod.DIMENSION,PortalKind.INNER).equals(GoogologyMod.OUTER),"omega return");
@@ -91,7 +89,9 @@ public final class MergeChecks implements ClientModInitializer {
         }
         require(SITES.size()>=5,"Donor biome variety: "+seen);
         p.teleport(new TeleportTransition(level,new Vec3(12,225,25),Vec3.ZERO,180,10,TeleportTransition.DO_NOTHING));
-      }else if(scene==SITES.size()+15){Manuscript041Checks.display(p);
+      }else if(scene==SITES.size()+17){Core047Checks.displaySilk(p);
+      }else if(scene==SITES.size()+16){Core047Checks.displayIcons(p);
+      }else if(scene==SITES.size()+15){Manuscript047Checks.display(p);
       }else if(scene>=SITES.size()+12){CoreDistance040Checks.display(p,new int[]{12,65,100}[scene-SITES.size()-12]);
       }else if(scene>SITES.size()+1){MaterialChecks.display(p,scene-SITES.size()-2);
       }else if(scene==SITES.size()+1){

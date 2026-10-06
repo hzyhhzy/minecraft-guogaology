@@ -15,7 +15,7 @@ public abstract class ManuscriptStatusMixin {
     @Inject(method="addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z",at=@At("HEAD"))
     private void googology$externalEffect(MobEffectInstance effect,Entity source,CallbackInfoReturnable<Boolean> result){ManuscriptEffects.beforeEffect((LivingEntity)(Object)this,effect);}
     @Inject(method="getDamageAfterMagicAbsorb",at=@At("RETURN"),cancellable=true)
-    private void googology$quarterFall(DamageSource source,float input,CallbackInfoReturnable<Float> result){var entity=(LivingEntity)(Object)this;if(source.is(DamageTypes.FALL)&&ManuscriptEffects.level(ManuscriptEffects.held(entity),3)==1)result.setReturnValue(result.getReturnValueF()*.25f);}
+    private void googology$quarterFall(DamageSource source,float input,CallbackInfoReturnable<Float> result){var entity=(LivingEntity)(Object)this;if(source.is(DamageTypes.FALL)&&ManuscriptEffects.level(ManuscriptEffects.held(entity),6)==1)result.setReturnValue(result.getReturnValueF()*.25f);}
     @Inject(method="getJumpPower()F",at=@At("RETURN"),cancellable=true)
     private void googology$jump(CallbackInfoReturnable<Float> result){if((Object)this instanceof Player player)result.setReturnValue(ManuscriptEffects.jumpVelocity(player,result.getReturnValueF()));}
 }

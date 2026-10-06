@@ -1,4 +1,4 @@
-# Survival guide · 0.3.11
+# Survival guide · 0.3.12
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -29,7 +29,7 @@ Horizontal scales are Overworld:Outer:Inner:Underworld = 1:1:4:16. Falling to Y�
 
 Only Outer naturally generates ω, ε, Γ and Ω ores, including understone variants in its underground biome. The two deeper dimensions no longer generate ores. All four drop usable minerals directly, support Fortune and Silk Touch, and can be mined with an ordinary iron pickaxe. There is no core-dependent processing or exponential ore-mining gate.
 
-Each tier crafts a pickaxe, sword, four armor pieces, a passive offhand Manuscript, and a reversible nine-mineral storage block. Names omit “Stone”, for example ω Pickaxe or Ω Chestplate. Each Manuscript has a distinct scroll/folio icon. Epsilon mineral art uses ε₀ to distinguish rotated symbols; its name remains ε. Number pickaxes/swords remain: three Number Stones give the floor of their average digit, with ordinary stone-to-netherite stats at levels 0–9.
+Each tier crafts a pickaxe, sword, bow, four armor pieces, a Manuscript, and a reversible nine-mineral storage block. Manuscript passive effects work in either hand, with offhand priority when both hands hold one. Names omit “Stone”, for example ω Pickaxe or Ω Chestplate. Each Manuscript has a distinct scroll/folio icon. Epsilon mineral art uses ε₀ to distinguish rotated symbols; its name remains ε. Number pickaxes/swords remain: three Number Stones give the floor of their average digit, with ordinary stone-to-netherite stats at levels 0–9.
 
 | Tier | Mining | Pick attack | Sword attack | Gear slots | Manuscript slots | Regional core limit |
 |---|---:|---:|---:|---:|---:|---:|
@@ -40,43 +40,51 @@ Each tier crafts a pickaxe, sword, four armor pieces, a passive offhand Manuscri
 
 Numeric pickaxe harvesting tiers are stone for digits 0–4, iron for 5–7, diamond for 8, and netherite for 9. Ordinary mining speed and attack still progress with the digit; mining stone does not bypass an ore's harvesting requirement.
 
-Unenhanced full armor provides approximately 2/2.5/3/4 times effective damage capacity through custom reduction. Attacks, fall damage and fire/lava are covered; void damage and Warden sonic booms are covered too. Final-tier base equipment is approximately twice the first tier.
+Native full-set armor is 16/18/20/22 and toughness 4/8/12/16. Bare armor has no extra custom damage multiplier. Each slot uses its weighted share of the full values.
 
 ## Enhancement and Manuscripts
 
-Gear uses enhancement tables with reversible direct sockets and highlighted compatible inventory cores. Basic/Advanced/Ultimate tables accept regional Lv1/2/3 and ordinal Lv2/3/4, subject to the gear tier. The four mineral tiers have 2/4/6/8 gear sockets and 2/3/4/6 manuscript sockets. Removing cores preserves wear; broken gear releases installed cores.
+Enhancement tables have reversible sockets and highlight eligible cores in the inventory. Basic/Advanced/Ultimate tables accept regional Lv1/2/3 and ordinal Lv2/3/4, within the equipment's tier limit. Mineral equipment has 2/4/6/8 sockets; manuscripts have 2/3/4/6. Removing cores preserves wear; broken equipment releases installed cores.
 
-Manuscripts have no durability. Right-click opens their own socket menu without a table; passive effects require the offhand. If both hands hold manuscripts, right-click edits the offhand one; the books do not stack. All four ordinal gear/manuscript tiers reject enchantments; numeric stone tools and vanilla gear remain enchantable. Tool and book effects are combined once. Normal realms are the Outer world and three vanilla dimensions; deep realms are Inner and Underworld.
+Manuscripts have no durability and open their own socket menu by right-clicking. They work in either hand; **the offhand takes priority when both hands hold manuscripts**. Ordinal Crystals are manuscript-only, and Criticality cannot enter manuscripts. Ordinal equipment, bows and manuscripts reject enchantments; numeric and vanilla tools remain enchantable. Normal realms are Outer and the vanilla dimensions; deep realms are Inner and Underworld.
 
-| Core | Equipment | Offhand manuscript |
+| Core | Equipment | Manuscript |
 |---|---|---|
-| Sequence | Fortune-style pick yield / Looting-style sword yield | Adds directly to tool yield levels |
-| Power Tower | Sword attack +1/2/3 HP | Same attack increments, added to sword |
-| Hydra Bud | Pick area mining; helmet breathing | Mining speed |
-| Empty Set | Tool reach | Jump, fall protection and flight |
-| Laver Condensation | Wear protection | Healing every 4 seconds; Lv2+ night vision |
-| Criticality | Target and nearby 3-block impact burst | Projectile burst; Lv2+ fire resistance |
-| Boundary | Combined armor protection | Same protection budget |
-| Heart of Guogao | Sword slowness / weakness | Health, immunity and real inventory Totems |
-| Ordinal Crystal | Small bonuses to several properties | Small bonuses; amplifies deep specialized increments |
+| Sequence | Pick mines 1/2/3 extra blocks, or 1/4/9 deep; root-sum-squares, rounded down | Equivalent Efficiency II/IV/VI, highest copy; max with native Efficiency |
+| Power Tower | Sword/bow attack | Attack, calculated separately from the weapon |
+| Hydra Bud | Fortune II/IV/VI or switchable Silk Touch from Lv1; Looting II/IV/VI; bow infinity/multishot/piercing | Reach +1/2/3 blocks, root-sum-squares |
+| Empty Set | Wear protection 4/16/64, summed | Ordinary targeting range 30% / no proactive targeting / no ordinary retaliation; Lv2+ night vision |
+| Laver Condensation | Helmet oxygen consumption 1/4, 1/16, zero; Aqua Affinity; boots Depth Strider I/II/III | Heal 1/2/3 HP per 4 seconds, root-sum-squares; food floor 10 at Lv2, 19 at Lv3 |
+| Criticality | Sword/bow burst within 3 blocks including the target; 15%/22.5%/30%, root-sum-squares | Incompatible |
+| Boundary | Armor protection | Protection; Lv1 jump/fall protection, Lv2 slow flight, Lv3 creative-style flight; Lv2+ fire resistance |
+| Heart of Guogao | Sword/bow harmful effects, highest copy | Health +4/8/12 HP, root-sum-squares; immunity; Lv2+ real inventory Totem rescue |
+| Ordinal Crystal | Incompatible | Attack, protection, multiplies Laver healing, extends Guogao effects; no mining/wear/reach/health bonuses |
 
-Let l be a regional core level. Sequence levels from tool and book add directly, never multiply. Yield participates in native loot calculation; cores, storage blocks, containers and marked player-placed relics are excluded. Existing Fortune/Looting and core yield use the higher effective level, not two separate loot calculations.
+Identical attack/protection cores within an item use root-sum-squares in both realm types. Each armor piece calculates its Boundary amount independently, then head/chest/legs/feet combine with weights 20%/40%/25%/15%. Native armor and toughness apply first; custom protection then divides damage, including fall, fire, sonic and void damage. Bare armor has no extra custom multiplier.
 
-Hydra Bud picks mine `floor(sqrt(sum(l²)))` extra blocks normally or `sum(l²)` in deep realms: a single core gives 1/2/3 or 1/4/9. Candidates are the 9×9 plane normal to the view, excluding displays, containers and unharvestable blocks. Sneaking disables area mining. Manuscript mining values are 1/1.5/2; multiple cores use root-sum-squares normally and the squared sum in deep realms. No core means 1×; vanilla tool speed, Haste, Fatigue, water and airborne penalties remain.
+Normal attack is weapon base + bare-manuscript 0.5/1/1.5/2 HP + weapon Tower + manuscript Tower + manuscript Ordinal. Tower grades add 1/2/3 HP; Ordinal adds 0.5/1/1.5/2.5 HP. Deep attack keeps the same weapon base and multiplies independent bare-book, book-Ordinal, book-Tower and weapon-Tower factors. Bare book percentages are 5%/10%/15%/20%; Tower is 25%/50%/100%; Ordinal is 5%/10%/20%/40%. Same-source copies still use root-sum-squares.
 
-Laver wear protection is 16/64/256 per core, summed; Ordinal contributes a smaller universal benefit. Each original wear point is consumed with probability 1/protection in every realm. Maximum durability never increases and no automatic repair occurs. Manuscript healing is `sqrt(sum(l²))` HP every 4 seconds everywhere. Empty Set tool reach is `sqrt(sum(l²))` blocks. The highest Hydra helmet level gives 1/4, 1/16 or zero oxygen consumption.
+Let A be armor's weighted Boundary amount, Q the manuscript Boundary amount, U its Ordinal amount, and b the bare manuscript amount. Protection is `(1+2A)*(1+b+Q+U)` normally, or `(1+2A)*(1+b)*(1+Q)*(1+U)` deep. Damage is divided by this factor. Original armor wear points are independently consumed with probability `1/(protection * Empty-Set-wear-factor)`.
 
-An Empty Set Lv1 manuscript multiplies fall damage by 0.25 once and adds one jump-height block per core, coexisting with higher flight grades. Lv2 grants slow flight and fall immunity. Lv3 overrides Lv2 with creative-style flight and fall/collision immunity; deep sprint multiplies ordinary non-sprinting creative horizontal and vertical flight by eight. Double-jump toggles flight. Removing the book permits a safe landing and preserves vanilla creative/spectator permissions.
+Healing is `sqrt(sum(level²))*(1+bare-book-healing+Ordinal-healing)` HP per 4 seconds, requiring Laver. Bare-book healing is 10%/20%/30%/40%; Ordinal is 10%/20%/30%/50%, combined by root-sum-squares. Guogao health comes only from the active manuscript, identically in both realms. Lv2 prevents Poison/Hunger/Weakness; Lv3 additionally prevents Nausea/Slowness/Wither/Blindness/Darkness. Lv2+ rescue consumes a real inventory Totem; no free revivals.
 
-Criticality coefficients are 15%/22.5%/30%, combined by root-sum-squares. The main target also receives burst damage; terrain, allies and recursive bursts are excluded. Guogao swords apply Slowness I/II/III, plus Weakness I at Lv2 or II at Lv3. A single core lasts three seconds; multiple cores extend this to at most eight.
+Guogao weapon effects last two seconds before bonuses: Lv1 Slowness I/Poison II; Lv2 Slowness II/Wither II/Weakness I; Lv3 Slowness III/Wither III/Weakness II/Nausea, plus 20% Blindness. Bare manuscript duration bonuses are 25%/50%/75%/100%; Ordinal 25%/50%/75%/125%, root-sum-squares.
 
-Guogao manuscript health is `sqrt(sum((4l)²))` HP normally and `sum(10l)` in deep realms. Lv2 prevents poison, hunger, nausea, weakness and slowness; Lv3 also prevents wither, blindness and darkness. Lv2+ rescue consumes one real inventory Totem; it does not create free revivals.
+Boundary Lv1 adds one jump-height block per copy and multiplies fall damage by 0.25 once. Higher grades retain Lv1 jump bonuses. Lv2 grants slow flight/fall immunity; Lv3 overrides it, adding collision immunity. Deep sprint flight multiplies both axes by eight relative to ordinary non-sprinting creative flight. Double-jump toggles flight; book removal permits a safe landing without overriding creative/spectator or external permissions.
 
-Boundary protection combines head/chest/legs/feet shares of 20%/40%/25%/15% once. Bare full mineral sets take 1/2, 1/2.5, 1/3 or 1/4 damage. Q sums armor-share-weighted squared core levels and manuscript squared levels; the capacity gains `1+0.25sqrt(Q)` normally or `1+0.25Q` deep. Fire, falls, sonic booms and void damage are covered, together with applicable vanilla mitigation layers.
+Empty Set affects ordinary hostile proactive/revenge goals only: appearance and existing targets stay unchanged; special anger/brain mechanics are untouched. Branch yield copies use max; applicable native Fortune/Looting adds to it. The table's Silk Touch switch replaces Fortune. Extra excavation respects tool and region permissions, excludes containers/relics, and stops while sneaking.
 
-Ordinal universal values are 0.06/0.12/0.25/0.5. Normal copies use root-sum-squares and add small bonuses; deep copies add and amplify specialized increments. Reach, healing and wear stay consistent across realms. The offline [enhancement simulator](enhancement-simulator.html) calculates individual gear and complete player loadouts.
+Core inventory icons are simple perspective drawings of each family's Lv1 three-dimensional form. Grades within a family share the same shape with different colors; the Ordinal Lv1 icon remains unchanged. Regional Lv1/2/3 use yellow/aqua/purple rarity names; Ordinal Lv1–4 uses white/yellow/aqua/purple. World models remain three-dimensional, animated within 64 blocks, cached static beyond that, and approximated statically by Voxy.
 
-Core animation remains within 64 blocks, with cached static interiors farther away in normally rendered chunks and a static approximation for Voxy.
+[Enhancement simulator](enhancement-simulator.html?lang=en) · [Core effects](core-effects-reference.html?lang=en) · [Numeric audit](enhancement-numeric-audit.html?lang=en)
+
+## Ordinal bows and sanctuary rewards
+
+Four bows use the vanilla bow layout with three matching minerals replacing sticks, plus three strings. Launch-speed multipliers are 1.1/1.2/1.3/1.5; durability is 768/1152/1536/2304. Native draw time, actual-velocity damage, full-draw random critical bonus, gravity and drag remain. There is no invented tier-specific fixed HP base. Normal core HP bonuses scale with charge; deep factors are snapshotted at release.
+
+Hydra Bud Lv1 provides Infinity in Survival, requiring one ordinary arrow; Lv2 fires three arrows without duplicate direct damage on one target; Lv3 allows each arrow to hit at most two creatures, passing through the first to hit the second. Special ammunition costs one per volley and only the center arrow retains its effects. Critical bursts include the direct target without destroying terrain or harming allies; a target takes at most one direct hit plus one burst per volley.
+
+Every main chest in the eight giant sanctuaries guarantees one matching regional Lv3 core and one Ordinal Lv3, plus generous higher-quality thematic goods. Secondary chests contain 6–12 matching Lv1 cores, 30–60 Ordinal Lv1, and fewer lower-grade thematic goods. Harvestable core displays remain.
 
 ## Core fusion and existing interactions
 

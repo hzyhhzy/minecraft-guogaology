@@ -30,11 +30,11 @@ public final class OrdinalGear extends Item {
         return (float)(current*(actual/Math.min(2048,actual)-1));
     }
     @Override public void appendHoverText(ItemStack s,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
-        if(kind>=2)out.accept(Component.translatable("mining.googology.defense",EquipmentRules.format(GearData.power(s)*EquipmentRules.armorShare(kind))));
+        if(kind>=2)out.accept(Component.translatable("mining.googology.native_armor",EquipmentRules.format(EquipmentRules.nativeArmor(tier,kind)),EquipmentRules.format(EquipmentRules.nativeToughness(tier,kind))));
         if(kind==0)out.accept(Component.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.accept(Component.translatable("mining.googology.digit",GearData.digit(s)));
         out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
-        if(GearData.points(s,4)>0||GearData.points(s,8)>0)out.accept(Component.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
+        if(GearData.points(s,3)>0)out.accept(Component.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
         for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable("mining.googology.effect."+GearData.type(c))));
         if(kind==0)out.accept(Component.translatable("mining.googology.sneak"));
     }

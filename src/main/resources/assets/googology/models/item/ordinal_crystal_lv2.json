@@ -1,1 +1,6 @@
-{"parent":"googology:block/ordinal_crystal_lv2"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "googology:item/ordinal_crystal_lv2"
+  }
+}

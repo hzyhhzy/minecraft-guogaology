@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.11 · Minecraft Java / Fabric**
+**v0.3.12 · Minecraft Java / Fabric**
 
-Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and passive offhand Denxi Manuscripts. No bosses are included.
+Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. No bosses are included.
 
 This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
 
@@ -27,7 +27,7 @@ The internal mod ID remains `googology`. The standalone core gallery and flight-
 
 The same JAR includes **English and Simplified Chinese**. Choose **Options → Language → English (US)** or **简体中文（中国大陆）** in Minecraft; no translation pack is needed. Block and item names, saved variants, equipment tooltips, enhancement screens, creative tabs, biome and landmark names, advancements, sound subtitles, and command help follow your language. Mod Menu also has localized names and descriptions when its translation options are enabled.
 
-The names **Guogao** and **Denxi** are intentional transliterations of community terms. Guogao refers both to fruit confectionery and to the anxious, sweating expression associated with unusually difficult or strange ordinal notations. Denxi now also names the passive offhand Manuscript; the former exponential ore-mining gate has been removed.
+The names **Guogao** and **Denxi** are intentional transliterations of community terms. Guogao refers both to fruit confectionery and to the anxious, sweating expression associated with unusually difficult or strange ordinal notations. Denxi now also names the Manuscript, which grants passive effects while held in either hand, with offhand priority; the former exponential ore-mining gate has been removed.
 
 ## The worlds
 
@@ -77,7 +77,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.11/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.3.12/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 

@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/googology-mark.png)
 
-**v0.3.11 · Minecraft Java / Fabric**
+**v0.3.12 · Minecraft Java / Fabric**
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，手稿可直接右键镶嵌。暂无 Boss。
 
@@ -36,7 +36,7 @@
 | 界限高原 | 图灵机纸带、集合晶壳、证明与公式景观 | 界限演算庭 |
 | 果糕冥林 | 阴森圣诞树、粗壮藤蔓、破碎地形与湖泊 | 果糕终境巨树 |
 
-上表前七种在大数里界，果糕冥林位于独立地府。表界另外保留 BMS 山脉、圣诞森林、紫菜桌平原、LHO 边缘、LHO 空境、瘫坐之地和地下群系。四档矿石可制作镐、剑、护甲和手稿，九条晶核路线用于融合及强化。[生存指南](docs/SURVIVAL-GUIDE.md) · [方块采集表](docs/BLOCK-BALANCE.md) · [名称约定](docs/TERMINOLOGY.md)
+上表前七种在大数里界，果糕冥林位于独立地府。表界另外保留 BMS 山脉、圣诞森林、紫菜桌平原、LHO 边缘、LHO 空境、瘫坐之地和地下群系。四档矿石可制作镐、剑、弓、护甲和手稿，九条晶核路线用于融合及强化。[生存指南](docs/SURVIVAL-GUIDE.md) · [方块采集表](docs/BLOCK-BALANCE.md) · [名称约定](docs/TERMINOLOGY.md)
 
 ## 进入维度
 
@@ -63,7 +63,7 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.3.11/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.3.12/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -77,4 +77,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[强化模拟器](docs/enhancement-simulator.html) · [0.3.11规则](docs/WORK-041.md)
+[强化模拟器](docs/enhancement-simulator.html) · [0.3.12规则](docs/WORK-0312.md)

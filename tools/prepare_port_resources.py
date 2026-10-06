@@ -70,6 +70,17 @@ def convert_items(out):
                         "fallback": rendered,
                         "entries": [{"threshold": v["predicate"]["angle"], "model": model(v["model"])}
                                     for v in overrides]}
+        elif overrides and "pulling" in overrides[0].get("predicate", {}):
+            # Match the vanilla bow's modern item model. Custom BowItem subclasses
+            # need no additional numeric item property registration on these targets.
+            rendered = {"type": "minecraft:condition", "property": "minecraft:using_item",
+                        "on_false": rendered,
+                        "on_true": {"type": "minecraft:range_dispatch",
+                                    "property": "minecraft:use_duration", "scale": .05,
+                                    "fallback": model(overrides[0]["model"]),
+                                    "entries": [{"threshold": v["predicate"]["pull"],
+                                                 "model": model(v["model"])}
+                                                for v in overrides if "pull" in v["predicate"]]}}
         write(path, old)
         write(assets / "items" / path.name, {"model": rendered})
     return portable

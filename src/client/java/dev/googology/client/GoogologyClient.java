@@ -16,6 +16,7 @@ public final class GoogologyClient implements ClientModInitializer {
         CoreMeshModels.initialize();
         CoreAnimationRenderer.initialize();
         DecorItemModels.initialize();
+        OrdinalBowModels.initialize();
         GoogologyAtmosphere.initialize();
         DimensionRenderingRegistry.registerDimensionEffects(GoogologyMod.id("googology"),new GoogologyDimensionEffects());
         DimensionRenderingRegistry.registerDimensionEffects(GoogologyMod.id("guogao"),new GoogologyDimensionEffects());

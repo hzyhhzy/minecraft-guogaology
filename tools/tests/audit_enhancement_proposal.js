@@ -1,6 +1,6 @@
-/* Reproducible offline extrema audit of the pending enhancement proposal.
+/* Reproducible offline extrema audit of production revision47.
  * Run from any directory with Node; no Minecraft, browser, or third-party package.
- * Reads the proposal rules and engine, then writes only to the ignored build tree.
+ * Legacy proposal filenames are aliases of the production rules and engine.
  */
 'use strict';
 const fs = require('fs');
@@ -17,6 +17,7 @@ for (const file of [rulesPath, enginePath]) {
 }
 const payload = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
 const rules = payload.rules || payload;
+assert.equal(rules.revision, 47, 'Current production rules are required');
 const engine = require(enginePath);
 assert.equal(typeof engine.calculate, 'function', 'Proposal engine calculate API');
 assert.equal(typeof engine.defaults, 'function', 'Proposal engine defaults API');
@@ -48,7 +49,7 @@ function snapshot(deep, sword = true, main = [], book = [], armor) {
 function evaluate(s) {
   for (const key of ['mainhand', 'offhand', ...armorKeys]) {
     const g = s[key];
-    assert(g.kind === 6 || !(g.cores || []).some(c => c.type === T.ordinal), 'Ordinal is manuscript-only: ' + key);
+    assert((g.cores || []).every(c => rules.compatibility[g.kind]?.[c.type]), 'Core compatibility: ' + key);
   }
   evaluations++;
   const e = engine.calculate(s);
@@ -365,12 +366,13 @@ function lowerGradeProtection(deep) {
 const objectives = { normal: auditObjectives(false), deep: auditObjectives(true) };
 const output = {
   schemaVersion: 3,
-  scope: 'Pending simulator proposal only; no Mod build, game execution, installation, or publication.',
+  scope: 'Production revision47 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
   assumptions: {
     tier: 4, swordSlots: 8, manuscriptSlots: 6, armorSlotsPerPiece: 8,
     regionalLevel: 3, ordinalLevel: 4,
     enumeration: 'Maximum-grade relevant-family count allocations; excludes lower-grade utility tradeoffs.',
     melee: 'Full cooldown, vanilla critical, no target armor/resistance/absorption; excludes status damage over time.',
+    ranged: 'Examples use full draw, impact speed equal to launch speed, and the complete vanilla critical range. They are not bow optima; one target receives at most one direct hit and one burst per volley.',
     defense: 'Engine protectionFactor is extra custom protection only. Native armor/toughness are separate. Fixed80% comparison total factor=5*extraF.',
     threshold: 'Comparison lethal threshold=5*H*extraF; equality exhausts HP. Actual native armor changes with incoming damage.',
     wear: 'Expected per-point wear protection. Joint armor audit optimizes extraF and the selected piece W in the same legal configuration; independent maxima cannot be multiplied.',
@@ -391,11 +393,16 @@ const output = {
   efficiencyComparisons: efficiencyComparisons(),
   balancedPvp: balancedPvp(objectives)
 };
+output.rangedExamples = [false, true].flatMap(deep => [1, 2, 3, 4].map(tier => {
+  const s = snapshot(deep); s.mainhand = item(7, [], {tier}); s.offhand = item(6, [], {tier});
+  const shot = engine.ranged(s, {bowCharge: 1});
+  return {deep, tier, configuration: s, shot};
+}));
 output.balanceCalibration={
   attackRatio:output.deep.maximumAttack.value/output.normal.maximumAttack.value,
   protectionRatio:output.deep.maximumProtection.value/output.normal.maximumProtection.value,
   normalUnchanged:false,deepMaximumProtectionUnchanged:false,
-  goal:'Latest revision46; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
+  goal:'Production revision47; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
 };
 const close = (a, b, label) => assert(Math.abs(a - b) < 1e-8 * Math.max(1, Math.abs(b)), label + ': ' + a + ' vs ' + b);
 const R = Math.sqrt(8), armorF = 1 + 2 * R;
@@ -410,14 +417,14 @@ output.vanillaComparison = { rawSwordAttack: 11, criticalSwordAttack: 15, health
   attackRatio: { normal: output.normal.maximumAttack.value / 11, deep: output.deep.maximumAttack.value / 11 },
   fixed80ThresholdRatio: { normal: output.normal.maximumSingleHitThreshold.value / (20 * 5 / .36), deep: output.deep.maximumSingleHitThreshold.value / (20 * 5 / .36) },
   note: 'Netherite SharpnessV generic target; four ProtectionIV EPF16; fixed80% native reduction. No potions, shield or totem.' };
-const nativeDamage = (raw, armor, toughness) => raw * (1 - Math.min(20, Math.max(.2 * armor, armor - raw / (2 + toughness / 4))) / 25);
+const nativeDamage = (raw, armor, toughness) => raw * (1 - Math.min(20, Math.max(.2 * Math.floor(armor), Math.floor(armor) - raw / (2 + toughness / 4))) / 25);
 output.nativeArmorTable = [1, 2, 3, 4].map(tier => ({ tier, armor: rules.nativeArmorByTier[tier - 1], toughness: rules.nativeToughnessByTier[tier - 1],
   damage: [5, 10, 15, 20, 40, 80].map(raw => ({ raw, hp: nativeDamage(raw, rules.nativeArmorByTier[tier - 1], rules.nativeToughnessByTier[tier - 1]) })) }));
 output.evaluations = evaluations;
 output.elapsedMilliseconds = Date.now() - now;
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n', 'utf8');
-console.log('ENHANCEMENT_PROPOSAL_AUDIT_OK evaluations=' + evaluations + ' elapsedMs=' + output.elapsedMilliseconds);
+console.log('ENHANCEMENT_PRODUCTION_AUDIT_OK evaluations=' + evaluations + ' elapsedMs=' + output.elapsedMilliseconds);
 for (const realm of ['normal', 'deep']) console.log(realm + ': ' + JSON.stringify(Object.fromEntries(
   Object.entries(output[realm]).map(([name, result]) => [name, result.value]))));
 for (const realm of ['normal', 'deep']) console.log('jointArmorWear ' + realm + ': ' + JSON.stringify(Object.fromEntries(

@@ -35,7 +35,7 @@ public class OrdinalGear extends Item {
         if(kind==0)out.add(Text.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.add(Text.translatable("mining.googology.digit",GearData.digit(s)));
         out.add(Text.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
-        if(GearData.points(s,4)>0||GearData.points(s,8)>0)out.add(Text.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
+        if(GearData.points(s,3)>0)out.add(Text.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
         for(var c:GearData.cores(s))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable("mining.googology.effect."+GearData.type(c))));
         if(kind==0)out.add(Text.translatable("mining.googology.sneak"));
     }

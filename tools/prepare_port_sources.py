@@ -50,6 +50,8 @@ def adapt(text, target, name):
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
+    if name == 'BowVolleyLedger.java':
+        text = text.replace('new SavedDataType<>("googology_bow_volleys",', 'new SavedDataType<>(dev.googology.GoogologyMod.id("bow_volleys"),')
     if name == 'BlockYieldMixin.java':
         text = text.replace('Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;', 'Lnet/minecraft/world/item/ItemInstance;)Ljava/util/List;')
         text = text.replace('Entity owner,ItemStack tool,', 'Entity owner,net.minecraft.world.item.ItemInstance tool,')
@@ -134,6 +136,8 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'BowEffects.java':
+            text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
         if name == 'MiningEffects.java':
             text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
         if name == 'CoreFallbackPart.java':

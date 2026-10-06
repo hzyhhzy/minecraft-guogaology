@@ -16,34 +16,29 @@ for (const item of payload.cases) {
   const snapshot = item.snapshot, actual = engine.calculate(snapshot);
   for (const [key, expected] of Object.entries(snapshot.effects)) near(actual[key], expected, item.id + '.' + key);
 }
-// Independent proposal requirements, not just a mirrored golden-case comparison.
-if(payload.rules.healthModel === 'manuscript_only_rms') {
-  for(const deep of [false,true]) {
-    const state=engine.defaults();state.deep=deep;
-    for(const [i,key] of ['helmet','chestplate','leggings','boots'].entries())
-      state[key]={tier:4,kind:i+2,cores:Array.from({length:9},(_,type)=>({type,level:type===8?4:3}))};
-    near(engine.calculate(state).actualMaxHealth,20,'every armor core excluded from proposal health '+deep);
-    state.offhand={tier:4,kind:6,cores:[{type:7,level:3}]};
-    near(engine.calculate(state).actualMaxHealth,32,'one Guogao III has identical base in both realms '+deep);
-    let best=-1,max=-Infinity;
-    for(let hearts=0;hearts<=6;hearts++) {
-      state.offhand.cores=[...Array.from({length:hearts},()=>({type:7,level:3})),...Array.from({length:6-hearts},()=>({type:8,level:4}))];
-      const hp=engine.calculate(state).actualMaxHealth;
-      if(hp>max){max=hp;best=hearts;}
-    }
-    near(max,deep?20+60*Math.sqrt(2):20+12*Math.sqrt(6),'optimal health proposal '+deep);
-    assert.equal(best,deep?2:6,'proposal optimum distribution');
-  }
-}
-// A manuscript held in the main hand is not a passive source, even with every core type.
-for (const deep of [false,true]) {
-  const invalidMainBook=engine.defaults();invalidMainBook.deep=deep;
-  invalidMainBook.mainhand={tier:4,kind:6,digit:0,cores:Array.from({length:9},(_,type)=>({type,level:type===8?4:3}))};
-  const baseline=engine.defaults();baseline.deep=deep;
-  assert.deepStrictEqual(engine.calculate(invalidMainBook),engine.calculate(baseline),'main-hand manuscript must have no core effects, realm='+deep);
-  assert.equal(engine.calculate(invalidMainBook).attack,1,'main-hand book attack stays 1');
+// Independent channel and ranged checks accompany the Java golden comparison.
+assert.equal(payload.rules.revision,47,'Latest production rules required');
+for(const deep of [false,true]){
+ const state=engine.defaults();state.deep=deep;state.mainhand={tier:4,kind:6,cores:[{type:7,level:3}]};
+ near(engine.calculate(state).actualMaxHealth,32,'main-hand manuscript is active '+deep);
+ state.offhand={tier:1,kind:6,cores:[{type:7,level:1}]};near(engine.calculate(state).actualMaxHealth,24,'offhand priority '+deep);
+ state.offhand.cores=[{type:5,level:3}];near(engine.calculate(state).projectileCoefficient,0,'no manuscript Criticality channel');assert(!engine.misc(state).fireResistance,'Criticality does not grant fire resistance');
+ state.offhand.cores=[{type:6,level:2}];assert(engine.misc(state).fireResistance,'Boundary II grants fire resistance');
+ const bow=engine.defaults();bow.deep=deep;bow.mainhand={tier:4,kind:7,cores:[{type:2,level:3},{type:5,level:3}]};
+ const shot=engine.ranged(bow,{bowCharge:1});near(shot.launchSpeed,4.5,'Omega bow launch speed');near(shot.vanillaBase,9,'velocity-based damage');near(shot.directRaw,9,'bare bow ordinary minimum');near(shot.directMaximum,14,'full-draw random damage bound');near(shot.burstRaw,2.7,'bow owns burst without extra deep scale');
+ assert.equal(shot.arrowCount,3,'multishot');assert.equal(shot.targetsPerArrow,2,'piercing');near(shot.totalHealthDamage,11.7,'three arrows do not multiply one target damage');
+ const changed=engine.ranged(bow,{impactSpeed:2,bowCharge:.5,arrowCriticalBonus:100});near(changed.vanillaBase,4,'impact velocity overrides launch');near(changed.criticalBonus,0,'partial draw cannot retain full-draw crit');
+ const unreleased=engine.ranged(bow,{bowCharge:.05});near(unreleased.totalHealthDamage,0,'vanilla minimum draw is required');assert.equal(unreleased.arrowCount,0,'no arrow below minimum draw');
+ bow.mainhand.cores=[{type:1,level:3}];bow.offhand={tier:4,kind:6,cores:[{type:8,level:4}]};
+ const charged=engine.ranged(bow,{bowCharge:.5,impactSpeed:2});near(charged.directRaw,deep?4*1.2*1.4*2:4+(3+2.5+2)*.5,'charge and realm enhancement match launch payload');
 }
 near(engine.damage(10, 'player_attack', { armor: 20, toughness: 8 }).healthDamage, 3, 'vanilla armor/toughness');
+const mixedDamage=engine.damage(10,'player_attack',{armor:18.7,toughness:9.6});
+near(mixedDamage.armorAttribute,18.7,'mixed armor attribute preserves decimals');near(mixedDamage.effectiveArmor,18,'native armor floors the total once');
+near(mixedDamage.healthDamage,10*(1-(18-10/(2+9.6/4))/25),'native mixed18.7/9.6 golden damage');
+const combinedArmor=engine.damage(10,'player_attack',{armor:18.7+.4,toughness:9.6});near(combinedArmor.effectiveArmor,19,'manual armor sums before flooring');
+near(combinedArmor.healthDamage,10*(1-(19-10/(2+9.6/4))/25),'combined fractional armor golden damage');
+for(let tier=1;tier<=4;tier++){const set=engine.defaults();['helmet','chestplate','leggings','boots'].forEach((key,i)=>set[key]={tier,kind:i+2,cores:[]});const e=engine.calculate(set);near(engine.damage(10,'player_attack',{armor:e.nativeArmor,toughness:e.nativeToughness}).effectiveArmor,[16,18,20,22][tier-1],'whole native set is not rounded down by floating sum');}
 near(engine.damage(4, 'out_of_world', { armor: 20, toughness: 12, resistance: 5, epf: 20, factor: 4 }).healthDamage, 1, 'void ignores vanilla defenses, keeps core defense');
 near(engine.damage(10, 'sonic_boom', { armor: 20, resistance: 1, epf: 20, factor: 4 }).healthDamage, 2, 'sonic ignores armor and EPF');
 near(engine.damage(10, 'fall', { fallFactor: .25, factor: 2 }).healthDamage, 1.25, 'Absence fall factor applies once');
@@ -84,7 +79,7 @@ for(const match of html.matchAll(/<([a-z][a-z0-9]*)\b([^>]*)>/gi)) {
 }
 elements.get('ruleData').textContent=JSON.stringify(payload.rules);
 const storage=new Map(),context={console,Intl,Math,JSON,Number,String,Array,Object,Boolean,Error,Set,Promise,URL,Blob,setTimeout,clearTimeout,btoa,atob,encodeURIComponent,decodeURIComponent,escape,unescape};
-context.document={documentElement:{},title:'',getElementById:id=>elements.get(id)||null,createElement:tag=>new Element(tag),createTextNode:text=>text,querySelectorAll:q=>q==='[data-i18n]'?i18n:q==='[data-combat]'?inputs:q==='[data-preset]'?presets:[]};
+context.document={documentElement:{},title:'',getElementById:id=>elements.get(id)||null,createElement:tag=>new Element(tag),createTextNode:text=>text,querySelectorAll:q=>q==='[data-i18n]'?i18n:q==='[data-combat]'?inputs:q==='[data-preset]'?presets:q==='[data-mining]'?[...elements.values()].filter(e=>e.dataset.mining):[],querySelector:q=>{const key=q.match(/data-combat="([^"]+)"/)?.[1];const el=inputs.find(e=>e.dataset.combat===key);if(el&&!el.previousElementSibling)el.previousElementSibling=new Element('span');return el;}};
 context.localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)};
 context.location={hash:'',href:'file:///enhancement-simulator.html'};context.history={replaceState:(_a,_b,hash)=>{context.location.hash=hash;}};
 context.navigator={clipboard:{writeText:async()=>{}}};context.addEventListener=()=>{};context.window=context;
@@ -103,10 +98,10 @@ const invalid=context.GuogaologySimulator.getState();delete invalid.snapshot.mai
 elements.get('jsonText').value=JSON.stringify(invalid);elements.get('importJson').onclick();assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,0,'invalid cores rejected');
 const sparse=context.GuogaologySimulator.getState();sparse.selected='mainhand';sparse.snapshot.mainhand={tier:4,kind:0,digit:0,cores:[]};
 elements.get('jsonText').value=JSON.stringify(sparse);elements.get('importJson').onclick();
-let lastSocket=elements.get('cores').children[7];lastSocket.children[1].value='4';lastSocket.children[1].onchange();
+let lastSocket=elements.get('cores').children[7];lastSocket.children[1].value='3';lastSocket.children[1].onchange();
 assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,1,'one newly installed core');
 assert.equal(elements.get('cores').children[0].children[1].value,-1,'empty first socket stays empty');
-assert.equal(elements.get('cores').children[7].children[1].value,4,'last socket stays in place');
+assert.equal(elements.get('cores').children[7].children[1].value,3,'last socket stays in place');
 lastSocket=elements.get('cores').children[7];lastSocket.children[1].value='-1';lastSocket.children[1].onchange();
 assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,0,'core removal leaves no ghost copy');
 const invalidText=context.GuogaologySimulator.getState();elements.get('jsonText').value='{bad';elements.get('importJson').onclick();assert(elements.get('jsonError').textContent,'bad JSON reported');

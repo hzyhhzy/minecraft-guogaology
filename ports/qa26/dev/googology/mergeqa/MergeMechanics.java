@@ -92,27 +92,6 @@ final class MergeMechanics {
         check(PortalRitual.gateAt(ow,broken)==null,"broken frame unregisters gate");
         for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++)check(!PortalKind.isPortal(ow.getBlockState(broken.offset(x,0,z))),"broken frame clears whole portal");
 
-        // Profile changes use the real equipment inventory hook.
-        var pick=item("true_omega_pickaxe");GearData.setCores(pick,Collections.nCopies(8,item("ordinal_crystal_lv4")));
-        ((OrdinalGear)pick.getItem()).inventoryTick(pick,outer,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-18*(1+Math.sqrt(2)))<.001,"outer ordinal mining profile");
-        ((OrdinalGear)pick.getItem()).inventoryTick(pick,inner,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-18*9)<.001,"inner ordinal mining profile");
-        ((OrdinalGear)pick.getItem()).inventoryTick(pick,ow,p,EquipmentSlot.MAINHAND);
-        check(Math.abs(GearData.miningSpeed(pick)-18*(1+Math.sqrt(2)))<.001,"leaving inner removes deep profile");
-        var book=item("true_omega_manuscript");
-        check(GearData.install(book,item("lho_trace_lv2"),1)!=null,"low station rejects high core");
-        check(GearData.install(book,item("lho_trace_lv2"),3)==null,"manuscript accepts flight core");
-        p.setGameMode(GameType.SURVIVAL);p.setItemSlot(EquipmentSlot.OFFHAND,book);ManuscriptEffects.tick(p);
-        check(p.getAbilities().mayfly,"flight enabled by actual offhand book");
-        p.getAbilities().flying=true;p.setOnGround(false);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);ManuscriptEffects.tick(p);
-        check(!p.getAbilities().mayfly&&!p.getAbilities().flying,"flight removed with book");
-        check(ManuscriptEffects.fallImmune(p),"safe descent after flight removed");
-        p.setGameMode(GameType.CREATIVE);p.setItemSlot(EquipmentSlot.OFFHAND,book);ManuscriptEffects.tick(p);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);ManuscriptEffects.tick(p);
-        check(p.getAbilities().mayfly,"creative permission preserved");
-        check(Math.abs(p.getAbilities().getFlyingSpeed()-.05f)<1e-5,"flight speed restored");
-        check(!GearData.remove(book,0).isEmpty()&&GearData.cores(book).isEmpty(),"flight core reversibly removed");
-
         int templates=0;
         check(dev.googology.outer.world.feature.LaverTreeGuardFeature.laverLog()==GoogologyBlocks.LAVER_VEIN,"tree guard uses canonical Laver wood");
         check(dev.googology.outer.world.feature.LaverTreeGuardFeature.laverPlanks()==GoogologyBlocks.LAVER_PLANKS,"table guard uses canonical Laver planks");

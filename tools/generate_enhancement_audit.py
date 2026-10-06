@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the independent revision46 audit as an offline bilingual report."""
+"""Render the production revision47 audit as an offline bilingual report."""
 from pathlib import Path
 import base64
 import html
@@ -8,6 +8,8 @@ import math
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "build/enhancement-simulator/proposal-audit.json").read_text(encoding="utf-8"))
+if DATA["rules"]["revision"] != 47:
+    raise SystemExit("Regenerate the production revision47 audit before rendering.")
 
 
 def esc(value):
@@ -105,6 +107,12 @@ def section(lang):
     r = DATA["rules"]
     for i in range(4):
         ordinal_rows.append(["Lv" + str(i + 1), number(r["normalOrdinalAttackGrades"][i]) + "HP", number(r["ordinalPercentGrades"][i] * 100) + "%", number(r["ordinalHealingGrades"][i] * 100) + "%", number(r["ordinalDurationGrades"][i] * 100) + "%"])
+    ranged_rows = []
+    for example in DATA["rangedExamples"]:
+        shot = example["shot"]
+        ranged_rows.append([realm_names["deep" if example["deep"] else "normal"], ["ω", "ε", "Γ", "Ω"][example["tier"] - 1],
+                            number(shot["launchSpeed"]), str(shot["vanillaBase"]),
+                            f'<a href="{esc(link(example, lang))}">{number(shot["directMinimum"])}–{number(shot["directMaximum"])} HP</a>', str(shot["durability"])])
     examples = DATA.get("protectionCounterexamples", [])
     monotonic_rows = []
     for example in examples[:8] + [e for e in examples if e["targetPiece"] == "offhand"]:
@@ -128,8 +136,8 @@ def section(lang):
     v = DATA["vanillaComparison"]
     compare_rows = [[tr("直接攻击／下界合金锋利V", "Direct attack / Netherite SharpnessV"), number(v["attackRatio"]["normal"]) + "×", number(v["attackRatio"]["deep"]) + "×"], [tr("固定80%最大承伤／四件保护IV", "Fixed80% hit capacity / four ProtectionIV"), number(v["fixed80ThresholdRatio"]["normal"]) + "×", number(v["fixed80ThresholdRatio"]["deep"]) + "×"]]
     return f'''<section class="language" data-lang="{lang}">
-<h1>{tr("强化方案 · 数值审计", "Enhancement proposal · Numerical audit")}</h1>
-<p class="notice">{tr("离线预览revision46。主Mod仍为0.3.11；不修改、运行或安装游戏。每行独立求最优，不能把不同配装的上限相乘。", "Offline revision46 preview. Main Mod remains0.3.11; no Mod changes, game run or installation. Each row is independently optimal; peaks from different loadouts cannot be multiplied.")}</p>
+<h1>{tr("强化系统 · 数值审计", "Enhancement system · Numerical audit")}</h1>
+<p class="notice">{tr("0.3.12生产规则revision47。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.3.12 rules, revision47. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
 <nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=1,2,3,4">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
 <p>{tr("Ω装备每件8槽、手稿6槽；群系Lv3／序数Lv4。序数晶体只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regionalLv3 / OrdinalLv4. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
@@ -158,9 +166,14 @@ def section(lang):
 <p><code>{tr("紫菜每4秒治疗", "Laver healing every4s")}=RSS(紫菜等级)×(1+治疗基础+RSS(序数治疗%))<br>{tr("果糕剑秒数", "Guogao sword seconds")}=2×(1+延时基础+RSS(序数延时%))</code></p>
 <p>{tr("没有紫菜核就不回血；没有果糕剑就不产生负面状态。序数只保留攻、防、治疗乘算和状态延时，不加生命、挖速、耐久或触距。延时不提高状态等级或失明触发率。", "No Laver means no healing; no Guogao sword means no debuff. Ordinal retains only attack, protection, multiplicative healing and debuff duration. It grants no health, mining, wear or reach. Extension changes neither status potency nor blindness chance.")}</p>
 </article>
+<article><h2>{tr("弓：速度相关的伤害范围", "Bows: velocity-dependent damage ranges")}</h2>
+<p>{tr("示例为同档裸弓＋裸手稿、满弦、碰撞速度等于初速、目标无防护；未加入任何晶核。保留原版箭系数2、ceil取整及满弦随机加伤，飞行阻力和射手速度可在模拟器的碰撞速度字段输入。表界固定HP加成随蓄力比例缩放，里界乘区施加于原版实际箭伤。", "Examples use matching bare bow/manuscript tiers, full draw, impact speed equal to launch speed and an unprotected target; no cores. Vanilla coefficient2, ceil and full-draw random damage remain. Enter impact speed in the simulator to account for drag or shooter motion. Outer fixedHP bonuses scale with charge; inner factors multiply actual native arrow damage.")}</p>
+{table([tr("环境", "Realm"), tr("档位", "Tier"), tr("初速 格/刻", "Launch blocks/tick"), tr("原版取整伤害", "Native ceil damage"), tr("含手稿直击范围", "Direct range with manuscript"), tr("基础耐久", "Base durability")], ranged_rows)}
+<p>{tr("分枝Lv1无限，Lv2三箭，Lv3每箭最多命中两个生物。三箭不把单目标伤害乘3；同轮同目标最多承受一次直击和一次爆裂。每箭仅首次有效生物命中产生爆裂，第二目标仍可获得果糕状态。特殊箭每轮消耗一支，仅中央保留特殊效果，侧箭不能回收；生存普通箭无限仍须背包有箭，创造空背包可发普通箭。临界核晶禁止放入手稿，防火由界限手稿Lv2／3提供。", "BranchLv1 Infinity, Lv2 three arrows, Lv3 up to two living targets per arrow. Three arrows never triple one target's damage; each target gets at most one direct hit and one burst per volley. Each arrow bursts only on its first valid living hit; its second target can receive Guogao effects. Special ammo consumes one per volley; only the centre keeps special effects and side arrows cannot be picked up. Survival Infinity still requires an arrow; Creative may fire ordinary arrows from an empty inventory. Criticality cannot fit manuscripts; Boundary manuscriptsLv2/3 provide fire resistance.")}</p>
+</article>
 <article><h2>{tr("真实裸甲与原版对比", "Actual bare armor and vanilla comparison")}</h2>
 {table([tr("档位", "Tier"), tr("整套护甲", "Set armor"), tr("整套韧性", "Set toughness"), "5HP", "10HP", "15HP", "20HP"], native_rows)}
-<p>{tr("表中百分比仅原版护甲减伤，不含任何晶核或手稿。原版护甲条最多画20点，但超额护甲仍参与公式。实际受伤会随攻击大小变化：有效甲=min(20,max(护甲×0.2,护甲−伤害/(2+韧性/4)))，甲后伤害=伤害×(1−有效甲/25)，再应用额外F。", "Percentages are native armor mitigation only, without cores or manuscripts. The HUD displays at most20 armor points; extra armor still affects damage. Effective armor=min(20,max(armor×0.2,armor−damage/(2+toughness/4))); post-armor damage=damage×(1−effectiveArmor/25), then apply extraF.")}</p>
+<p>{tr("表中百分比仅原版护甲减伤，不含任何晶核或手稿。原版护甲条最多画20点，但超额护甲仍参与公式。实际受伤会随攻击大小变化：原版先将护甲属性总和向下取整，再算有效甲=min(20,max(整数护甲×0.2,整数护甲−伤害/(2+韧性/4)))，甲后伤害=伤害×(1−有效甲/25)，再应用额外F。", "Percentages are native armor mitigation only, without cores or manuscripts. The HUD displays at most20 armor points; extra armor still affects damage. Native armor=floor(total armor attribute); effective armor=min(20,max(nativeArmor×0.2,nativeArmor−damage/(2+toughness/4))); post-armor damage=damage×(1−effectiveArmor/25), then apply extraF.")}</p>
 {table([tr("比较指标", "Comparison"), realm_names["normal"], realm_names["deep"]], compare_rows)}
 <p>{tr("通用目标基线：下界合金锋利V剑普通攻击11HP、暴击15HP；四件保护IV为EPF16，保护附魔后保留36%伤害。统一按固定80%裸甲口径，原版总防护5/0.36≈13.889，20HP原始致死阈值约277.778HP。不是原版任意重击的真实阈值，也不考虑亡灵杀手专用目标、药水、盾牌或图腾。", "Generic-target baseline: Netherite SharpnessV ordinary11HP / critical15HP. Four ProtectionIV pieces giveEPF16 and retain36% damage after native armor. With fixed80% armor, vanilla protection=5/0.36≈13.889 and20HP lethal input≈277.778HP. This is not the actual threshold for arbitrary heavy hits; specialized Smite targets, potions, shields and totems are excluded.")}</p>
 </article>

@@ -1,7 +1,12 @@
 {
-  "proposalModel": "core_design_046_manuscript_channels_and_native_armor",
-  "healthModel": "guogao_only_realm_invariant_rms",
-  "proposalRevision": 46,
+  "revision": 47,
+  "proposalRevision": 47,
+  "universal": [
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
   "yieldType": 2,
   "wearType": 3,
   "miningBookType": 0,
@@ -11,50 +16,362 @@
   "flightBookType": 6,
   "stealthBookType": 3,
   "waterGearType": 4,
-  "yieldAggregation": "max(2*toolBranchLevel)+applicableNativeLevel; Silk Touch overrides Fortune",
-  "wearFormula": "max(1,sum(itemAbsenceProtection)); Ordinal is manuscript-only and never protects wear",
-  "healingFormula": "RSS(bookLaverLevels)*(1+bookInnateHealing+RSS(bookOrdinalHealingGrades)); zero without Laver",
-  "protectionFormula": "Extra F=(1+2*sum(armorShare*RSS(pieceBoundaryPercentGrades)))*bookFactor; normal bookFactor=1+b+RSS(bookBoundaryPercentGrades)+RSS(bookOrdinalPercentGrades); deep bookFactor=(1+b)*(1+RSS(bookBoundaryPercentGrades))*(1+RSS(bookOrdinalPercentGrades))",
-  "realmAggregation": "Same-type contributions use RSS within one item. Normal attack sums fixed HP sources. Deep attack multiplies separate innate/book-Ordinal/book-Power/tool-Power factors. Both defenses multiply the separately computed armor and manuscript factors; native armor/toughness is a preceding damage stage.",
-  "deepScales": {"projectileBurst":4},
-  "deepPotencies": null,
-  "normalPowerAttackGrades": [1,2,3],
-  "normalOrdinalAttackGrades": [0.5,1,1.5,2.5],
-  "powerPercentGrades": [0.25,0.5,1],
-  "ordinalPercentGrades": [0.05,0.1,0.2,0.4],
-  "ordinalHealingGrades": [0.1,0.2,0.3,0.5],
-  "ordinalDurationGrades": [0.25,0.5,0.75,1.25],
-  "bookInnateAttackHp": [0,0.5,1,1.5,2],
-  "bookInnateAttackProtection": [0,0.05,0.1,0.15,0.2],
-  "bookInnateHealing": [0,0.1,0.2,0.3,0.4],
-  "bookInnateDuration": [0,0.25,0.5,0.75,1],
-  "armorBoundaryScale": 2,
-  "nativeArmorByTier": [16,18,20,22],
-  "nativeToughnessByTier": [4,8,12,16],
-  "baseArmorFactor": null,
-  "universal": [0.05,0.1,0.2,0.4],
-  "deepSpreadGrades": [1,4,9],
-  "bookUniversalExclusions": ["miningMultiplier", "wearMultiplier", "reachBonus", "maximumHealth", "yield", "extraBlocks", "abilityGrades", "projectileBurst"],
-  "baseControlSeconds": 2,
-  "maxControlSeconds": null,
-  "wearGrades": [4, 16, 64],
-  "efficiencyGrades": [2, 4, 6],
-  "yieldGrades": [2, 4, 6],
-  "bookUniversalBase": [0, 0.05, 0.1, 0.15, 0.2],
-  "compatibility": [
-    [true, false, true, true, false, false, false, false, false],
-    [false, true, true, true, false, true, false, true, false],
-    [false, false, false, true, true, false, true, false, false],
-    [false, false, false, true, false, false, true, false, false],
-    [false, false, false, true, false, false, true, false, false],
-    [false, false, false, true, true, false, true, false, false],
-    [true, true, true, true, true, true, true, true, true]
+  "wearGrades": [
+    4,
+    16,
+    64
   ],
-  "provisionalChoices": {
-    "efficiencyStacking": "highest manuscript grade; max with applicable native Efficiency; add e^2+1; no Ordinal mining multiplier",
-    "aquaAffinity": "Laver helmet Lv1+ removes underwater mining penalty",
-    "depthStrider": "Laver boots Lv1/2/3 are native Depth Strider I/II/III equivalents",
-    "flightOwner": "Boundary manuscript inherits the jump/fall/flight package",
-    "armorWearAttenuation": "pre-hit native integer wear budget divided by custom protection factor, then multiplied by consumption probability; retain fractions as expectation"
+  "efficiencyGrades": [
+    2,
+    4,
+    6
+  ],
+  "yieldGrades": [
+    2,
+    4,
+    6
+  ],
+  "regenGrades": [
+    1,
+    2,
+    3
+  ],
+  "armorShares": [
+    0.2,
+    0.4,
+    0.25,
+    0.15
+  ],
+  "baseMining": [
+    9,
+    11,
+    14,
+    18
+  ],
+  "baseSwordAttack": [
+    8,
+    10,
+    12,
+    16
+  ],
+  "basePickAttack": [
+    6,
+    8,
+    10,
+    12
+  ],
+  "baseArmorFactor": null,
+  "nativeArmorByTier": [
+    16,
+    18,
+    20,
+    22
+  ],
+  "nativeToughnessByTier": [
+    4,
+    8,
+    12,
+    16
+  ],
+  "gearSlots": [
+    1,
+    2,
+    4,
+    6,
+    8
+  ],
+  "bookSlots": [
+    0,
+    2,
+    3,
+    4,
+    6
+  ],
+  "regionalGrades": [
+    1,
+    1,
+    2,
+    2,
+    3
+  ],
+  "bookRegionalGrades": [
+    0,
+    1,
+    2,
+    2,
+    3
+  ],
+  "bookOrdinalGrades": [
+    0,
+    2,
+    3,
+    3,
+    4
+  ],
+  "attributeCaps": {
+    "attackDamage": 2048,
+    "maxHealth": 1024,
+    "blockReach": 64,
+    "entityReach": 64
+  },
+  "baseBlockReach": 4.5,
+  "baseEntityReach": 3,
+  "baseMaxHealth": 20,
+  "oxygenGrades": [
+    0.25,
+    0.0625,
+    0
+  ],
+  "yieldAggregation": "max(2*toolBranchLevel)+applicableNativeLevel; Silk Touch overrides Fortune",
+  "normalAggregation": "sqrt(sum(value^2))",
+  "wearFormula": "max(1,sum(itemAbsenceProtection))",
+  "numericMiningFormula": "4+5*digit/9",
+  "numericPickAttackFormula": "3+digit/3",
+  "numericSwordAttackFormula": "5+digit/3",
+  "durabilityTools": [
+    1800,
+    2250,
+    2700,
+    3600
+  ],
+  "durabilityArmorBase": [
+    400,
+    600,
+    550,
+    450
+  ],
+  "durabilityScales": [
+    1,
+    1.25,
+    1.5,
+    2
+  ],
+  "durabilityBows": [
+    768,
+    1152,
+    1536,
+    2304
+  ],
+  "bowSpeedMultipliers": [
+    1.1,
+    1.2,
+    1.3,
+    1.5
+  ],
+  "numericDurabilityFormula": "round(131*(2031/131)^(digit/9))",
+  "regenIntervalTicks": 80,
+  "maxControlSeconds": null,
+  "normalPowerAttackGrades": [
+    1,
+    2,
+    3
+  ],
+  "normalOrdinalAttackGrades": [
+    0.5,
+    1,
+    1.5,
+    2.5
+  ],
+  "powerPercentGrades": [
+    0.25,
+    0.5,
+    1
+  ],
+  "ordinalPercentGrades": [
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "ordinalHealingGrades": [
+    0.1,
+    0.2,
+    0.3,
+    0.5
+  ],
+  "ordinalDurationGrades": [
+    0.25,
+    0.5,
+    0.75,
+    1.25
+  ],
+  "bookInnateAttackHp": [
+    0,
+    0.5,
+    1,
+    1.5,
+    2
+  ],
+  "bookInnateAttackProtection": [
+    0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "bookInnateHealing": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "bookInnateDuration": [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ],
+  "bookUniversalBase": [
+    0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "armorBoundaryScale": 2,
+  "deepSpreadGrades": [
+    1,
+    4,
+    9
+  ],
+  "baseControlSeconds": 2,
+  "healthModel": "guogao_only_realm_invariant_rms",
+  "coreIds": [
+    "sequence_core",
+    "power_tower_core",
+    "hydra_bud",
+    "lho_trace",
+    "laver_core",
+    "astra_critical_core",
+    "boundary_core",
+    "guogao_heart",
+    "ordinal_crystal"
+  ],
+  "coreTranslationKeys": [
+    "block.googology.sequence_core",
+    "block.googology.power_tower_core",
+    "block.googology.hydra_bud",
+    "block.googology.lho_trace",
+    "block.googology.laver_core",
+    "block.googology.astra_critical_core",
+    "block.googology.boundary_core",
+    "block.googology.guogao_heart",
+    "block.googology.ordinal_crystal"
+  ],
+  "compatibility": [
+    [
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false
+    ]
+  ],
+  "coreNames": {
+    "zh": [
+      "序列晶核",
+      "幂塔晶核",
+      "分枝芽核",
+      "空集晶核",
+      "紫菜凝核",
+      "临界核晶",
+      "界限晶核",
+      "果糕之心",
+      "序数晶体"
+    ],
+    "en": [
+      "Sequence Core",
+      "Power Tower Core",
+      "Hydra Bud",
+      "Empty Set Core",
+      "Laver Condensation Core",
+      "Criticality Core",
+      "Boundary Core",
+      "Heart of Guogao",
+      "Ordinal Crystal"
+    ]
   }
 }

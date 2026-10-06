@@ -1,19 +1,19 @@
-# Current gameplay rules · 0.3.11
+# Current gameplay rules · 0.3.12
 
 [简体中文](MERGE-REVIEW-CHECKLIST.md) | English
 
-This replaces the older enhancement rules. Current roles and verification are recorded in [WORK-041](WORK-041.md); use the [offline simulator](enhancement-simulator.html) to inspect calculated effects.
+This replaces the older enhancement rules. Current roles and verification are recorded in [WORK-0312](WORK-0312.md); use the [offline simulator](enhancement-simulator.html) to inspect calculated effects.
 
 | Area | Current rule |
 |---|---|
 | Worlds | Outer supplies four mineral tiers and ordinary creatures; Inner and Guogao Underworld supply cores and landmarks |
-| Equipment | Four tiers of picks, swords, armor and manuscripts; numeric stone picks/swords are exceptions |
+| Equipment | Four tiers of picks, swords, bows, armor and manuscripts; numeric stone picks/swords remain |
 | Numeric harvesting | 0–4 stone, 5–7 iron, 8 diamond, 9 netherite; ordinary progressive stats remain |
-| Manuscripts | No durability; offhand passives, right-click bound-item sockets; four tiers have 2/3/4/6 slots |
-| Enhancement | Effect-specific sum or root-sum-squares; small normal bonuses and deeper amplification; armor and book protection combine once |
-| Durability | Laver protection 16/64/256 adds, with small Ordinal benefit; only wear probability changes, equally in every realm |
-| Core roles | Sequence yield; Hydra range/mining/helmet breathing; Laver wear/healing; all nine types fit manuscripts |
-| Flight / rescue | Empty Set Lv1 jump coexists with higher flight; Lv3 overrides Lv2, deep sprint is 8× horizontally and vertically; Guogao Lv2+ uses a real Totem |
+| Manuscripts | No durability; either hand, offhand priority; direct reversible bound-item sockets; 2/3/4/6 slots |
+| Enhancement | Same-item attack/protection uses root-sum-squares; armor is weighted; normal additive attack / multiplicative protection, separate deep factors |
+| Durability | Empty Set 4/16/64 summed; wear probability changes, armor also benefits from pre-hit protection; no manuscript wear |
+| Core roles | Sequence excavation/efficiency; Branch yield/reach; Laver aquatic/healing; Empty Set wear/stealth; Ordinal book-only; Criticality excludes books |
+| Flight / rescue | Boundary provides flight, jumping and fire resistance; deep sprint is eightfold on both axes; Guogao consumes a real inventory Totem |
 | Void / protection | Sonic booms and void use protection; Outer Y≤−1000 enters Inner, Inner Y≤−120 enters Underworld at Y500 |
 | Enchanting | Four ordinal gear/manuscript tiers cannot enchant; numeric and vanilla items retain enchanting |
 | Forward portals | Overworld cake + apple; Outer twelve mixed mineral blocks + Ω material; Inner twelve Guogao blocks + Guogao |
