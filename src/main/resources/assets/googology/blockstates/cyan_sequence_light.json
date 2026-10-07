@@ -98,9 +98,6 @@
     },
     "digit=32": {
       "model": "googology:block/christmas_digit_1_32"
-    },
-    "digit=33": {
-      "model": "googology:block/sequence_light_1"
     }
   }
 }

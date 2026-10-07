@@ -7,6 +7,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 /** The same checked-in table drives runtime settings, harvest tags and the player reference. */
 public final class BlockBalance {
+    /** Copy the amethyst appearance, not its inherited mandatory-pickaxe flag. */
+    public static BlockBehaviour.Properties amethystSettings() {
+        return BlockBehaviour.Properties.of().mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE)
+                .sound(net.minecraft.world.level.block.SoundType.AMETHYST);
+    }
     private static final JsonObject PROFILES;
     static {
         try (var stream=BlockBalance.class.getResourceAsStream("/googology/block_balance.json")) {

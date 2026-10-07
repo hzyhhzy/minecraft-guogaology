@@ -1,4 +1,4 @@
-/* Reproducible offline extrema audit of production revision47.
+/* Reproducible offline extrema audit of production revision48.
  * Run from any directory with Node; no Minecraft, browser, or third-party package.
  * Legacy proposal filenames are aliases of the production rules and engine.
  */
@@ -17,7 +17,7 @@ for (const file of [rulesPath, enginePath]) {
 }
 const payload = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
 const rules = payload.rules || payload;
-assert.equal(rules.revision, 47, 'Current production rules are required');
+assert.equal(rules.revision, 48, 'Current production rules are required');
 const engine = require(enginePath);
 assert.equal(typeof engine.calculate, 'function', 'Proposal engine calculate API');
 assert.equal(typeof engine.defaults, 'function', 'Proposal engine defaults API');
@@ -175,14 +175,14 @@ const best = { maximumHealth: winner(), maximumAttack: winner(), maximumHitWithB
       vanillaNaturalRegenerationIncluded: false
     });
   }
-  // Sequence manuscript Efficiency is maximum-based. Repeated copies replace
-  // useful Ordinal slots without increasing the level, but enumerate them too.
+  // Sequence flat/rate values form two independent RSS groups. Innate rate
+  // remains outside RSS; enumerate all legal socket counts.
   for (let sequence = 0; sequence <= 6; sequence++) {
     const s = snapshot(deep, false, [],crystals(T.sequence,sequence));
     const e = evaluate(s);
     retain(best.maximumMiningSpeed, e.miningFinal, s, e, {
       rawMining: e.rawMining, multiplier: e.miningMultiplier,
-      efficiencyLevel: e.efficiencyLevel, efficiencyBonus: e.efficiencyBonus,
+      bookMiningBase: e.bookMiningBase, manuscriptMiningFlat: e.manuscriptMiningFlat, manuscriptMiningRate: e.manuscriptMiningRate,
       correctTool: true, submerged: false, airborne: false
     });
   }
@@ -236,7 +236,7 @@ function miningTierComparisons() {
   for (const deep of [false, true]) for (let toolTier = 1; toolTier <= 4; toolTier++)
     for (let manuscriptTier = 1; manuscriptTier <= 4; manuscriptTier++) {
       const best = winner(), bookSlots = (rules.bookSlots || [0, 2, 3, 4, 6])[manuscriptTier],
-        sequenceLevel = (rules.bookRegionalGrades || [0, 1, 2, 2, 3])[manuscriptTier];
+        sequenceLevel = (rules.bookRegionalGrades || [0, 3, 3, 3, 3])[manuscriptTier];
       for (let sequence = 0; sequence <= bookSlots; sequence++) {
         const s = snapshot(deep, false);
         s.mainhand = { ...item(0, []), tier: toolTier };
@@ -245,7 +245,7 @@ function miningTierComparisons() {
         ]), tier: manuscriptTier };
         const e = evaluate(s);
         retain(best, e.miningFinal, s, e, { toolTier, manuscriptTier, sequenceLevel, sequenceCount: sequence,
-          rawMining: e.rawMining, efficiencyLevel: e.efficiencyLevel, multiplier: e.miningMultiplier });
+          rawMining: e.rawMining, bookMiningBase: e.bookMiningBase, manuscriptMiningFlat: e.manuscriptMiningFlat, manuscriptMiningRate: e.manuscriptMiningRate, multiplier: e.miningMultiplier });
       }
       rows.push(finish(best));
     }
@@ -307,17 +307,23 @@ function bookBaselines() {
   }
   return rows;
 }
-function efficiencyComparisons() {
-  const rows = [];
-  for (const deep of [false, true]) for (const tier of [1, 4]) for (const level of [0, 1, 2, 3]) {
-    const s = snapshot(deep, false, [], level ? [{ type: T.sequence, level }] : []);
-    s.mainhand.tier = tier;
-    const e = evaluate(s);
-    const raw = engine.baseMining ? engine.baseMining(s.mainhand) : (rules.baseMining || [9, 11, 14, 18])[tier - 1];
-    rows.push({ deep, toolTier: tier, sequenceLevel: level, nominalEfficiencyLevel: 2 * level,
-      nativeEfficiencySpeedAddition: level ? (2 * level) ** 2 + 1 : 0, baseMining: raw,
-      inferredFinalMining: e.miningFinal ?? e.finalMiningSpeed ?? e.miningSpeed ?? raw * e.miningMultiplier,
-      effects: e });
+function miningExamples() {
+  const rows=[];
+  for(const deep of[false,true])for(const example of[
+    {id:'bare_hand',mainhand:{...engine.empty(0),vanilla:'hand'},book:[]},
+    {id:'hand_one_sequence',mainhand:{...engine.empty(0),vanilla:'hand'},book:[{type:T.sequence,level:1}]},
+    {id:'hand_mixed_sequence',mainhand:{...engine.empty(0),vanilla:'hand'},book:[{type:T.sequence,level:1},{type:T.sequence,level:3}]},
+    {id:'omega_six_sequence',mainhand:item(0,[]),book:crystals(T.sequence,6)},
+    {id:'diamond_efficiency_v',mainhand:{tier:-1,kind:0,vanilla:'diamond',baseMining:8,nativeEfficiency:5,cores:[]},book:crystals(T.sequence,2)},
+    {id:'wrong_tool',mainhand:{tier:-1,kind:0,vanilla:'diamond',baseMining:8,nativeEfficiency:5,cores:[]},book:crystals(T.sequence,2),miningApplicable:false},
+    {id:'haste_ii',mainhand:item(0,[]),book:crystals(T.sequence,2),hasteLevel:2},
+    {id:'fatigue_water_air',mainhand:item(0,[]),book:crystals(T.sequence,2),hasteLevel:2,fatigueLevel:1,submerged:true,airborne:true}
+  ]) {
+    const s={...snapshot(deep,false),mainhand:example.mainhand,offhand:item(6,example.book),
+      miningApplicable:example.miningApplicable,hasteLevel:example.hasteLevel||0,
+      fatigueLevel:example.fatigueLevel||0,submerged:!!example.submerged,airborne:!!example.airborne};
+    const e=evaluate(s);
+    rows.push({id:example.id,deep,configuration:s,effects:e,value:e.miningFinal});
   }
   return rows;
 }
@@ -367,7 +373,7 @@ function lowerGradeProtection(deep) {
 const objectives = { normal: auditObjectives(false), deep: auditObjectives(true) };
 const output = {
   schemaVersion: 3,
-  scope: 'Production revision47 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
+  scope: 'Production revision48 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
   assumptions: {
     tier: 4, swordSlots: 8, manuscriptSlots: 6, armorSlotsPerPiece: 8,
     regionalLevel: 3, ordinalLevel: 4,
@@ -391,7 +397,7 @@ const output = {
   miningTierComparisons: miningTierComparisons(),
   protectionCounterexamples: protectionCounterexamples(),
   bookBaselineComparisons: bookBaselines(),
-  efficiencyComparisons: efficiencyComparisons(),
+  miningExamples: miningExamples(),
   balancedPvp: balancedPvp(objectives)
 };
 output.rangedExamples = [false, true].flatMap(deep => [1, 2, 3, 4].map(tier => {
@@ -403,7 +409,7 @@ output.balanceCalibration={
   attackRatio:output.deep.maximumAttack.value/output.normal.maximumAttack.value,
   protectionRatio:output.deep.maximumProtection.value/output.normal.maximumProtection.value,
   normalUnchanged:false,deepMaximumProtectionUnchanged:false,
-  goal:'Production revision47; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
+  goal:'Production revision48; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
 };
 const close = (a, b, label) => assert(Math.abs(a - b) < 1e-8 * Math.max(1, Math.abs(b)), label + ': ' + a + ' vs ' + b);
 const R = Math.sqrt(8), armorF = 1 + 2 * R;
@@ -413,6 +419,12 @@ close(output.normal.maximumProtection.value, armorF * (1.2 + Math.sqrt(5) + .4),
 close(output.deep.maximumProtection.value, armorF * 1.2 * 3 * (1 + .4 * Math.sqrt(2)), 'Deep extra defense independent peak');
 close(output.normal.maximumHealth.value, 20 + 12 * Math.sqrt(6), 'Maximum health');
 close(output.deep.maximumHealth.value, output.normal.maximumHealth.value, 'Realm-invariant health');
+close(output.normal.maximumMiningSpeed.value,(18+16*Math.sqrt(6))*(1.4+Math.sqrt(6)),'Six Sequence mining maximum, separate RSS');
+close(output.deep.maximumMiningSpeed.value,output.normal.maximumMiningSpeed.value,'Realm-invariant mining maximum');
+for(const example of output.miningExamples.filter(row=>!row.deep)) {
+  const peer=output.miningExamples.find(row=>row.deep&&row.id===example.id);
+  close(example.value,peer.value,'Mining scenario matches across realms: '+example.id);
+}
 output.vanillaComparison = { rawSwordAttack: 11, criticalSwordAttack: 15, health: 20,
   fixed80ProtectionWithProtectionIV: 5 / .36, fixed80LethalInput: 20 * 5 / .36,
   attackRatio: { normal: output.normal.maximumAttack.value / 11, deep: output.deep.maximumAttack.value / 11 },

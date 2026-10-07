@@ -8,6 +8,7 @@ also delegates to Overworld noise). Climate thresholds, template coordinates and
 import json,re
 from pathlib import Path
 from import_outer_content import ROOT,NS,ALIASES,DATA_NAMES,walk,write,remap_id,nbt_transform
+from generate_ore_distribution import apply_policy as ore_policy
 SOURCE=ROOT/'content/outer-1.0.0'
 GENERATED=json.loads((ROOT/'tools/outer_generated_resources.json').read_text('utf8'))
 
@@ -236,6 +237,7 @@ def prepare(target,out):
         elif rel.parts[0]=='worldgen':
             namespace,name=remap_id('googology:'+rel.stem).split(':')
             destination=out/f'data/{namespace}'/rel.parent/(name+'.json')
+        if rel.parts[0]=='worldgen':v=ore_policy(rel.parts[1],rel.stem,v)
         write(destination,v)
         if folder=='recipe':recipe_paths.append(destination)
         if rel.parts[:2]==('worldgen','biome'):biome_paths.append(destination)

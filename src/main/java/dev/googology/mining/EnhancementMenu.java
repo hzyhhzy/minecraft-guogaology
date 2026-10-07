@@ -67,13 +67,9 @@ public class EnhancementMenu extends ScreenHandler {
     public int gearGrade(){var spec=MiningContent.GEAR.get(gear().getItem());return spec==null?0:EquipmentRules.grade(spec.tier());}
     public int installed(){return GearData.cores(gear()).size();}
     public EquipmentRules.Snapshot preview(){
-        var snapshot=GearData.snapshot(owner);var spec=MiningContent.GEAR.get(gear().getItem());
-        if(spec==null)return snapshot;
-        var current=new EquipmentRules.Gear(spec.tier(),spec.kind(),GearData.digit(gear()),GearData.profile(gear()));
-        var main=snapshot.mainhand();var off=snapshot.offhand();
-        var head=snapshot.helmet();var chest=snapshot.chestplate();var legs=snapshot.leggings();var feet=snapshot.boots();
-        switch(spec.kind()){case 0,1,7->main=current;case 2->head=current;case 3->chest=current;case 4->legs=current;case 5->feet=current;case 6->off=current;}
-        return new EquipmentRules.Snapshot(main,off,head,chest,legs,feet,deep());
+        var spec=MiningContent.GEAR.get(gear().getItem());
+        var current=spec==null?EquipmentRules.Gear.empty(1):new EquipmentRules.Gear(spec.tier(),spec.kind(),GearData.digit(gear()),GearData.profile(gear()));
+        return EquipmentRules.itemPreview(current,deep());
     }
     public boolean canToggleSilk(){var spec=MiningContent.GEAR.get(gear().getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(GearData.profile(gear()),2)>0;}
     public boolean silkTouch(){return data.get(3)!=0;}
@@ -84,10 +80,32 @@ public class EnhancementMenu extends ScreenHandler {
     public boolean canInsertCore(ItemStack stack){
         if(stack.isEmpty())return false;for(int i=0;i<capacity();i++)if(contents.getStack(FIRST_CORE+i).isEmpty()&&accepts(i,stack))return true;return false;
     }
+    /** Highlighting only: ordinary inventory actions never use this predicate. */
+    public boolean canSelectInventoryItem(ItemStack stack){
+        if(stack.isEmpty())return false;
+        return !manuscript()&&gear().isEmpty()?getSlot(GEAR).canInsert(stack):canInsertCore(stack);
+    }
     private boolean accepts(int index,ItemStack stack){
         var spec=MiningContent.GEAR.get(gear().getItem());int type=GearData.type(stack);
-        if(index<0||index>=capacity()||spec==null||type<0||!EquipmentRules.compatible(spec.kind(),type))return false;
+        if(index<0||index>=capacity()||spec==null)return false;
+        if(GearData.isSocketTotem(gear(),stack))return true;
+        if(type<0||!EquipmentRules.compatible(spec.kind(),type))return false;
         int grade=EquipmentRules.stationGrade(type,GearData.level(stack));return grade<=rank()&&grade<=gearGrade();
+    }
+    /** Keep pre-open activation, but debit real ownership before its read-only snapshot.
+     * A removed active totem may still be on the cursor/inventory until close.
+     * Newly inserted totems cannot activate in this session; snapshots never drop items.
+     */
+    public boolean consumeActiveTotem(ItemStack actual){
+        if(closed||world==null||!manuscript()||!boundValid())return false;
+        var active=activeManuscript(actual);
+        if(active==actual||GearData.socketTotems(active)==0)return false;
+        synchronizeCores();boolean consumed=false;
+        for(int i=FIRST_CORE;i<FIRST_CORE+capacity();i++)if(contents.getStack(i).isOf(Items.TOTEM_OF_UNDYING)){contents.setStack(i,ItemStack.EMPTY);consumed=true;break;}
+        if(!consumed&&getCursorStack().isOf(Items.TOTEM_OF_UNDYING)){var stack=getCursorStack().copy();stack.decrement(1);setCursorStack(stack);consumed=true;}
+        if(!consumed)consumed=ManuscriptEffects.consumeInventoryTotem(owner);
+        if(!consumed)return false;
+        GearData.consumeSocketTotem(active);sendContentUpdates();return true;
     }
     private boolean boundValid(){return !manuscript()||(boundSlot==40?owner.getOffHandStack()==boundBook:boundSlot>=0&&owner.getInventory().selectedSlot==boundSlot&&owner.getInventory().getStack(boundSlot)==boundBook);}
     private void synchronizeCores(){
@@ -114,7 +132,10 @@ public class EnhancementMenu extends ScreenHandler {
     @Override public ItemStack quickMove(PlayerEntity player,int index){
         if(!canUse(player)||index<0||index>=slots.size()||manuscript()&&(index==GEAR||index>=INVENTORY&&slots.get(index).getIndex()==lockedSlot()))return ItemStack.EMPTY;
         var slot=slots.get(index);var stack=slot.getStack();if(stack.isEmpty())return ItemStack.EMPTY;var copy=stack.copy();
-        boolean moved=index<INVENTORY?insertItem(stack,INVENTORY,slots.size(),true):!manuscript()&&MiningContent.GEAR.containsKey(stack.getItem())?insertItem(stack,GEAR,GEAR+1,false):GearData.type(stack)>=0&&insertItem(stack,FIRST_CORE,FIRST_CORE+capacity(),false);
+        boolean moved=index<INVENTORY?insertItem(stack,INVENTORY,slots.size(),true):!manuscript()&&MiningContent.GEAR.containsKey(stack.getItem())?insertItem(stack,GEAR,GEAR+1,false):(GearData.type(stack)>=0||GearData.isSocketTotem(gear(),stack))&&insertItem(stack,FIRST_CORE,FIRST_CORE+capacity(),false);
+        // Keep enhancement inputs first, then allow ordinary main-inventory/hotbar sorting.
+        // Player slots retain their bound-manuscript lock through canInsert/canTakeItems.
+        if(!moved&&index>=INVENTORY){int hotbar=INVENTORY+27;moved=index<hotbar?insertItem(stack,hotbar,slots.size(),false):insertItem(stack,INVENTORY,hotbar,false);}
         if(!moved)return ItemStack.EMPTY;if(stack.isEmpty())slot.setStack(ItemStack.EMPTY);else slot.markDirty();synchronizeCores();return copy;
     }
     @Override public boolean canUse(PlayerEntity player){

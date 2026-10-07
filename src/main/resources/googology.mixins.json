@@ -6,6 +6,7 @@
     "AppleRitualMixin",
     "GuogaoGravityMixin",
     "GuogaoFallMixin",
+    "InnerLandingMixin",
     "RegionalWaterMixin",
     "SanctuaryGenerationMixin",
     "PlacedRelicHarvestMixin",

@@ -42,6 +42,26 @@ def verify_client_hooks(archive, metadata):
         assert 'dev.googology.client.mixin.'+required in active,f'Unregistered client hook: {required}'
 
 
+def verify_ore_policy(archive, target):
+    """Resource imports must not restore donor counts after the host overlay."""
+    from generate_ore_distribution import COUNTS, TOPS
+    folder='feature' if target=='26.3' else 'configured_feature'
+    prefix='data/googology/worldgen/'
+    for mineral,count in COUNTS.items():
+        for suffix in ('','_hell'):
+            name='ore_'+mineral+suffix+'.json'
+            configured=json.loads(archive.read(prefix+folder+'/'+name))
+            config=configured.get('config',configured)
+            assert config['discard_chance_on_air_exposure']==0.5,f'Stale ore air policy: {target}/{name}'
+            placed=json.loads(archive.read(prefix+'placed_feature/'+name))['placement']
+            actual_counts=[p['count'] for p in placed if p['type']=='minecraft:count']
+            assert actual_counts==[count],f'Stale ore count: {target}/{name}'
+            if mineral in TOPS:
+                heights=[p['height'] for p in placed if p['type']=='minecraft:height_range']
+                assert heights==[{'type':'minecraft:biased_to_bottom','min_inclusive':{'absolute':-64},
+                    'max_inclusive':{'absolute':TOPS[mineral]},'inner':1}],f'Stale ore height: {target}/{name}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -76,6 +96,12 @@ def package(targets, output_dir=None):
             entries=archive.namelist()
             verify_client_hooks(archive, metadata)
             verify_namespace(archive)
+            verify_ore_policy(archive, target)
+            frame=json.loads(archive.read('googology/block_balance.json'))['guogao_portal_frame']
+            assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
+            loot=json.loads(archive.read('data/googology/loot_table/blocks/guogao_portal_frame.json'))
+            assert not loot.get('pools'),f'Activated frame must never drop: {target}'
+            assert not any('PortalGroundChecks' in name for name in entries),'Ground-placement QA leaked into release'
             assert not any('/qa/' in n or '/mergeqa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'
             templates=[n for n in entries if n.startswith('data/googology/structure/') and n.endswith('.nbt')]

@@ -88,10 +88,12 @@ def adapt(text, target, name):
         text = '\n'.join(line for line in text.splitlines() if 'BlockRenderLayerMap' not in line and 'ChunkSectionLayer' not in line) + '\n'
     if name == 'EnhancementScreen.java':
         text=text.replace('super(menu,inventory,title);imageWidth=362;imageHeight=238;', 'super(menu,inventory,title,362,238);')
-        text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('graphics.drawString(', 'graphics.text(')
+        text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('renderSlots(', 'extractSlots(').replace('graphics.drawString(', 'graphics.text(')
         text=text.replace('protected void renderBg(GuiGraphicsExtractor graphics,float delta,int mouseX,int mouseY){', 'public void extractBackground(GuiGraphicsExtractor graphics,int mouseX,int mouseY,float delta){\n        super.extractBackground(graphics,mouseX,mouseY,delta);')
     if name == 'ManuscriptInventoryButton.java':
         text=text.replace('Screens.getButtons(', 'Screens.getWidgets(').replace('ScreenEvents.beforeRender(', 'ScreenEvents.beforeExtract(')
+    if name == 'PortalLoading.java':
+        text=text.replace('client.screen', 'client.gui.screen()').replace('client.setScreen(', 'client.gui.setScreen(')
     if name == 'CoreMeshModels.java':
         for old, new in {
             'net.fabricmc.fabric.api.renderer.v1': 'net.fabricmc.fabric.api.client.renderer.v1',

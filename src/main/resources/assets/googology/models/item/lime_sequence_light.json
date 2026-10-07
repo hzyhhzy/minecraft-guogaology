@@ -1,5 +1,5 @@
 {
-  "parent": "googology:block/sequence_light_3",
+  "parent": "googology:block/christmas_digit_3_0",
   "overrides": [
     {
       "predicate": {
@@ -198,12 +198,6 @@
         "googology:appearance": 0.125
       },
       "model": "googology:block/christmas_digit_3_32"
-    },
-    {
-      "predicate": {
-        "googology:appearance": 0.12890625
-      },
-      "model": "googology:block/sequence_light_3"
     }
   ]
 }

@@ -17,7 +17,7 @@ public final class ManuscriptInventoryButton {
             if(!(screen instanceof InventoryScreen)&&!(screen instanceof CreativeModeInventoryScreen))return;
             var button=Button.builder(Component.translatable("mining.googology.manuscript.button"),b->{
                 if(b.active)ClientPlayNetworking.send(OpenManuscriptPayload.INSTANCE);
-            }).bounds(0,0,46,16).tooltip(Tooltip.create(Component.translatable("mining.googology.manuscript.button_hint"))).build();
+            }).bounds(0,0,42,16).tooltip(Tooltip.create(Component.translatable("mining.googology.manuscript.button_hint"))).build();
             Screens.getButtons(screen).add(button);update(client,screen,button);
             ScreenEvents.beforeRender(screen).register((s,graphics,mx,my,delta)->update(client,s,button));
         });
@@ -28,6 +28,8 @@ public final class ManuscriptInventoryButton {
                 &&(!creative||((CreativeModeInventoryScreen)screen).isInventoryOpen());
         button.active=button.visible&&((AbstractContainerScreen<?>)screen).getMenu().getCarried().isEmpty()&&ClientPlayNetworking.canSend(OpenManuscriptPayload.ID);
         var origin=(InventoryOriginAccessor)screen;
-        button.setX(origin.googology$left()+(creative?132:97));button.setY(origin.googology$top()+(creative?6:62));
+        // Survival's recipe-book toggle occupies x=104..124. Keep a gap and
+        // stay inside the right edge; the origin moves when that book opens.
+        button.setX(origin.googology$left()+(creative?132:130));button.setY(origin.googology$top()+(creative?6:62));
     }
 }

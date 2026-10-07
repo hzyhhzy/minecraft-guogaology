@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 /** Bounded asynchronous loading; only a real travel request is allowed to build an exit. */
 public final class PortalPreparation {
-    public static final int MAX_PREPARATIONS=8,TIMEOUT_TICKS=600,SEARCH_BUDGET=8;
+    public static final int MAX_PREPARATIONS=8,TIMEOUT_TICKS=600,SEARCH_BUDGET=64;
     public enum Status { WAITING, READY, FAILED }
     public record Result(Status status,BlockPos exit) {}
     private static final Result WAITING=new Result(Status.WAITING,null),FAILED=new Result(Status.FAILED,null);
@@ -25,6 +25,8 @@ public final class PortalPreparation {
     private static final Map<TicketKey,Integer> USERS=new HashMap<>();
     private static long budgetTick=Long.MIN_VALUE;
     private static int remaining;
+    private static long searchDeadline;
+    private static final long SEARCH_NANOS=2_000_000L;
     private PortalPreparation() {}
     public static void initialize(){}
     private static final class Warming {
@@ -80,15 +82,15 @@ public final class PortalPreparation {
             catch(RuntimeException error){warm.failed=true;GoogologyMod.LOGGER.debug("Gate destination loading failed",error);return FAILED;}
             if(warm.target.world().getChunkManager().getWorldChunk(entry.getKey().x,entry.getKey().z)==null)return WAITING;
         }
-        if(budgetTick!=now){budgetTick=now;remaining=SEARCH_BUDGET;}
+        if(budgetTick!=now){budgetTick=now;remaining=SEARCH_BUDGET;searchDeadline=System.nanoTime()+SEARCH_NANOS;}
         if(warm.exit!=null){
-            if(remaining==0)return WAITING;remaining--;
+            if(remaining==0||System.nanoTime()>=searchDeadline)return WAITING;remaining--;
             if(PortalRitual.complete(warm.target.world(),new PortalState.Gate(warm.target.world().getRegistryKey().getValue().toString(),warm.exit,warm.target.kind()))
                     &&PortalTravel.isSafe(warm.target.world(),warm.exit.add(0,0,3)))return new Result(Status.READY,warm.exit);
             warm.exit=null;warm.search=null;
         }
         if(warm.search==null)warm.search=new PortalSiteSearch(warm.target);
-        while(remaining>0&&!warm.search.finished()){remaining--;warm.search.step();}
+        while(remaining>0&&System.nanoTime()<searchDeadline&&!warm.search.finished()){remaining--;warm.search.step();}
         if(!warm.search.finished())return WAITING;
         warm.exit=warm.search.exit();if(warm.exit==null){warm.failed=true;return FAILED;}
         return new Result(Status.READY,warm.exit);

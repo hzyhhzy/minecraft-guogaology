@@ -11,6 +11,7 @@ public final class GoogologyClient implements ClientModInitializer {
         net.minecraft.client.gui.screens.MenuScreens.register(dev.googology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
         net.minecraft.client.gui.screens.MenuScreens.register(dev.googology.mining.MiningContent.MANUSCRIPT_MENU,EnhancementScreen::new);
         PortalAppearance.initialize();
+        PortalLoading.initialize();
         ManuscriptInventoryButton.initialize();
         CoreMeshModels.initialize();
         CoreAnimationRenderer.initialize();

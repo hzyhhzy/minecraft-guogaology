@@ -30,6 +30,9 @@ final class SanctuaryArenas {
         // Remove the old gallery floor in this arena only, making its gaps and edges real.
         for(int z=-r;z<=r;z++)for(int x=-r;x<=r;x++){
             if(p.theme==SurvivalTheme.WEAVER&&floor(p.theme,x,z)==VOID)continue;
+            // The circular pagoda's diagonal wall posts sit inside the bounding square.
+            // Clear the actual arena disk so its hexadecimal windows remain complete.
+            if(p.theme==SurvivalTheme.POWER&&x*x+z*z>r*r)continue;
             for(int y=a.y()-3;y<=a.y()+19;y++){
                 if(p.theme==SurvivalTheme.GUOGAO&&p.at(a.x()+x,y,a.z()+z)==LEAF)continue;
                 p.set(a.x()+x,y,a.z()+z,AIR);

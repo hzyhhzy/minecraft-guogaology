@@ -3,7 +3,6 @@ package dev.googology.block;
 import net.minecraft.block.*;
 import net.minecraft.item.*;
 import net.minecraft.loot.context.*;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
@@ -23,8 +22,8 @@ public class AnchoredBlock extends PortableRelicBlock {
     private ItemStack item(BlockState state){return StatefulDecorBlock.copyAppearance(new ItemStack(this),state.with(STABLE,true).with(PLAYER_PLACED,true));}
     @Override protected List<ItemStack> getDroppedStacks(BlockState state,LootContextParameterSet.Builder builder){
         if(placed(state))return List.of(item(state));
-        var tool=builder.getOptional(LootContextParameters.TOOL);var origin=builder.getOptional(LootContextParameters.ORIGIN);
-        if(tool==null||!tool.isIn(ItemTags.PICKAXES)||origin==null)return List.of();
+        var origin=builder.getOptional(LootContextParameters.ORIGIN);
+        if(origin==null)return List.of();
         return protectedAt(state,builder.getWorld(),BlockPos.ofFloored(origin))?List.of(item(state)):List.of();
     }
 }

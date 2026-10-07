@@ -14,12 +14,12 @@ public final class OrdinalBowItem extends BowItem {
     @Override public int getEnchantability(){return 0;}
     @Override public boolean canRepair(ItemStack bow,ItemStack ingredient){return ingredient.isOf(MiningContent.MATERIALS[tier-1]);}
     @Override public void appendTooltip(ItemStack stack,TooltipContext context,List<Text> out,TooltipType flag){
-        out.add(Text.translatable("mining.googology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,7),EquipmentRules.grade(tier)));
+        out.add(Text.translatable("mining.googology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,7)));
         out.add(Text.translatable("mining.googology.bow_speed_tooltip",EquipmentRules.format(EquipmentRules.arrowSpeedMultiplier(tier))));
         int branch=EquipmentRules.highest(GearData.profile(stack),2);
         if(branch>=1)out.add(Text.translatable("mining.googology.bow_infinity"));if(branch>=2)out.add(Text.translatable("mining.googology.bow_multishot"));if(branch>=3)out.add(Text.translatable("mining.googology.bow_pierce"));
         out.add(Text.translatable("mining.googology.bow_ammo"));
         if(EquipmentRules.highest(GearData.profile(stack),3)>0)out.add(Text.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(stack),List.of()))));
-        for(var core:GearData.cores(stack))out.add(Text.literal("• ").append(core.getName()).append(" — ").append(Text.translatable("mining.googology.effect."+GearData.type(core))));
+        for(var core:GearData.cores(stack))out.add(Text.literal("• ").append(core.getName()).append(" — ").append(Text.translatable(EquipmentRules.coreEffectKey(EquipmentRules.BOW,GearData.type(core),GearData.level(core)))));
     }
 }

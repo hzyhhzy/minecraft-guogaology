@@ -1,7 +1,7 @@
 """Four-tier common progression. Donor textures are imported separately.
 
-No recipes for surface materials may require an inner-world crystal. Crystal
-fusion itself remains the established eight-plus-one system.
+Surface equipment keeps its four-tier mineral recipes. The basic enhancement
+table uses one ungraded Ordinal Crystal; crystal fusion remains eight-plus-one.
 """
 from pathlib import Path
 import json,re
@@ -18,6 +18,28 @@ def shaped(name,pattern,keys,result=None,count=1):
     write(D/f'recipe/{name}.json',{'type':'minecraft:crafting_shaped','category':'equipment' if any(x in name for x in (*PARTS,'manuscript')) else 'misc','pattern':pattern,'key':{k:({'tag':v[1:]} if v.startswith('#') else {'item':v}) for k,v in keys.items()},'result':{'id':result or 'googology:'+name,'count':count}})
 def simple(name,items,result,count=1):write(D/f'recipe/{name}.json',{'type':'minecraft:crafting_shapeless','category':'misc','ingredients':[{'item':x} for x in items],'result':{'id':result,'count':count}})
 def old_id(id):return bool(re.search(r'googology:(?:nether_)?(?:psi|strata|proof)_(?:ore|block|material|fragment|cluster|pickaxe|sword|helmet|chestplate|leggings|boots)\b',id))
+
+def generate_basic_material_recipes(data=None):
+    """Write only the basic station and one-way ten-digit cobblestone recipes."""
+    data=Path(data) if data is not None else D
+    table=data/'recipe/enhancement_table.json'
+    stone=data/'recipe/cobblestone_from_number_stones.json'
+    write(table,{'type':'minecraft:crafting_shaped','category':'misc',
+                 'pattern':[' M ','BWB','SSS'],
+                 'key':{'M':{'item':'googology:ordinal_crystal'},'B':{'item':'minecraft:book'},
+                        'W':{'item':'minecraft:crafting_table'},'S':{'tag':'minecraft:stone_crafting_materials'}},
+                 'result':{'id':'googology:enhancement_table','count':1}})
+    # This existing item tag contains exactly ordinal_stone and its _1.._9 IDs.
+    # Use a new ID: old donor stone conversions remain intentionally retired.
+    write(stone,{'type':'minecraft:crafting_shapeless','category':'building',
+                 'ingredients':[{'tag':'googology:number_stones'}],
+                 'result':{'id':'minecraft:cobblestone','count':1}})
+    from prepare_outer_resources import recipe_unlocks
+    recipe_unlocks(data,[table,stone])
+    # The historical mining advancement also grants this recipe. Keep its
+    # unlock in sync so no surviving path still requires an omega mineral.
+    write(data/'advancement/recipes/mining/enhancement_table.json',
+          read(data/'advancement/recipes/enhancement_table.json'))
 
 def generate():
     # Exact retired progression files only; ψ landscape blocks remain live.
@@ -49,9 +71,8 @@ def generate():
         # A book silhouette stays readable at native item resolution.
         model(metal+'_manuscript','minecraft:item/generated','googology:item/'+metal+'_manuscript')
         shaped(metal+'_manuscript',[' M ','MBM',' M '],{'M':'googology:'+metal+'_material','B':'minecraft:book'})
-    shaped('enhancement_table',[' M ','BWB','SSS'],{'M':'googology:omega_material','B':'minecraft:book','W':'minecraft:crafting_table','S':'#minecraft:stone_crafting_materials'})
-    # The first station remains craftable in the Outer world. Upgrades use
-    # Inner-world universal crystals, never biome-specific materials.
+    # Advanced/ultimate upgrades retain their previous-table and eight
+    # universal-crystal recipes, never biome-specific materials.
     for tier in (2,3):
         shaped('enhancement_table_'+str(tier),['CCC','CTC','CCC'],{
             'C':'googology:ordinal_crystal'+('_lv2' if tier==3 else ''),
@@ -114,5 +135,9 @@ def generate():
     update_core_effect_copy()
     from generate_bow_recipes import generate as generate_bow_recipes
     generate_bow_recipes()
+    from generate_ore_distribution import generate as generate_ore_distribution
+    generate_ore_distribution()
+    # Run last to retain tag-aware recipe unlocks after the broad recipe pass.
+    generate_basic_material_recipes()
     print('Four-tier recipes, drops, models and translations updated')
 if __name__=='__main__':generate()

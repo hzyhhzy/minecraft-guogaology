@@ -22,6 +22,8 @@ public final class GoogologyPortalFrameBlock extends StatefulDecorBlock {
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder) { builder.add(STYLE); }
     @Override protected VoxelShape getShape(BlockState state,BlockGetter world,BlockPos pos,CollisionContext context) { return SHAPES[state.getValue(STYLE)]; }
     @Override protected VoxelShape getCollisionShape(BlockState state,BlockGetter world,BlockPos pos,CollisionContext context) { return SHAPES[state.getValue(STYLE)]; }
+    /** Activated frames are spent ritual material, regardless of tool or Silk Touch. */
+    @Override protected java.util.List<net.minecraft.world.item.ItemStack> getDrops(BlockState state,net.minecraft.world.level.storage.loot.LootParams.Builder builder) { return java.util.List.of(); }
     @Override protected void affectNeighborsAfterRemoval(BlockState state,ServerLevel world,BlockPos pos,boolean moved) {
         PortalRitual.collapseAt(world,pos);
         super.affectNeighborsAfterRemoval(state,world,pos,moved);

@@ -43,7 +43,7 @@ public record ChristmasLightsFeature(int candidates, float chance, int radius) i
          if (var1.hasChunkAt(var11) && var1.getBlockState(var11).is(var5) && var3.nextInt(10) < 1) {
             int var12 = var3.nextInt(6);
             String[] colors={"amber","cyan","rose","lime","violet","scarlet"};
-            BlockState var13 = BuiltInRegistries.BLOCK.getValue(net.minecraft.resources.Identifier.fromNamespaceAndPath("googology",colors[var12]+"_sequence_light")).defaultBlockState();
+            BlockState var13 = BuiltInRegistries.BLOCK.getValue(net.minecraft.resources.Identifier.fromNamespaceAndPath("googology",colors[var12]+"_light")).defaultBlockState();
             var1.setBlock(var11, var13, 2);
             var6++;
          }

@@ -45,7 +45,7 @@ def main() -> None:
     parser.add_argument("--node", default=shutil.which("node"), help="Node executable for verification")
     args = parser.parse_args()
     if args.health_preview:
-        parser.error("The old health preview is retired; run without --health-preview for production revision47.")
+        parser.error("The old health preview is retired; run without --health-preview for production revision48.")
     if not args.node:
         raise SystemExit("Node is required for the Java/JavaScript comparison.")
     work = ROOT / "build/enhancement-simulator"
@@ -59,8 +59,8 @@ def main() -> None:
         classes.mkdir(parents=True, exist_ok=True)
         run([str(home / ("bin/javac" + suffix)), "--release", "21", "-encoding", "UTF-8", "-d", str(classes), str(source)])
     exported = json.loads(run([java, "-cp", str(classes), "dev.googology.mining.EquipmentRules", "cases"]))
-    if not exported.get("cases") or exported["rules"].get("revision") != 47:
-        raise SystemExit("EquipmentRules revision47 golden cases are required.")
+    if not exported.get("cases") or exported["rules"].get("revision") != 48:
+        raise SystemExit("EquipmentRules revision48 golden cases are required.")
     rules = dict(exported["rules"])
     rules["coreNames"] = {}
     rules["coreStageNames"] = {}
@@ -84,9 +84,9 @@ def main() -> None:
         raise SystemExit("Legacy engine alias differs from production; synchronize it before generation.")
     build = {"caseCount": len(exported["cases"]), "ruleSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
              "engineSha256": hashlib.sha256(engine.encode("utf-8")).hexdigest(), "revision": rules["revision"],
-             "healthPreview": False, "proposalPreview": False, "productionVersion": "0.3.12"}
+             "healthPreview": False, "proposalPreview": False, "productionVersion": "0.4.4"}
     template = (ROOT / "tools/enhancement_simulator_current.template.html").read_text(encoding="utf-8")
-    html = template.replace("__MODE_ZH__", "0.3.12 · 当前Mod规则").replace("__MODE_EN__", "0.3.12 · Current Mod rules")
+    html = template.replace("__MODE_ZH__", "0.4.4 · 当前Mod规则").replace("__MODE_EN__", "0.4.4 · Current Mod rules")
     html = html.replace("__RULES_JSON__", json.dumps(rules, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"))
     html = html.replace("__ENGINE_JS__", engine).replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":")))
     if re.search(r"__[A-Z_]+__", html):

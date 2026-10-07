@@ -6,6 +6,7 @@ import dev.googology.GoogologyMod;
 import dev.googology.GoogologySounds;
 import dev.googology.ambience.*;
 import dev.googology.block.ChristmasDigitBlock;
+import dev.googology.block.ChristmasLightBlock;
 import dev.googology.world.WorldNoise;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -90,7 +91,9 @@ public final class GoogologyAtmosphere {
     }
     private static boolean underworld() { return world.dimension().equals(GoogologyMod.GUOGAO); }
     private static boolean lho(BlockPos pos) { return world.dimension().equals(GoogologyMod.DIMENSION)&&world.getBiome(pos).is(GoogologyMod.id("lho_absence")); }
-    private static boolean interesting(BlockState state) { return state.getBlock() instanceof ChristmasDigitBlock||fiber(state); }
+    private static boolean lamp(BlockState state){return state.getBlock() instanceof ChristmasDigitBlock||state.getBlock() instanceof ChristmasLightBlock;}
+    private static int lampColor(BlockState state){return state.getBlock() instanceof ChristmasLightBlock plain?plain.color():((ChristmasDigitBlock)state.getBlock()).color();}
+    private static boolean interesting(BlockState state) { return lamp(state)||fiber(state); }
     private static boolean fiber(BlockState state) { return state.is(GoogologyBlocks.TIANYI_FIBER)||state.is(GoogologyBlocks.WHITE_FIBER)||state.is(GoogologyBlocks.LTY_YARN); }
     private static void tick(Minecraft client) {
         synchronize(client);if(world==null||client.player==null||client.isPaused()) return;
@@ -133,7 +136,7 @@ public final class GoogologyAtmosphere {
                 var p=new BlockPos(ref.x*16+x,bottom+y,ref.z*16+z);if(p.distSqr(center)>88*88) continue;
                 if(fiber(state)) { if(FIBERS.size()<512||FIBERS.containsKey(p)) FIBERS.put(p,ticks);continue; }
                 if(!underworld()||(LIGHTS.size()>=2048&&!LIGHTS.containsKey(p))) continue;
-                int color=((ChristmasDigitBlock)state.getBlock()).color();
+                int color=lampColor(state);
                 var old=LIGHTS.put(p,new Light(p,color,ticks));if(old==null||old.color!=color) dirty=true;
             }
         }
@@ -181,7 +184,7 @@ public final class GoogologyAtmosphere {
         if(underworld()) for(var beat:beats) {
             var p=beat.pos();var pos=new BlockPos(p.x(),p.y(),p.z());
             var state=world.getBlockState(pos);
-            if(pos.distToCenterSqr(camera)>84*84||(!(state.getBlock() instanceof ChristmasDigitBlock))) continue;
+            if(pos.distToCenterSqr(camera)>84*84||!lamp(state)) continue;
             double brightness=BandRhythm.brightness(beat,time);
             blockFilm(quads,camera,pos,0,.012f,.022f,.018f,(float)(.80*(1-brightness)));
             if(brightness>.76) blockFilm(quads,camera,pos,.001,.80f,.97f,.84f,(float)((brightness-.76)*.8));

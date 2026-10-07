@@ -80,21 +80,13 @@ final class PowerPagoda {
         for(int side:new int[]{-1,1})for(int n=0;n<16;n++)p.set(side*6,4+n,28,(byte)(FIXED_NUMBER+n));
         // One complete turn between storeys. The stairs follow the interior circumference.
         p.path(new Point(0,2,28),new Point(25,2,0));
-        for(int level=0;level<8;level++){
+        for(int level=0;level<9;level++){
             double start=radius(level)-7,end=radius(level+1)-7;
             for(int step=1;step<=16;step++){
                 double t=step/16.0,a=t*Math.PI*2,r=start+(end-start)*t;
                 p.path(new Point((int)Math.round(Math.cos(a)*r),floor(level)+(int)Math.round(23*t),(int)Math.round(Math.sin(a)*r)));
             }
         }
-        p.path(new Point(14,floor(8),0));
-    }
-    static void connectUpper(SanctuaryLayout p){
-        Point previous=new Point(radius(8)-7,floor(8),0);
-        for(int step=1;step<=16;step++){
-            double t=step/16.0,a=t*Math.PI*2,r=radius(8)-7+(radius(9)-radius(8))*t;
-            Point next=new Point((int)Math.round(Math.cos(a)*r),floor(8)+(int)Math.round(23*t),(int)Math.round(Math.sin(a)*r));
-            p.walk(previous,next,3);previous=next;
-        }
+        p.path(new Point(14,floor(9),0));
     }
 }

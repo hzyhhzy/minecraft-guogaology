@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#googology:number_stones"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "googology:cobblestone_from_number_stones"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "googology:cobblestone_from_number_stones"
+    ]
+  }
+}

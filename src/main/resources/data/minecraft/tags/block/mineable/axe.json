@@ -6,7 +6,6 @@
     "googology:iblp_blank",
     "googology:iblp_marked",
     "googology:iblp_node",
-    "googology:laver_core",
     "googology:laver_planks",
     "googology:laver_vein",
     "googology:y_log",
@@ -49,6 +48,7 @@
     "googology:dread_button",
     "googology:dread_pressure_plate",
     "googology:dread_sign",
-    "googology:dread_wall_sign"
+    "googology:dread_wall_sign",
+    "googology:amber_light"
   ]
 }

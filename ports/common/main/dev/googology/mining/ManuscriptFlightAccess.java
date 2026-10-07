@@ -3,4 +3,6 @@ package dev.googology.mining;
 public interface ManuscriptFlightAccess {
     boolean googology$ownsManuscriptFlight();
     void googology$setManuscriptFlight(boolean value);
+    boolean googology$manuscriptSprint();
+    void googology$setManuscriptSprint(boolean value);
 }

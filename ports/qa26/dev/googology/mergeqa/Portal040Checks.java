@@ -53,6 +53,15 @@ final class Portal040Checks {
         }
         check(contained,"build footprint and its update-neighbor rim stay inside the candidate chunk at positive and negative coordinates");
         clear(home,SOURCE);clear(outer,TARGET);
+        var targetType=Class.forName("dev.googology.portal.PortalTravel$Target");
+        var targetConstructor=targetType.getDeclaredConstructor(ServerLevel.class,BlockPos.class,PortalKind.class);targetConstructor.setAccessible(true);
+        var searchType=Class.forName("dev.googology.portal.PortalSiteSearch");var searchConstructor=searchType.getDeclaredConstructor(targetType);searchConstructor.setAccessible(true);
+        var search=searchConstructor.newInstance(targetConstructor.newInstance(home,SOURCE,PortalKind.INNER));
+        var searchStep=searchType.getDeclaredMethod("step");searchStep.setAccessible(true);int searchSteps=0;
+        while(!(boolean)field(searchType,search,"finished")&&searchSteps++<1000)searchStep.invoke(search);
+        check(field(searchType,search,"exit").equals(SOURCE),"search selects the nearest complete supported footprint");
+        check((int)field(searchType,search,"candidateIndex")==1&&((List<?>)field(searchType,search,"candidates")).size()>100,"first supported candidate ends search without inspecting all remaining sites");
+        PortalState.get(server).removeGate(new PortalState.Gate(home.dimension().identifier().toString(),SOURCE,PortalKind.INNER));clear(home,SOURCE);
         var feet=SOURCE.offset(0,0,3);check(PortalTravel.isSafe(home,feet),"plain protected fixture floor is safe");
         for(var hazard:List.of(Blocks.POWDER_SNOW,Blocks.WITHER_ROSE,Blocks.SWEET_BERRY_BUSH,Blocks.CACTUS,Blocks.FIRE,Blocks.SOUL_FIRE,Blocks.POINTED_DRIPSTONE)){
             var floor=feet.below();var previousFloor=home.getBlockState(floor);
@@ -100,7 +109,7 @@ final class Portal040Checks {
             check(!bytes.contains("displayClientMessage")&&!bytes.contains("sendMessage")&&!bytes.contains("no_safe_return"),"failure/cancellation implementation cannot send chat feedback");
         }
         reset();player.teleport(new TeleportTransition(originalWorld,originalPosition,Vec3.ZERO,yaw,pitch,TeleportTransition.DO_NOTHING));
-        System.out.println("PORTAL_040_STATIC_OK checks="+checks+" hazards=8 chunks=9 timeout=600 budget=8 prewarm_writes=0");
+        System.out.println("PORTAL_040_STATIC_OK checks="+checks+" hazards=8 chunks=9 timeout=600 budget=64/2ms prewarm_writes=0");
     }
     static void beginTravel(ServerPlayer player)throws Exception{
         savedWorld=player.level();savedPosition=player.position();savedYaw=player.getYRot();savedPitch=player.getXRot();subject=player;

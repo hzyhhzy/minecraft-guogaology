@@ -30,10 +30,23 @@ public final class ManuscriptEffects {
     public static boolean deep(World world){return world.getRegistryKey().equals(GoogologyMod.DIMENSION)||world.getRegistryKey().equals(GoogologyMod.GUOGAO);}
     public static ItemStack held(LivingEntity entity){var stack=entity.getOffHandStack();if(stack.getItem() instanceof DenxiManuscript)return effective(entity,stack);stack=entity.getMainHandStack();return stack.getItem() instanceof DenxiManuscript?effective(entity,stack):ItemStack.EMPTY;}
     public static ItemStack effective(LivingEntity entity,ItemStack stack){return stack.getItem() instanceof DenxiManuscript&&entity instanceof PlayerEntity player&&player.currentScreenHandler instanceof ManuscriptMenu menu?menu.activeManuscript(stack):stack;}
+    /** The inventory fallback is available only with the active Guogao II/III core. */
+    public static boolean consumeInventoryTotem(PlayerEntity player){
+        for(int i=0;i<player.getInventory().size();i++){var stack=player.getInventory().getStack(i);if(stack.isOf(Items.TOTEM_OF_UNDYING)){stack.decrement(1);return true;}}return false;
+    }
+    private static boolean consumeRescueTotem(ServerPlayerEntity player){
+        if(level(held(player),7)>=2&&consumeInventoryTotem(player))return true;
+        var actual=player.getOffHandStack();if(!(actual.getItem() instanceof DenxiManuscript))actual=player.getMainHandStack();
+        if(!(actual.getItem() instanceof DenxiManuscript))return false;
+        if(player.currentScreenHandler instanceof ManuscriptMenu menu&&menu.activeManuscript(actual)!=actual)return menu.consumeActiveTotem(actual);
+        return GearData.consumeSocketTotem(actual);
+    }
     public static int level(ItemStack book,int type){return EquipmentRules.highest(GearData.profile(book),type);}
     public static double points(LivingEntity entity,int type){return GearData.points(held(entity),type);}
     public static double miningMultiplier(PlayerEntity player,ItemStack tool,net.minecraft.block.BlockState state){return EquipmentRules.miningMultiplier(GearData.minesWithPick(tool,state)?GearData.profile(tool):List.of(),GearData.profile(held(player)),deep(player.getWorld()));}
     public static int jumpBlocks(LivingEntity player){int count=0;for(var core:GearData.profile(held(player)))if(core.type()==6&&core.level()==1)count++;return count;}
+    /** Lv1 landing protection remains active alongside higher grades, without stacking per core. */
+    public static boolean boundaryLandingProtection(LivingEntity entity){return jumpBlocks(entity)>0;}
     private static double rise(double velocity,double gravity){double height=0;for(int i=0;i<256&&velocity>0;i++){height+=velocity;velocity=(velocity-gravity)*.98;}return height;}
     /** Solve discrete vanilla ascent so each Lv1 adds one block, including the underworld's lower gravity. */
     public static float jumpVelocity(PlayerEntity player,float vanilla){
@@ -44,14 +57,18 @@ public final class ManuscriptEffects {
     public static boolean ownsFlight(PlayerEntity player){return player instanceof ManuscriptFlightAccess access&&access.googology$ownsManuscriptFlight();}
     private static boolean customFlight(PlayerEntity player){return ownsFlight(player)&&player.getAbilities().flying&&!player.hasVehicle()&&!player.isCreative()&&!player.isSpectator();}
     public static boolean controlsFlightSpeed(PlayerEntity player){return customFlight(player)&&level(held(player),6)>=2;}
+    public static boolean flightSprint(PlayerEntity player){return player instanceof ManuscriptFlightAccess access&&access.googology$manuscriptSprint();}
+    /** The packet changes only intent; it can never grant flight or claim another provider's permission. */
+    public static void setFlightSprint(PlayerEntity player,boolean requested){
+        if(player instanceof ManuscriptFlightAccess access)access.googology$setManuscriptSprint(requested&&player.isAlive()&&customFlight(player)&&level(held(player),6)>=3);
+    }
     public static float horizontalSpeed(PlayerEntity player,float vanilla){
-        if(!customFlight(player))return vanilla;int grade=level(held(player),6);
-        if(grade==2)return .05f/3;
-        return grade>=3?.05f*(player.isSprinting()?(deep(player.getWorld())?8:2):1):vanilla;
+        if(!controlsFlightSpeed(player))return vanilla;
+        return ManuscriptFlightRules.horizontal(level(held(player),6),deep(player.getWorld()),flightSprint(player));
     }
     public static float verticalSpeed(PlayerEntity player,float vanilla){
-        if(!customFlight(player))return vanilla;int grade=level(held(player),6);
-        return grade==2?.05f/3:grade>=3?.05f*(deep(player.getWorld())&&player.isSprinting()?8:1):vanilla;
+        if(!controlsFlightSpeed(player))return vanilla;
+        return ManuscriptFlightRules.vertical(level(held(player),6),deep(player.getWorld()),flightSprint(player));
     }
     public static boolean immune(LivingEntity player,RegistryEntry<StatusEffect> effect){int grade=level(held(player),7);return grade>=2&&LIGHT.contains(effect)||grade>=3&&STRONG.contains(effect);}
     private static String effectTag(RegistryEntry<StatusEffect> type){return type.equals(StatusEffects.NIGHT_VISION)?OWNED_NIGHT:OWNED_FIRE;}
@@ -81,8 +98,11 @@ public final class ManuscriptEffects {
         }
     }
     private static void modifier(ServerPlayerEntity player,RegistryEntry<EntityAttribute> attribute,String id,double amount){
+        modifier(player,attribute,id,amount,EntityAttributeModifier.Operation.ADD_VALUE);
+    }
+    private static void modifier(ServerPlayerEntity player,RegistryEntry<EntityAttribute> attribute,String id,double amount,EntityAttributeModifier.Operation operation){
         var instance=player.getAttributeInstance(attribute);if(instance==null)return;var key=GoogologyMod.id(id);var old=instance.getModifier(key);
-        if(old!=null&&Math.abs(old.value()-amount)<1e-8)return;instance.removeModifier(key);if(amount!=0)instance.addTemporaryModifier(new EntityAttributeModifier(key,amount,EntityAttributeModifier.Operation.ADD_VALUE));
+        if(old!=null&&old.operation()==operation&&Math.abs(old.value()-amount)<1e-8)return;instance.removeModifier(key);if(amount!=0)instance.addTemporaryModifier(new EntityAttributeModifier(key,amount,operation));
     }
     private static void release(ServerPlayerEntity player){
         var flight=FLIGHTS.remove(player.getUuid());player.removeCommandTag(OWNED_FLIGHT);if(player instanceof ManuscriptFlightAccess access)access.googology$setManuscriptFlight(false);
@@ -97,7 +117,7 @@ public final class ManuscriptEffects {
         if(!player.isAlive()){release(player);clearEffects(player);LANDING.remove(player.getUuid());return;}
         var book=held(player);int flight=level(book,6);var old=FLIGHTS.get(player.getUuid());
         if(old!=null&&!old.world().equals(player.getWorld().getRegistryKey().getValue().toString())){release(player);clearEffects(player);}
-        modifier(player,EntityAttributes.GENERIC_MOVEMENT_SPEED,"manuscript_speed",0);
+        modifier(player,EntityAttributes.GENERIC_MOVEMENT_SPEED,"manuscript_speed",EquipmentRules.boundaryWalkRate(GearData.profile(book)),EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         modifier(player,EntityAttributes.GENERIC_ATTACK_DAMAGE,"manuscript_attack",GearData.bookAttackBonus(player));
         modifier(player,EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE,"manuscript_block_reach",GearData.bookReachBonus(player));
         modifier(player,EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,"manuscript_entity_reach",GearData.bookReachBonus(player));
@@ -107,6 +127,7 @@ public final class ManuscriptEffects {
             var abilities=player.getAbilities();
             if(!abilities.allowFlying){FLIGHTS.put(player.getUuid(),new Flight(player.getWorld().getRegistryKey().getValue().toString()));abilities.allowFlying=true;player.addCommandTag(OWNED_FLIGHT);if(player instanceof ManuscriptFlightAccess access)access.googology$setManuscriptFlight(true);player.sendAbilitiesUpdate();}
         }else release(player);
+        if(!customFlight(player)||flight<3)setFlightSprint(player,false);
         if(player.isOnGround()||player.isTouchingWater())LANDING.remove(player.getUuid());
         effect(player,StatusEffects.NIGHT_VISION,level(book,3)>=2);effect(player,StatusEffects.FIRE_RESISTANCE,level(book,6)>=2);
         for(var active:new ArrayList<>(player.getStatusEffects()))if(immune(player,active.getEffectType()))player.removeStatusEffect(active.getEffectType());
@@ -115,6 +136,7 @@ public final class ManuscriptEffects {
     }
     public static boolean fallImmune(LivingEntity player){return level(held(player),6)>=2||LANDING.contains(player.getUuid());}
     public static void initialize(){
+        ManuscriptFlightPayload.initialize();
         ServerPlayConnectionEvents.JOIN.register((handler,sender,server)->{
             var player=handler.player;
             recoverEffects(player);
@@ -126,13 +148,9 @@ public final class ManuscriptEffects {
         ServerLifecycleEvents.SERVER_STOPPING.register(server->{for(var player:server.getPlayerManager().getPlayerList()){release(player);clearEffects(player);}FLIGHTS.clear();LANDING.clear();EFFECTS.clear();});
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity,source,amount)->!(entity instanceof ServerPlayerEntity)||!(source.isOf(DamageTypes.FALL)&&fallImmune(entity)||source.isOf(DamageTypes.FLY_INTO_WALL)&&level(held(entity),6)>=3));
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity,source,damage)->{
-            if(!(entity instanceof ServerPlayerEntity player)||source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)||level(held(player),7)<2)return true;
-            for(int i=0;i<player.getInventory().size();i++){
-                var stack=player.getInventory().getStack(i);if(!stack.isOf(Items.TOTEM_OF_UNDYING))continue;
-                stack.decrement(1);player.setHealth(1);clearEffects(player);player.clearStatusEffects();
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,900,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION,100,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE,800,0));player.getWorld().sendEntityStatus(player,(byte)35);return false;
-            }
-            return true;
+            if(!(entity instanceof ServerPlayerEntity player)||source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)||!consumeRescueTotem(player))return true;
+            player.setHealth(1);clearEffects(player);player.clearStatusEffects();
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,900,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION,100,1));player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE,800,0));player.getWorld().sendEntityStatus(player,(byte)35);return false;
         });
     }
 }

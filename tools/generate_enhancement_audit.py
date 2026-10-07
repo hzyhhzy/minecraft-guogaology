@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the production revision47 audit as an offline bilingual report."""
+"""Render the production revision48 audit as an offline bilingual report."""
 from pathlib import Path
 import base64
 import html
@@ -8,8 +8,8 @@ import math
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "build/enhancement-simulator/proposal-audit.json").read_text(encoding="utf-8"))
-if DATA["rules"]["revision"] != 47:
-    raise SystemExit("Regenerate the production revision47 audit before rendering.")
+if DATA["rules"]["revision"] != 48:
+    raise SystemExit("Regenerate the production revision48 audit before rendering.")
 
 
 def esc(value):
@@ -102,7 +102,7 @@ def section(lang):
     book_rows = []
     for tier in range(1, 5):
         r = DATA["rules"]
-        book_rows.append([["ω", "ε", "Γ", "Ω"][tier - 1], number(r["bookInnateAttackHp"][tier]) + "HP", number(100 * r["bookInnateAttackProtection"][tier]) + "%", number(100 * r["bookInnateHealing"][tier]) + "%", number(100 * r["bookInnateDuration"][tier]) + "%"])
+        book_rows.append([["ω", "ε", "Γ", "Ω"][tier - 1], number(r["bookInnateAttackHp"][tier]) + "HP", number(100 * r["bookInnateAttackProtection"][tier]) + "%", number(100 * r["bookInnateHealing"][tier]) + "%", number(100 * r["bookInnateDuration"][tier]) + "%", number(100 * r["bookInnateMiningRate"][tier]) + "%"])
     ordinal_rows = []
     r = DATA["rules"]
     for i in range(4):
@@ -126,6 +126,21 @@ def section(lang):
             record = next(v for v in DATA["miningTierComparisons"] if v["configuration"]["deep"] == (realm == "deep") and v["detail"]["toolTier"] == tier and v["detail"]["manuscriptTier"] == tier)
             cells.append(f'<a href="{esc(link(record, lang))}">{number(record["value"])}</a>')
         mining_rows.append(cells)
+    mining_names = {
+        "bare_hand": tr("空手＋Ω裸书", "Hand + bare Omega book"),
+        "hand_one_sequence": tr("空手＋序列Lv1", "Hand + Sequence Lv1"),
+        "hand_mixed_sequence": tr("空手＋序列Lv1和Lv3", "Hand + Sequence Lv1 and Lv3"),
+        "omega_six_sequence": tr("Ω镐＋六颗序列Lv3", "Omega pick + six Sequence Lv3"),
+        "diamond_efficiency_v": tr("钻石效率V＋两颗序列Lv3", "Diamond Efficiency V + two Sequence Lv3"),
+        "wrong_tool": tr("错误工具／效率V＋两颗序列Lv3", "Wrong tool / Efficiency V + two Sequence Lv3"),
+        "haste_ii": tr("Ω镐＋两颗序列Lv3＋急迫II", "Omega pick + two Sequence Lv3 + Haste II"),
+        "fatigue_water_air": tr("上例＋疲劳I、水下、未站稳", "Previous + Fatigue I, water and airborne"),
+    }
+    mining_examples = []
+    for example in DATA["miningExamples"]:
+        if example["deep"]: continue
+        e = example["effects"]
+        mining_examples.append([mining_names[example["id"]], number(e["miningBase"]), number(e["efficiencyBonus"]), number(e["manuscriptMiningFlat"]), number(100*e["bookMiningBase"])+"%", number(100*e["manuscriptMiningRate"])+"%", number(100*e["hasteRate"])+"%", f'<a href="{esc(link(example, lang))}">{number(e["miningFinal"])}</a>'])
     wear_rows = []
     for key in ["helmet", "chestplate", "leggings", "boots"]:
         cells = [key]
@@ -137,7 +152,7 @@ def section(lang):
     compare_rows = [[tr("直接攻击／下界合金锋利V", "Direct attack / Netherite SharpnessV"), number(v["attackRatio"]["normal"]) + "×", number(v["attackRatio"]["deep"]) + "×"], [tr("固定80%最大承伤／四件保护IV", "Fixed80% hit capacity / four ProtectionIV"), number(v["fixed80ThresholdRatio"]["normal"]) + "×", number(v["fixed80ThresholdRatio"]["deep"]) + "×"]]
     return f'''<section class="language" data-lang="{lang}">
 <h1>{tr("强化系统 · 数值审计", "Enhancement system · Numerical audit")}</h1>
-<p class="notice">{tr("0.3.12生产规则revision47。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.3.12 rules, revision47. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
+<p class="notice">{tr("0.4.4生产规则revision48。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.4.4 rules, revision48. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
 <nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=1,2,3,4">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
 <p>{tr("Ω装备每件8槽、手稿6槽；群系晶核Lv3／序数晶核Lv3。序数晶体与晶核只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regional Core Lv3 / Ordinal Core Lv3. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
@@ -160,7 +175,7 @@ def section(lang):
 <code>{tr("表攻击", "Outer attack")}: A=B+a+P剑HP+P书HP+U书HP<br>{tr("里攻击", "Inner attack")}: A=B(1+b)(1+P剑%)(1+P书%)(1+U书%)<br>S甲=Σwᵢ RSS(界限ᵢ%)<br>F甲=1+2S甲<br>{tr("表手稿防护", "Outer book protection")}: F书=1+b+Q书+U书<br>{tr("里手稿防护", "Inner book protection")}: F书=(1+b)(1+Q书)(1+U书)<br>F额外=F甲×F书; H=20+4RSS(果糕等级)</code>
 <p>{tr("表攻击幂塔单颗加1／2／3HP，表攻击序数单颗加0.5／1／1.5／2.5HP；里攻击幂塔为25%／50%／100%，序数为5%／10%／20%／40%。界限防护两界单颗都是25%／50%／100%。没有旧的裸甲本体倍率，没有装备序数乘区。", "Outer Power adds1 /2 /3HP per core; Ordinal adds0.5 /1 /1.5 /2.5HP. Inner Power contributes25% /50% /100%, Ordinal5% /10% /20% /40%. Boundary protection is25% /50% /100% in both realms. Old bare-armor multipliers and gear Ordinal channels are removed.")}</p>
 <h3>{tr("四档裸手稿（里外一样的输入）", "Four bare manuscripts (identical inputs across realms)")}</h3>
-{table([tr("档位", "Tier"), tr("表攻击a", "Outer attack a"), tr("里攻击／防护b", "Inner attack / protection b"), tr("治疗放大", "Healing amplification"), tr("果糕剑延时", "Guogao extension")], book_rows)}
+{table([tr("档位", "Tier"), tr("表攻击a", "Outer attack a"), tr("里攻击／防护b", "Inner attack / protection b"), tr("治疗放大", "Healing amplification"), tr("果糕剑延时", "Guogao extension"), tr("固有挖速百分比", "Innate mining rate")], book_rows)}
 <h3>{tr("仅手稿序数晶体与晶核", "Manuscript-only Ordinal Crystal and Cores")}</h3>
 {table([tr("等级", "Level"), tr("表攻击", "Outer attack"), tr("里攻击／防护", "Inner attack / protection"), tr("治疗量", "Healing amount"), tr("果糕剑延时", "Guogao extension")], ordinal_rows)}
 <p><code>{tr("紫菜每4秒治疗", "Laver healing every4s")}=RSS(紫菜等级)×(1+治疗基础+RSS(序数治疗%))<br>{tr("果糕剑秒数", "Guogao sword seconds")}=2×(1+延时基础+RSS(序数延时%))</code></p>
@@ -181,8 +196,10 @@ def section(lang):
 <p>{tr(f"全部审计候选禁止装备序数材料；共{len(examples)}项加核单调性检查，均只填空槽，不替换别的晶核。每件甲分别计算再加权，手稿与套装分开，添正贡献不会反而降低防护。以下显示各部位示例与手稿项。", f"All audited candidates prohibit gear Ordinal. {len(examples)} empty-socket monotonicity checks add a core without replacing another. Per-piece weighted armor and independent book/set contributions cannot reduce defense when a positive core is added. Slot/book examples follow.")}</p>
 {table([tr("环境", "Realm"), tr("部位", "Slot"), tr("加核前F", "F before"), tr("加核后F", "F after"), tr("结果", "Result")], monotonic_rows)}
 <details><summary>{tr("防护与省耐久联合最优", "Joint protection and wear optima")}</summary><p>{tr("每行是单独最优配装，不能一套甲同时取得各行。F×W是相对原版耐久损耗预算的期望缩小倍数，不是固定免疫时间。", "Each row has its own optimal loadout; one set cannot simultaneously realize all rows. F×W reduces expected native wear budget, not guaranteed invulnerability time.")}</p>{table([tr("部位", "Slot"), realm_names["normal"], realm_names["deep"]], wear_rows)}</details>
-<details><summary>{tr("同档镐＋手稿挖速", "Matching pick/book tier mining")}</summary>{table([tr("档位", "Tier"), realm_names["normal"], realm_names["deep"]], mining_rows)}<p>{tr("序列手稿效率II／IV／VI加5／17／37，重复取最高。序数不再参与挖速，所有矿硬度、采集权限、水下与站稳状态仍另算。", "Sequence manuscript EfficiencyII /IV /VI adds5 /17 /37 and uses max. Ordinal no longer boosts mining; hardness, permissions, water and airborne penalties remain separate.")}</p></details>
-<p>{tr("省耐久由空集装备承担；触距由分枝手稿承担。重复效率、时运／抢夺、隐蔽与布尔免疫取最高，可能浪费槽位。周期治疗与饥饿保障可能叠加原版自然恢复，本页最优不包含食物回血。最终玩法需另测爆裂频率、特殊索敌和多人表现。", "Absence gear owns wear protection; Branch manuscripts own reach. Repeated Efficiency, Fortune/Looting, stealth and boolean immunities use max and can waste sockets. Periodic healing/food floors may coexist with native regeneration, excluded here. Gameplay will need tests for burst rate, special targeting and multiplayer.")}</p>
+<details><summary>{tr("同档镐＋手稿挖速", "Matching pick/book tier mining")}</summary>{table([tr("档位", "Tier"), realm_names["normal"], realm_names["deep"]], mining_rows)}<p>{tr("序列手稿固定值4／8／16与百分比25%／50%／100%各自RSS；书固有10%／20%／30%／40%在RSS外加算。挖速=(工具基础＋适用原版效率＋序列固定值RSS)×(1＋书固有百分比＋序列百分比RSS＋20%×急迫等级)×疲劳×原版惩罚。空手／错误工具基础1也享有书两项；原版效率仅原始基础>1时生效。序数不参与挖速，矿物硬度与采集权限照常。", "Sequence manuscript flat4 /8 /16 and rates25% /50% /100% use separate RSS. Innate book10% /20% /30% /40% adds outside RSS. Mining=(tool base+applicable native Efficiency+Sequence flat RSS)×(1+innate book rate+Sequence rate RSS+20%×Haste level)×fatigue×native penalties. Hand/wrong tool base1 receives both book terms; native Efficiency requires raw base>1. Ordinal adds no mining speed; hardness and harvest permission remain.")}</p></details>
+<h3>{tr("挖速拆解（两界相同，均持Ω手稿）", "Mining breakdown (same in both realms; Omega manuscript)")}</h3>
+{table([tr("场景", "Scenario"), tr("基础", "Base"), tr("原版效率加项", "Native Efficiency"), tr("序列加值RSS", "Sequence flat RSS"), tr("书固有", "Innate book"), tr("序列百分比RSS", "Sequence rate RSS"), tr("急迫", "Haste"), tr("最终挖速", "Final speed")], mining_examples)}
+<p>{tr("省耐久由空集装备承担；触距由分枝手稿承担。重复时运／抢夺、隐蔽与布尔免疫取最高，可能浪费槽位。周期治疗与饥饿保障可能叠加原版自然恢复，本页最优不包含食物回血。最终玩法需另测爆裂频率、特殊索敌和多人表现。", "Absence gear owns wear protection; Branch manuscripts own reach. Repeated Fortune/Looting, stealth and boolean immunities use max and can waste sockets. Periodic healing/food floors may coexist with native regeneration, excluded here. Gameplay will need tests for burst rate, special targeting and multiplayer.")}</p>
 <details><summary>{tr("可复现数据", "Reproducibility")}</summary><code>{DATA['evaluations']} evaluations<br>engine SHA-256: {esc(DATA['inputSha256']['engine'])}<br>rules SHA-256: {esc(DATA['inputSha256']['rules'])}<br>node tools/tests/audit_enhancement_proposal.js<br>python tools/generate_enhancement_audit.py</code></details>
 </article></section>'''
 

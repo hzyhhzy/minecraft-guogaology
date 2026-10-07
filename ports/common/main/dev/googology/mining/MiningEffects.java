@@ -38,7 +38,7 @@ public final class MiningEffects {
             for(int a=-4;a<=4;a++)for(int b=-4;b<=4;b++)if(a!=0||b!=0)candidates.add(switch(normal.getAxis()){case X->pos.offset(0,a,b);case Y->pos.offset(a,0,b);case Z->pos.offset(a,b,0);});
             candidates.sort(Comparator.comparingDouble(pos::distSqr));
             EXTRA.set(true);
-            try{for(var q:candidates){if(budget<=0||p.getMainHandItem()!=tool||tool.isEmpty())break;if(!world.hasChunkAt(q))continue;var other=world.getBlockState(q);
+            try{for(var q:candidates){if(budget<=0||p.getMainHandItem()!=tool||tool.isEmpty())break;if(q.getY()<pos.getY())continue;if(!world.hasChunkAt(q))continue;var other=world.getBlockState(q);
                 if(!eligible(state,other)||world.getBlockEntity(q)!=null||!world.getWorldBorder().isWithinBounds(q))continue;
                 if(other.getDestroySpeed(world,q)<0||!tool.isCorrectToolForDrops(other))continue;
                 if(!world.mayInteract(p,q))continue;

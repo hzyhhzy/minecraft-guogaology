@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -19,12 +20,13 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 public final class PortalTravel {
-    private record Request(ResourceKey<Level> source,PortalState.Gate gate,long started,boolean ritual,Vec3 retreat) {}
+    private record Request(ResourceKey<Level> source,PortalState.Gate gate,long started,boolean ritual,Vec3 retreat,UUID token,ServerPlayer recipient,long wallStarted) {}
     private record SafePoint(ResourceKey<Level> dimension,Vec3 position) {}
     private static final Map<UUID,Request> PENDING=new LinkedHashMap<>(),BLOCKED=new HashMap<>();
     private static final Map<UUID,SafePoint> LAST_SAFE=new HashMap<>();
     private PortalTravel() {}
     public static void initialize(){
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.playS2C().register(PortalLoadingPayload.ID,PortalLoadingPayload.CODEC);
         PortalPreparation.initialize();
         ServerTickEvents.END_SERVER_TICK.register(PortalTravel::tick);
         ServerLifecycleEvents.SERVER_STOPPED.register(server->{PENDING.clear();BLOCKED.clear();LAST_SAFE.clear();PortalPreparation.clear();});
@@ -35,7 +37,10 @@ public final class PortalTravel {
     }
     private static void release(UUID player){
         var request=PENDING.remove(player);
-        if(request!=null&&PENDING.values().stream().noneMatch(r->r.gate.equals(request.gate)))PortalPreparation.cancel(request.gate);
+        if(request!=null){
+            loading(request,false);
+            if(PENDING.values().stream().noneMatch(r->r.gate.equals(request.gate)))PortalPreparation.cancel(request.gate);
+        }
     }
     static void tick(net.minecraft.server.MinecraftServer server){
         BLOCKED.entrySet().removeIf(e->{var player=server.getPlayerList().getPlayer(e.getKey());return player==null||!inside(player,e.getValue());});
@@ -45,7 +50,7 @@ public final class PortalTravel {
             if(request.ritual&&!PortalRitual.complete(player.level(),request.gate)){
                 release(entry.getKey());eject(player,request);PortalRitual.collapseAt(player.level(),request.gate.center());continue;
             }
-            if(server.getTickCount()-request.started>PortalPreparation.TIMEOUT_TICKS){release(entry.getKey());eject(player,request);continue;}
+            if(server.getTickCount()-request.started>PortalPreparation.TIMEOUT_TICKS||System.nanoTime()-request.wallStarted>45_000_000_000L){release(entry.getKey());eject(player,request);continue;}
             var result=PortalPreparation.prepare(player.level(),request.gate);
             if(result.status()==PortalPreparation.Status.FAILED){release(entry.getKey());eject(player,request);}
             else if(result.status()==PortalPreparation.Status.READY){
@@ -58,7 +63,7 @@ public final class PortalTravel {
         PortalPreparation.tick(server,active);
         LAST_SAFE.keySet().removeIf(id->server.getPlayerList().getPlayer(id)==null);
         for(var player:server.getPlayerList().getPlayers()){
-            if(player.isAlive()&&player.level().dimension().equals(GoogologyMod.OUTER)&&player.getY()<=-1000)fallIntoInner(player);
+            if(player.isAlive()&&player.level().dimension().equals(GoogologyMod.OUTER)&&player.getY()<=-500)fallIntoInner(player);
             if(player.isAlive()&&player.level().dimension().equals(GoogologyMod.DIMENSION)&&player.getY()<=-120)fallIntoGuogao(player);
             if(player.isAlive()&&isSafe(player.level(),player.blockPosition()))LAST_SAFE.put(player.getUUID(),new SafePoint(player.level().dimension(),player.position()));
         }
@@ -67,8 +72,13 @@ public final class PortalTravel {
         if(PENDING.containsKey(player.getUUID())||BLOCKED.containsKey(player.getUUID()))return;
         var previous=LAST_SAFE.get(player.getUUID());Vec3 retreat=previous!=null&&previous.dimension.equals(player.level().dimension())
                 &&previous.position.distanceToSqr(player.position())<=64*64?previous.position:null;
-        PENDING.put(player.getUUID(),new Request(player.level().dimension(),gate,player.level().getServer().getTickCount(),ritual,retreat));
+        PENDING.put(player.getUUID(),new Request(player.level().dimension(),gate,player.level().getServer().getTickCount(),ritual,retreat,UUID.randomUUID(),player,System.nanoTime()));
+        loading(PENDING.get(player.getUUID()),true);
         PortalPreparation.begin(player.level(),gate);
+    }
+    private static void loading(Request request,boolean waiting){
+        if(net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.canSend(request.recipient,PortalLoadingPayload.ID))
+            net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(request.recipient,new PortalLoadingPayload(request.token,request.gate.dimension(),waiting));
     }
     public static void queue(ServerPlayer player,BlockPos touched){
         var gate=PortalRitual.gateAt(player.level(),touched);if(gate!=null)request(player,gate,true);
@@ -155,19 +165,53 @@ public final class PortalTravel {
         }
         return null;
     }
-    static int siteQuality(ServerLevel world,BlockPos center){
+    static final int FOUNDATION_DEPTH=3;
+    record Site(int quality,int ground,int water,int fill) {
+        static final Site INVALID=new Site(0,0,0,0);
+    }
+    /** Only ordinary replaceable vegetation/snow may be cleared, never fluids or stored items. */
+    static boolean clearable(ServerLevel world,BlockPos pos){
+        var state=world.getBlockState(pos);
+        return state.isAir()||(!hazard(state)&&!state.hasBlockEntity()&&state.getFluidState().isEmpty()
+                &&state.canBeReplaced()&&(state.getCollisionShape(world,pos).isEmpty()||state.is(Blocks.SNOW)));
+    }
+    static boolean ground(ServerLevel world,BlockPos pos){
+        var state=world.getBlockState(pos);
+        return !hazard(state)&&!state.hasBlockEntity()&&state.getFluidState().isEmpty()
+                &&!state.is(BlockTags.LEAVES)&&!state.is(BlockTags.LOGS)&&state.isFaceSturdy(world,pos,Direction.UP);
+    }
+    /** A short foundation can meet a slope without excavating it or making a tall pedestal. */
+    private static int foundationDepth(ServerLevel world,BlockPos floor){
+        for(int depth=0;depth<=FOUNDATION_DEPTH;depth++){
+            var pos=floor.below(depth);
+            if(ground(world,pos))return depth;
+            if(!clearable(world,pos))break;
+        }
+        return -1;
+    }
+    static Site assessSite(ServerLevel world,BlockPos center){
         if(center.getY()<world.getMinY()+5||center.getY()+5>=world.getMaxY()+1
                 ||!world.getWorldBorder().isWithinBounds(center.offset(-4,0,-4))||!world.getWorldBorder().isWithinBounds(center.offset(4,0,4))
-                ||!loaded(world,center.offset(-5,0,-5),center.offset(5,0,5)))return 0;
-        boolean supported=true;
+                ||!loaded(world,center.offset(-5,0,-5),center.offset(5,0,5)))return Site.INVALID;
+        int ground=0,water=0,fill=0;
         for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++){
-            var floor=center.offset(x,-1,z);var state=world.getBlockState(floor);
-            if(state.isAir())supported=false;
-            else if(hazard(state)||!state.getFluidState().isEmpty()||!state.isFaceSturdy(world,floor,Direction.UP))return 0;
-            for(int y=0;y<4;y++)if(!world.getBlockState(center.offset(x,y,z)).isAir())return 0;
+            var floor=center.offset(x,-1,z);
+            int depth=foundationDepth(world,floor);
+            if(depth<0&&!clearable(world,floor))return Site.INVALID;
+            if(depth>=0){ground++;fill+=depth;}
+            else {
+                fill+=FOUNDATION_DEPTH+1;
+                for(int d=1;d<=FOUNDATION_DEPTH;d++){
+                    var pos=floor.below(d);var state=world.getBlockState(pos);
+                    if(state.is(Blocks.WATER)){water++;break;}
+                    if(!clearable(world,pos))break;
+                }
+            }
+            for(int y=0;y<4;y++)if(!clearable(world,center.offset(x,y,z)))return Site.INVALID;
         }
-        return supported?2:1;
+        return new Site(ground==81?(fill==0?3:2):1,ground,water,fill);
     }
+    static int siteQuality(ServerLevel world,BlockPos center){return assessSite(world,center).quality();}
     static boolean inSearchWindow(BlockPos desired,BlockPos center){
         long dx=(long)center.getX()-desired.getX(),dz=(long)center.getZ()-desired.getZ();
         return Math.abs((center.getX()>>4)-(desired.getX()>>4))<=1&&Math.abs((center.getZ()>>4)-(desired.getZ()>>4))<=1&&dx*dx+dz*dz<=PortalSiteSearch.RADIUS*PortalSiteSearch.RADIUS;
@@ -183,7 +227,19 @@ public final class PortalTravel {
     }
     static BlockPos boundedCenter(BlockPos desired){int x=(desired.getX()>>4)<<4,z=(desired.getZ()>>4)<<4;return new BlockPos(Math.clamp(desired.getX(),x+5,x+10),desired.getY(),Math.clamp(desired.getZ(),z+5,z+10));}
     static BlockPos buildGate(ServerLevel world,BlockPos center,PortalKind kind){
-        for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++){var pos=center.offset(x,-1,z);if(world.getBlockState(pos).isAir())world.setBlock(pos,GoogologyBlocks.ORDINAL_STONE.defaultBlockState(),Block.UPDATE_ALL);}
+        // The search spans ticks: revalidate before touching a possibly changed site.
+        if(siteQuality(world,center)==0)return null;
+        for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++){
+            for(int y=0;y<4;y++){
+                var pos=center.offset(x,y,z);
+                if(!world.getBlockState(pos).isAir())world.setBlock(pos,Blocks.AIR.defaultBlockState(),Block.UPDATE_ALL);
+            }
+            var floor=center.offset(x,-1,z);int depth=foundationDepth(world,floor);
+            for(int d=Math.max(0,depth-1);d>=0;d--){
+                var pos=floor.below(d);
+                if(clearable(world,pos))world.setBlock(pos,GoogologyBlocks.ORDINAL_STONE.defaultBlockState(),Block.UPDATE_ALL);
+            }
+        }
         PortalRitual.fillPortal(world,center,kind);return center;
     }
     /** Loaded-only legacy tool entry point; gameplay preparation always uses the budgeted search. */

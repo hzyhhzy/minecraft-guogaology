@@ -1,6 +1,6 @@
 {
-  "revision": 47,
-  "proposalRevision": 47,
+  "revision": 48,
+  "proposalRevision": 48,
   "universal": [
     0.05,
     0.1,
@@ -21,10 +21,22 @@
     16,
     64
   ],
-  "efficiencyGrades": [
-    2,
+  "manuscriptMiningFlatGrades": [
     4,
-    6
+    8,
+    16
+  ],
+  "manuscriptMiningRateGrades": [
+    0.25,
+    0.5,
+    1
+  ],
+  "bookInnateMiningRate": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
   ],
   "yieldGrades": [
     2,
@@ -89,23 +101,23 @@
   ],
   "regionalGrades": [
     1,
-    1,
-    2,
-    2,
+    3,
+    3,
+    3,
     3
   ],
   "bookRegionalGrades": [
     0,
-    1,
-    2,
-    2,
+    3,
+    3,
+    3,
     3
   ],
   "bookOrdinalGrades": [
     0,
-    2,
-    3,
-    3,
+    4,
+    4,
+    4,
     4
   ],
   "attributeCaps": {
@@ -238,6 +250,9 @@
   ],
   "baseControlSeconds": 2,
   "healthModel": "guogao_only_realm_invariant_rms",
+  "boundaryWalkingRatePerCore": 0.5,
+  "boundaryLv1ImpactMultiplier": 0.5,
+  "boundaryLv1SafeFallMultiplier": 2,
   "coreIds": [
     "sequence_core",
     "power_tower_core",

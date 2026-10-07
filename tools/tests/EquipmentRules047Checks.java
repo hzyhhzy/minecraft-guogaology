@@ -14,7 +14,7 @@ public final class EquipmentRules047Checks {
     private static List<Gear> armor(int tier,List<Core> cores){return List.of(new Gear(tier,2,0,cores),new Gear(tier,3,0,cores),new Gear(tier,4,0,cores),new Gear(tier,5,0,cores));}
     private static Snapshot state(Gear main,Gear off,boolean deep){return new Snapshot(main,off,Gear.empty(2),Gear.empty(3),Gear.empty(4),Gear.empty(5),deep);}
     public static void main(String[] args){
-        check(EquipmentRules.REVISION==47,"production revision");
+        check(EquipmentRules.REVISION==48,"production revision");
         for(int kind=0;kind<=7;kind++)check(EquipmentRules.compatible(kind,8)==(kind==6),"Ordinal manuscript only "+kind);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(6,type)==(type!=5),"Criticality forbidden in manuscripts "+type);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(7,type)==EquipmentRules.compatible(1,type),"bow compatibility follows sword "+type);
@@ -50,8 +50,35 @@ public final class EquipmentRules047Checks {
         near(EquipmentRules.wearFactor(core(4,3),core(3,3)),1,"Laver gear and book Absence do not protect wear");
         check(EquipmentRules.yieldLevel(core(2,1,3,3),core(2,3))==6,"Branch yield max ignores manuscripts");
         near(EquipmentRules.reach(core(3,3),core(2,1,3)),Math.sqrt(10),"reach only manuscript Branch RSS");
-        near(EquipmentRules.efficiencyBonus(3,core(0,3,3)),27,"Efficiency max delta instead of duplicate sum");
-        near(EquipmentRules.efficiencyBonus(7,core(0,3)),0,"higher native Efficiency wins");
+        near(EquipmentRules.wearFactor(6,core(3,1,2,3)),1,"manuscript preview has no Empty Set durability channel");
+        near(EquipmentRules.wearFactor(0,core(3,1,2,3)),84,"pick keeps its own Empty Set durability channel");
+        check(EquipmentRules.coreEffectKey(0,2,3).equals("enchantment.minecraft.fortune"),"pick names Fortune");
+        for(boolean deep:new boolean[]{false,true}){
+            var previewBook=new Gear(4,6,0,EquipmentRules.join(core(1,3,3),core(8,4),core(4,2),core(7,3)));
+            var terms=EquipmentRules.attackPreviewTerms(previewBook,deep);
+            check(terms.size()==3,"book shows separate innate/Power/Ordinal terms");
+            double bonus=deep?1:0;for(double term:terms)bonus=deep?bonus*term:bonus+term;
+            near(bonus,EquipmentRules.attack(deep?1:0,NONE,previewBook.cores(),deep,.2,2),"preview operators match actual attack "+deep);
+            var sword=new Gear(4,1,0,core(1,3,3));var swordTerms=EquipmentRules.attackPreviewTerms(sword,deep);
+            near(swordTerms.getFirst(),deep?1+Math.sqrt(2):3*Math.sqrt(2),"weapon excludes both base damage and other sources");
+            var preview=EquipmentRules.itemPreview(sword,deep);
+            check(preview.book().isEmpty()&&preview.armor().stream().allMatch(g->g.tier()<0),"single-item preview cannot leak worn gear or held manuscript");
+            var helmet=EquipmentRules.itemPreview(new Gear(4,2,0,core(6,3)),deep);
+            near(helmet.effects().protectionFactor()-1,.4,"single armor contribution includes its real share");
+            near(EquipmentRules.itemPreview(previewBook,deep).effects().bonusHealth(),12,"preview manuscript HP remains an addition");
+        }
+        check(EquipmentRules.coreEffectKey(1,2,3).equals("enchantment.minecraft.looting"),"sword names Looting");
+        check(EquipmentRules.coreEffectKey(7,2,3).equals("enchantment.minecraft.piercing"),"bow names Piercing rather than yield");
+        near(EquipmentRules.manuscriptMiningFlat(core(0,1,2,3)),Math.sqrt(336),"mining flat uses RSS");
+        near(EquipmentRules.manuscriptMiningRate(core(0,1,2,3)),Math.sqrt(1.3125),"mining percent uses separate RSS");
+        near(EquipmentRules.manuscriptMiningSpeed(18,4,core(0,3),0),81.6,"Omega with single grade3");
+        near(EquipmentRules.manuscriptMiningSpeed(35,4,core(0,3),0),122.4,"native Efficiency V adds before book multiplier");
+        near(EquipmentRules.manuscriptMiningSpeed(1,4,core(0,3),0),40.8,"empty hand and wrong tool get both bonuses");
+        near(EquipmentRules.manuscriptMiningSpeed(35,4,core(0,3),.4),142.8,"Haste II is additive in same multiplier bucket");
+        near(EquipmentRules.manuscriptMiningSpeed(18,4,Collections.nCopies(6,new Core(0,3)),0),220.15938560837372,"six grade3 max Omega");
+        near(EquipmentRules.manuscriptMiningSpeed(35,4,Collections.nCopies(6,new Core(0,3)),0),285.60071123568774,"six grade3 max netherite EfficiencyV");
+        near(EquipmentRules.manuscriptMiningSpeed(9,4,NONE,0),12.6,"empty book innate outside RSS");
+        near(EquipmentRules.manuscriptMiningSpeed(1,0,NONE,0),1,"no book preserves base");
         near(EquipmentRules.criticalCoefficient(core(5,1,2,3),core(8,4),true),Math.sqrt(.15*.15+.225*.225+.3*.3),"burst coefficient own RSS");
         near(EquipmentRules.oxygenConsumption(core(4,3)),0,"Laver III infinite breath");
         near(EquipmentRules.oxygenConsumption(core(2,3)),1,"Branch no longer affects breathing");

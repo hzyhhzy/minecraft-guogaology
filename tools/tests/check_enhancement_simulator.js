@@ -17,7 +17,10 @@ for (const item of payload.cases) {
   for (const [key, expected] of Object.entries(snapshot.effects)) near(actual[key], expected, item.id + '.' + key);
 }
 // Independent channel and ranged checks accompany the Java golden comparison.
-assert.equal(payload.rules.revision,47,'Latest production rules required');
+assert.equal(payload.rules.revision,48,'Latest production rules required');
+assert.deepStrictEqual(payload.rules.regionalGrades,[1,3,3,3,3],'numeric Lv1, four equipment tiers Lv3');
+assert.deepStrictEqual(payload.rules.bookRegionalGrades,[0,3,3,3,3],'four manuscripts allow regional Lv3');
+assert.deepStrictEqual(payload.rules.bookOrdinalGrades,[0,4,4,4,4],'four manuscripts allow Ordinal raw stage4 / displayed Lv3');
 assert.deepStrictEqual(payload.rules.coreNames.zh[8],'序数晶核','Ordinal family name is the core');
 assert.deepStrictEqual(payload.rules.coreNames.en[8],'Ordinal Core','English Ordinal family name');
 assert.deepStrictEqual(payload.rules.coreStageNames.zh[8],['序数晶体','序数晶核 · Lv1','序数晶核 · Lv2','序数晶核 · Lv3'],'Ordinal stages retain separate display names');
@@ -38,6 +41,40 @@ for(const deep of [false,true]){
  const charged=engine.ranged(bow,{bowCharge:.5,impactSpeed:2});near(charged.directRaw,deep?4*1.2*1.4*2:4+(3+2.5+2)*.5,'charge and realm enhancement match launch payload');
 }
 near(engine.damage(10, 'player_attack', { armor: 20, toughness: 8 }).healthDamage, 3, 'vanilla armor/toughness');
+// Only the Inner realm changes landing physics; the Underworld shares enhancement
+// scaling but must not silently inherit the new environmental fall reduction.
+for (const [deep,underworld,environment] of [[false,false,1],[true,false,.5],[true,true,1]]) {
+  const s={...engine.defaults(),deep,underworld};
+  for(const levels of [[],[1],[2],[3],[1,1],[1,2],[1,3],[2,3],[1,2,3],[1,1,2,3]]) {
+    s.offhand={tier:4,kind:6,cores:levels.map(level=>({type:6,level}))};
+    const m=engine.misc(s);
+    const highest=Math.max(0,...levels),lv1=levels.filter(level=>level===1).length;
+    near(m.safeFallFactor,(environment===.5?2:1)*(lv1?2:1),'realm-safe-distance');
+    near(m.fallFactor,(highest>=2?0:lv1?.5:1)*environment,'realm-fall-stacking');
+    near(m.wallFactor,(highest>=3?0:lv1?.5:1)*environment,'realm-wall-stacking');
+    near(m.walkingRate,.5*Math.sqrt(levels.length),'equal-grade-walking-RSS');
+    near(m.walkingFactor,1+.5*Math.sqrt(levels.length),'walking-factor');
+    near(m.jumpExtra,lv1,'Lv1-jumps-survive-higher-grades');
+    const flightScale=highest>=3?1:highest===2?(deep?1/3:1/6):0;
+    near(m.flightSpeedCoefficient,.05*flightScale,'independent manuscript flight coefficient');
+    near(m.flightSpeeds[0],10.89*flightScale,'horizontal flight estimate');
+    near(m.flightSpeeds[1],10.89*flightScale*(highest>=3?(deep?8:2):1),'horizontal sprint flight estimate');
+    near(m.flightSpeeds[2],7.5*flightScale,'vertical flight estimate');
+    near(m.flightSpeeds[3],7.5*flightScale*(highest>=3?(deep?8:2):1),'vertical sprint flight estimate');
+    const received=engine.damage(20,'fall',{...m,epf:10,factor:2});
+    near(received.healthDamage,20*m.fallFactor*.6/2,'environment/core/native protection compose');
+    near(engine.damage(20,'fly_into_wall',{...m,factor:2}).healthDamage,10*m.wallFactor,'wall-environment/core compose');
+  }
+}
+const bookPriority=engine.defaults();
+bookPriority.mainhand={tier:4,kind:6,cores:[{type:6,level:1},{type:6,level:3}]};
+near(engine.misc(bookPriority).walkingRate,.5*Math.sqrt(2),'main-hand walking fallback');
+bookPriority.offhand={tier:1,kind:6,cores:[{type:6,level:2}]};
+near(engine.misc(bookPriority).walkingRate,.5,'offhand priority walking');
+near(engine.misc(bookPriority).safeFallFactor,1,'inactive main-hand Lv1 cannot add safe fall');
+bookPriority.mainhand=engine.defaults().mainhand;bookPriority.offhand=engine.defaults().offhand;
+bookPriority.boots={tier:4,kind:5,cores:[{type:6,level:3}]};
+near(engine.misc(bookPriority).walkingRate,0,'armor Boundary never grants walking speed');
 const mixedDamage=engine.damage(10,'player_attack',{armor:18.7,toughness:9.6});
 near(mixedDamage.armorAttribute,18.7,'mixed armor attribute preserves decimals');near(mixedDamage.effectiveArmor,18,'native armor floors the total once');
 near(mixedDamage.healthDamage,10*(1-(18-10/(2+9.6/4))/25),'native mixed18.7/9.6 golden damage');
@@ -53,7 +90,7 @@ near(engine.combat({attack:10,criticalCoefficient:0},{cooldown:.5,critical:true}
 near(engine.combat({attack:10,criticalCoefficient:0},{cooldown:1,critical:true}).directRaw,15,'full cooldown critical');
 near(engine.combat({attack:10,criticalCoefficient:.3},{cooldown:1,targetEpf:0,targetBurstEpf:20}).burst.beforeAbsorption,.6,'separate explosion protection');
 const plain = engine.defaults(), fall = engine.voidForecast(plain, {});
-assert(fall.dead && !fall.reached, 'Unprotected fall must die before -1000');
+assert(fall.dead && !fall.reached, 'Unprotected fall must die before -500');
 assert.equal(fall.hits,5,'20HP is exhausted by five 4HP void hits without healing');
 const protectedState = engine.defaults();
 protectedState.deep = true;
@@ -61,6 +98,10 @@ for (const [key, kind] of [['helmet',2],['chestplate',3],['leggings',4],['boots'
   protectedState[key] = { tier:4, kind, digit:0, cores:Array.from({length:8},()=>({type:6,level:3})) };
 protectedState.offhand = {tier:4,kind:6,digit:0,cores:[{type:4,level:3},{type:7,level:3}]};
 assert(engine.voidForecast(protectedState, {}).reached, 'Protected, healed fall should reach target');
+const defaultForecast=engine.voidForecast(protectedState,{}),customForecast=engine.voidForecast(protectedState,{endY:-1000});
+assert.deepStrictEqual(defaultForecast,engine.voidForecast(protectedState,{endY:-500}),'default target is now -500');
+assert(defaultForecast.y<=-500&&defaultForecast.y>-504,'default forecast stops at the first tick crossing -500');
+assert(customForecast.reached&&customForecast.y<=-1000&&customForecast.seconds>defaultForecast.seconds,'explicit deeper custom target is still honored');
 const invariant = {...protectedState,mainhand:{tier:4,kind:0,digit:0,cores:[{type:3,level:3},{type:4,level:3},{type:8,level:4}]}};
 const normal = engine.calculate({...invariant,deep:false}), deep = engine.calculate({...invariant,deep:true});
 for (const key of ['reach','wearFactor','regeneration']) near(normal[key],deep[key],'realm invariant '+key);
@@ -91,11 +132,37 @@ context.navigator={clipboard:{writeText:async()=>{}}};context.addEventListener=(
 vm.createContext(context);
 for(const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(!script[1].includes('application/json'))new vm.Script(script[2]).runInContext(context);
 assert(context.GuogaologySimulator,'UI calculator initialized');
+assert.equal(context.GuogaologySimulator.getState().combat.endY,-500,'UI forecast default is -500');
+const customTarget=context.GuogaologySimulator.getState();customTarget.combat.endY=-750;
+elements.get('jsonText').value=JSON.stringify(customTarget);elements.get('importJson').onclick();
+assert.equal(context.GuogaologySimulator.getState().combat.endY,-750,'JSON import preserves a custom forecast target');
+elements.get('reset').onclick();
+assert.equal(context.GuogaologySimulator.getState().combat.endY,-500,'reset restores -500 default');
 const displayImport=context.GuogaologySimulator.getState();displayImport.selected='offhand';displayImport.snapshot.offhand={tier:4,kind:6,cores:[{type:8,level:4}]};
 elements.get('jsonText').value=JSON.stringify(displayImport);elements.get('importJson').onclick();
 assert.equal(context.GuogaologySimulator.getState().snapshot.offhand.cores[0].level,4,'display rename preserves raw stage4 configs');
 assert.equal(elements.get('cores').children[0].children[2].children[3].textContent,'序数晶核 · Lv3','raw stage4 displays Core Lv3');
 assert.equal(elements.get('cores').children[0].children[2].children[0].textContent,'序数晶体','raw stage1 has no level');
+// Exercise the actual import/editor boundary, not just the exported cap arrays.
+for(let tier=1;tier<=4;tier++)for(let kind=0;kind<=7;kind++)for(let type=0;type<=8;type++){
+  if(!payload.rules.compatibility[kind][type])continue;
+  const key=kind===6?'offhand':kind===0||kind===1||kind===7?'mainhand':['helmet','chestplate','leggings','boots'][kind-2];
+  const value={version:1,lang:'zh',mode:'set',selected:key,snapshot:engine.defaults()};
+  value.snapshot[key]={tier,kind,cores:[{type,level:type===8?4:3}]};
+  elements.get('jsonText').value=JSON.stringify(value);elements.get('importJson').onclick();
+  const imported=context.GuogaologySimulator.getState().snapshot[key];
+  assert.equal(imported.cores[0]?.level,type===8?4:3,'low-tier import keeps top compatible core');
+  assert.equal(imported.sockets.length,(kind===6?[0,2,3,4,6]:[1,2,4,6,8])[tier],'slot count unchanged');
+  assert.equal(elements.get('cores').children[0].children[2].children.length,type===8?4:3,'editor offers every current grade');
+  assert.equal(elements.get('socketInfo').textContent,'','redundant item cap label removed');
+}
+for(const kind of [0,1])for(const level of [1,3]){
+  const value={version:1,lang:'zh',mode:'set',selected:'mainhand',snapshot:engine.defaults()};
+  value.snapshot.mainhand={tier:0,kind,cores:[{type:3,level}]};
+  elements.get('jsonText').value=JSON.stringify(value);elements.get('importJson').onclick();
+  assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,level===1?1:0,'numeric tool still rejects high-grade core');
+  assert.equal(elements.get('cores').children[0].children[2].children.length,1,'numeric editor keeps Lv1 only');
+}
 elements.get('reset').onclick();
 assert.equal(elements.get('metrics').children.length,6,'Initial metrics');
 assert(i18n.every(el=>el.textContent!==el.dataset.i18n),'Chinese static UI labels translated');
@@ -115,6 +182,13 @@ assert.equal(elements.get('cores').children[0].children[1].value,-1,'empty first
 assert.equal(elements.get('cores').children[7].children[1].value,3,'last socket stays in place');
 lastSocket=elements.get('cores').children[7];lastSocket.children[1].value='-1';lastSocket.children[1].onchange();
 assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,0,'core removal leaves no ghost copy');
+const miningImport=context.GuogaologySimulator.getState();miningImport.mode='set';miningImport.selected='mainhand';miningImport.snapshot.mainhand={tier:-1,kind:0,vanilla:'hand',baseMining:1,cores:[]};miningImport.snapshot.offhand={tier:4,kind:6,cores:[{type:0,level:3}]};
+elements.get('jsonText').value=JSON.stringify(miningImport);elements.get('importJson').onclick();
+assert.equal(elements.get('metrics').children[1].children[1].textContent,'40.8','bare hand mining speed rendered');
+elements.get('hasteLevel').value='2';elements.get('hasteLevel').oninput();
+near(context.GuogaologySimulator.engine.calculate(context.GuogaologySimulator.getState().snapshot).miningFinal,47.6,'Haste input adds rate');
+elements.get('fatigueLevel').value='1';elements.get('fatigueLevel').oninput();elements.get('otherMiningPenalty').value='.5';elements.get('otherMiningPenalty').oninput();
+near(context.GuogaologySimulator.engine.calculate(context.GuogaologySimulator.getState().snapshot).miningFinal,7.14,'fatigue and penalty inputs apply last');
 const invalidText=context.GuogaologySimulator.getState();elements.get('jsonText').value='{bad';elements.get('importJson').onclick();assert(elements.get('jsonError').textContent,'bad JSON reported');
 assert(storage.size>0 && context.location.hash.startsWith('#config='),'local/hash persistence');
 console.log('ENHANCEMENT_SIMULATOR_OK cases='+payload.cases.length+' comparisons='+comparisons+'; damage, fall, limits and local UI checks passed');

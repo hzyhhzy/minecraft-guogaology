@@ -43,7 +43,7 @@ final class MaterialChecks {
             var stack=StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.ORDINAL_BRICKS),level.getBlockState(pos));
             check(stack.get(DataComponents.BLOCK_STATE).properties().get("number").equals(""+(n+1)%16),"brick number survives item component");
         }
-        for(var lamp:GoogologyBlocks.SEQUENCE_LIGHTS)for(int n:new int[]{0,9,31,32,33}){
+        for(var lamp:GoogologyBlocks.SEQUENCE_LIGHTS)for(int n:new int[]{0,9,31,32}){
             var state=lamp.defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,n);level.setBlock(pos,state,2);state.useWithoutItem(level,player,hit);var next=level.getBlockState(pos);
             check(next.is(lamp)&&next.getValue(ChristmasDigitBlock.DIGIT)==(n>=32?0:n+1),"lamp cycles value and keeps color");
             var drops=Block.getDrops(next,level,pos,null,player,ItemStack.EMPTY);
@@ -79,7 +79,7 @@ final class MaterialChecks {
             Block[] row={Blocks.OAK_LOG,Blocks.DARK_OAK_LOG,GoogologyBlocks.DREAD_LOG,BuiltInRegistries.BLOCK.getValue(Identifier.parse("googology:dread_planks")),GoogologyBlocks.LAVER_VEIN,GoogologyBlocks.LAVER_PLANKS,GoogologyBlocks.GIANT_LAVER};
             for(int i=0;i<row.length;i++)for(int y=220;y<=222;y++)level.setBlock(new BlockPos((i-3)*2,y,z),row[i].defaultBlockState(),2);
             for(int n=0;n<16;n++)level.setBlock(new BlockPos(n-8,220,z+3),GoogologyBlocks.ordinalBrick(n),2);
-            for(int n=0;n<6;n++){level.setBlock(new BlockPos((n-3)*2,220,z+6),GoogologyBlocks.SEQUENCE_LIGHTS[n].defaultBlockState(),2);level.setBlock(new BlockPos((n-3)*2,221,z+6),GoogologyBlocks.SEQUENCE_LIGHTS[n].defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,n*6),2);}
+            for(int n=0;n<6;n++){level.setBlock(new BlockPos((n-3)*2,220,z+6),GoogologyBlocks.PLAIN_LIGHTS[n].defaultBlockState(),2);level.setBlock(new BlockPos((n-3)*2,221,z+6),GoogologyBlocks.SEQUENCE_LIGHTS[n].defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,n*6),2);}
             for(int n=0;n<3;n++)level.setBlock(new BlockPos((n-1)*4,220,z+10),dev.googology.mining.MiningContent.TABLES[n].defaultBlockState(),2);
             move(player,level,.5,228,z+21,180,20);
         }else if(scene==3){

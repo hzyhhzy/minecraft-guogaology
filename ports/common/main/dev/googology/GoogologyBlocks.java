@@ -8,6 +8,7 @@ import dev.googology.block.EmojiLanternBlock;
 import dev.googology.block.OrdinalBrickBlock;
 import dev.googology.block.GoogologyPortalFrameBlock;
 import dev.googology.block.ChristmasDigitBlock;
+import dev.googology.block.ChristmasLightBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 
 import net.minecraft.core.Registry;
@@ -71,8 +72,8 @@ public final class GoogologyBlocks {
     public static final Block HYDRA_BUD = relic("hydra_bud");
     public static final Block BOUNDARY_CORE = relic("boundary_core");
     public static final Block LAVER_CORE = relic("laver_core");
-    public static final Block LAVER_COURT_NODE = block("laver_court_node",new Block(dev.googology.survival.BlockBalance.apply("laver_court_node",BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK))));
-    public static final Block LAVER_COURT_BLANK = block("laver_court_blank",new Block(dev.googology.survival.BlockBalance.apply("laver_court_blank",BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK))));
+    public static final Block LAVER_COURT_NODE = block("laver_court_node",new Block(dev.googology.survival.BlockBalance.apply("laver_court_node",dev.googology.survival.BlockBalance.amethystSettings())));
+    public static final Block LAVER_COURT_BLANK = block("laver_court_blank",new Block(dev.googology.survival.BlockBalance.apply("laver_court_blank",dev.googology.survival.BlockBalance.amethystSettings())));
     public static final Block LAVER_INLAY = block("laver_inlay",new Block(dev.googology.survival.BlockBalance.apply("laver_inlay",BlockBehaviour.Properties.ofFullCopy(Blocks.STONE))));
     public static final Block ASTRA_CRITICAL_CORE = relic("astra_critical_core");
     public static final Block GUOGAO_HEART = relic("guogao_heart");
@@ -147,9 +148,9 @@ public final class GoogologyBlocks {
     public static final Block WHITE_FIBER = block("white_fiber", new LtyChimeBlock(dev.googology.survival.BlockBalance.apply("white_fiber",BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).lightLevel(s -> 3))));
     public static final Block Y_LOG = block("y_log", new RotatedPillarBlock(dev.googology.survival.BlockBalance.apply("y_log",BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG).mapColor(MapColor.ICE))));
     public static final Block Y_LEAVES = block("y_leaves", new net.minecraft.world.level.block.TintedParticleLeavesBlock(0.01f,dev.googology.survival.BlockBalance.apply("y_leaves",BlockBehaviour.Properties.ofFullCopy(Blocks.AZALEA_LEAVES).mapColor(MapColor.COLOR_LIGHT_BLUE))));
-    public static final Block TREE_NODE_RED = block("tree_node_red",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_red",BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(s->7))));
-    public static final Block TREE_NODE_GREEN = block("tree_node_green",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_green",BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(s->7))));
-    public static final Block TREE_NODE_BLUE = block("tree_node_blue",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_blue",BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(s->7))));
+    public static final Block TREE_NODE_RED = block("tree_node_red",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_red",dev.googology.survival.BlockBalance.amethystSettings().lightLevel(s->7))));
+    public static final Block TREE_NODE_GREEN = block("tree_node_green",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_green",dev.googology.survival.BlockBalance.amethystSettings().lightLevel(s->7))));
+    public static final Block TREE_NODE_BLUE = block("tree_node_blue",new dev.googology.block.PortableRelicBlock(dev.googology.survival.BlockBalance.apply("tree_node_blue",dev.googology.survival.BlockBalance.amethystSettings().lightLevel(s->7))));
     public static final Block[] TREE_NODES={TREE_NODE_RED,TREE_NODE_GREEN,TREE_NODE_BLUE};
     public static final Block IBLP_BLANK = block("iblp_blank", new Block(dev.googology.survival.BlockBalance.apply("iblp_blank",BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO_MOSAIC).lightLevel(s -> 5))));
     public static final Block IBLP_NODE = block("iblp_node", new Block(dev.googology.survival.BlockBalance.apply("iblp_node",BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO_MOSAIC).lightLevel(s -> 12))));
@@ -165,6 +166,10 @@ public final class GoogologyBlocks {
     public static final Block Y_SEQUENCE_STONE = block("y_sequence_stone", new Block(dev.googology.survival.BlockBalance.apply("y_sequence_stone",BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.ICE))));
 
     public static final Block ORDINAL_BRICKS = block("ordinal_bricks",new OrdinalBrickBlock(dev.googology.survival.BlockBalance.apply("ordinal_bricks",BlockBehaviour.Properties.ofFullCopy(Blocks.STONE))));
+    public static final Block[] PLAIN_LIGHTS={
+            plainLamp("amber_light",0),plainLamp("cyan_light",1),plainLamp("rose_light",2),
+            plainLamp("lime_light",3),plainLamp("violet_light",4),plainLamp("scarlet_light",5)};
+    private static Block plainLamp(String id,int color){return block(id,new ChristmasLightBlock(dev.googology.survival.BlockBalance.apply(id,BlockBehaviour.Properties.ofFullCopy(Blocks.SEA_LANTERN)),color));}
     public static final Block[] SEQUENCE_LIGHTS={
             digitLamp("amber_sequence_light",0),digitLamp("cyan_sequence_light",1),digitLamp("rose_sequence_light",2),
             digitLamp("lime_sequence_light",3),digitLamp("violet_sequence_light",4),digitLamp("scarlet_sequence_light",5)};
@@ -192,7 +197,7 @@ public final class GoogologyBlocks {
         return block;
     }
     private static Block relic(String name){
-        var settings=dev.googology.survival.BlockBalance.apply(name,BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK));
+        var settings=dev.googology.survival.BlockBalance.apply(name,dev.googology.survival.BlockBalance.amethystSettings());
         boolean clear=name.equals("guogao_heart")||name.equals("sequence_core")||name.equals("laver_core")||name.equals("hydra_bud")||name.equals("astra_critical_core")||name.equals("power_tower_core")||name.equals("boundary_core");
         Block block=clear?new dev.googology.block.PortableRelicBlock(settings.noOcclusion()):new dev.googology.block.PortableRelicBlock(settings);
         if(clear)TRANSLUCENT.add(block);
@@ -221,7 +226,7 @@ public final class GoogologyBlocks {
     private static Block flower(String name) {
         return block(name, new FlowerBlock(MobEffects.SLOW_FALLING, 8, dev.googology.survival.BlockBalance.apply(name,BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).lightLevel(s -> 6))));
     }
-    private static Block symbol(String name) { return block(name,new Block(dev.googology.survival.BlockBalance.apply(name,BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(s->9)))); }
+    private static Block symbol(String name) { return block(name,new Block(dev.googology.survival.BlockBalance.apply(name,dev.googology.survival.BlockBalance.amethystSettings().lightLevel(s->9)))); }
 
     public static void initialize() { CoreGrades.initialize(); }
 }

@@ -27,7 +27,6 @@ public final class GearData {
     private static final String SILK_MODE="googology_silk_touch";
     public static boolean silkTouch(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(profile(stack),2)>0&&stack.getOrDefault(DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.EMPTY).copyTag().getBoolean(SILK_MODE).orElse(false);}
     public static void setSilkTouch(ItemStack stack,boolean enabled){var spec=MiningContent.GEAR.get(stack.getItem());if(spec==null||spec.kind()!=0)return;var tag=stack.getOrDefault(DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.EMPTY).copyTag();tag.putBoolean(SILK_MODE,enabled&&EquipmentRules.highest(profile(stack),2)>0);stack.set(DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.of(tag));}
-    public static int bookEfficiency(LivingEntity owner){return owner==null?0:EquipmentRules.efficiencyLevel(profile(ManuscriptEffects.held(owner)));}
     public static double healing(LivingEntity owner){return owner==null?0:EquipmentRules.regen(profile(ManuscriptEffects.held(owner)),EquipmentRules.bookHealingBase(bookTier(owner)));}
     public static double controlDuration(ItemStack weapon,LivingEntity owner){return EquipmentRules.controlDuration(profile(weapon),owner==null?List.of():profile(ManuscriptEffects.held(owner)),EquipmentRules.bookDurationBase(bookTier(owner)));}
     public static double bonusHealth(LivingEntity owner){var state=snapshot(owner);return EquipmentRules.bonusHealth(state.armor(),state.book(),state.deep());}
@@ -35,14 +34,21 @@ public final class GearData {
     public static int capacity(ItemStack gear){var spec=MiningContent.GEAR.get(gear.getItem());return spec==null?0:EquipmentRules.slots(spec.tier(),spec.kind());}
     public static List<ItemStack> coreSlots(ItemStack s){return s.getOrDefault(MiningContent.CORES,List.of());}
     public static List<ItemStack> cores(ItemStack s){return coreSlots(s).stream().filter(c->!c.isEmpty()).toList();}
+    public static boolean isSocketTotem(ItemStack gear,ItemStack item){return gear.getItem() instanceof DenxiManuscript&&item.is(Items.TOTEM_OF_UNDYING);}
+    public static int socketTotems(ItemStack gear){return gear.getItem() instanceof DenxiManuscript?(int)coreSlots(gear).stream().filter(s->s.is(Items.TOTEM_OF_UNDYING)).count():0;}
+    /** Call only for an owned item, or explicitly to debit an effect snapshot after a real consumption. */
+    public static boolean consumeSocketTotem(ItemStack gear){
+        if(!(gear.getItem() instanceof DenxiManuscript))return false;
+        var slots=coreSlots(gear);for(int i=0;i<slots.size();i++)if(slots.get(i).is(Items.TOTEM_OF_UNDYING)){remove(gear,i);return true;}return false;
+    }
     public static int digit(ItemStack s){return EquipmentRules.digit(s.getOrDefault(MiningContent.DIGIT,0d));}
-    public static int totalLevels(ItemStack s){int sum=0;for(var c:cores(s))sum+=EquipmentRules.denxiLevel(type(c),level(c));return sum;}
+    public static int totalLevels(ItemStack s){int sum=0;for(var c:cores(s))if(type(c)>=0)sum+=EquipmentRules.denxiLevel(type(c),level(c));return sum;}
     public static double denxi(ItemStack s){return miningSpeed(s);}
     public static double miningSpeed(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());return spec==null||spec.kind()!=0?1:EquipmentRules.baseMining(spec.tier(),digit(s))*EquipmentRules.miningMultiplier(profile(s),List.of(),s.getOrDefault(MiningContent.DEEP,false));}
     public static boolean minesWithPick(ItemStack s,net.minecraft.world.level.block.state.BlockState state){var spec=MiningContent.GEAR.get(s.getItem());return spec!=null&&spec.kind()==0&&(state.is(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE)||state.getBlock() instanceof OrdinalOre);}
     public static double miningPoints(ItemStack s,net.minecraft.world.level.block.state.BlockState state){return minesWithPick(s,state)?points(s,8):0;}
     public static double wearPoints(ItemStack stack,LivingEntity owner){return wearFactor(stack,owner);}
-    public static double wearFactor(ItemStack stack,LivingEntity owner){var spec=MiningContent.GEAR.get(stack.getItem());return EquipmentRules.wearFactor(spec!=null&&spec.kind()!=6?profile(stack):List.of(),List.of());}
+    public static double wearFactor(ItemStack stack,LivingEntity owner){var spec=MiningContent.GEAR.get(stack.getItem());return EquipmentRules.wearFactor(spec==null?-1:spec.kind(),profile(stack));}
     public static int wearCost(ItemStack stack,int amount,LivingEntity owner,java.util.function.DoubleSupplier random){
         var spec=MiningContent.GEAR.get(stack.getItem());
         if(spec!=null&&spec.kind()!=6&&stack.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION)refresh(stack);
@@ -99,7 +105,9 @@ public final class GearData {
     /** Returns an error translation key, or null. Validation happens again on every click. */
     public static String installationError(ItemStack gear,ItemStack core,int station){
         var spec=MiningContent.GEAR.get(gear.getItem());int type=type(core);
-        if(spec==null||type<0)return "invalid";
+        if(spec==null)return "invalid";
+        if(isSocketTotem(gear,core))return cores(gear).size()>=capacity(gear)?"full":null;
+        if(type<0)return "invalid";
         if(!EquipmentRules.compatible(spec.kind(),type))return "incompatible";
         int grade=EquipmentRules.stationGrade(type,level(core));
         if(grade>station||grade>EquipmentRules.grade(spec.tier()))return "grade";

@@ -7,6 +7,11 @@ import java.nio.charset.StandardCharsets;
 
 /** The same checked-in table drives runtime settings, harvest tags and the player reference. */
 public final class BlockBalance {
+    /** Copy the amethyst appearance, not its inherited mandatory-pickaxe flag. */
+    public static AbstractBlock.Settings amethystSettings() {
+        return AbstractBlock.Settings.create().mapColor(net.minecraft.block.MapColor.PURPLE)
+                .sounds(net.minecraft.sound.BlockSoundGroup.AMETHYST_BLOCK);
+    }
     private static final JsonObject PROFILES;
     static {
         try (var stream=BlockBalance.class.getResourceAsStream("/googology/block_balance.json")) {

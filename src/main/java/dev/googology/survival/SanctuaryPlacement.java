@@ -7,8 +7,10 @@ import java.util.*;
 public final class SanctuaryPlacement {
     private SanctuaryPlacement() {}
     public static final int SPACING=384,MARGIN=80,ATTEMPTS=32,MIN_SAME_KIND_DISTANCE=500;
-    // Calibrated per biome after water, height, boundary and same-kind spacing rejection.
-    private static final double[] CHANCES={.598,.650,.595,.860,.560,.590,.405,.590};
+    // Final accepted sites: about 1/km² in each Inner biome and 0.5/km² in the
+    // Underworld, after water, height, boundary and same-kind spacing rejection.
+    // Natural lake generation is independent and intentionally remains unchanged.
+    private static final double[] CHANCES={.15411,.24424,.16271,.29601,.14360,.16604,.15615,.16247};
     public record Position(int x,int y,int z,SurvivalTheme theme,long hash) {}
     public static Position find(long seed,int gx,int gz,boolean under){return new Sampler(seed,under).find(gx,gz);}
 

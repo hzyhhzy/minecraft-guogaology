@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "googology:boundary_core_lv3",
+          "name": "googology:boundary_core_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1
+              "count": 2
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "googology:ordinal_crystal_lv3",
+          "name": "googology:ordinal_crystal_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1
+              "count": 2
             }
           ]
         }
@@ -42,8 +42,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
+                "min": 2,
+                "max": 4
               }
             }
           ]
@@ -61,8 +61,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
+                "min": 6,
+                "max": 12
               }
             }
           ]
@@ -80,8 +80,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
+                "min": 6,
+                "max": 12
               }
             }
           ]
@@ -99,8 +99,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
+                "min": 4,
+                "max": 8
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
+                "min": 6,
+                "max": 12
               }
             }
           ]

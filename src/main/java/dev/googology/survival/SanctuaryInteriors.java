@@ -25,14 +25,20 @@ final class SanctuaryInteriors {
             case POWER -> {
                 Model[][] storeys={{iterationEngine()},{arrowGate()},{graham(false)},{graham(true)},
                         {graph(true)},{tallGraph(true)},{graph(false)},{tallGraph(false)},
-                        {iterationEngine(),graham(false),graph(true),graph(false)},
-                        {arrowGate(),graham(false),graph(true),graph(false)}};
+                        {arrowGate(),graham(false),graph(true),graph(false)},
+                        {}};
                 for(int level=0;level<storeys.length;level++){
                     if(level<8){
                         d.place(storeys[level][0],0,PowerPagoda.floor(level),0,0,false);
-                    }else if(level==9){
+                    }else if(level==8){
                         int[][] spots={{-7,-7},{-7,7},{6,-5},{7,7}};
-                        for(int n=0;n<spots.length;n++)d.place(storeys[level][n],spots[n][0],PowerPagoda.floor(level),spots[n][1],0,false);
+                        for(int n=0;n<spots.length;n++){
+                            var model=storeys[level][n];boolean placed=d.place(model,spots[n][0],PowerPagoda.floor(level),spots[n][1],0,false);
+                            // Relocate complete studies around the new final stair flight.
+                            for(int x=-10;!placed&&x<=10;x+=2)for(int z=-10;!placed&&z<=10;z+=2)for(int rotation=0;!placed&&rotation<4;rotation++)
+                                placed=d.place(model,x,PowerPagoda.floor(level),z,rotation,false);
+                            if(!placed)throw new IllegalStateException("No room for ninth-storey study "+model.name);
+                        }
                     }
                 }
             }

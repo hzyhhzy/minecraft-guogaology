@@ -46,14 +46,14 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:zh_cn\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             '-Dfabric.development=false',f'-Dgoogology.qa.voxy={str(a.voxy).lower()}',f'-Dgoogology.qa.boundaries={str(a.boundaries_only).lower()}',f'-Dgoogology.qa.manuscripts={str(a.manuscripts_only).lower()}',f'-Djava.io.tmpdir={temp}',f'-Djna.tmpdir={temp}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
+             '-Dfabric.development=false',f'-Dgoogology.qa.voxy={str(a.voxy).lower()}',f'-Dgoogology.qa.boundaries={str(a.boundaries_only).lower()}',f'-Dgoogology.qa.manuscripts={str(a.manuscripts_only).lower()}',f'-Dgoogology.qa.inventory={str(a.inventory_only).lower()}',f'-Dgoogology.qa.portals={str(a.portals_only).lower()}',f'-Dgoogology.qa.patch051={str(a.patch051_only).lower()}',f'-Dgoogology.qa.landmarks043={str(a.landmarks_only).lower()}',f'-Djava.io.tmpdir={temp}',f'-Djna.tmpdir={temp}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
              '-cp',';'.join(map(str,classpath)),metadata['mainClass'],'--username','GuogaologyQA','--version','26.2','--gameDir',str(game),
              '--assetsDir',str(minecraft/'assets'),'--assetIndex',metadata['assetIndex']['id'],'--uuid','00000000000000000000000000000001',
-             '--accessToken','0','--userType','legacy','--versionType','release','--width','1600','--height','1000']
+             '--accessToken','0','--userType','legacy','--versionType','release','--width','1600','--height','1200' if a.inventory_only else '1000']
     print('Hidden QA:',game,flush=True)
     with (game/'launch-output.log').open('w',encoding='utf8') as log:
         process=subprocess.Popen(command,cwd=game,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
-        try:code=process.wait(timeout=1100)
+        try:code=process.wait(timeout=300 if a.landmarks_only else 1100)
         except subprocess.TimeoutExpired:process.terminate();process.wait(timeout=20);raise RuntimeError('Own QA process timed out')
     if code or not (game/'port-client-ok.txt').is_file():
         print((game/'launch-output.log').read_text('utf8',errors='replace')[-14000:]);raise RuntimeError(f'QA failed: {code}')
@@ -62,4 +62,4 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True)
-    p.add_argument('--fixture',type=Path,required=True);p.add_argument('--label',required=True);p.add_argument('--voxy',action='store_true');p.add_argument('--flight-addon',action='store_true');p.add_argument('--boundaries-only',action='store_true');p.add_argument('--manuscripts-only',action='store_true');run(p.parse_args())
+    p.add_argument('--fixture',type=Path,required=True);p.add_argument('--label',required=True);p.add_argument('--voxy',action='store_true');p.add_argument('--flight-addon',action='store_true');p.add_argument('--boundaries-only',action='store_true');p.add_argument('--manuscripts-only',action='store_true');p.add_argument('--inventory-only',action='store_true');p.add_argument('--portals-only',action='store_true');p.add_argument('--patch051-only',action='store_true');p.add_argument('--landmarks-only',action='store_true');run(p.parse_args())

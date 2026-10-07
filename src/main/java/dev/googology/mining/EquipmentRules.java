@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /** Minecraft-free balance shared by gameplay and the equipment simulator. */
 public final class EquipmentRules {
     private EquipmentRules() {}
-    public static final int MAX_SOCKETS=10, REVISION=47, MANUSCRIPT=6, BOW=7;
+    public static final int MAX_SOCKETS=10, REVISION=48, MANUSCRIPT=6, BOW=7;
     public static final String[] MINERALS={"omega","epsilon","gamma","true_omega"};
     public static final String[] CORES={"sequence_core","power_tower_core","hydra_bud","lho_trace","laver_core","astra_critical_core","boundary_core","guogao_heart","ordinal_crystal"};
     public static final String[] KINDS={"pickaxe","sword","helmet","chestplate","leggings","boots","manuscript","bow"};
@@ -20,7 +20,7 @@ public final class EquipmentRules {
     private static final double[] POWER_HP={1,2,3}, POWER_PERCENT={.25,.5,1}, ORDINAL_HP={.5,1,1.5,2.5}, ORDINAL_PERCENT={.05,.1,.2,.4}, ORDINAL_HEALING={.1,.2,.3,.5}, ORDINAL_DURATION={.25,.5,.75,1.25};
     public static int slots(int tier){return SLOTS[tier];}
     public static int slots(int tier,int kind){return kind==6?new int[]{0,2,3,4,6}[tier]:slots(tier);}
-    public static int grade(int tier){return new int[]{1,1,2,2,3}[tier];}
+    public static int grade(int tier){return new int[]{1,3,3,3,3}[tier];}
     public static double multiplier(double points,boolean deep){double m=1+3*Math.clamp(points/16,0,1);return deep?m*m*m*m:m;}
     /** 0=stone, 1=iron, 2=diamond, 3=netherite. Mineral picks keep their existing capability. */
     public static int harvestLevel(int tier,double value){int d=digit(value);return tier>0?3:d<5?0:d<8?1:d==8?2:3;}
@@ -69,6 +69,7 @@ public final class EquipmentRules {
     public static double arrowSpeedMultiplier(int tier){return new double[]{1,1.1,1.2,1.3,1.5}[Math.clamp(tier,0,4)];}
     public static int spreadBudget(double weight){return (int)Math.floor(weight*4);}
     public static double bookBase(int tier){return .05*Math.clamp(tier,0,4);}
+    public static double bookMiningBase(int tier){return .1*Math.clamp(tier,0,4);}
     public static double bookAttackHp(int tier){return .5*Math.clamp(tier,0,4);}
     public static double bookHealingBase(int tier){return .1*Math.clamp(tier,0,4);}
     public static double bookDurationBase(int tier){return .25*Math.clamp(tier,0,4);}
@@ -79,6 +80,28 @@ public final class EquipmentRules {
         public Gear{cores=cores.stream().filter(c->compatible(kind,c.type())).toList();}
         public static Gear empty(int kind){return new Gear(-1,kind,0,List.of());}
     }
+    /** Preview only the edited item, never incidental equipment currently worn by the player. */
+    public static Snapshot itemPreview(Gear item,boolean deep){
+        var main=Gear.empty(1);var book=Gear.empty(MANUSCRIPT);
+        var head=Gear.empty(2);var chest=Gear.empty(3);var legs=Gear.empty(4);var feet=Gear.empty(5);
+        switch(item.kind()){case 0,1,BOW->main=item;case 2->head=item;case 3->chest=item;case 4->legs=item;case 5->feet=item;case MANUSCRIPT->book=item;}
+        return new Snapshot(main,book,head,chest,legs,feet,deep);
+    }
+    /** Each value is an independent +HP term outside, or a multiplicative factor inside. */
+    public static List<Double> attackPreviewTerms(Gear item,boolean deep){
+        var terms=new ArrayList<Double>();
+        if(item.kind()==MANUSCRIPT){
+            terms.add(deep?1+bookBase(item.tier()):bookAttackHp(item.tier()));
+            double power=rss(item.cores(),1,deep?POWER_PERCENT:POWER_HP);
+            double ordinal=rss(item.cores(),8,deep?ORDINAL_PERCENT:ORDINAL_HP);
+            if(power>0)terms.add(deep?1+power:power);
+            if(ordinal>0)terms.add(deep?1+ordinal:ordinal);
+        }else if(item.kind()==1||item.kind()==BOW){
+            double power=rss(item.cores(),1,deep?POWER_PERCENT:POWER_HP);
+            if(power>0)terms.add(deep?1+power:power);
+        }
+        return List.copyOf(terms);
+    }
     public record Snapshot(Gear mainhand,Gear offhand,Gear helmet,Gear chestplate,Gear leggings,Gear boots,boolean deep){
         public List<Gear> armor(){return List.of(helmet,chestplate,leggings,boots);}
         public Gear activeBook(){if(offhand.kind()==MANUSCRIPT&&offhand.tier()>0)return offhand;if(mainhand.kind()==MANUSCRIPT&&mainhand.tier()>0)return mainhand;return Gear.empty(MANUSCRIPT);}
@@ -86,15 +109,15 @@ public final class EquipmentRules {
         public Effects effects(){
             int kind=mainhand.kind(),tier=activeBook().tier();boolean weapon=kind==1||kind==BOW;
             var tool=kind==0||weapon?mainhand.cores():List.<Core>of();var book=book();double base=mainhand.tier()<0?1:baseAttack(mainhand.tier(),kind,mainhand.digit());
-            return new Effects(attack(base,weapon?tool:without(tool,1),book,deep,bookBase(tier),bookAttackHp(tier)),1,kind==0?spreadBudget(tool,book,deep):0,kind<2?yieldLevel(tool,book):0,reach(tool,book),wearFactor(tool,book),regen(book,bookHealingBase(tier)),bonusHealth(armor(),book,deep),protectionFactor(armor(),book,deep,bookBase(tier)),weapon?criticalCoefficient(tool,book,deep):0,0,weapon?controlDuration(tool,book,bookDurationBase(tier)):0);
+            return new Effects(attack(base,weapon?tool:without(tool,1),book,deep,bookBase(tier),bookAttackHp(tier)),1+bookMiningBase(tier)+manuscriptMiningRate(book),kind==0?spreadBudget(tool,book,deep):0,kind<2?yieldLevel(tool,book):0,reach(tool,book),wearFactor(tool,book),regen(book,bookHealingBase(tier)),bonusHealth(armor(),book,deep),protectionFactor(armor(),book,deep,bookBase(tier)),weapon?criticalCoefficient(tool,book,deep):0,0,weapon?controlDuration(tool,book,bookDurationBase(tier)):0,boundaryWalkRate(book));
         }
         public String toJson(){return "{\"revision\":"+REVISION+",\"deep\":"+deep+",\"mainhand\":"+gearJson(mainhand)+",\"offhand\":"+gearJson(offhand)+",\"helmet\":"+gearJson(helmet)+",\"chestplate\":"+gearJson(chestplate)+",\"leggings\":"+gearJson(leggings)+",\"boots\":"+gearJson(boots)+",\"effects\":"+effects().toJson()+"}";}
     }
-    public record Effects(double attack,double miningMultiplier,int extraBlocks,int yieldLevel,double reach,double wearFactor,double regeneration,double bonusHealth,double protectionFactor,double criticalCoefficient,double projectileCoefficient,double controlSeconds){
+    public record Effects(double attack,double miningMultiplier,int extraBlocks,int yieldLevel,double reach,double wearFactor,double regeneration,double bonusHealth,double protectionFactor,double criticalCoefficient,double projectileCoefficient,double controlSeconds,double walkingRate){
         public double actualMaxHealth(){return Math.clamp(20+bonusHealth,1,1024);}
         public double actualBlockReach(){return Math.clamp(4.5+reach,0,64);}
         public double actualEntityReach(){return Math.clamp(3+reach,0,64);}
-        public String toJson(){return "{\"attack\":"+attack+",\"miningMultiplier\":"+miningMultiplier+",\"extraBlocks\":"+extraBlocks+",\"yieldLevel\":"+yieldLevel+",\"reach\":"+reach+",\"wearFactor\":"+wearFactor+",\"regeneration\":"+regeneration+",\"bonusHealth\":"+bonusHealth+",\"protectionFactor\":"+protectionFactor+",\"criticalCoefficient\":"+criticalCoefficient+",\"projectileCoefficient\":"+projectileCoefficient+",\"controlSeconds\":"+controlSeconds+",\"actualMaxHealth\":"+actualMaxHealth()+",\"actualBlockReach\":"+actualBlockReach()+",\"actualEntityReach\":"+actualEntityReach()+"}";}
+        public String toJson(){return "{\"attack\":"+attack+",\"miningMultiplier\":"+miningMultiplier+",\"extraBlocks\":"+extraBlocks+",\"yieldLevel\":"+yieldLevel+",\"reach\":"+reach+",\"wearFactor\":"+wearFactor+",\"regeneration\":"+regeneration+",\"bonusHealth\":"+bonusHealth+",\"protectionFactor\":"+protectionFactor+",\"criticalCoefficient\":"+criticalCoefficient+",\"projectileCoefficient\":"+projectileCoefficient+",\"walkingRate\":"+walkingRate+",\"controlSeconds\":"+controlSeconds+",\"actualMaxHealth\":"+actualMaxHealth()+",\"actualBlockReach\":"+actualBlockReach()+",\"actualEntityReach\":"+actualEntityReach()+"}";}
     }
     private static double grade(double[] values,int level){return level>0&&level<=values.length?values[level-1]:0;}
     private static double rss(List<Core> cores,int type,double[] values){double n=0;for(var c:cores)if(c.type()==type){double v=grade(values,c.level());n+=v*v;}return Math.sqrt(n);}
@@ -108,12 +131,28 @@ public final class EquipmentRules {
     public static double attack(double base,List<Core> gear,List<Core> book,boolean deep){return attack(base,gear,book,deep,0,0);}
     public static double attack(double base,List<Core> gear,List<Core> book,boolean deep,double b,double innateHp){return deep?base*(1+b)*(1+universal(book,true))*(1+rss(book,1,POWER_PERCENT))*(1+rss(gear,1,POWER_PERCENT)):base+innateHp+rss(gear,1,POWER_HP)+rss(book,1,POWER_HP)+rss(book,8,ORDINAL_HP);}
     public static double miningMultiplier(List<Core> gear,List<Core> book,boolean deep){return 1;}
-    public static int efficiencyLevel(List<Core> book){return 2*highest(book,0);}
-    /** Difference from native Efficiency; apply before Haste and water/air penalties. */
-    public static double efficiencyBonus(int nativeLevel,List<Core> book){int effective=Math.max(nativeLevel,efficiencyLevel(book));return (effective>0?effective*effective+1:0)-(nativeLevel>0?nativeLevel*nativeLevel+1:0);}
+    public static double manuscriptMiningFlat(List<Core> book){return rss(book,0,new double[]{4,8,16});}
+    public static double manuscriptMiningRate(List<Core> book){return rss(book,0,new double[]{.25,.5,1});}
+    /** Every Boundary grade grants the same walking/sprinting rate; aggregate before multiplying movement speed. */
+    public static double boundaryWalkRate(List<Core> book){return rss(book,6,new double[]{.5,.5,.5});}
+    /** Called after native Efficiency, before native fatigue/water/air penalties. */
+    public static double manuscriptMiningSpeed(double nativeToolAndEfficiency,int tier,List<Core> book,double hasteRate){
+        return (nativeToolAndEfficiency+manuscriptMiningFlat(book))*(1+bookMiningBase(tier)+manuscriptMiningRate(book)+hasteRate);
+    }
     public static int spreadBudget(List<Core> gear,List<Core> book,boolean deep){return (int)Math.floor(rss(gear,0,deep?new double[]{1,4,9}:new double[]{1,2,3}));}
     public static int yieldLevel(List<Core> gear,List<Core> book){return 2*highest(gear,2);}
+    /** Use the actual vanilla effect name for this carrier, not a generic yield label. */
+    public static String coreEffectKey(int kind,int type,int level){
+        if(type==2){
+            if(kind==0)return "enchantment.minecraft.fortune";
+            if(kind==1)return "enchantment.minecraft.looting";
+            if(kind==BOW)return "enchantment.minecraft."+(level>=3?"piercing":level>=2?"multishot":"infinity");
+        }
+        return "mining.googology.effect."+type;
+    }
     public static double reach(List<Core> gear,List<Core> book){return Math.sqrt(sum(book,2,true));}
+    /** Manuscript sockets never protect either the manuscript or another item from wear. */
+    public static double wearFactor(int kind,List<Core> cores){return kind<0||kind==MANUSCRIPT?1:wearFactor(cores,List.of());}
     public static double wearFactor(List<Core> gear,List<Core> book){double d=0;for(var c:gear)if(c.type()==3)d+=grade(new double[]{4,16,64},c.level());return Math.max(1,d);}
     public static int wearCostForFactor(int amount,double factor,java.util.function.DoubleSupplier random){if(amount<=0||factor<=1)return amount;double chance=1/factor;int spent=0;for(int i=0;i<amount;i++)if(random.getAsDouble()<chance)spent++;return spent;}
     public static double regen(List<Core> book){return regen(book,0);}
@@ -131,7 +170,8 @@ public final class EquipmentRules {
     public static double oxygenConsumption(List<Core> helmet){return switch(highest(helmet,4)){case 1->.25;case 2->1d/16;case 3->0;default->1;};}
     private static String gearJson(Gear g){StringBuilder b=new StringBuilder("{\"tier\":").append(g.tier()).append(",\"kind\":").append(g.kind()).append(",\"digit\":").append(g.digit()).append(",\"cores\":[");for(var c:g.cores()){if(b.charAt(b.length()-1)!='[')b.append(',');b.append("{\"type\":").append(c.type()).append(",\"level\":").append(c.level()).append('}');}return b.append("]}").toString();}
     public static String rulesJson(){
-        StringBuilder b=new StringBuilder("{\"revision\":47,\"proposalRevision\":47,\"universal\":[0.05,0.1,0.2,0.4],\"yieldType\":2,\"wearType\":3,\"miningBookType\":0,\"spreadType\":0,\"regenBookType\":4,\"reachBookType\":2,\"flightBookType\":6,\"stealthBookType\":3,\"waterGearType\":4,\"wearGrades\":[4,16,64],\"efficiencyGrades\":[2,4,6],\"yieldGrades\":[2,4,6],\"regenGrades\":[1,2,3],\"armorShares\":[0.2,0.4,0.25,0.15],\"baseMining\":[9,11,14,18],\"baseSwordAttack\":[8,10,12,16],\"basePickAttack\":[6,8,10,12],\"baseArmorFactor\":null,\"nativeArmorByTier\":[16,18,20,22],\"nativeToughnessByTier\":[4,8,12,16],\"gearSlots\":[1,2,4,6,8],\"bookSlots\":[0,2,3,4,6],\"regionalGrades\":[1,1,2,2,3],\"bookRegionalGrades\":[0,1,2,2,3],\"bookOrdinalGrades\":[0,2,3,3,4],\"attributeCaps\":{\"attackDamage\":2048,\"maxHealth\":1024,\"blockReach\":64,\"entityReach\":64},\"baseBlockReach\":4.5,\"baseEntityReach\":3,\"baseMaxHealth\":20,\"oxygenGrades\":[0.25,0.0625,0],\"yieldAggregation\":\"max(2*toolBranchLevel)+applicableNativeLevel; Silk Touch overrides Fortune\",\"normalAggregation\":\"sqrt(sum(value^2))\",\"wearFormula\":\"max(1,sum(itemAbsenceProtection))\",\"numericMiningFormula\":\"4+5*digit/9\",\"numericPickAttackFormula\":\"3+digit/3\",\"numericSwordAttackFormula\":\"5+digit/3\",\"durabilityTools\":[1800,2250,2700,3600],\"durabilityArmorBase\":[400,600,550,450],\"durabilityScales\":[1,1.25,1.5,2],\"durabilityBows\":[768,1152,1536,2304],\"bowSpeedMultipliers\":[1.1,1.2,1.3,1.5],\"numericDurabilityFormula\":\"round(131*(2031/131)^(digit/9))\",\"regenIntervalTicks\":80,\"maxControlSeconds\":null,\"normalPowerAttackGrades\":[1,2,3],\"normalOrdinalAttackGrades\":[0.5,1,1.5,2.5],\"powerPercentGrades\":[0.25,0.5,1],\"ordinalPercentGrades\":[0.05,0.1,0.2,0.4],\"ordinalHealingGrades\":[0.1,0.2,0.3,0.5],\"ordinalDurationGrades\":[0.25,0.5,0.75,1.25],\"bookInnateAttackHp\":[0,0.5,1,1.5,2],\"bookInnateAttackProtection\":[0,0.05,0.1,0.15,0.2],\"bookInnateHealing\":[0,0.1,0.2,0.3,0.4],\"bookInnateDuration\":[0,0.25,0.5,0.75,1],\"bookUniversalBase\":[0,0.05,0.1,0.15,0.2],\"armorBoundaryScale\":2,\"deepSpreadGrades\":[1,4,9],\"baseControlSeconds\":2,\"healthModel\":\"guogao_only_realm_invariant_rms\"");
+        StringBuilder b=new StringBuilder("{\"revision\":48,\"proposalRevision\":48,\"universal\":[0.05,0.1,0.2,0.4],\"yieldType\":2,\"wearType\":3,\"miningBookType\":0,\"spreadType\":0,\"regenBookType\":4,\"reachBookType\":2,\"flightBookType\":6,\"stealthBookType\":3,\"waterGearType\":4,\"wearGrades\":[4,16,64],\"manuscriptMiningFlatGrades\":[4,8,16],\"manuscriptMiningRateGrades\":[0.25,0.5,1],\"bookInnateMiningRate\":[0,0.1,0.2,0.3,0.4],\"yieldGrades\":[2,4,6],\"regenGrades\":[1,2,3],\"armorShares\":[0.2,0.4,0.25,0.15],\"baseMining\":[9,11,14,18],\"baseSwordAttack\":[8,10,12,16],\"basePickAttack\":[6,8,10,12],\"baseArmorFactor\":null,\"nativeArmorByTier\":[16,18,20,22],\"nativeToughnessByTier\":[4,8,12,16],\"gearSlots\":[1,2,4,6,8],\"bookSlots\":[0,2,3,4,6],\"regionalGrades\":[1,3,3,3,3],\"bookRegionalGrades\":[0,3,3,3,3],\"bookOrdinalGrades\":[0,4,4,4,4],\"attributeCaps\":{\"attackDamage\":2048,\"maxHealth\":1024,\"blockReach\":64,\"entityReach\":64},\"baseBlockReach\":4.5,\"baseEntityReach\":3,\"baseMaxHealth\":20,\"oxygenGrades\":[0.25,0.0625,0],\"yieldAggregation\":\"max(2*toolBranchLevel)+applicableNativeLevel; Silk Touch overrides Fortune\",\"normalAggregation\":\"sqrt(sum(value^2))\",\"wearFormula\":\"max(1,sum(itemAbsenceProtection))\",\"numericMiningFormula\":\"4+5*digit/9\",\"numericPickAttackFormula\":\"3+digit/3\",\"numericSwordAttackFormula\":\"5+digit/3\",\"durabilityTools\":[1800,2250,2700,3600],\"durabilityArmorBase\":[400,600,550,450],\"durabilityScales\":[1,1.25,1.5,2],\"durabilityBows\":[768,1152,1536,2304],\"bowSpeedMultipliers\":[1.1,1.2,1.3,1.5],\"numericDurabilityFormula\":\"round(131*(2031/131)^(digit/9))\",\"regenIntervalTicks\":80,\"maxControlSeconds\":null,\"normalPowerAttackGrades\":[1,2,3],\"normalOrdinalAttackGrades\":[0.5,1,1.5,2.5],\"powerPercentGrades\":[0.25,0.5,1],\"ordinalPercentGrades\":[0.05,0.1,0.2,0.4],\"ordinalHealingGrades\":[0.1,0.2,0.3,0.5],\"ordinalDurationGrades\":[0.25,0.5,0.75,1.25],\"bookInnateAttackHp\":[0,0.5,1,1.5,2],\"bookInnateAttackProtection\":[0,0.05,0.1,0.15,0.2],\"bookInnateHealing\":[0,0.1,0.2,0.3,0.4],\"bookInnateDuration\":[0,0.25,0.5,0.75,1],\"bookUniversalBase\":[0,0.05,0.1,0.15,0.2],\"armorBoundaryScale\":2,\"deepSpreadGrades\":[1,4,9],\"baseControlSeconds\":2,\"healthModel\":\"guogao_only_realm_invariant_rms\"");
+        b.append(",\"boundaryWalkingRatePerCore\":0.5,\"boundaryLv1ImpactMultiplier\":0.5,\"boundaryLv1SafeFallMultiplier\":2");
         b.append(",\"coreIds\":[");for(int i=0;i<CORES.length;i++){if(i>0)b.append(',');b.append('"').append(CORES[i]).append('"');}
         b.append("],\"coreTranslationKeys\":[");for(int i=0;i<CORES.length;i++){if(i>0)b.append(',');b.append("\"block.googology.").append(CORES[i]).append('"');}
         b.append("],\"compatibility\":[");for(int kind=0;kind<=BOW;kind++){if(kind>0)b.append(',');b.append('[');for(int type=0;type<9;type++){if(type>0)b.append(',');b.append(compatible(kind,type));}b.append(']');}

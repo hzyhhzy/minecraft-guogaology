@@ -1,4 +1,4 @@
-/* Independent production revision47 channel requirements; no Minecraft/game execution. */
+/* Independent production revision48 channel requirements; no Minecraft/game execution. */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
 const root=path.resolve(__dirname,'../..');
@@ -18,12 +18,16 @@ function calc(s){const copy=JSON.parse(JSON.stringify(s)),e=E.calculate(s);eq(s,
 function equipArmor(s,cores=[],tier=4){armorKeys.forEach((key,i)=>s[key]=gear(i+2,JSON.parse(JSON.stringify(cores)),tier));return s;}
 function withoutSlot(e){const r={...e};delete r.activeBookSlot;delete r.totalMinedBlocks;return r;}
 
-eq(rules.proposalRevision,47,'Current production revision');
+eq(rules.proposalRevision,48,'Current production revision');
 for(let kind=0;kind<6;kind++)eq(rules.compatibility[kind][8],false,'Ordinal incompatible with gear kind '+kind);
 eq(rules.compatibility[6][8],true,'Ordinal remains manuscript-compatible');
 eq(rules.nativeArmorByTier,[16,18,20,22],'Native armor totals');
 eq(rules.nativeToughnessByTier,[4,8,12,16],'Native toughness totals');
 eq(rules.normalOrdinalAttackGrades,[.5,1,1.5,2.5],'Confirmed normal flat Ordinal HP');
+eq(rules.manuscriptMiningFlatGrades,[4,8,16],'Sequence flat mining values');
+eq(rules.manuscriptMiningRateGrades,[.25,.5,1],'Sequence rate mining values');
+eq(rules.bookInnateMiningRate,[0,.1,.2,.3,.4],'Innate book mining rates');
+eq(rules.efficiencyGrades,undefined,'Retired manuscript Efficiency grades removed');
 
 for(const deep of[false,true])for(let tier=1;tier<=4;tier++){
  const s=state(deep);s.offhand.tier=tier;const e=calc(s),b=.05*tier;
@@ -36,7 +40,8 @@ for(const deep of[false,true])for(let tier=1;tier<=4;tier++){
  near(e.regeneration,0,'Empty manuscript cannot heal');
  near(e.controlSeconds,0,'Empty manuscript cannot inflict a debuff');
  near(e.actualMaxHealth,20,'Empty manuscript cannot add HP');
- near(e.miningMultiplier,1,'Empty manuscript has no mining multiplier');
+ near(e.miningMultiplier,1+.1*tier,'Empty manuscript innate mining rate');
+ near(e.miningFinal,18*(1+.1*tier),'Empty manuscript scales actual tool speed');
  near(e.wearFactor,1,'Empty manuscript has no wear protection');
  near(e.reach,0,'Empty manuscript has no reach');
 }
@@ -125,13 +130,18 @@ for(const deep of[false,true]){
 for(let level=1;level<=3;level++){
  const s=state(false,[core(2,level),core(2,level)],[core(0,level),core(0,level)]),e=calc(s);
  near(e.yieldLevel,2*level,'Same-source Fortune max');
- near(e.efficiencyLevel,2*level,'Same-source Efficiency max');
- near(e.efficiencyBonus,(2*level)**2+1,'Native Efficiency squared addend');
+ near(e.efficiencyLevel,0,'Sequence does not grant native Efficiency');
+ near(e.efficiencyBonus,0,'Ordinal gear has no native Efficiency');
+ near(e.manuscriptMiningFlat,[4,8,16][level-1]*Math.sqrt(2),'Sequence flat independent RSS');
+ near(e.manuscriptMiningRate,[.25,.5,1][level-1]*Math.sqrt(2),'Sequence rate independent RSS');
+ near(e.miningFinal,(18+[4,8,16][level-1]*Math.sqrt(2))*(1.4+[.25,.5,1][level-1]*Math.sqrt(2)),'Sequence repeated cores both channels');
  s.mainhand.kind=1;near(calc(s).yieldLevel,2*level,'Looting shares Branch policy');
 }
 const vanilla=state(false,[],[core(0,3)]);
 vanilla.mainhand=gear(0,[],-1,{baseAttack:1,baseMining:8,nativeEfficiency:5,nativeYield:3});
-near(calc(vanilla).efficiencyLevel,6,'Manuscript/native Efficiency max');
+near(calc(vanilla).efficiencyLevel,5,'Manuscript never replaces native Efficiency');
+near(calc(vanilla).efficiencyBonus,26,'Native Efficiency retains its addition');
+near(calc(vanilla).miningFinal,(8+26+16)*2.4,'Native Efficiency plus Sequence then additive rate factor');
 near(calc(vanilla).yieldLevel,3,'Native yield exists without Branch');
 vanilla.mainhand=gear(0,[core(2)],0,{nativeYield:3});
 near(calc(vanilla).yieldLevel,9,'Native and crystal yield add');
@@ -177,6 +187,24 @@ near(calc(wet).miningFinal,dry/5,'Submerged penalty');wet.helmet=gear(2,[core(4,
 wet.airborne=true;near(calc(wet).miningFinal,dry/5,'Airborne penalty retained');
 wet.helmet=E.empty(2);near(calc(wet).miningFinal,dry/25,'Water and air penalties multiply');
 wet.miningApplicable=false;near(calc(wet).efficiencyBonus,0,'Incorrect mining tool no Efficiency');
+near(calc(wet).miningFinal,(1+16)*2.4/25,'Incorrect tool keeps both manuscript bonuses with base1');
+
+// Each manuscript channel remains active for bare hands and any wrong tool.
+for(const deep of[false,true])for(let tier=1;tier<=4;tier++){
+ const s=state(deep,[],[]);s.offhand.tier=tier;s.mainhand=E.empty(0);
+ near(calc(s).miningFinal,1+.1*tier,'Bare hand innate rate in both realms');
+ const grade=E.socketGrade(s.offhand,0);s.offhand.cores=[core(0,1),core(0,grade)];
+ const flat=Math.hypot(4,[4,8,16][grade-1]),rate=Math.hypot(.25,[.25,.5,1][grade-1]),baseline=.1*tier;
+ near(calc(s).miningFinal,(1+flat)*(1+baseline+rate),'Hand mixed-grade independent RSS');
+ s.mainhand=gear(0,[],-1,{baseMining:8,nativeEfficiency:5});s.miningApplicable=false;
+ near(calc(s).miningFinal,(1+flat)*(1+baseline+rate),'Wrong tool equals hand, no Efficiency unlocked by book');
+ s.miningApplicable=true;s.hasteLevel=2;
+ near(calc(s).miningFinal,(8+26+flat)*(1+baseline+rate+.4),'Haste and manuscript rate add, never multiply');
+ for(const [level,penalty] of [[1,.3],[2,.09],[3,.0027],[4,.00081],[5,.00081]]){
+  s.fatigueLevel=level;s.submerged=true;s.airborne=true;s.otherMiningPenalty=.5;
+  near(calc(s).miningFinal,(8+26+flat)*(1+baseline+rate+.4)*penalty*.2*.2*.5,'Native penalties apply after both manuscript channels');
+ }
+}
 for(let level=1;level<=3;level++){
  const s=state(false,[],[core(3,level)]),m=E.misc(s);
  near(m.detectionFactor,level===1?.3:0,'Ordinary targeting range');near(m.retaliationChance,level===3?0:1,'Ordinary retaliation');
@@ -184,9 +212,15 @@ for(let level=1;level<=3;level++){
 }
 const move=state(false,[],[core(6,1),core(6,1),core(6,2),core(6,3)]);
 near(E.misc(move).jumpExtra,2,'Lv1 jumps coexist with flight');eq(E.misc(move).flight,'creative','Lv3 flight priority');
+near(E.misc(move).walkingRate,1,'Four mixed grades grant RSS100% walking');
+near(E.misc(move).safeFallFactor,2,'Lv1 safe distance survives flight grades');
 near(E.misc(move).fallFactor,0,'Flight fall immunity');near(E.misc(move).wallFactor,0,'Lv3 wall immunity');
 move.offhand.cores.pop();eq(E.misc(move).flight,'slow','Lv2 flight fallback');
-move.offhand.cores.pop();near(E.misc(move).fallFactor,.25,'Duplicate Lv1 fall reduction max');
+near(E.misc(move).flightSpeedCoefficient,.05/6,'Lv2 fixed flight coefficient halved again');
+eq(E.misc(move).flightSpeeds,[1.815,1.815,1.25,1.25],'Lv2 both axes and sprint use independent slow-flight values');
+near(E.misc(move).wallFactor,.5,'Lv1 still halves walls alongside Lv2');
+move.offhand.cores.pop();near(E.misc(move).fallFactor,.5,'Duplicate Lv1 fall reduction max');
+near(E.misc(move).safeFallFactor,2,'Duplicate Lv1 safe distance remains2x');
 const burst=state(true,[core(5),core(5)],[core(5),core(8,4)]);burst.mainhand.kind=1;
 near(calc(burst).criticalCoefficient,.3*Math.sqrt(2),'Sword burst RSS');
 near(calc(burst).projectileBurstMultiplier,0,'Retired manuscript projectile channel');
@@ -219,10 +253,9 @@ const htmlPath=process.argv[3];
 if(htmlPath){
  const html=fs.readFileSync(htmlPath,'utf8');ok(html.startsWith('<!doctype html>'),'Standalone HTML');ok(!/<script\b[^>]*\bsrc=/i.test(html),'No external scripts');
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
- const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision47 mirror'));
+ const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision48 mirror'));
  ok(script,'Production engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
  vm.createContext(context);new vm.Script(script[2]).runInContext(context);context.EnhancementEngine.setRules(rules);
  for(const c of recorded)eq(JSON.parse(JSON.stringify(context.EnhancementEngine.calculate(c.snapshot))),c.effects,'Embedded engine parity');
 }
 console.log('ENHANCEMENT_CHANNEL_CHECK_OK assertions='+checks+' configurations='+recorded.length+(htmlPath?' embeddedHtml=true':''));
-

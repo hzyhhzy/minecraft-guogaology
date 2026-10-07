@@ -25,7 +25,7 @@ public final class CoreGrades {
             if(levels.getFirst()==Blocks.AIR)throw new IllegalStateException("Missing base core: "+root);
             for(int level=2;level<=(root.equals("ordinal_crystal")?4:3);level++){
                 var name=root+"_lv"+level;
-                var block=new AnimatedCoreBlock(BlockBalance.apply(name,AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK).nonOpaque()));
+                var block=new AnimatedCoreBlock(BlockBalance.apply(name,dev.googology.survival.BlockBalance.amethystSettings().nonOpaque()));
                 Registry.register(Registries.BLOCK,GoogologyMod.id(name),block);
                 Registry.register(Registries.ITEM,GoogologyMod.id(name),new BlockItem(block,
                         new Item.Settings().fireproof().rarity(rarity(root,level))));

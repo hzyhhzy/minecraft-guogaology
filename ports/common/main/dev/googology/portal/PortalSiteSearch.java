@@ -5,15 +5,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.*;
 
-/** PortalForcer's nearest-existing / nearest-clear-site / safe-platform policy, in small tick steps. */
+/** Reuse gates, find real ground, then use a shore/water/void platform, in bounded tick steps. */
 final class PortalSiteSearch {
-    static final int RADIUS=24;
+    static final int RADIUS=24,SCAN_HEIGHT_PER_STEP=32;
+    private record Candidate(BlockPos pos,PortalTravel.Site site) {}
     private final PortalTravel.Target target;
     private final List<PortalState.Gate> existing;
     private final List<BlockPos> columns=new ArrayList<>(),candidates=new ArrayList<>();
-    private final List<BlockPos> supported=new ArrayList<>(),platforms=new ArrayList<>();
-    private final Set<BlockPos> skySites=new HashSet<>();
-    private int gateIndex,columnIndex,candidateIndex,phase;
+    private final List<Candidate> platforms=new ArrayList<>();
+    private final Set<BlockPos> seen=new HashSet<>();
+    private int gateIndex,columnIndex,candidateIndex,phase,scanY=Integer.MIN_VALUE;
     private boolean finished;
     private BlockPos exit;
     PortalSiteSearch(PortalTravel.Target target){
@@ -21,6 +22,7 @@ final class PortalSiteSearch {
         existing=PortalTravel.nearbyGates(target.world(),target.desired(),target.kind());
         var desired=target.desired();int cx=desired.getX()>>4,cz=desired.getZ()>>4;
         columns.add(PortalTravel.boundedCenter(desired));
+        // The entire build footprint and its block-update rim stay inside loaded chunks.
         for(int x=cx-1;x<=cx+1;x++)for(int z=cz-1;z<=cz+1;z++)for(int dx:new int[]{5,8,10})for(int dz:new int[]{5,8,10}){
             var pos=new BlockPos((x<<4)+dx,desired.getY(),(z<<4)+dz);
             if(PortalTravel.inSearchWindow(desired,pos)&&!columns.contains(pos))columns.add(pos);
@@ -32,7 +34,34 @@ final class PortalSiteSearch {
     private static double distance(BlockPos a,BlockPos b){
         double x=(double)a.getX()-b.getX(),y=(double)a.getY()-b.getY(),z=(double)a.getZ()-b.getZ();return x*x+y*y+z*z;
     }
+    private void candidate(BlockPos column,int y){
+        var world=target.world();
+        if(y<world.getMinY()+5||y+5>=world.getMaxY()+1)return;
+        var pos=new BlockPos(column.getX(),y,column.getZ());
+        if(seen.add(pos))candidates.add(pos);
+    }
+    private void scanColumn(ServerLevel world,BlockPos column){
+        if(scanY==Integer.MIN_VALUE){
+            var chunk=world.getChunkSource().getChunkNow(column.getX()>>4,column.getZ()>>4);
+            if(chunk==null){columnIndex++;return;}
+            scanY=Math.min(world.getMaxY()-5,chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,column.getX()&15,column.getZ()&15));
+            int top=world.getMinY()+5;
+            for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++)top=Math.max(top,chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,(column.getX()+x)&15,(column.getZ()+z)&15)+1);
+            // Emergency candidates only; any real ground/water contact outranks these.
+            candidate(column,target.desired().getY());
+            candidate(column,Math.min(world.getMaxY()-5,top+1));
+        }
+        for(int n=0;n<SCAN_HEIGHT_PER_STEP&&scanY>=world.getMinY()+4;n++,scanY--){
+            var floor=new BlockPos(column.getX(),scanY,column.getZ());
+            if(!PortalTravel.clearable(world,floor.above()))continue;
+            if(PortalTravel.ground(world,floor)){
+                for(int up=0;up<=PortalTravel.FOUNDATION_DEPTH;up++)candidate(column,scanY+1+up);
+            }else if(world.getBlockState(floor).is(net.minecraft.world.level.block.Blocks.WATER))candidate(column,scanY+2);
+        }
+        if(scanY<world.getMinY()+4){columnIndex++;scanY=Integer.MIN_VALUE;}
+    }
     void step(){
+        if(finished)return;
         var world=target.world();var desired=target.desired();
         if(phase==0){
             if(gateIndex<existing.size()){
@@ -43,36 +72,26 @@ final class PortalSiteSearch {
             phase=1;
         }
         if(phase==1){
-            if(columnIndex<columns.size()){
-                var column=columns.get(columnIndex++);int top=world.getMinY()+6;
-                var chunk=world.getChunkSource().getChunkNow(column.getX()>>4,column.getZ()>>4);
-                if(chunk==null)return;
-                for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++)top=Math.max(top,chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,(column.getX()+x)&15,(column.getZ()+z)&15)+1);
-                int ceiling=world.getMaxY()-11;
-                // Far above ordinary terrain when needed, with twelve blocks of roof clearance.
-                int sky=Math.min(ceiling,Math.max(160,Math.max(top+2,desired.getY()+16)));
-                skySites.add(new BlockPos(column.getX(),sky,column.getZ()));
-                for(int y:new int[]{desired.getY(),desired.getY()-32,desired.getY()+32,top,sky}){
-                    var pos=new BlockPos(column.getX(),y,column.getZ());if(!candidates.contains(pos))candidates.add(pos);
-                }
-                return;
-            }
+            if(columnIndex<columns.size()){scanColumn(world,columns.get(columnIndex));return;}
             candidates.sort(Comparator.comparingDouble(p->distance(p,desired)));phase=2;
         }
         if(phase==2){
             if(candidateIndex<candidates.size()){
-                var pos=candidates.get(candidateIndex++);
-                int quality=PortalTravel.siteQuality(world,pos);
-                if(quality==2)supported.add(pos);else if(quality==1)platforms.add(pos);
+                var pos=candidates.get(candidateIndex++);var site=PortalTravel.assessSite(world,pos);
+                // Nearest completely flat supported site is already optimal.
+                if(site.quality()==3){exit=PortalTravel.buildGate(world,pos,target.kind());finished=exit!=null;}
+                else if(site.quality()>0)platforms.add(new Candidate(pos,site));
                 return;
             }
-            // Complete all near-site comparisons before choosing the nearest valid site.
-            platforms.sort(Comparator.comparingInt((BlockPos p)->skySites.contains(p)?0:1).thenComparingDouble(p->distance(p,desired)));
-            supported.addAll(platforms);candidateIndex=0;phase=3;
+            // Slopes before ledges, ledges before water, water before empty sky.
+            // Less earthwork wins ties, avoiding a needless pedestal above flat ground.
+            platforms.sort(Comparator.<Candidate>comparingInt(c->-c.site().quality())
+                    .thenComparingInt(c->-c.site().ground()).thenComparingInt(c->-c.site().water())
+                    .thenComparingInt(c->c.site().fill()).thenComparingDouble(c->distance(c.pos(),desired)));
+            candidateIndex=0;phase=3;
         }
-        if(candidateIndex<supported.size()){
-            var pos=supported.get(candidateIndex++);
-            if(PortalTravel.siteQuality(world,pos)>0){exit=PortalTravel.buildGate(world,pos,target.kind());finished=true;}
+        if(candidateIndex<platforms.size()){
+            exit=PortalTravel.buildGate(world,platforms.get(candidateIndex++).pos(),target.kind());finished=exit!=null;
         }else finished=true;
     }
 }

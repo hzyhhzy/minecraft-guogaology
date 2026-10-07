@@ -7,7 +7,7 @@ public final class GoogologyMod {
             case "bashicu_block" -> "googology:ordinal_bricks";
             case "gummy_block" -> "googology:amber_guogao";
             case "fruit_cake" -> "googology:guogao_slice";
-            case "christmas_light" -> "googology:amber_sequence_light";
+            case "christmas_light" -> "googology:amber_light";
             case "laver_log" -> "googology:laver_vein";
             case "laver_planks" -> "googology:laver_planks";
             case "laver_leaves" -> "googology:giant_laver";

@@ -34,9 +34,9 @@ public class OrdinalGear extends Item {
     @Override public void appendTooltip(ItemStack s,TooltipContext context,java.util.List<Text> out,TooltipType flag){
         if(kind==0)out.add(Text.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.add(Text.translatable("mining.googology.digit",GearData.digit(s)));
-        out.add(Text.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
+        out.add(Text.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind)));
         if(GearData.points(s,3)>0)out.add(Text.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
-        for(var c:GearData.cores(s))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable("mining.googology.effect."+GearData.type(c))));
+        for(var c:GearData.cores(s))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable(EquipmentRules.coreEffectKey(kind,GearData.type(c),GearData.level(c)))));
         if(kind==0)out.add(Text.translatable("mining.googology.sneak"));
     }
 }

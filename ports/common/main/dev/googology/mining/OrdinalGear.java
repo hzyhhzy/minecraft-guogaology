@@ -33,9 +33,9 @@ public final class OrdinalGear extends Item {
         if(kind>=2)out.accept(Component.translatable("mining.googology.native_armor",EquipmentRules.format(EquipmentRules.nativeArmor(tier,kind)),EquipmentRules.format(EquipmentRules.nativeToughness(tier,kind))));
         if(kind==0)out.accept(Component.translatable("mining.googology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
         if(tier==0)out.accept(Component.translatable("mining.googology.digit",GearData.digit(s)));
-        out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind),EquipmentRules.grade(tier)));
+        out.accept(Component.translatable("mining.googology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind)));
         if(GearData.points(s,3)>0)out.accept(Component.translatable("mining.googology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
-        for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable("mining.googology.effect."+GearData.type(c))));
+        for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable(EquipmentRules.coreEffectKey(kind,GearData.type(c),GearData.level(c)))));
         if(kind==0)out.accept(Component.translatable("mining.googology.sneak"));
     }
 }

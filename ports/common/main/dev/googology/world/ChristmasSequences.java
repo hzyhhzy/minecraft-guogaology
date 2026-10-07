@@ -12,6 +12,6 @@ public final class ChristmasSequences {
     public static BlockState light(int digit, int color) {
         return GoogologyBlocks.SEQUENCE_LIGHTS[Math.floorMod(color,6)].defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,digit);
     }
-    public static BlockState blank(int color){return light(ChristmasDigitBlock.BLANK,color);}
+    public static BlockState blank(int color){return GoogologyBlocks.PLAIN_LIGHTS[Math.floorMod(color,6)].defaultBlockState();}
     public static BlockState digit(int n){return GoogologyBlocks.ordinalBrick(n);}
 }

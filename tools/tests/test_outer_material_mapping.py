@@ -44,10 +44,10 @@ class MaterialMapping(unittest.TestCase):
         for color,name in enumerate(LAMPS):
             raw=state_blob('googology:christmas_light',{'color':str(color)},True)
             for modern in (True,False):
-                expected=state_blob('googology:'+name+'_sequence_light',{'digit':'33'},modern)
+                expected=state_blob('googology:'+name+'_light',{},modern)
                 self.assertEqual(gzip.decompress(nbt_transform(raw,legacy=not modern)),gzip.decompress(expected))
                 self.assertEqual(walk({'id':'googology:christmas_light','properties':{'color':str(color)}}),
-                                 {'id':'googology:'+name+'_sequence_light','properties':{'digit':'33'}})
+                                 {'id':'googology:'+name+'_light'})
 
     def test_matrix_nbt_all_values(self):
         for number in range(16):

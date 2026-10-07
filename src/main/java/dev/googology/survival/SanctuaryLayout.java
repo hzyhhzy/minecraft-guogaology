@@ -138,7 +138,7 @@ public final class SanctuaryLayout {
         entrance=new Point(0,theme==SurvivalTheme.POWER?2:0,depth/2-1);
         arena=switch(theme) {
             case MATRIX -> new Point(0,40,0);
-            case POWER -> new Point(0,PowerPagoda.floor(8),0);
+            case POWER -> new Point(0,PowerPagoda.floor(9),0);
             case HYDRA -> new Point(0,24,0);
             case ABSENCE -> new Point(0,30,0);
             case WEAVER -> new Point(-22,24,-13);
@@ -221,7 +221,7 @@ public final class SanctuaryLayout {
             }
             case POWER -> {
                 // The full circular ascent is authored by PowerPagoda before furniture fitting.
-                PowerPagoda.connectUpper(this);
+                // The authored ascent now reaches the final, tenth-storey arena.
             }
             case ABSENCE -> {
                 Point[] wings=new Point[8];

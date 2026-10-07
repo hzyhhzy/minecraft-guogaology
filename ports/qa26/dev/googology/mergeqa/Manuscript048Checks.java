@@ -33,6 +33,7 @@ import java.util.*;
 /** Isolated real-client flight, real C2S inventory button and lethal-damage conservation. */
 public final class Manuscript048Checks {
     private int phase,ticks,checks;private boolean opening,queued,done;private volatile boolean ready;private volatile Throwable failure;
+    private ManuscriptFlight044Checks flightChecks;
     private final long deadline=System.nanoTime()+600_000_000_000L;
     public static void initialize(){var test=new Manuscript048Checks();ClientTickEvents.END_CLIENT_TICK.register(test::tick);}
     private void check(boolean value,String label){if(!value)throw new AssertionError(label);checks++;}
@@ -64,32 +65,12 @@ public final class Manuscript048Checks {
                 check(c.player.containerMenu instanceof ManuscriptMenu,"actual button C2S opens bound menu");
                 check(c.player.getOffhandItem().getItem() instanceof DenxiManuscript,"original stays in offhand on client");photo(c,"manuscript-preview");c.player.closeContainer();
             }else if(phase>=2&&phase<=4){
-                var p=c.player;System.out.println("CLIENT_FLIGHT_DIAGNOSTIC realm="+p.level().dimension()+" owned="+ManuscriptEffects.ownsFlight(p)+" mayfly="+p.getAbilities().mayfly+" level="+ManuscriptEffects.level(ManuscriptEffects.held(p),6));
-                check(ManuscriptEffects.ownsFlight(p),"ownership bit reached local player");check(ManuscriptEffects.level(ManuscriptEffects.held(p),6)==3,"local player sees equipped flight grade");
-                p.getAbilities().flying=true;p.setOnGround(false);p.onUpdateAbilities();
-                var speed=Player.class.getDeclaredMethod("getFlyingSpeed");speed.setAccessible(true);
-                p.setSprinting(false);near((Float)speed.invoke(p),.05,"actual client normal flight speed");
-                p.setSprinting(true);near((Float)speed.invoke(p),phase==2?.1:.4,"actual client sprint speed");near(ManuscriptEffects.verticalSpeed(p,.05f),phase==2?.05:.4,"client vertical sprint speed");
-                p.setSprinting(false);p.setDeltaMovement(Vec3.ZERO);p.travel(new Vec3(0,0,1));double base=p.getDeltaMovement().horizontalDistance();
-                p.setSprinting(true);p.setDeltaMovement(Vec3.ZERO);p.travel(new Vec3(0,0,1));double fast=p.getDeltaMovement().horizontalDistance();
-                near(fast/base,phase==2?2:8,"actual travel horizontal velocity ratio");p.setDeltaMovement(Vec3.ZERO);
-                var savedInput=p.input;var savedPos=p.position();boolean savedSprintKey=c.options.keySprint.isDown();
-                try{
-                    double horizontal=0,vertical=0;
-                    for(boolean sprint:new boolean[]{false,true}){
-                        p.setPos(savedPos);p.setDeltaMovement(Vec3.ZERO);p.setOnGround(false);p.getAbilities().flying=true;p.setSprinting(sprint);c.options.keySprint.setDown(sprint);
-                        p.input=new net.minecraft.client.player.ClientInput(){
-                            {keyPresses=new net.minecraft.world.entity.player.Input(true,false,false,false,true,false,sprint);moveVector=new Vec2(0,1);}
-                        };
-                        p.aiStep();check(p.getAbilities().flying&&p.isSprinting()==sprint,"native movement preserves flight and sprint input");
-                        var v=p.getDeltaMovement();
-                        if(!sprint){horizontal=v.horizontalDistance();vertical=v.y;check(horizontal>0&&vertical>0,"native movement baseline advances and rises");}
-                        else{near(v.horizontalDistance()/horizontal,phase==2?2:8,"native aiStep horizontal ratio");near(v.y/vertical,phase==2?1:8,"native aiStep vertical ratio");}
-                    }
-                }finally{p.input=savedInput;p.setPos(savedPos);p.setDeltaMovement(Vec3.ZERO);c.options.keySprint.setDown(savedSprintKey);}
+                if(flightChecks==null)flightChecks=new ManuscriptFlight044Checks(phase!=2);
+                if(!flightChecks.tick(c))return;
+                checks+=flightChecks.checks();flightChecks=null;
             }else if(phase==5){
                 c.gui.setScreen(new InventoryScreen(c.player));check(button(c)!=null,"button exists after another inventory open");
-                done=true;Files.writeString(Path.of("port-client-ok.txt"),"MANUSCRIPT048_OK checks="+checks+" inventory button / deferred activation / death conservation / actual client flight / 28 particle materials\n");c.stop();return;
+                done=true;Files.writeString(Path.of("port-client-ok.txt"),"MANUSCRIPT048_OK checks="+checks+" inventory button / deferred activation / death conservation / 96 sustained native keyboard flight scenes / C2S intent and coordinate speeds / 28 particle materials\n");c.stop();return;
             }
             phase++;ticks=0;queued=false;
         }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}

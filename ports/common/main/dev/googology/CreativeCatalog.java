@@ -21,7 +21,7 @@ public final class CreativeCatalog {
         String id=BuiltInRegistries.BLOCK.getKey(block).getPath();
         if(block instanceof NumberStoneBlock||block instanceof OrdinalBrickBlock)return "numbers";
         if(CoreGrades.ROOTS.contains(id)||block instanceof PortableRelicBlock||RARE.contains(id))return "cores";
-        if(block instanceof EmojiLanternBlock||block instanceof FruitJellyBlock||block==GoogologyBlocks.MOSAIC_LIGHT||block==GoogologyBlocks.STAR_GOLD)return "lighting";
+        if(block instanceof ChristmasLightBlock||block instanceof EmojiLanternBlock||block instanceof FruitJellyBlock||block==GoogologyBlocks.MOSAIC_LIGHT||block==GoogologyBlocks.STAR_GOLD)return "lighting";
         if(block instanceof ReturnFrameBlock||BUILDING.contains(id)||id.startsWith("astra_")||id.startsWith("office_")||id.equals("server_rack")||block==GoogologyBlocks.PORTAL_FRAME)return "architecture";
         return "googology";
     }
@@ -36,7 +36,6 @@ public final class CreativeCatalog {
             for(var lamp:GoogologyBlocks.SEQUENCE_LIGHTS)for(int value=0;value<=32;value++)out.add(StatefulDecorBlock.copyAppearance(new ItemStack(lamp),lamp.defaultBlockState().setValue(ChristmasDigitBlock.DIGIT,value)));
         }
         if(tab.equals("lighting")){
-            for(var lamp:GoogologyBlocks.SEQUENCE_LIGHTS)out.add(new ItemStack(lamp));
             for(int color=1;color<16;color++)out.add(StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.MOSAIC_LIGHT),GoogologyBlocks.MOSAIC_LIGHT.defaultBlockState().setValue(MosaicLightBlock.COLOR,color)));
         }
         if(tab.equals("architecture")){
@@ -64,15 +63,13 @@ public final class CreativeCatalog {
         return List.copyOf(out);
     }
     public static void initialize(){
-        for(String tab:TABS)Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,GoogologyMod.id(tab),FabricItemGroup.builder()
-                .title(Component.translatable("itemGroup.googology."+tab)).icon(()->switch(tab){
-                    case "architecture"->new ItemStack(GoogologyBlocks.ASTRA_MARBLE);
-                    case "numbers"->new ItemStack(GoogologyBlocks.NUMBER_STONES[9]);
-                    case "lighting"->new ItemStack(GoogologyBlocks.GUOGAO_LANTERN);
-                    case "cores"->new ItemStack(GoogologyBlocks.SEQUENCE_CORE);
-                    case "mining"->new ItemStack(MiningContent.TOOLS[1][0]);
-                    case "materials"->new ItemStack(MiningContent.MATERIALS[0]);
-                    default->new ItemStack(GoogologyBlocks.EPSILON_TURF);
-                }).displayItems((context,out)->entries(tab).forEach(out::accept)).build());
+        for(String tab:TABS){
+            // Presentation-only items never enter entries(), search, recipes or loot.
+            String id="creative_icon_"+tab;
+            var icon=Registry.register(BuiltInRegistries.ITEM,GoogologyMod.id(id),new Item(MiningContent.itemSettings(id).stacksTo(1)));
+            Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,GoogologyMod.id(tab),FabricItemGroup.builder()
+                    .title(Component.translatable("itemGroup.googology."+tab)).icon(()->new ItemStack(icon))
+                    .displayItems((context,out)->entries(tab).forEach(out::accept)).build());
+        }
     }
 }

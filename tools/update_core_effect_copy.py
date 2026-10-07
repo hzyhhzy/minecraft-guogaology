@@ -1,4 +1,4 @@
-"""Revision47 bilingual core wording, applied after historical generators.
+"""Revision48 bilingual core wording, applied after historical generators.
 
 These strings match the checked 0.3.12 copy catalog. Keep this final overlay
 current when changing core roles or their UI; older progression generators may
@@ -22,54 +22,65 @@ GEAR = [
     ('仅供手稿：攻防、恢复与延时', 'Manuscript only: combat, healing and duration'),
 ]
 BOOK = [
-    ('工具效率', 'Tool efficiency'),
+    ('提高基础挖速与急迫乘区', 'Mining speed and Haste bonus'),
     ('提高攻击力', 'Attack damage'),
     ('延长挖掘与攻击触距', 'Longer block and entity reach'),
     ('减少普通索敌；高阶夜视', 'Reduced ordinary targeting; high-grade night vision'),
     ('治疗；高阶饥饿保障', 'Healing; high-grade food floor'),
     ('不能镶入手稿', 'Cannot be socketed into manuscripts'),
-    ('防护、跳跃、飞行与防火', 'Protection, jumping, flight and fire resistance'),
+    ('防护、步行跑步、跳跃与飞行', 'Protection, walking/sprinting, jumping and flight'),
     ('生命、状态免疫与图腾', 'Health, debuff immunity and inventory totems'),
     ('攻防、放大治疗、延长果糕状态', 'Combat, amplified healing and longer Guogao debuffs'),
 ]
 EXTRA = {
+    'slots': ('晶核槽位：%s / %s', 'Core slots: %s / %s'),
     'manuscript.passive': ('持于主手或副手被动生效，副手优先', 'Passive while held; offhand takes priority'),
     'manuscript.open': ('背包手稿按钮：镶嵌；主手持有时也可右键', 'Inventory Book button: socket cores; main-hand right-click also works'),
     'manuscript.button': ('手稿', 'Book'),
     'manuscript.button_hint': ('编辑副手手稿；关闭页面后生效', 'Edit offhand manuscript; changes activate when closed'),
-    'manuscript.preview': ('关闭后生效 · 预览', 'Preview · applies on close'),
-    'manuscript_label': ('扽西手稿', 'Denxi Manuscript'),
-    'manuscript_drag_hint': ('手稿留在手中 · 关闭后生效', 'Keep held · apply on close'),
+    'manuscript.preview': ('效果预览', 'Effect preview'),
+    'manuscript.socket_totem': ('致命伤害时消耗一个；关闭镶嵌页后生效', 'Consumed on lethal damage; activates when the socket screen closes'),
+    'manuscript.totem_slots': ('手稿内图腾：%s', 'Socketed totems: %s'),
+    'manuscript_label': ('扽西手稿', 'Manuscript'),
+    'manuscript_drag_hint': ('手稿留在手中 · 拖动晶核镶嵌', 'Keep held · drag cores'),
     'status_attack': ('攻击：%s HP', 'Attack: %s HP'),
+    'status_attack_factor': ('攻击：%s', 'Attack: %s'),
+    'status_base_attack': ('基础攻击：%s HP', 'Base attack: %s HP'),
     'status_mining': ('挖速：×%s', 'Mining: ×%s'),
     'status_mining_speed': ('基础挖速：%s', 'Base mining speed: %s'),
-    'status_yield': ('增产等级：%s', 'Yield level: %s'),
-    'status_range': ('额外开采：%s 格', 'Extra mining: %s blocks'),
+    'status_enchantment': ('%s：%s', '%s: %s'),
+    'status_range': ('额外开采：+%s 格', 'Extra mining: +%s blocks'),
     'status_reach': ('触距：+%s 格', 'Reach: +%s blocks'),
-    'status_healing': ('治疗：%s HP / 4 秒', 'Healing: %s HP / 4 s'),
+    'status_healing': ('治疗：+%s HP / 4 秒', 'Healing: +%s HP / 4 s'),
     'status_health': ('生命上限：+%s HP', 'Max health: +%s HP'),
-    'status_defense': ('承伤：×%s', 'Damage taken: ×%s'),
+    'status_defense': ('防护：×%s', 'Protection: ×%s'),
+    'status_armor_protection': ('本件防护贡献：+%s%%', 'Armor contribution: +%s%%'),
+    'status_duration_factor': ('果糕持续时间：×%s', 'Guogao duration: ×%s'),
     'status_wear': ('耐久保护：×%s', 'Wear protection: ×%s'),
+    'status_walking': ('步行/跑步：+%s%%', 'Walk/sprint: +%s%%'),
+    'status_landing': ('摔落/撞墙：×%s / ×%s', 'Fall/wall: ×%s / ×%s'),
+    'status_safe_fall': ('安全落差：×%s', 'Safe fall: ×%s'),
     'status_jump': ('跳高：+%s 格', 'Jump height: +%s blocks'),
     'status_flight': ('飞行：%s', 'Flight: %s'),
-    'flight_slow': ('乐魂式慢速飞行', 'Slow flight'),
-    'flight_normal': ('创造式飞行', 'Creative-style flight'),
-    'flight_deep': ('创造式飞行 · 冲刺八倍', 'Creative-style flight · 8× sprint'),
-    'native_armor': ('护甲 %s · 韧性 %s', 'Armor %s · Toughness %s'),
+    'flight_slow': ('缓速飞行', 'Slow flight'),
+    'flight_normal': ('自由飞行 · 冲刺两倍', 'Free · sprint ×2'),
+    'flight_deep': ('自由飞行 · 冲刺八倍', 'Free · sprint ×8'),
+    'native_armor': ('护甲 +%s · 韧性 +%s', 'Armor +%s · Toughness +%s'),
     'silk_on': ('精准采集：开启', 'Silk Touch: ON'),
     'silk_off': ('精准采集：关闭', 'Silk Touch: OFF'),
     'bow_speed': ('箭初速度：×%s', 'Arrow launch speed: ×%s'),
     'bow_native_damage': ('箭伤随实际速度与蓄力变化', 'Arrow damage varies with speed and charge'),
-    'status_stealth': ('普通索敌抑制：Lv%s', 'Ordinary targeting suppression: Lv%s'),
+    'status_stealth': ('普通索敌抑制：Lv%s', 'Mob targeting: Lv%s'),
     'status_food': ('饥饿下限：%s/20', 'Food floor: %s/20'),
-    'status_efficiency': ('效率：%s级', 'Efficiency: level %s'),
-    'status_burst': ('爆裂伤害：%s%%', 'Burst damage: %s%%'),
+    'status_mining_flat': ('挖速加值：+%s', 'Mining speed: +%s'),
+    'status_mining_rate': ('挖速倍率：×%s', 'Mining multiplier: ×%s'),
+    'status_burst': ('额外爆裂：+%s%%', 'Extra burst: +%s%%'),
     'status_duration': ('果糕状态：%s秒', 'Guogao debuffs: %s s'),
     'status_oxygen': ('氧气消耗：×%s', 'Oxygen consumption: ×%s'),
     'status_water': ('水下行走：%s级', 'Depth Strider: level %s'),
     'bow_infinity': ('无限：保留一支普通箭即可', 'Infinity: keep one ordinary arrow'),
     'bow_multishot': ('多重射击：三箭，同目标不重复直击', 'Multishot: three arrows, one direct hit per target'),
-    'bow_pierce': ('贯穿：每箭最多命中两个生物', 'Piercing: up to two creatures per arrow'),
+    'bow_pierce': ('穿透：每箭最多命中两个生物', 'Piercing: up to two creatures per arrow'),
     'bow_speed_tooltip': ('箭初速度：原版的%s倍', 'Arrow launch speed: %s× vanilla'),
     'bow_ammo': ('特殊箭每轮消耗一个，仅中央箭保留效果', 'One special arrow per volley; only the center retains its effect'),
 }
@@ -104,7 +115,11 @@ def generate(root=ROOT, *, check=False):
     root = Path(root)
     path = root / 'tools/copy_catalog.json'
     catalog = json.loads(path.read_text(encoding='utf8'))
+    retired_keys = {'mining.googology.status_yield', 'mining.googology.status_efficiency', 'mining.googology.grade_limit'}
+    catalog['removed'] = sorted(set(catalog['removed']) | retired_keys)
     for locale, index in [('zh_cn', 0), ('en_us', 1)]:
+        for retired in retired_keys:
+            catalog['translations'][locale].pop(retired, None)
         catalog['translations'][locale].update(core_copy(index))
     expected = {path: catalog}
     for locale in ('zh_cn', 'en_us'):
@@ -122,7 +137,7 @@ def generate(root=ROOT, *, check=False):
         if not check:
             path.write_text(json.dumps(values, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
     action = 'Checked' if check else 'Updated'
-    print(f'{action} revision47 bilingual core copy; {len(changed)} files ' +
+    print(f'{action} revision48 bilingual core copy; {len(changed)} files ' +
           ('would change' if check else 'changed'))
     return changed
 

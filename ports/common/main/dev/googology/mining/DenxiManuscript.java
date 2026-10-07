@@ -25,9 +25,9 @@ public final class DenxiManuscript extends Item {
     @Override public void appendHoverText(ItemStack stack,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
         out.accept(Component.translatable("mining.googology.manuscript.passive"));
         out.accept(Component.translatable("mining.googology.manuscript.open"));
-        out.accept(Component.translatable("mining.googology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,6),EquipmentRules.grade(tier)));
+        out.accept(Component.translatable("mining.googology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,6)));
 
-        for(var core:GearData.cores(stack))out.accept(Component.literal("• ").append(core.getHoverName()).append(" — ").append(Component.translatable("mining.googology.manuscript.effect."+GearData.type(core))));
+        for(var core:GearData.cores(stack))out.accept(Component.literal("• ").append(core.getHoverName()).append(" — ").append(Component.translatable(core.is(Items.TOTEM_OF_UNDYING)?"mining.googology.manuscript.socket_totem":"mining.googology.manuscript.effect."+GearData.type(core))));
         if(ManuscriptEffects.level(stack,7)>=2)out.accept(Component.translatable("mining.googology.manuscript.totem"));
     }
 }

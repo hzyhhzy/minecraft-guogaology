@@ -14,7 +14,7 @@ NS='googology'
 DATA_NAMES={'googology':'outer'}  # The inner world already owns googology:googology.
 ALIASES={
     'bashicu_block':'ordinal_bricks','gummy_block':'amber_guogao',
-    'fruit_cake':'guogao_slice','christmas_light':'amber_sequence_light',
+    'fruit_cake':'guogao_slice','christmas_light':'amber_light',
     'laver_log':'laver_vein','laver_planks':'laver_planks',
     'laver_leaves':'giant_laver','lho_glass':'absence_glass',
     'ordinal_stone':'minecraft:stone','cobbled_ordinal_stone':'minecraft:cobblestone',
@@ -65,10 +65,11 @@ def walk(v,asset=False):
         if v.get('Name')=='googology:ordinal_bricks' and 'digit' in v.get('Properties',{}):v['Properties']['number']=v['Properties'].pop('digit')
         if v.get('id')=='googology:ordinal_bricks' and 'digit' in v.get('properties',{}):v['properties']['number']=v['properties'].pop('digit')
         for idkey,propkey in [('Name','Properties'),('id','properties')]:
-            if v.get(idkey)=='googology:amber_sequence_light':
+            if v.get(idkey)=='googology:amber_light':
                 props=v.setdefault(propkey,{})
                 color=int(props.pop('color','0'))%len(LAMPS)
-                v[idkey]='googology:'+LAMPS[color]+'_sequence_light';props['digit']='33'
+                v[idkey]='googology:'+LAMPS[color]+'_light';props.pop('digit',None)
+                if not props:v.pop(propkey,None)
         return v
     if isinstance(v,list):return [walk(w,asset) for w in v]
     if isinstance(v,str):
@@ -116,12 +117,13 @@ def nbt_transform(blob,legacy=False):
                         if identity in ('googology:bashicu_block','googology:ordinal_bricks'):c=[(aa,'number' if bb=='digit' else bb,cc) for aa,bb,cc in c]
                         if identity=='googology:christmas_light':
                             color=next((int(cc) for aa,bb,cc in c if bb=='color'),0)%len(LAMPS)
-                            c=[(8,'digit','33')]
-                            identity='googology:'+LAMPS[color]+'_sequence_light'
+                            c=[]
+                            identity='googology:'+LAMPS[color]+'_light'
                         b='Properties' if legacy else 'properties'
                     elif b in ('id','Name'):b='Name' if legacy else 'id'
+                    if b in ('Properties','properties') and not c:continue
                     updated.append((a,b,c))
-                if identity.startswith('googology:') and identity.endswith('_sequence_light'):
+                if identity.startswith('googology:') and identity.endswith('_light'):
                     updated=[(a,b,identity if b in ('Name','id') else c) for a,b,c in updated]
                 v=updated
             return b''.join(bytes([a])+st(b)+encode(a,c) for a,b,c in v)+b'\0'

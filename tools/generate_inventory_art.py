@@ -94,14 +94,71 @@ def crystal_case(d, colors, foreground=False):
 def grade_badge(d, grade):
     # 3x5 digits at scale 4 remain actual readable 3x5 pixels in a 16px slot.
     # Upper right leaves Minecraft's lower-right stack count unobstructed.
-    d.rectangle((44, 0, 63, 27), fill='#16252d')
-    d.rectangle((45, 1, 62, 26), fill='#29404b')
-    d.line((45, 1, 62, 1), fill='#80a6b1')
-    d.line((45, 1, 45, 26), fill='#80a6b1')
+    # All ornament stays inside the existing badge rectangle. The family art,
+    # world model and vanilla stack-count corner are never altered.
+    if grade == 1:
+        d.rectangle((44, 0, 63, 27), fill='#16252d')
+        d.rectangle((45, 1, 62, 26), fill='#29404b')
+        d.line((45, 1, 62, 1), fill='#80a6b1')
+        d.line((45, 1, 45, 26), fill='#80a6b1')
+        ink = '#fff5d8'
+    elif grade == 2:
+        d.rectangle((44, 0, 63, 27), fill='#283a4c')
+        d.rectangle((45, 1, 62, 26), fill='#829bab')
+        d.rectangle((47, 3, 60, 24), fill='#263748')
+        d.line((45, 25, 45, 1, 61, 1), fill='#f1fbff', width=2)
+        d.line((47, 26, 62, 26, 62, 3), fill='#4d657d')
+        ink = '#38bfff'
+    else:
+        d.rectangle((44, 0, 63, 27), fill='#56391a')
+        d.rectangle((45, 1, 62, 26), fill='#d5a242')
+        d.rectangle((47, 3, 60, 24), fill='#46341f')
+        d.line((45, 25, 45, 1, 61, 1), fill='#fff2b6', width=2)
+        d.line((46, 26, 62, 26, 62, 2), fill='#8f6126')
+        # A second inset rail and squared corner clasps read at native pixel size.
+        d.line((46, 3, 46, 24), fill='#b17a28')
+        d.line((61, 3, 61, 24), fill='#f8d57c')
+        for x, y in ((44, 0), (61, 0), (44, 25), (61, 25)):
+            d.rectangle((x, y, x+2, y+2), fill='#fff2b6')
+        ink = '#ffca24'
     for y, row in enumerate(NUMBER_PIXELS[grade]):
         for x, pixel in enumerate(row):
             if pixel == '1':
-                d.rectangle((48+x*4, 4+y*4, 51+x*4, 7+y*4), fill='#fff5d8')
+                d.rectangle((48+x*4, 4+y*4, 51+x*4, 7+y*4), fill=ink)
+
+
+def update_badges():
+    """Repaint only the existing top-right badge; no core bodies or models."""
+    out = ROOT / 'build/art-0403-badges'
+    out.mkdir(parents=True, exist_ok=True)
+    sheet = Image.new('RGB', (900, len(FAMILIES)*90+32), '#202631')
+    sd = ImageDraw.Draw(sheet)
+    sd.text((12, 8), 'Digits: Lv1 ivory / Lv2 vivid blue / Lv3 bright gold — body pixels unchanged', fill='#eeeeee')
+    changed = 0
+    for row, family in enumerate(FAMILIES):
+        sd.text((12, 48+row*90), family, fill='#eeeeee')
+        for grade in (1, 2, 3):
+            stage = grade+1 if family == 'ordinal_crystal' else grade
+            name = family + (f'_lv{stage}' if stage>1 else '')
+            path = T / f'{name}.png'
+            before = Image.open(path).convert('RGBA')
+            assert before.size == (64, 64)
+            after = before.copy()
+            grade_badge(ImageDraw.Draw(after), grade)
+            for y in range(64):
+                for x in range(64):
+                    if x<44 or y>27:
+                        assert before.getpixel((x,y)) == after.getpixel((x,y)), (name,x,y)
+            if before.tobytes() != after.tobytes():
+                changed += 1
+                after.save(path)
+            x, y = 224+(grade-1)*214, 32+row*90
+            large=after.resize((80,80),Image.Resampling.NEAREST)
+            sheet.paste(large,(x,y),large)
+            small=after.resize((16,16),Image.Resampling.NEAREST)
+            sheet.paste(small,(x+92,y+32),small)
+    sheet.save(out/'grade-badges.png')
+    print(f'CORE_BADGES_OK icons=27 changed={changed}; every pixel outside x44..63,y0..27 preserved')
 
 
 def core_icon(family, level):
@@ -179,6 +236,8 @@ def bow_icon(tier, stage):
 
 
 def generate():
+    from generate_creative_icons import generate as generate_creative_icons
+    generate_creative_icons()
     T.mkdir(parents=True, exist_ok=True)
     for family in FAMILIES:
         for level in range(1, 5 if family == 'ordinal_crystal' else 4):
@@ -281,4 +340,10 @@ def generate():
 
 
 if __name__ == '__main__':
-    generate()
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--badges-only',action='store_true')
+    if parser.parse_args().badges_only:
+        update_badges()
+    else:
+        generate()

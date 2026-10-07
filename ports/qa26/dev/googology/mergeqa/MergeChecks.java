@@ -27,7 +27,7 @@ public final class MergeChecks implements ClientModInitializer {
     private static final String[] BIOMES={"bms_plain","epsilon_forest","power_desert","laver_forest","astra","lho_void","underworld"};
     private static final List<BlockPos> SITES=new ArrayList<>();
     private static void require(boolean b,String s){if(!b)throw new AssertionError(s);}
-    public void onInitializeClient(){if(Boolean.getBoolean("googology.qa.manuscripts")){Manuscript048Checks.initialize();return;}if(Boolean.getBoolean("googology.qa.voxy")){VoxyChecks.initialize();return;}ClientTickEvents.END_CLIENT_TICK.register(this::tick);}
+    public void onInitializeClient(){if(Boolean.getBoolean("googology.qa.landmarks043")){Landmark043VisualChecks.initialize();return;}if(Boolean.getBoolean("googology.qa.patch051")){Patch051Checks.initialize();return;}if(Boolean.getBoolean("googology.qa.portals")){Portal050Checks.initialize();return;}if(Boolean.getBoolean("googology.qa.inventory")){Inventory049Checks.initialize();return;}if(Boolean.getBoolean("googology.qa.manuscripts")){Manuscript048Checks.initialize();return;}if(Boolean.getBoolean("googology.qa.voxy")){VoxyChecks.initialize();return;}ClientTickEvents.END_CLIENT_TICK.register(this::tick);}
     private void tick(Minecraft c){
       if(done)return;
       try{

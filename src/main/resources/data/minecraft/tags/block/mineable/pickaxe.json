@@ -118,6 +118,14 @@
     "googology:true_omega_ore",
     "googology:nether_true_omega_ore",
     "googology:true_omega_block",
-    "googology:snake_head"
+    "googology:snake_head",
+    "googology:laver_core",
+    "googology:ordinal_crystal",
+    "googology:amber_light",
+    "googology:cyan_light",
+    "googology:rose_light",
+    "googology:lime_light",
+    "googology:violet_light",
+    "googology:scarlet_light"
   ]
 }
