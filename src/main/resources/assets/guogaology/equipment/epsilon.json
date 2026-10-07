@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "guogaology:epsilon"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "guogaology:epsilon"
+      }
+    ]
+  }
+}

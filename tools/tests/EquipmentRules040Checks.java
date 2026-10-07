@@ -1,4 +1,4 @@
-import dev.googology.mining.EquipmentRules;
+import dev.guogaology.mining.EquipmentRules;
 import java.util.Random;
 
 /** Standalone rules regression; compile alongside the shared EquipmentRules source. */

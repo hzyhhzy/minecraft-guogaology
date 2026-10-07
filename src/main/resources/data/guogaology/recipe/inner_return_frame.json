@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "guogaology:ordinal_shard"
+    },
+    {
+      "item": "guogaology:ordinal_shard"
+    },
+    {
+      "item": "guogaology:ordinal_shard"
+    },
+    {
+      "item": "guogaology:ordinal_shard"
+    },
+    {
+      "tag": "minecraft:planks"
+    }
+  ],
+  "result": {
+    "id": "guogaology:inner_return_frame",
+    "count": 1
+  }
+}

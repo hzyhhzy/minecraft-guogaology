@@ -1,0 +1,14 @@
+{
+  "type": "guogaology:guogao",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "guogaology:guogao",
+    "biome_source": {
+      "type": "guogaology:underworld",
+      "forest": "guogaology:guogao_forest",
+      "strata": "guogaology:misaligned_strata",
+      "mire": "guogaology:silent_mire",
+      "descent": "guogaology:descending_caverns"
+    }
+  }
+}

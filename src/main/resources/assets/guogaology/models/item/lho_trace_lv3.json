@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "guogaology:item/lho_trace_lv3"
+  }
+}

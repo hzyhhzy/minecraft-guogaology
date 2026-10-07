@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:stone",
+    "minecraft:netherrack",
+    "minecraft:andesite",
+    "minecraft:diorite",
+    "minecraft:granite",
+    "minecraft:tuff",
+    "minecraft:cobblestone",
+    "guogaology:omega_ore",
+    "guogaology:epsilon_ore",
+    "guogaology:gamma_ore",
+    "guogaology:true_omega_ore",
+    "guogaology:nether_omega_ore",
+    "guogaology:nether_epsilon_ore",
+    "guogaology:nether_gamma_ore",
+    "guogaology:nether_true_omega_ore",
+    "guogaology:stellar_stone_block",
+    "guogaology:omega_block",
+    "guogaology:epsilon_block",
+    "guogaology:gamma_block",
+    "guogaology:true_omega_block",
+    "guogaology:ordinal_bricks"
+  ]
+}

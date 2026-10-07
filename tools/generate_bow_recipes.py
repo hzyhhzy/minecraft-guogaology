@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'src/main/resources/data/googology'
+DATA=ROOT/'src/main/resources/data/guogaology'
 
 def write(path,value):
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -11,17 +11,17 @@ def write(path,value):
 
 def generate():
     for material in ('omega','epsilon','gamma','true_omega'):
-        name=material+'_bow';mineral='googology:'+material+'_material'
+        name=material+'_bow';mineral='guogaology:'+material+'_material'
         write(DATA/f'recipe/{name}.json',{
             'type':'minecraft:crafting_shaped','category':'equipment',
             'pattern':[' MS','M S',' MS'],
             'key':{'M':{'item':mineral},'S':{'item':'minecraft:string'}},
-            'result':{'id':'googology:'+name,'count':1}})
+            'result':{'id':'guogaology:'+name,'count':1}})
         write(DATA/f'advancement/recipes/{name}.json',{
             'parent':'minecraft:recipes/root',
             'criteria':{'has_material':{'trigger':'minecraft:inventory_changed','conditions':{'items':[{'items':[mineral]}]}},
-                        'has_recipe':{'trigger':'minecraft:recipe_unlocked','conditions':{'recipe':'googology:'+name}}},
+                        'has_recipe':{'trigger':'minecraft:recipe_unlocked','conditions':{'recipe':'guogaology:'+name}}},
             'requirements':[['has_material','has_recipe']],
-            'rewards':{'recipes':['googology:'+name]}})
+            'rewards':{'recipes':['guogaology:'+name]}})
 
 if __name__=='__main__':generate()

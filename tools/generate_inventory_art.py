@@ -11,7 +11,7 @@ from generate_brand import globe_face
 from core_item_projection import project
 
 ROOT = Path(__file__).resolve().parents[1]
-A = ROOT / 'src/main/resources/assets/googology'
+A = ROOT / 'src/main/resources/assets/guogaology'
 T = A / 'textures/item'
 FAMILIES = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart',
@@ -244,30 +244,30 @@ def generate():
             name = family + (f'_lv{level}' if level > 1 else '')
             if family == 'ordinal_crystal' and level == 1:
                 # Exact original 0.3.11 item model; never create a replacement sprite.
-                (A / f'models/item/{name}.json').write_text('{"parent":"googology:block/ordinal_crystal"}', 'utf8')
+                (A / f'models/item/{name}.json').write_text('{"parent":"guogaology:block/ordinal_crystal"}', 'utf8')
                 texture = T / f'{name}.png'
                 assert texture.resolve().is_relative_to(T.resolve())
                 texture.unlink(missing_ok=True)
                 continue
             core_icon(family, level).save(T / f'{name}.png')
             write(A / f'models/item/{name}.json', {
-                'parent': 'minecraft:item/generated', 'textures': {'layer0': f'googology:item/{name}'}})
+                'parent': 'minecraft:item/generated', 'textures': {'layer0': f'guogaology:item/{name}'}})
     for tier, metal in enumerate(METALS):
         name = metal + '_bow'
         bow_icon(tier, -1).save(T / f'{name}.png')
         write(A / f'models/item/{name}.json', {
-            'parent': 'minecraft:item/bow', 'textures': {'layer0': f'googology:item/{name}'},
+            'parent': 'minecraft:item/bow', 'textures': {'layer0': f'guogaology:item/{name}'},
             'overrides': [
-                {'predicate': {'pulling': 1}, 'model': f'googology:item/bows/{name}_pulling_0'},
-                {'predicate': {'pulling': 1, 'pull': .65}, 'model': f'googology:item/bows/{name}_pulling_1'},
-                {'predicate': {'pulling': 1, 'pull': .9}, 'model': f'googology:item/bows/{name}_pulling_2'}]})
+                {'predicate': {'pulling': 1}, 'model': f'guogaology:item/bows/{name}_pulling_0'},
+                {'predicate': {'pulling': 1, 'pull': .65}, 'model': f'guogaology:item/bows/{name}_pulling_1'},
+                {'predicate': {'pulling': 1, 'pull': .9}, 'model': f'guogaology:item/bows/{name}_pulling_2'}]})
         for stage in range(3):
             pull = f'{name}_pulling_{stage}'
             bow_icon(tier, stage).save(T / f'{pull}.png')
             # Variant models are not registered items; keep them out of the
             # inventory entrypoint directory and its localization/item-ID audits.
             write(A / f'models/item/bows/{pull}.json', {
-                'parent': 'minecraft:item/bow', 'textures': {'layer0': f'googology:item/{pull}'}})
+                'parent': 'minecraft:item/bow', 'textures': {'layer0': f'guogaology:item/{pull}'}})
             legacy = A / f'models/item/{pull}.json'
             assert legacy.resolve().is_relative_to((A / 'models/item').resolve())
             legacy.unlink(missing_ok=True)

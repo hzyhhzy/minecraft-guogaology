@@ -1,6 +1,6 @@
-import dev.googology.mining.EquipmentRules;
-import dev.googology.mining.EquipmentRules.Core;
-import dev.googology.mining.EquipmentRules.Gear;
+import dev.guogaology.mining.EquipmentRules;
+import dev.guogaology.mining.EquipmentRules.Core;
+import dev.guogaology.mining.EquipmentRules.Gear;
 import java.util.*;
 
 /** Independent expected-value checks for the user's 0.3.11 aggregation rules. */

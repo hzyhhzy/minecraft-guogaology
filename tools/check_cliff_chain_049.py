@@ -32,7 +32,7 @@ def main():
     classes = output/'classes'
     classes.mkdir(parents=True, exist_ok=True)
     files = ['UnderworldLandforms', 'UnderworldRegions', 'TerrainField', 'CliffDescentChains']
-    hashes = {name: hashlib.sha256((ROOT/f'src/main/java/dev/googology/world/{name}.java').read_bytes()).hexdigest() for name in files}
+    hashes = {name: hashlib.sha256((ROOT/f'src/main/java/dev/guogaology/world/{name}.java').read_bytes()).hexdigest() for name in files}
     log = []
 
     def save(report):

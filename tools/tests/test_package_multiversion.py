@@ -15,9 +15,9 @@ class ClientHookValidationTests(unittest.TestCase):
     def archive(self, names, classes=True):
         stream=io.BytesIO()
         with ZipFile(stream,'w') as out:
-            out.writestr('client.json',json.dumps({'package':'dev.googology.client.mixin','client':names}))
+            out.writestr('client.json',json.dumps({'package':'dev.guogaology.client.mixin','client':names}))
             if classes:
-                for name in names:out.writestr('dev/googology/client/mixin/'+name+'.class',b'fixture')
+                for name in names:out.writestr('dev/guogaology/client/mixin/'+name+'.class',b'fixture')
         return ZipFile(stream)
 
     def test_client_hooks_are_packaged_and_enabled(self):
@@ -38,7 +38,7 @@ class ClientHookValidationTests(unittest.TestCase):
 class StructureValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.name='data/googology/structure/bms_aco.nbt'
+        cls.name='data/guogaology/structure/bms_aco.nbt'
         cls.original=(ROOT/'src/main/resources'/cls.name).read_bytes()
         cls.nbt=gzip.decompress(cls.original)
 
@@ -58,8 +58,8 @@ class StructureValidationTests(unittest.TestCase):
                 verify_structure_template(stream.getvalue(),self.original,self.name)
 
     def test_changed_block_palette_is_rejected(self):
-        self.assertIn(b'googology:ordinal_bricks',self.nbt)
-        changed=self.nbt.replace(b'googology:ordinal_bricks',b'googology:missing_bricks')
+        self.assertIn(b'guogaology:ordinal_bricks',self.nbt)
+        changed=self.nbt.replace(b'guogaology:ordinal_bricks',b'guogaology:missing_bricks')
         with self.assertRaisesRegex(AssertionError,'Structure content mismatch: '+self.name):
             verify_structure_template(gzip.compress(changed,mtime=0),self.original,self.name)
 

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "guogaology:fruit_guogao"
+    }
+  ],
+  "result": {
+    "id": "guogaology:guogao_slice",
+    "count": 4
+  }
+}

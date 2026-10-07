@@ -17,16 +17,16 @@ def legacy(s,name):
         'net.minecraft.resources.Identifier':'net.minecraft.resources.ResourceLocation','Identifier':'ResourceLocation',
         '.identifier()':'.location()',
         '.getMinY()':'.getMinBuildHeight()', '.getMaxY()':'.getMaxBuildHeight()',
-        '.getValue(GoogologyMod.id(':'.get(GoogologyMod.id(',
+        '.getValue(GuogaologyMod.id(':'.get(GuogaologyMod.id(',
         '.isClientSide()':'.isClientSide',
         'EntitySpawnReason':'MobSpawnType',
         'SoundEvents.PIG_STEP.value()':'SoundEvents.PIG_STEP',
         'LevelHeightAccessor':'LevelHeightAccessor',
         '.useBlockDescriptionPrefix()':'',
         '.emissiveRendering(state->true)':'.emissiveRendering((state,world,pos)->true)',
-        'dev.googology.mining.MiningContent.STORAGE[3]':'BuiltInRegistries.BLOCK.get(GoogologyMod.id("true_omega_block"))',
-        'dev.googology.GoogologyBlocks.GUOGAO_SLICE':'BuiltInRegistries.ITEM.get(GoogologyMod.id("fruit_cake"))',
-        'import dev.googology.block.MosaicLightBlock;':'import net.minecraft.world.level.block.state.properties.IntegerProperty;',
+        'dev.guogaology.mining.MiningContent.STORAGE[3]':'BuiltInRegistries.BLOCK.get(GuogaologyMod.id("true_omega_block"))',
+        'dev.guogaology.GuogaologyBlocks.GUOGAO_SLICE':'BuiltInRegistries.ITEM.get(GuogaologyMod.id("fruit_cake"))',
+        'import dev.guogaology.block.MosaicLightBlock;':'import net.minecraft.world.level.block.state.properties.IntegerProperty;',
         'MosaicLightBlock.COLOR':'IntegerProperty.create("color",0,15)',
         'net.minecraft.world.entity.animal.fish.WaterAnimal':'net.minecraft.world.entity.animal.WaterAnimal',
         'net.minecraft.world.entity.vehicle.boat.Boat':'net.minecraft.world.entity.vehicle.Boat',
@@ -72,7 +72,7 @@ def legacy(s,name):
     entities={'Beaver':'BusyBeaverEntity','Whale':'DeepSeekWhaleEntity','Snake':'SnakeEntity','FlyY':'FlyYEntity','FruitCakeSlime':'FruitCakeSlimeEntity','FruitSlime':'FruitSlimeEntity','EvilPig':'EvilPigEntity'}
     for stem,entity in entities.items():
         if name==stem+'Model.java':
-            s=s.replace('import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;',f'import dev.googology.outer.entity.{entity};')
+            s=s.replace('import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;',f'import dev.guogaology.outer.entity.{entity};')
             s=s.replace('extends EntityModel<LivingEntityRenderState>',f'extends net.minecraft.client.model.HierarchicalModel<{entity}>')
             s=s.replace('private static final float', 'private static final float',1)
             s=s.replace('super(var1);','super();this.rootPart=var1;')
@@ -92,9 +92,9 @@ def prepare():
     expected=set()
     for side in ('main','client'):
       base=R/f'ports/common/{side}';override=TARGET/f'src/{side}/java'
-      sources={p.relative_to(base):p for p in (base/'dev/googology/outer').rglob('*.java')}
+      sources={p.relative_to(base):p for p in (base/'dev/guogaology/outer').rglob('*.java')}
       if side=='main':
-        for mixin in ('OuterNoiseSettingsMixin','OuterSpawnPlacementInvoker'):sources[Path(f'dev/googology/mixin/{mixin}.java')]=base/f'dev/googology/mixin/{mixin}.java'
+        for mixin in ('OuterNoiseSettingsMixin','OuterSpawnPlacementInvoker'):sources[Path(f'dev/guogaology/mixin/{mixin}.java')]=base/f'dev/guogaology/mixin/{mixin}.java'
       sources.update({p.relative_to(override):p for p in override.rglob('*.java')})
       for rel,p in sources.items():
         target=out/side/rel;target.parent.mkdir(parents=True,exist_ok=True)

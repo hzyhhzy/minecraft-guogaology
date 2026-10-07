@@ -1,7 +1,7 @@
-import dev.googology.mining.EquipmentRules;
-import dev.googology.mining.EquipmentRules.Core;
-import dev.googology.mining.EquipmentRules.Gear;
-import dev.googology.mining.EquipmentRules.Snapshot;
+import dev.guogaology.mining.EquipmentRules;
+import dev.guogaology.mining.EquipmentRules.Core;
+import dev.guogaology.mining.EquipmentRules.Gear;
+import dev.guogaology.mining.EquipmentRules.Snapshot;
 import java.util.*;
 
 /** Independent regression checks for the confirmed 0.3.12 channel boundaries. */

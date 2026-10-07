@@ -12,7 +12,7 @@ repositories { mavenCentral() }
 loom {
     splitEnvironmentSourceSets()
     mods {
-        googology {
+        guogaology {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
@@ -31,11 +31,11 @@ dependencies {
 // same outer module directly. The public download remains a single mod file.
 def outerBridge = layout.projectDirectory.file("ports/outer-1.21.1/build/libs/guogaology-outer-legacy-${project.version}.jar")
 tasks.register('buildLegacyOuter', Exec) {
-    inputs.dir('ports/common/main/dev/googology/outer')
-    inputs.dir('ports/common/client/dev/googology/outer')
+    inputs.dir('ports/common/main/dev/guogaology/outer')
+    inputs.dir('ports/common/client/dev/guogaology/outer')
     inputs.dir('ports/outer-1.21.1/src')
     inputs.file('tools/prepare_outer_legacy.py')
-    inputs.files('ports/common/main/dev/googology/mixin/OuterNoiseSettingsMixin.java', 'ports/common/main/dev/googology/mixin/OuterSpawnPlacementInvoker.java')
+    inputs.files('ports/common/main/dev/guogaology/mixin/OuterNoiseSettingsMixin.java', 'ports/common/main/dev/guogaology/mixin/OuterSpawnPlacementInvoker.java')
     inputs.files('ports/outer-1.21.1/build.gradle','ports/settings.gradle','gradle.properties')
     outputs.file(outerBridge)
     def windows = System.getProperty('os.name').toLowerCase().contains('windows')
@@ -55,7 +55,7 @@ processResources {
     inputs.property 'preserveJsonEscapes', true
     filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
     doLast {
-        def configFile = new File(destinationDir, 'googology.mixins.json')
+        def configFile = new File(destinationDir, 'guogaology.mixins.json')
         def config = new groovy.json.JsonSlurper().parse(configFile, 'UTF-8')
         config.mixins.removeAll { it == 'OuterNoiseSettingsMixin' || it == 'OuterSpawnPlacementInvoker' }
         configFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(config)), 'UTF-8')
@@ -92,7 +92,7 @@ tasks.register('verifyReleaseMixins') {
                 if (entry == null) throw new GradleException("Missing release resource: ${path}")
                 jarFile.getInputStream(entry).withCloseable { stream -> new groovy.json.JsonSlurper().parse(stream, 'UTF-8') }
             }
-            ['googology.mixins.json', 'googology.client.mixins.json'].each { configPath ->
+            ['guogaology.mixins.json', 'guogaology.client.mixins.json'].each { configPath ->
                 def config = readJson(configPath)
                 if (!config.refmap) throw new GradleException("Missing refmap in ${configPath}")
                 def refmap = readJson(config.refmap)

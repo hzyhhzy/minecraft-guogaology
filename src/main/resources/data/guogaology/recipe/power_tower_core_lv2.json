@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:power_tower_core"
+    },
+    {
+      "item": "guogaology:power_tower_core"
+    },
+    {
+      "item": "guogaology:power_tower_core"
+    },
+    {
+      "item": "guogaology:power_tower_core"
+    },
+    {
+      "item": "guogaology:power_tower_core"
+    },
+    {
+      "item": "guogaology:tree_node_red"
+    },
+    {
+      "item": "guogaology:tree_node_green"
+    },
+    {
+      "item": "guogaology:tree_node_blue"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv2"
+    }
+  ],
+  "result": {
+    "id": "guogaology:power_tower_core_lv2",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "LL",
+    "LL"
+  ],
+  "key": {
+    "L": {
+      "item": "guogaology:dread_stripped_log"
+    }
+  },
+  "result": {
+    "id": "guogaology:dread_stripped_wood",
+    "count": 3
+  }
+}

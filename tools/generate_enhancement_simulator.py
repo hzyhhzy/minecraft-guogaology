@@ -53,19 +53,19 @@ def main() -> None:
     home = java_home(args.java_home)
     suffix = ".exe" if (home / "bin/java.exe").exists() else ""
     java = str(home / ("bin/java" + suffix))
-    source = ROOT / "src/main/java/dev/googology/mining/EquipmentRules.java"
+    source = ROOT / "src/main/java/dev/guogaology/mining/EquipmentRules.java"
     classes = args.classes_dir.resolve() if args.classes_dir else work / "java"
     if not args.classes_dir:
         classes.mkdir(parents=True, exist_ok=True)
         run([str(home / ("bin/javac" + suffix)), "--release", "21", "-encoding", "UTF-8", "-d", str(classes), str(source)])
-    exported = json.loads(run([java, "-cp", str(classes), "dev.googology.mining.EquipmentRules", "cases"]))
+    exported = json.loads(run([java, "-cp", str(classes), "dev.guogaology.mining.EquipmentRules", "cases"]))
     if not exported.get("cases") or exported["rules"].get("revision") != 48:
         raise SystemExit("EquipmentRules revision48 golden cases are required.")
     rules = dict(exported["rules"])
     rules["coreNames"] = {}
     rules["coreStageNames"] = {}
     for code, language in [("zh", "zh_cn"), ("en", "en_us")]:
-        translations = json.loads((ROOT / f"src/main/resources/assets/googology/lang/{language}.json").read_text(encoding="utf-8"))
+        translations = json.loads((ROOT / f"src/main/resources/assets/guogaology/lang/{language}.json").read_text(encoding="utf-8"))
         stages = [[translations[key if stage == 1 else f"{key}_lv{stage}"]
                    for stage in range(1, 5 if core == 8 else 4)]
                   for core, key in enumerate(rules["coreTranslationKeys"])]

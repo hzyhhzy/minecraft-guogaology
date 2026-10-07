@@ -1,5 +1,5 @@
-import dev.googology.survival.*;
-import dev.googology.world.*;
+import dev.guogaology.survival.*;
+import dev.guogaology.world.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;

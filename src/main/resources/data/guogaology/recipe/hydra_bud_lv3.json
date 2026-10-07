@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:hydra_bud_lv2"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    }
+  ],
+  "result": {
+    "id": "guogaology:hydra_bud_lv3",
+    "count": 1
+  }
+}

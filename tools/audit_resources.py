@@ -16,7 +16,7 @@ MINERALS = ('omega', 'epsilon', 'gamma', 'true_omega')
 
 def audit(root, prune=False):
     root = root.resolve()
-    assets = root / 'src/main/resources/assets/googology'
+    assets = root / 'src/main/resources/assets/guogaology'
     models = assets / 'models'
     retained = set()
     pending = []
@@ -32,7 +32,7 @@ def audit(root, prune=False):
 
     def texture(value):
         if isinstance(value,dict):value=value.get('sprite')
-        if isinstance(value, str) and value.split(':')[0] == 'googology':
+        if isinstance(value, str) and value.split(':')[0] == 'guogaology':
             namespace,name=value.split(':',1)
             path = assets.parent / namespace / ('textures/' + name + '.png')
             add(path)
@@ -45,7 +45,7 @@ def audit(root, prune=False):
                 walk(child)
         elif isinstance(value, dict):
             for key, child in value.items():
-                if key in ('model', 'parent') and isinstance(child, str) and child.split(':')[0] == 'googology':
+                if key in ('model', 'parent') and isinstance(child, str) and child.split(':')[0] == 'guogaology':
                     namespace,name=child.split(':',1)
                     add(assets.parent / namespace / 'models' / (name + '.json'))
                 elif key == 'textures' and isinstance(child, dict):

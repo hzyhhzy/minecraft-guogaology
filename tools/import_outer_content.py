@@ -10,8 +10,11 @@ from zipfile import ZipFile
 import argparse,hashlib,json,re,struct,gzip,io
 
 ROOT=Path(__file__).resolve().parents[1]
-NS='googology'
-DATA_NAMES={'googology':'outer'}  # The inner world already owns googology:googology.
+# The donor archive and its retained snapshot are immutable input contracts.
+# Keep their identifiers distinct from the host's runtime namespace.
+SOURCE_NS='googology'
+NS='guogaology'
+DATA_NAMES={SOURCE_NS:'outer'}  # The inner world owns guogaology:guogaology.
 ALIASES={
     'bashicu_block':'ordinal_bricks','gummy_block':'amber_guogao',
     'fruit_cake':'guogao_slice','christmas_light':'amber_light',
@@ -51,30 +54,30 @@ CONTENT_IDS=set().union(*json.loads((ROOT/'tools/outer_content_ids.json').read_t
 LAMPS=('amber','cyan','rose','lime','violet','scarlet')
 
 def remap_id(value):
-    if not value.startswith('googology:'):return value
+    if not value.startswith(SOURCE_NS+':'):return value
     name=value.split(':',1)[1]
     if name in ALIASES:
         target=ALIASES[name]
-        return target if ':' in target else 'googology:'+target
+        return target if ':' in target else NS+':'+target
     return NS+':'+DATA_NAMES.get(name,name)
 
 def walk(v,asset=False):
     if isinstance(v,dict):
         v={k:walk(w,asset) for k,w in v.items()}
         # Canonical shared number bricks use NUMBER, not the donor's DIGIT.
-        if v.get('Name')=='googology:ordinal_bricks' and 'digit' in v.get('Properties',{}):v['Properties']['number']=v['Properties'].pop('digit')
-        if v.get('id')=='googology:ordinal_bricks' and 'digit' in v.get('properties',{}):v['properties']['number']=v['properties'].pop('digit')
+        if v.get('Name')==NS+':ordinal_bricks' and 'digit' in v.get('Properties',{}):v['Properties']['number']=v['Properties'].pop('digit')
+        if v.get('id')==NS+':ordinal_bricks' and 'digit' in v.get('properties',{}):v['properties']['number']=v['properties'].pop('digit')
         for idkey,propkey in [('Name','Properties'),('id','properties')]:
-            if v.get(idkey)=='googology:amber_light':
+            if v.get(idkey)==NS+':amber_light':
                 props=v.setdefault(propkey,{})
                 color=int(props.pop('color','0'))%len(LAMPS)
-                v[idkey]='googology:'+LAMPS[color]+'_light';props.pop('digit',None)
+                v[idkey]=NS+':'+LAMPS[color]+'_light';props.pop('digit',None)
                 if not props:v.pop(propkey,None)
         return v
     if isinstance(v,list):return [walk(w,asset) for w in v]
     if isinstance(v,str):
         # Model and texture identifiers are separate from registry identifiers.
-        return v.replace('googology:',NS+':') if asset else re.sub(r'googology:[a-z0-9_./-]+',lambda m:remap_id(m[0]),v)
+        return v.replace(SOURCE_NS+':',NS+':') if asset else re.sub(re.escape(SOURCE_NS)+r':[a-z0-9_./-]+',lambda m:remap_id(m[0]),v)
     return v
 
 def write(path,v):
@@ -154,15 +157,15 @@ def run(archive):
         # Exact donor material/tool/armor art, registered once by our equipment module.
         for m in ('omega','epsilon','gamma','true_omega'):
             for part in ('pickaxe','sword','helmet','chestplate','leggings','boots'):
-                write(res/f'assets/googology/textures/item/{m}_{part}.png',z.read(f'assets/googology/textures/item/{m}_{part}.png'))
-            write(res/f'assets/googology/textures/item/{m}_material.png',z.read(f'assets/googology/textures/item/{m}_stone.png'))
+                write(res/f'assets/{NS}/textures/item/{m}_{part}.png',z.read(f'assets/googology/textures/item/{m}_{part}.png'))
+            write(res/f'assets/{NS}/textures/item/{m}_material.png',z.read(f'assets/googology/textures/item/{m}_stone.png'))
             for part in ('ore','block'):
-                write(res/f'assets/googology/textures/block/{m}_{part}.png',z.read(f'assets/googology/textures/block/{m}_{part}.png'))
-            write(res/f'assets/googology/textures/block/nether_{m}_ore.png',z.read(f'assets/googology/textures/block/hell_{m}_ore.png'))
+                write(res/f'assets/{NS}/textures/block/{m}_{part}.png',z.read(f'assets/googology/textures/block/{m}_{part}.png'))
+            write(res/f'assets/{NS}/textures/block/nether_{m}_ore.png',z.read(f'assets/googology/textures/block/hell_{m}_ore.png'))
             for layer,name in [(1,'humanoid'),(2,'humanoid_leggings')]:
                 image=z.read(f'assets/googology/textures/entity/equipment/{name}/{m}.png')
-                write(res/f'assets/googology/textures/models/armor/{m}_layer_{layer}.png',image)
-                write(res/f'assets/googology/textures/entity/equipment/{name}/{m}.png',image)
+                write(res/f'assets/{NS}/textures/models/armor/{m}_layer_{layer}.png',image)
+                write(res/f'assets/{NS}/textures/entity/equipment/{name}/{m}.png',image)
     write(canonical/'manifest.json',{'source':'googology-dimension-1.0.0.jar','sha256':digest,'authors':meta['authors'],'declared_license':meta['license'],'permission':'User reports author permission to import code/content and all material art, 2026-10-05.','aliases':ALIASES,'policy':'Preserve source terrain and biome parameters; API format adaptations only. Shared progression and travel use Guogaology.'})
     print('Updated canonical source data and staged authorized assets in build/outer-import; review before copying artwork into the source tree.')
 

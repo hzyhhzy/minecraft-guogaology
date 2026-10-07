@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "guogaology:block/laver_pressure_plate_up"
+    },
+    "powered=true": {
+      "model": "guogaology:block/laver_pressure_plate_down"
+    }
+  }
+}

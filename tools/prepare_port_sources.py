@@ -19,8 +19,8 @@ def adapt(text, target, name):
         if name=='ModWoodTypes.java':text=text.replace('.soundType(SoundType.WOOD)','')
         if name=='LaverTableFeature.java':text=text.replace('Blocks.WOOL.white()','Blocks.WHITE_WOOL').replace('Blocks.WOOL.black()','Blocks.BLACK_WOOL')
         if name=='TreeSelfOverlapGuardFeature.java':text=text.replace('this.minimumSize,var5).decorators','this.minimumSize).dirt(var5).decorators')
-        if name=='GoogologyClient.java':text=text.replace('ModelLayerRegistry','EntityModelLayerRegistry')
-        if name=='GoogologyBoatRenderer.java':
+        if name=='GuogaologyClient.java':text=text.replace('ModelLayerRegistry','EntityModelLayerRegistry')
+        if name=='GuogaologyBoatRenderer.java':
             text=text.replace('super(var1, var3);','super(var1);\n      this.texture=var3;')
             text=text.replace('private final BoatModel model;','private final BoatModel model;\n   private final Identifier texture;\n   @Override protected net.minecraft.client.renderer.rendertype.RenderType renderType(){return net.minecraft.client.renderer.rendertype.RenderTypes.entityCutoutNoCull(texture);}')
         return text
@@ -47,12 +47,12 @@ def adapt(text, target, name):
         'e.getKey().x,e.getKey().z': 'e.getKey().x(),e.getKey().z()',
         'entry.getKey().x,entry.getKey().z': 'entry.getKey().x(),entry.getKey().z()',
         '.emissiveRendering((state,world,pos)->true)': '.emissiveRendering(state->true)',
-        'new net.minecraft.world.level.saveddata.SavedDataType<>("googology_portals",': 'new net.minecraft.world.level.saveddata.SavedDataType<>(dev.googology.GoogologyMod.id("portals"),',
+        'new net.minecraft.world.level.saveddata.SavedDataType<>("guogaology_portals",': 'new net.minecraft.world.level.saveddata.SavedDataType<>(dev.guogaology.GuogaologyMod.id("portals"),',
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
     if name == 'BowVolleyLedger.java':
-        text = text.replace('new SavedDataType<>("googology_bow_volleys",', 'new SavedDataType<>(dev.googology.GoogologyMod.id("bow_volleys"),')
+        text = text.replace('new SavedDataType<>("guogaology_bow_volleys",', 'new SavedDataType<>(dev.guogaology.GuogaologyMod.id("bow_volleys"),')
     if name == 'BlockYieldMixin.java':
         text = text.replace('Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;', 'Lnet/minecraft/world/item/ItemInstance;)Ljava/util/List;')
         text = text.replace('Entity owner,ItemStack tool,', 'Entity owner,net.minecraft.world.item.ItemInstance tool,')
@@ -83,7 +83,7 @@ def adapt(text, target, name):
     # The old API combined system chat and action-bar messages in one boolean parameter.
     text = re.sub(r'player\.displayClientMessage\(([^;]+),\s*(true|false)\)',
                   lambda m: 'player.' + ('sendOverlayMessage' if m[2] == 'true' else 'sendSystemMessage') + '(' + m[1] + ')', text)
-    if name == 'GoogologyClient.java':
+    if name == 'GuogaologyClient.java':
         # 26.x determines block transparency from sprite alpha, including modded blocks.
         text = '\n'.join(line for line in text.splitlines() if 'BlockRenderLayerMap' not in line and 'ChunkSectionLayer' not in line) + '\n'
     if name == 'EnhancementScreen.java':
@@ -133,7 +133,7 @@ def adapt(text, target, name):
                             'frameFrustum=null; // Use the camera snapshot during submission below.')
         text = text.replace('frameFrustum!=null&&!frameFrustum.isVisible(state.bounds)',
                             'camera.cullFrustum!=null&&!camera.cullFrustum.isVisible(state.bounds)')
-    if name == 'GoogologyAtmosphere.java':
+    if name == 'GuogaologyAtmosphere.java':
         text = text.replace('.client.rendering.v1.world.World', '.client.rendering.v1.level.Level')
         text = text.replace('WorldExtractionContext', 'LevelExtractionContext').replace('WorldRenderContext','LevelRenderContext').replace('WorldRenderEvents','LevelRenderEvents')
         text = text.replace('LevelRenderEvents.AFTER_ENTITIES', 'LevelRenderEvents.COLLECT_SUBMITS')
@@ -165,11 +165,11 @@ def adapt(text, target, name):
             text = re.sub(r'    public static final MapCodec<[^\n]+simpleCodec\([^\n]+\n', '', text)
             text = re.sub(r'    @Override (?:public|protected) MapCodec<[^\n]+codec\(\)[^\n]+\n', '', text)
         text = text.replace('.isViewBlocking((state,world,pos)->false)', '.isViewBlocking((state,world,pos,bounds)->false)')
-        if name == 'GoogologyCommands.java':
+        if name == 'GuogaologyCommands.java':
             text = re.sub(r'placeItemBackInInventory\((new ItemStack\([^;]+?\))\)', r'placeItemBackInInventory(\1,net.minecraft.util.Prediction.SERVER_ONLY)', text)
         if name == 'ProceduralTerrain.java':
             text = text.replace('.getValue(0,0,0)', '.get(0,0,0)')
-        if name == 'GoogologyBiomeSource.java':
+        if name == 'GuogaologyBiomeSource.java':
             text = text.replace('    @Override\n    public Holder<Biome> getNoiseBiome',
                 '    @Override public net.minecraft.world.level.biome.BiomeResolver createResolver(Climate.Sampler noise){return (x,y,z)->getNoiseBiome(x,y,z,noise);}\n    public Holder<Biome> getNoiseBiome')
         if name == 'UnderworldBiomeSource.java':
@@ -189,7 +189,7 @@ def prepare(target):
         paths = {p.relative_to(common) for p in common.rglob('*.java')}
         paths.update(p.relative_to(specific) for p in specific.rglob('*.java'))
         for relative in sorted(paths):
-            if target == '26.3' and relative.as_posix().startswith('dev/googology/outer/') and relative.name in ('BlockItemId.java','OuterFeatureConfig.java','TemplateEntry.java','SimpleTemplateFeature.java','OuterCaveCarver.java'):
+            if target == '26.3' and relative.as_posix().startswith('dev/guogaology/outer/') and relative.name in ('BlockItemId.java','OuterFeatureConfig.java','TemplateEntry.java','SimpleTemplateFeature.java','OuterCaveCarver.java'):
                 continue
             file = common / relative
             override = ROOT / 'ports' / target / 'src' / group / 'java' / relative

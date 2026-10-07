@@ -1,7 +1,7 @@
-package dev.googology.survival;
+package dev.guogaology.survival;
 
 import java.util.*;
-import static dev.googology.survival.SanctuaryLayout.*;
+import static dev.guogaology.survival.SanctuaryLayout.*;
 
 /** Tests the completed geometry with actual chest blocks occupying the declared spaces. */
 public final class LandmarkChest043Checks {

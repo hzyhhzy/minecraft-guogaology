@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "laver_planks",
+  "key": {
+    "#": {
+      "item": "guogaology:laver_wood"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "guogaology:laver_planks"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "guogaology:guogaology",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "guogaology:guogaology",
+    "biome_source": {
+      "type": "guogaology:guogaology",
+      "guogao_forest": "guogaology:guogao_forest",
+      "ordinal_crags": "guogaology:ordinal_crags",
+      "power_desert": "guogaology:power_desert",
+      "epsilon_meadow": "guogaology:epsilon_meadow",
+      "lho_absence": "guogaology:lho_absence",
+      "laver_tablelands": "guogaology:laver_tablelands",
+      "astra_awakening": "guogaology:astra_awakening",
+      "limit_highlands": "guogaology:limit_highlands"
+    }
+  }
+}

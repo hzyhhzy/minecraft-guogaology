@@ -10,8 +10,8 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / 'src/main/resources'
-A = RES / 'assets/googology'
-D = RES / 'data/googology'
+A = RES / 'assets/guogaology'
+D = RES / 'data/guogaology'
 FRAMES = ('outer_return_frame', 'inner_return_frame', 'guogao_return_frame')
 
 
@@ -123,13 +123,13 @@ def generate_art():
                 else:
                     parts.extend((cube([x, 5, z], [x + 3, 11, z + 3], 'base'),
                                   cube([x + .5, 11, z + .5], [x + 2.5, 14, z + 2.5], 'rim')))
-        mapped = {key: f'googology:block/{name}_{key}' for key in ('base', 'rim', 'seal')}
+        mapped = {key: f'guogaology:block/{name}_{key}' for key in ('base', 'rim', 'seal')}
         mapped['particle'] = mapped['base']
         write(A / f'models/block/{name}.json', {
             'parent': 'minecraft:block/block', 'textures': mapped, 'elements': parts})
-        write(A / f'blockstates/{name}.json', {'variants': {'': {'model': f'googology:block/{name}'}}})
-        write(A / f'models/item/{name}.json', {'parent': f'googology:block/{name}'})
-        write(A / f'items/{name}.json', {'model': {'type': 'minecraft:model', 'model': f'googology:block/{name}'}})
+        write(A / f'blockstates/{name}.json', {'variants': {'': {'model': f'guogaology:block/{name}'}}})
+        write(A / f'models/item/{name}.json', {'parent': f'guogaology:block/{name}'})
+        write(A / f'items/{name}.json', {'model': {'type': 'minecraft:model', 'model': f'guogaology:block/{name}'}})
 
     # A small carved wooden travel tag: clipped corners, a return arrow and
     # the crafting stick as a short handle. Keep the native 16px silhouette.
@@ -147,16 +147,16 @@ def generate_art():
     (A / 'textures/item').mkdir(parents=True, exist_ok=True)
     token.save(A / 'textures/item/return_token.png')
     write(A / 'models/item/return_token.json', {
-        'parent': 'minecraft:item/generated', 'textures': {'layer0': 'googology:item/return_token'}})
+        'parent': 'minecraft:item/generated', 'textures': {'layer0': 'guogaology:item/return_token'}})
     write(A / 'items/return_token.json', {
-        'model': {'type': 'minecraft:model', 'model': 'googology:item/return_token'}})
+        'model': {'type': 'minecraft:model', 'model': 'guogaology:item/return_token'}})
 
 
 def generate_data():
     recipes = (
         ('outer_return_frame', ['minecraft:cobblestone'] * 4 + ['#minecraft:planks'], 1),
-        ('inner_return_frame', ['googology:ordinal_shard'] * 4 + ['#minecraft:planks'], 1),
-        ('guogao_return_frame', ['googology:guogao_loam'] * 4 + ['googology:dread_planks'], 1),
+        ('inner_return_frame', ['guogaology:ordinal_shard'] * 4 + ['#minecraft:planks'], 1),
+        ('guogao_return_frame', ['guogaology:guogao_loam'] * 4 + ['guogaology:dread_planks'], 1),
     )
     paths = []
     for name, materials, count in recipes:
@@ -165,7 +165,7 @@ def generate_data():
                      'category': 'misc' if name == 'return_token' else 'building',
                      'ingredients': [({'tag': item[1:]} if item.startswith('#') else {'item': item})
                                      for item in materials],
-                     'result': {'id': 'googology:' + name, 'count': count}})
+                     'result': {'id': 'guogaology:' + name, 'count': count}})
         paths.append(path)
     # A plank above one stick makes a handled token directly in the inventory
     # grid, with neither the ingredients nor layout of a vanilla wood recipe.
@@ -173,7 +173,7 @@ def generate_data():
     write(token_path, {'type': 'minecraft:crafting_shaped', 'category': 'misc',
                        'pattern': ['P', 'S'],
                        'key': {'P': {'tag': 'minecraft:planks'}, 'S': {'item': 'minecraft:stick'}},
-                       'result': {'id': 'googology:return_token', 'count': 1}})
+                       'result': {'id': 'guogaology:return_token', 'count': 1}})
     paths.append(token_path)
     from prepare_outer_resources import recipe_unlocks
     recipe_unlocks(D, paths)
@@ -181,10 +181,10 @@ def generate_data():
         # Inert frames are recoverable by hand and never require a tool tier.
         write(D / f'loot_table/blocks/{name}.json', {
             'type': 'minecraft:block', 'pools': [{'rolls': 1,
-            'entries': [{'type': 'minecraft:item', 'name': 'googology:' + name}],
+            'entries': [{'type': 'minecraft:item', 'name': 'guogaology:' + name}],
             'conditions': [{'condition': 'minecraft:survives_explosion'}]}]})
 
-    balance_path = RES / 'googology/block_balance.json'
+    balance_path = RES / 'guogaology/block_balance.json'
     balance = read(balance_path)
     for name in FRAMES:
         balance[name] = {'hardness': .8, 'resistance': 3, 'tool': 'hand',
@@ -193,10 +193,10 @@ def generate_data():
     write(balance_path, dict(sorted(balance.items())))
 
     names = {
-        'block.googology.outer_return_frame': ('表界归途框', 'Outer Return Frame'),
-        'block.googology.inner_return_frame': ('里界归途框', 'Inner Return Frame'),
-        'block.googology.guogao_return_frame': ('冥林归途框', 'Dread Forest Return Frame'),
-        'item.googology.return_token': ('归途签', 'Return Token'),
+        'block.guogaology.outer_return_frame': ('表界归途框', 'Outer Return Frame'),
+        'block.guogaology.inner_return_frame': ('里界归途框', 'Inner Return Frame'),
+        'block.guogaology.guogao_return_frame': ('冥林归途框', 'Dread Forest Return Frame'),
+        'item.guogaology.return_token': ('归途签', 'Return Token'),
     }
     guide = (
         '返程：表界归途框＝4 圆石＋1 任意木板；里界归途框＝4 序数晶屑＋1 任意木板；冥林归途框＝4 果糕冥土＋1 冥杉木板；每次得 1 块。同种归途框摆十二格，投入 1 张归途签（1 任意木板在上、1 木棍在下）返回上一层；三种框架不能混搭。',
@@ -207,7 +207,7 @@ def generate_data():
     for index, locale in enumerate(('zh_cn', 'en_us')):
         values = catalog['translations'][locale]
         values.update({key: pair[index] for key, pair in names.items()})
-        guide_key = 'message.googology.guide'
+        guide_key = 'message.guogaology.guide'
         prefix = '返程：' if index == 0 else 'Return:'
         lines = values[guide_key].split('\n')
         assert sum(line.startswith(prefix) for line in lines) == 1

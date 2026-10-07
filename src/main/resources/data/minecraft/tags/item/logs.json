@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "googology:dread_log",
-    "googology:y_log",
-    "googology:laver_vein",
-    "googology:power_bricks",
+    "guogaology:dread_log",
+    "guogaology:y_log",
+    "guogaology:laver_vein",
+    "guogaology:power_bricks",
     "minecraft:oak_log",
     "minecraft:oak_wood",
     "minecraft:stripped_oak_log",
     "minecraft:stripped_oak_wood",
-    "googology:laver_wood",
-    "googology:laver_stripped_log",
-    "googology:laver_stripped_wood",
+    "guogaology:laver_wood",
+    "guogaology:laver_stripped_log",
+    "guogaology:laver_stripped_wood",
     "minecraft:dark_oak_log",
     "minecraft:dark_oak_wood",
     "minecraft:stripped_dark_oak_log",
     "minecraft:stripped_dark_oak_wood",
-    "#googology:dread_logs"
+    "#guogaology:dread_logs"
   ]
 }

@@ -10,7 +10,7 @@ All natural and placed cores can be harvested by hand or with any tool; pickaxes
 
 Natural LHO fragments and ψ/Z branches still need an Ordinal Crystal anchor within a 5×5×5 neighborhood (a nearby player's held crystal also counts), unless already stable. Their touch disappearance, connected-tree disappearance and player-placement protection remain unchanged.
 
-Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe. They naturally generate only in Outer Googology. This table lists the shared monumental-world terrain, plant, decoration and relic profiles; the four ore/storage families, enhancement tables and imported Outer wood families are registered separately. See the survival guide for equipment and core fusion.
+Four ore tiers now use ordinary hardness 3/3.5/4/4.5 and require an iron pickaxe. They naturally generate only in Outer Guogaology. This table lists the shared monumental-world terrain, plant, decoration and relic profiles; the four ore/storage families, enhancement tables and imported Outer wood families are registered separately. See the survival guide for equipment and core fusion.
 
 | Name | Block ID | Hardness | Blast resistance | Tool | Minimum tier | Light | Collision | Drop |
 |---|---|---:|---:|---|---|---:|---|---|

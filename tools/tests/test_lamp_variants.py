@@ -29,21 +29,21 @@ class LampVariants(unittest.TestCase):
     def test_distinct_registry_and_item_state_entrypoints(self):
         for color,name in enumerate(COLORS):
             normal=json.loads((ASSET/f'blockstates/{name}_light.json').read_text('utf8'))
-            self.assertEqual(normal,{'variants':{'':{'model':f'googology:block/sequence_light_{color}'}}})
+            self.assertEqual(normal,{'variants':{'':{'model':f'guogaology:block/sequence_light_{color}'}}})
             numeric=json.loads((ASSET/f'blockstates/{name}_sequence_light.json').read_text('utf8'))
             self.assertEqual(set(numeric['variants']),{f'digit={n}' for n in range(33)})
             item=json.loads((ASSET/f'models/item/{name}_light.json').read_text('utf8'))
             self.assertNotIn('overrides',item)
             numbers=json.loads((ASSET/f'models/item/{name}_sequence_light.json').read_text('utf8'))
             self.assertEqual(len(numbers['overrides']),33)
-            self.assertEqual(numbers['parent'],f'googology:block/christmas_digit_{color}_0')
-            self.assertEqual(walk({'id':'googology:christmas_light','properties':{'color':str(color)}}),{'id':f'googology:{name}_light'})
+            self.assertEqual(numbers['parent'],f'guogaology:block/christmas_digit_{color}_0')
+            self.assertEqual(walk({'id':'googology:christmas_light','properties':{'color':str(color)}}),{'id':f'guogaology:{name}_light'})
 
     def test_generator_never_reintroduces_blank_number_state(self):
         for folder in ('src/main/java','ports/common/main'):
-            block=(ROOT/f'{folder}/dev/googology/block/ChristmasDigitBlock.java').read_text('utf8')
+            block=(ROOT/f'{folder}/dev/guogaology/block/ChristmasDigitBlock.java').read_text('utf8')
             self.assertNotIn('BLANK',block);self.assertIn('MAX_DIGIT=32',block)
-            plain=(ROOT/f'{folder}/dev/googology/block/ChristmasLightBlock.java').read_text('utf8')
+            plain=(ROOT/f'{folder}/dev/guogaology/block/ChristmasLightBlock.java').read_text('utf8')
             self.assertNotIn('ChristmasDigitBlock',plain);self.assertNotIn('StatefulDecorBlock',plain)
         source=(ROOT/'tools/import_outer_content.py').read_text('utf8')
         self.assertNotIn("'digit','33'",source);self.assertNotIn("props['digit']='33'",source)

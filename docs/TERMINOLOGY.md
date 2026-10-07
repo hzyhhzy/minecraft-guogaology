@@ -1,10 +1,10 @@
-# 正式名称与词根 · 0.3.11
+# 正式名称与词根 · 0.5.0
 
 | 中文 | 英文 | 约定 |
 |---|---|---|
 | 果糕逻辑 | Guogaology | 模组正式中英文名称 |
-| 大数表界 | Outer Googology | 新增自然尺度世界；矿物与普通生物 |
-| 大数里界 | Inner Googology | 原有巨构世界；保留内部 ID googology:googology |
+| 大数表界 | Outer Guogaology | 新增自然尺度世界；矿物与普通生物 |
+| 大数里界 | Inner Guogaology | 原有巨构世界；内部 ID `guogaology:guogaology` |
 | 果糕地府 | Guogao Underworld | 第三层世界；与表界的地下群系区分 |
 | 果糕 | Guogao | 词根 guogao，不再写成 fruit cake 或 jelly |
 | 扽西 | Denxi | 词根 denxi；保留数字工具与被动副手手稿，四档矿物装备为「ω镐、ε剑、Γ胸甲、Ω靴子」等，不带「石」 |
@@ -39,6 +39,6 @@
 
 修订源为 `tools/copy_catalog.json`，`tools/copy_catalog.py` 可同步语言资源。资源生成器写语言文件时也执行这份规则；新增或更名须同步中英文和当前指南。
 
-原巨构与晶核 ID 保留；`epsilon_meadow` 对应序数花园。`nether_*_ore` 现只自然生成于表界地下群系，第三层地府不再产矿。ε矿石、结晶块和材料的美术显示 ε₀，名称仍是 ε。门面和 `guogao_portal_frame` 均用 `style=0/1/2` 区分表界／归家、里界、地府三种目的地。所有导入注册、生成及美术资源统一到 `googology`；表界维度／类型／噪声配置为 `outer`。按用户要求不提供旧存档迁移。
+巨构与晶核的 ID 路径部分保留，命名空间统一为 `guogaology`；`epsilon_meadow` 对应序数花园。`nether_*_ore` 现只自然生成于表界地下群系，第三层地府不再产矿。ε矿石、结晶块和材料的美术显示 ε₀，名称仍是 ε。门面和 `guogao_portal_frame` 均用 `style=0/1/2` 区分表界／归家、里界、地府三种目的地。所有导入注册、生成及美术资源统一到 `guogaology`；表界维度／类型／噪声配置为 `outer`。按用户要求不提供旧存档迁移。
 
 晶核当前显示名为「紫菜凝核 / Laver Condensation Core」；数学记号、桌子与群系的 Laver / iBLP 名称继续保留。

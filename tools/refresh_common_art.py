@@ -8,7 +8,7 @@ from collections import Counter
 from PIL import Image,ImageDraw
 import json,math
 
-ROOT=Path(__file__).resolve().parents[1];A=ROOT/'src/main/resources/assets/googology'
+ROOT=Path(__file__).resolve().parents[1];A=ROOT/'src/main/resources/assets/guogaology'
 T=A/'textures/block';S=ROOT/'tools/art_sources'
 def write(p,v):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(v,ensure_ascii=False,separators=(',',':'))+'\n','utf8')
 def save(im,name):im.save(T/(name+'.png'))
@@ -98,7 +98,7 @@ def portals():
                 for z in (1,12):
                     parts.append(cube([x,5,z],[x+3,11,z+3],'base'))
                     parts.append(cube([x+.5,11,z+.5],[x+2.5,14,z+2.5],'trim'))
-        textures={k:f'googology:block/gate_{style}_{k}' for k in ('base','trim','seal')};textures['particle']=textures['base']
+        textures={k:f'guogaology:block/gate_{style}_{k}' for k in ('base','trim','seal')};textures['particle']=textures['base']
         write(A/f'models/block/gate_frame_{style}.json',{'parent':'minecraft:block/block','textures':textures,'elements':parts})
         # Seamless, dark animated portal surface with restrained colored tracery.
         sheet=Image.new('RGBA',(32,32*16))
@@ -123,12 +123,12 @@ def portals():
                 draw.line((8,12,11,10),fill=trim+(140,));draw.line((20,10,23,12),fill=trim+(140,));draw.point((11,15),fill=trim+(190,));draw.point((21,15),fill=trim+(190,));draw.line((13,22,19,22),fill=ink+(170,));draw.polygon([(7,14),(5,20),(8,20)],fill=trim+(160,))
             sheet.paste(tile,(0,32*frame))
         save(sheet,f'gate_field_{style}');write(T/f'gate_field_{style}.png.mcmeta',{'animation':{'frametime':3,'interpolate':True}})
-        tex=f'googology:block/gate_field_{style}'
+        tex=f'guogaology:block/gate_field_{style}'
         write(A/f'models/block/gate_field_{style}.json',{'parent':'minecraft:block/block','ambientocclusion':False,'textures':{'field':tex,'particle':tex},'elements':[cube([0,4.5,0],[16,5.5,16],'field')]})
-    write(A/'blockstates/guogao_portal_frame.json',{'variants':{f'style={i}':{'model':f'googology:block/gate_frame_{i}'} for i in range(3)}})
-    write(A/'models/item/guogao_portal_frame.json',{'parent':'googology:block/gate_frame_0','overrides':[{'predicate':{'googology:appearance':i/256},'model':f'googology:block/gate_frame_{i}'} for i in range(3)]})
+    write(A/'blockstates/guogao_portal_frame.json',{'variants':{f'style={i}':{'model':f'guogaology:block/gate_frame_{i}'} for i in range(3)}})
+    write(A/'models/item/guogao_portal_frame.json',{'parent':'guogaology:block/gate_frame_0','overrides':[{'predicate':{'guogaology:appearance':i/256},'model':f'guogaology:block/gate_frame_{i}'} for i in range(3)]})
     for name in ('guogao_portal','inner_portal','fruit_portal'):
-        write(A/f'blockstates/{name}.json',{'variants':{f'style={i}':{'model':f'googology:block/gate_field_{i}'} for i in range(3)}})
+        write(A/f'blockstates/{name}.json',{'variants':{f'style={i}':{'model':f'guogaology:block/gate_field_{i}'} for i in range(3)}})
 
 def main():
     matrices();absence();slice_icon();portals()

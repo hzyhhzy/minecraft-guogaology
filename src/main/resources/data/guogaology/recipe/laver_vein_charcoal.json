@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "guogaology:laver_vein"
+  },
+  "result": {
+    "id": "minecraft:charcoal"
+  },
+  "experience": 0.15,
+  "cookingtime": 200
+}

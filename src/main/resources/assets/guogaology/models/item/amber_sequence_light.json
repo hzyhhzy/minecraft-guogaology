@@ -1,0 +1,203 @@
+{
+  "parent": "guogaology:block/christmas_digit_0_0",
+  "overrides": [
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0
+      },
+      "model": "guogaology:block/christmas_digit_0_0"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.00390625
+      },
+      "model": "guogaology:block/christmas_digit_0_1"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0078125
+      },
+      "model": "guogaology:block/christmas_digit_0_2"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01171875
+      },
+      "model": "guogaology:block/christmas_digit_0_3"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.015625
+      },
+      "model": "guogaology:block/christmas_digit_0_4"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01953125
+      },
+      "model": "guogaology:block/christmas_digit_0_5"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0234375
+      },
+      "model": "guogaology:block/christmas_digit_0_6"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.02734375
+      },
+      "model": "guogaology:block/christmas_digit_0_7"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03125
+      },
+      "model": "guogaology:block/christmas_digit_0_8"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03515625
+      },
+      "model": "guogaology:block/christmas_digit_0_9"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0390625
+      },
+      "model": "guogaology:block/christmas_digit_0_10"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.04296875
+      },
+      "model": "guogaology:block/christmas_digit_0_11"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.046875
+      },
+      "model": "guogaology:block/christmas_digit_0_12"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05078125
+      },
+      "model": "guogaology:block/christmas_digit_0_13"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0546875
+      },
+      "model": "guogaology:block/christmas_digit_0_14"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05859375
+      },
+      "model": "guogaology:block/christmas_digit_0_15"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0625
+      },
+      "model": "guogaology:block/christmas_digit_0_16"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.06640625
+      },
+      "model": "guogaology:block/christmas_digit_0_17"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0703125
+      },
+      "model": "guogaology:block/christmas_digit_0_18"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.07421875
+      },
+      "model": "guogaology:block/christmas_digit_0_19"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.078125
+      },
+      "model": "guogaology:block/christmas_digit_0_20"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.08203125
+      },
+      "model": "guogaology:block/christmas_digit_0_21"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0859375
+      },
+      "model": "guogaology:block/christmas_digit_0_22"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.08984375
+      },
+      "model": "guogaology:block/christmas_digit_0_23"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.09375
+      },
+      "model": "guogaology:block/christmas_digit_0_24"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.09765625
+      },
+      "model": "guogaology:block/christmas_digit_0_25"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.1015625
+      },
+      "model": "guogaology:block/christmas_digit_0_26"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.10546875
+      },
+      "model": "guogaology:block/christmas_digit_0_27"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.109375
+      },
+      "model": "guogaology:block/christmas_digit_0_28"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.11328125
+      },
+      "model": "guogaology:block/christmas_digit_0_29"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.1171875
+      },
+      "model": "guogaology:block/christmas_digit_0_30"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.12109375
+      },
+      "model": "guogaology:block/christmas_digit_0_31"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.125
+      },
+      "model": "guogaology:block/christmas_digit_0_32"
+    }
+  ]
+}

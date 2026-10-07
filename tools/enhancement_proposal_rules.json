@@ -265,15 +265,15 @@
     "ordinal_crystal"
   ],
   "coreTranslationKeys": [
-    "block.googology.sequence_core",
-    "block.googology.power_tower_core",
-    "block.googology.hydra_bud",
-    "block.googology.lho_trace",
-    "block.googology.laver_core",
-    "block.googology.astra_critical_core",
-    "block.googology.boundary_core",
-    "block.googology.guogao_heart",
-    "block.googology.ordinal_crystal"
+    "block.guogaology.sequence_core",
+    "block.guogaology.power_tower_core",
+    "block.guogaology.hydra_bud",
+    "block.guogaology.lho_trace",
+    "block.guogaology.laver_core",
+    "block.guogaology.astra_critical_core",
+    "block.guogaology.boundary_core",
+    "block.guogaology.guogao_heart",
+    "block.guogaology.ordinal_crystal"
   ],
   "compatibility": [
     [

@@ -1,0 +1,60 @@
+{
+  "criteria": {
+    "inventory": {
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "guogaology:amber_guogao",
+      "guogaology:amber_inlay",
+      "guogaology:astra_critical_core_lv2",
+      "guogaology:astra_critical_core_lv3",
+      "guogaology:azure_guogao",
+      "guogaology:basic_laver_pattern",
+      "guogaology:berry_guogao",
+      "guogaology:boundary_core_lv2",
+      "guogaology:boundary_core_lv3",
+      "guogaology:circuit_from_office_monitor",
+      "guogaology:circuit_from_server_rack",
+      "guogaology:cyan_guogao_lantern",
+      "guogaology:dread_planks",
+      "guogaology:guogao_heart_lv2",
+      "guogaology:guogao_heart_lv3",
+      "guogaology:guogao_lantern",
+      "guogaology:guogao_slices",
+      "guogaology:hydra_bud_lv2",
+      "guogaology:hydra_bud_lv3",
+      "guogaology:laver_core_lv2",
+      "guogaology:laver_core_lv3",
+      "guogaology:laver_inlay",
+      "guogaology:laver_planks",
+      "guogaology:laver_planks_from_vein",
+      "guogaology:laver_ribbon",
+      "guogaology:laver_vein_charcoal",
+      "guogaology:lho_trace_lv2",
+      "guogaology:lho_trace_lv3",
+      "guogaology:lime_guogao",
+      "guogaology:lime_guogao_lantern",
+      "guogaology:lty_yarn",
+      "guogaology:mosaic_light",
+      "guogaology:ordinal_crystal",
+      "guogaology:ordinal_crystal_lv2",
+      "guogaology:ordinal_crystal_lv3",
+      "guogaology:ordinal_crystal_lv4",
+      "guogaology:power_tower_core_lv2",
+      "guogaology:power_tower_core_lv3",
+      "guogaology:power_wood_charcoal",
+      "guogaology:power_wood_planks",
+      "guogaology:rose_guogao_lantern",
+      "guogaology:scarlet_guogao_lantern",
+      "guogaology:sequence_core_lv2",
+      "guogaology:sequence_core_lv3",
+      "guogaology:star_gold",
+      "guogaology:sun_pattern_tiles",
+      "guogaology:violet_guogao_lantern",
+      "guogaology:y_log_charcoal",
+      "guogaology:y_log_planks"
+    ]
+  }
+}

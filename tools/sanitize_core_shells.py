@@ -276,7 +276,7 @@ def sanitize(data, name='', allowed_parts=None):
 
 
 def generate(meshes=None, include_absence=False):
-    meshes = meshes or ROOT/'src/main/resources/assets/googology/core_meshes'
+    meshes = meshes or ROOT/'src/main/resources/assets/guogaology/core_meshes'
     report = {}
     for path in sorted(meshes.glob('*.json')):
         if path.stem.startswith('lho_trace') and not include_absence:

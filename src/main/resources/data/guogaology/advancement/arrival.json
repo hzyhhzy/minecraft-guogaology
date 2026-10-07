@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:ordinal_crystal"
+    },
+    "title": {
+      "translate": "advancement.guogaology.arrival.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.arrival.description"
+    },
+    "background": "guogaology:textures/block/ordinal_stone.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "arrival": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "guogaology:guogaology"
+      }
+    }
+  }
+}

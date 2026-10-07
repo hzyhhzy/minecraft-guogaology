@@ -1,0 +1,19 @@
+{
+  "type": "guogaology:template",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "guogaology:nuke_mushroom_1"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "guogaology:nuke_mushroom_2"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

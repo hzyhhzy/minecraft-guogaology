@@ -11,7 +11,7 @@ import copy, json, math
 from collections import defaultdict
 
 ROOT = Path(__file__).resolve().parents[1]
-A = ROOT / 'src/main/resources/assets/googology'
+A = ROOT / 'src/main/resources/assets/guogaology'
 REF = ROOT / 'tools/reference/absence-c1.json'
 ORBIT = ROOT / 'tools/reference/absence-orbit-glyphs.json'
 WHITE = 0xffffffff
@@ -162,8 +162,8 @@ def smooth_orbits():
 def generate():
     reference = json.loads(REF.read_text('utf8'))
     main = main_layer(reference); strokes = split_strokes(main)
-    textures = {f'c1_{k}':f'googology:block/lho_c1_{k}' for k in ('frame','ink','soft','ghost')}
-    textures['particle'] = 'googology:block/lho_c1'
+    textures = {f'c1_{k}':f'guogaology:block/lho_c1_{k}' for k in ('frame','ink','soft','ghost')}
+    textures['particle'] = 'guogaology:block/lho_c1'
     frames = [e for e in reference['elements'] if next(iter(e['faces'].values()))['texture']=='#frame']
     fixed = merged_boxes(frames,'c1_frame')
     # Only the real unioned frame remains. C1's extra translucent mist cube

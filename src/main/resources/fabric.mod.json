@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "id": "googology",
+  "id": "guogaology",
   "version": "${version}",
   "name": "果糕逻辑 · Guogaology",
-  "description": "Explore Outer Googology, monumental Inner Googology and the Guogao Underworld. Four ordinal minerals, shared equipment, crystal upgrades, passive Denxi Manuscripts and seven outer-world creatures.\n\n探索大数表界、巨构里界与果糕地府。四档序数矿物与装备、晶核强化、被动扽西手稿，以及七类表界生物。",
+  "description": "Explore Outer Guogaology, monumental Inner Guogaology and the Guogao Underworld. Four ordinal minerals, shared equipment, crystal upgrades, passive Denxi Manuscripts and seven outer-world creatures.\n\n探索大数表界、巨构里界与果糕地府。四档序数矿物与装备、晶核强化、被动扽西手稿，以及七类表界生物。",
   "authors": [
     "Sigmoid"
   ],
   "license": "GPL-3.0-only WITH GPL-3.0-linking-exception",
-  "icon": "assets/googology/icon.png",
+  "icon": "assets/guogaology/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.googology.GoogologyMod"
+      "dev.guogaology.GuogaologyMod"
     ],
     "client": [
-      "dev.googology.client.GoogologyClient"
+      "dev.guogaology.client.GuogaologyClient"
     ]
   },
   "mixins": [
-    "googology.mixins.json",
+    "guogaology.mixins.json",
     {
-      "config": "googology.client.mixins.json",
+      "config": "guogaology.client.mixins.json",
       "environment": "client"
     }
   ],

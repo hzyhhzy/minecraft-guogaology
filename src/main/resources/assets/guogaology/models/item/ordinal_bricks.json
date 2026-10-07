@@ -1,0 +1,101 @@
+{
+  "parent": "guogaology:block/matrix_zero",
+  "overrides": [
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0
+      },
+      "model": "guogaology:block/matrix_zero"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.00390625
+      },
+      "model": "guogaology:block/matrix_one"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0078125
+      },
+      "model": "guogaology:block/matrix_two"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01171875
+      },
+      "model": "guogaology:block/matrix_three"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.015625
+      },
+      "model": "guogaology:block/matrix_four"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01953125
+      },
+      "model": "guogaology:block/matrix_five"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0234375
+      },
+      "model": "guogaology:block/matrix_six"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.02734375
+      },
+      "model": "guogaology:block/matrix_seven"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03125
+      },
+      "model": "guogaology:block/matrix_eight"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03515625
+      },
+      "model": "guogaology:block/matrix_nine"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0390625
+      },
+      "model": "guogaology:block/matrix_ten"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.04296875
+      },
+      "model": "guogaology:block/matrix_eleven"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.046875
+      },
+      "model": "guogaology:block/matrix_twelve"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05078125
+      },
+      "model": "guogaology:block/matrix_thirteen"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0546875
+      },
+      "model": "guogaology:block/matrix_fourteen"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05859375
+      },
+      "model": "guogaology:block/matrix_fifteen"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "guogaology:gamma_material"
+    }
+  },
+  "result": {
+    "id": "guogaology:gamma_block",
+    "count": 1
+  }
+}

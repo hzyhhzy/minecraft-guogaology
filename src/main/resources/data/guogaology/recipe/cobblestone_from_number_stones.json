@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "tag": "guogaology:number_stones"
+    }
+  ],
+  "result": {
+    "id": "minecraft:cobblestone",
+    "count": 1
+  }
+}

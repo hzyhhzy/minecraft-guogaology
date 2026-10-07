@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "googology:epsilon_turf",
-    "googology:guogao_loam"
+    "guogaology:epsilon_turf",
+    "guogaology:guogao_loam"
   ]
 }

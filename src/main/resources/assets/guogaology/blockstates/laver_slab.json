@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "guogaology:block/laver_slab"
+    },
+    "type=top": {
+      "model": "guogaology:block/laver_slab_top"
+    },
+    "type=double": {
+      "model": "guogaology:block/laver_planks"
+    }
+  }
+}

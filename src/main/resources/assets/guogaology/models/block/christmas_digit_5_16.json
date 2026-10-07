@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "guogaology:block/christmas_digit_5_16"
+  }
+}

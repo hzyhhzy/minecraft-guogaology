@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "guogaology:block/dread_log"
+    },
+    "axis=x": {
+      "model": "guogaology:block/dread_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z": {
+      "model": "guogaology:block/dread_log",
+      "x": 90
+    }
+  }
+}

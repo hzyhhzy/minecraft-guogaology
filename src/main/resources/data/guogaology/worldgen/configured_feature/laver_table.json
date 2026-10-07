@@ -1,0 +1,37 @@
+{
+  "type": "guogaology:laver_table",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "guogaology:laver_table_7"
+        },
+        "weight": 16
+      },
+      {
+        "data": {
+          "id": "guogaology:laver_table_9"
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "guogaology:laver_table_11"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "guogaology:laver_table_13"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "guogaology:laver_table_15"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

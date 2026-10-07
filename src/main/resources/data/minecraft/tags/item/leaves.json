@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "googology:giant_laver",
-    "googology:dread_leaves",
-    "googology:loquat_leaves",
-    "googology:hell_loquat_leaves",
-    "googology:christmas_leaves"
+    "guogaology:giant_laver",
+    "guogaology:dread_leaves",
+    "guogaology:loquat_leaves",
+    "guogaology:hell_loquat_leaves",
+    "guogaology:christmas_leaves"
   ]
 }

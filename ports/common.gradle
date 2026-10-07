@@ -6,13 +6,13 @@ def releaseProperties = new Properties()
 repositoryRoot.toPath().resolve('gradle.properties').toFile().withInputStream { releaseProperties.load(it) }
 version = releaseProperties.getProperty('mod_version')
 group = releaseProperties.getProperty('maven_group')
-base { archivesName = "googology-dimension-${config.minecraft}" }
+base { archivesName = "guogaology-dimension-${config.minecraft}" }
 repositories { mavenCentral() }
 
 loom {
     splitEnvironmentSourceSets()
     mods {
-        googology {
+        guogaology {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
@@ -106,7 +106,7 @@ if (project.name == '26.2' && project.hasProperty('mergeQa')) {
     tasks.register('mergeQaJar',Jar) {
         dependsOn tasks.named('mergeQaClasses')
         from sourceSets.mergeQa.output
-        archiveBaseName='googology-merge-qa'
+        archiveBaseName='guogaology-merge-qa'
         destinationDirectory=layout.buildDirectory.dir('qa')
     }
 }

@@ -92,17 +92,17 @@ def core_copy(index):
     # its three crafted upgrades display as Ordinal Core grades 1..3.
     for material_stage in range(1, 5):
         suffix = '' if material_stage == 1 else f'_lv{material_stage}'
-        values[f'block.googology.ordinal_crystal{suffix}'] = (
+        values[f'block.guogaology.ordinal_crystal{suffix}'] = (
             ('序数晶体' if index == 0 else 'Ordinal Crystal') if material_stage == 1
             else ('序数晶核' if index == 0 else 'Ordinal Core') + f' · Lv{material_stage - 1}')
     for level in range(1, 4):
         suffix = '' if level == 1 else f'_lv{level}'
-        values[f'block.googology.laver_core{suffix}'] = (
+        values[f'block.guogaology.laver_core{suffix}'] = (
             '紫菜凝核' if index == 0 else 'Laver Condensation Core') + f' · Lv{level}'
     for i in range(9):
-        values[f'mining.googology.effect.{i}'] = GEAR[i][index]
-        values[f'mining.googology.manuscript.effect.{i}'] = BOOK[i][index]
-    values.update({'mining.googology.' + key: pair[index] for key, pair in EXTRA.items()})
+        values[f'mining.guogaology.effect.{i}'] = GEAR[i][index]
+        values[f'mining.guogaology.manuscript.effect.{i}'] = BOOK[i][index]
+    values.update({'mining.guogaology.' + key: pair[index] for key, pair in EXTRA.items()})
     return values
 
 
@@ -115,7 +115,7 @@ def generate(root=ROOT, *, check=False):
     root = Path(root)
     path = root / 'tools/copy_catalog.json'
     catalog = json.loads(path.read_text(encoding='utf8'))
-    retired_keys = {'mining.googology.status_yield', 'mining.googology.status_efficiency', 'mining.googology.grade_limit'}
+    retired_keys = {'mining.guogaology.status_yield', 'mining.guogaology.status_efficiency', 'mining.guogaology.grade_limit'}
     catalog['removed'] = sorted(set(catalog['removed']) | retired_keys)
     for locale, index in [('zh_cn', 0), ('en_us', 1)]:
         for retired in retired_keys:
@@ -123,7 +123,7 @@ def generate(root=ROOT, *, check=False):
         catalog['translations'][locale].update(core_copy(index))
     expected = {path: catalog}
     for locale in ('zh_cn', 'en_us'):
-        path = root / f'src/main/resources/assets/googology/lang/{locale}.json'
+        path = root / f'src/main/resources/assets/guogaology/lang/{locale}.json'
         values = json.loads(path.read_text(encoding='utf8'))
         for key in catalog['removed']:
             values.pop(key, None)

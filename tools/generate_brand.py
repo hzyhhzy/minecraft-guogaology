@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def globe_face(size=60):
     """Sample the same large-globe formula as MosaicMotifs.facePixel (no dark rim)."""
-    source = (ROOT/'src/main/java/dev/googology/survival/MosaicMotifs.java').read_text(encoding='utf8')
+    source = (ROOT/'src/main/java/dev/guogaology/survival/MosaicMotifs.java').read_text(encoding='utf8')
     palette = re.search(r'COLORS=\{(.*?)\};',source,re.S).group(1)
     colors = [int(x,16) for x in re.findall(r'0x([0-9a-f]{6})',palette)]
     assert len(colors)==16
@@ -66,9 +66,9 @@ def run():
     im.alpha_composite(globe_face(30).resize((60,60),Image.Resampling.NEAREST),(34,30))
     out = ROOT/'docs/branding'
     out.mkdir(parents=True,exist_ok=True)
-    im.save(out/'googology-mark-128.png')
-    im.resize((512,512),Image.Resampling.NEAREST).save(out/'googology-mark.png')
-    im.resize((128,128),Image.Resampling.NEAREST).save(ROOT/'src/main/resources/assets/googology/icon.png')
+    im.save(out/'guogaology-mark-128.png')
+    im.resize((512,512),Image.Resampling.NEAREST).save(out/'guogaology-mark.png')
+    im.resize((128,128),Image.Resampling.NEAREST).save(ROOT/'src/main/resources/assets/guogaology/icon.png')
     # Editable SVG with horizontal runs; every run sits on the same pixel grid.
     svg=['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" shape-rendering="crispEdges">',
          '<title>果糕逻辑 · Guogaology</title>',
@@ -83,7 +83,7 @@ def run():
                 svg.append(f'<rect x="{x}" y="{y}" width="{end-x}" height="1" fill="{rgb}"/>')
             x=end
     svg.append('</svg>')
-    (out/'googology-mark.svg').write_text('\n'.join(svg)+'\n',encoding='utf8')
+    (out/'guogaology-mark.svg').write_text('\n'.join(svg)+'\n',encoding='utf8')
     preview=Image.new('RGB',(704,536),'#e9eff1')
     large=im.resize((512,512),Image.Resampling.NEAREST)
     preview.paste(large,(12,12),large)

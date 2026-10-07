@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " M ",
+    "BWB",
+    "SSS"
+  ],
+  "key": {
+    "M": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "B": {
+      "item": "minecraft:book"
+    },
+    "W": {
+      "item": "minecraft:crafting_table"
+    },
+    "S": {
+      "tag": "minecraft:stone_crafting_materials"
+    }
+  },
+  "result": {
+    "id": "guogaology:enhancement_table",
+    "count": 1
+  }
+}

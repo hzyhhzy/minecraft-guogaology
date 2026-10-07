@@ -245,7 +245,7 @@ def self_check():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--meshes', type=Path, default=ROOT/'src/main/resources/assets/googology/core_meshes')
+    parser.add_argument('--meshes', type=Path, default=ROOT/'src/main/resources/assets/guogaology/core_meshes')
     parser.add_argument('--output', type=Path, default=ROOT/'build/core-surface-audit')
     parser.add_argument('--fail-on-same-direction', action='store_true')
     args = parser.parse_args(); self_check()

@@ -1,0 +1,196 @@
+{
+  "variants": {
+    "color=0": {
+      "model": "guogaology:block/astra_weave_0"
+    },
+    "color=1": {
+      "model": "guogaology:block/astra_weave_1"
+    },
+    "color=2": {
+      "model": "guogaology:block/astra_weave_2"
+    },
+    "color=3": {
+      "model": "guogaology:block/astra_weave_3"
+    },
+    "color=4": {
+      "model": "guogaology:block/astra_weave_4"
+    },
+    "color=5": {
+      "model": "guogaology:block/astra_weave_5"
+    },
+    "color=6": {
+      "model": "guogaology:block/astra_weave_6"
+    },
+    "color=7": {
+      "model": "guogaology:block/astra_weave_7"
+    },
+    "color=8": {
+      "model": "guogaology:block/astra_weave_8"
+    },
+    "color=9": {
+      "model": "guogaology:block/astra_weave_9"
+    },
+    "color=10": {
+      "model": "guogaology:block/astra_weave_10"
+    },
+    "color=11": {
+      "model": "guogaology:block/astra_weave_11"
+    },
+    "color=12": {
+      "model": "guogaology:block/astra_weave_12"
+    },
+    "color=13": {
+      "model": "guogaology:block/astra_weave_13"
+    },
+    "color=14": {
+      "model": "guogaology:block/astra_weave_14"
+    },
+    "color=15": {
+      "model": "guogaology:block/astra_weave_15"
+    },
+    "color=16": {
+      "model": "guogaology:block/astra_weave_16"
+    },
+    "color=17": {
+      "model": "guogaology:block/astra_weave_17"
+    },
+    "color=18": {
+      "model": "guogaology:block/astra_weave_18"
+    },
+    "color=19": {
+      "model": "guogaology:block/astra_weave_19"
+    },
+    "color=20": {
+      "model": "guogaology:block/astra_weave_20"
+    },
+    "color=21": {
+      "model": "guogaology:block/astra_weave_21"
+    },
+    "color=22": {
+      "model": "guogaology:block/astra_weave_22"
+    },
+    "color=23": {
+      "model": "guogaology:block/astra_weave_23"
+    },
+    "color=24": {
+      "model": "guogaology:block/astra_weave_24"
+    },
+    "color=25": {
+      "model": "guogaology:block/astra_weave_25"
+    },
+    "color=26": {
+      "model": "guogaology:block/astra_weave_26"
+    },
+    "color=27": {
+      "model": "guogaology:block/astra_weave_27"
+    },
+    "color=28": {
+      "model": "guogaology:block/astra_weave_28"
+    },
+    "color=29": {
+      "model": "guogaology:block/astra_weave_29"
+    },
+    "color=30": {
+      "model": "guogaology:block/astra_weave_30"
+    },
+    "color=31": {
+      "model": "guogaology:block/astra_weave_31"
+    },
+    "color=32": {
+      "model": "guogaology:block/astra_weave_32"
+    },
+    "color=33": {
+      "model": "guogaology:block/astra_weave_33"
+    },
+    "color=34": {
+      "model": "guogaology:block/astra_weave_34"
+    },
+    "color=35": {
+      "model": "guogaology:block/astra_weave_35"
+    },
+    "color=36": {
+      "model": "guogaology:block/astra_weave_36"
+    },
+    "color=37": {
+      "model": "guogaology:block/astra_weave_37"
+    },
+    "color=38": {
+      "model": "guogaology:block/astra_weave_38"
+    },
+    "color=39": {
+      "model": "guogaology:block/astra_weave_39"
+    },
+    "color=40": {
+      "model": "guogaology:block/astra_weave_40"
+    },
+    "color=41": {
+      "model": "guogaology:block/astra_weave_41"
+    },
+    "color=42": {
+      "model": "guogaology:block/astra_weave_42"
+    },
+    "color=43": {
+      "model": "guogaology:block/astra_weave_43"
+    },
+    "color=44": {
+      "model": "guogaology:block/astra_weave_44"
+    },
+    "color=45": {
+      "model": "guogaology:block/astra_weave_45"
+    },
+    "color=46": {
+      "model": "guogaology:block/astra_weave_46"
+    },
+    "color=47": {
+      "model": "guogaology:block/astra_weave_47"
+    },
+    "color=48": {
+      "model": "guogaology:block/astra_weave_48"
+    },
+    "color=49": {
+      "model": "guogaology:block/astra_weave_49"
+    },
+    "color=50": {
+      "model": "guogaology:block/astra_weave_50"
+    },
+    "color=51": {
+      "model": "guogaology:block/astra_weave_51"
+    },
+    "color=52": {
+      "model": "guogaology:block/astra_weave_52"
+    },
+    "color=53": {
+      "model": "guogaology:block/astra_weave_53"
+    },
+    "color=54": {
+      "model": "guogaology:block/astra_weave_54"
+    },
+    "color=55": {
+      "model": "guogaology:block/astra_weave_55"
+    },
+    "color=56": {
+      "model": "guogaology:block/astra_weave_56"
+    },
+    "color=57": {
+      "model": "guogaology:block/astra_weave_57"
+    },
+    "color=58": {
+      "model": "guogaology:block/astra_weave_58"
+    },
+    "color=59": {
+      "model": "guogaology:block/astra_weave_59"
+    },
+    "color=60": {
+      "model": "guogaology:block/astra_weave_60"
+    },
+    "color=61": {
+      "model": "guogaology:block/astra_weave_61"
+    },
+    "color=62": {
+      "model": "guogaology:block/astra_weave_62"
+    },
+    "color=63": {
+      "model": "guogaology:block/astra_weave_63"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "guogaology:power_bricks"
+    }
+  ],
+  "result": {
+    "id": "minecraft:dark_oak_planks",
+    "count": 4
+  }
+}

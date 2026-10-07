@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:guogao_heart_lv2"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    }
+  ],
+  "result": {
+    "id": "guogaology:guogao_heart_lv3",
+    "count": 1
+  }
+}

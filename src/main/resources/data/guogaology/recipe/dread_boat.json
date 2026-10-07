@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "P P",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "guogaology:dread_planks"
+    }
+  },
+  "result": {
+    "id": "guogaology:dread_boat",
+    "count": 1
+  }
+}

@@ -11,7 +11,7 @@ import math
 import random
 
 ROOT = Path(__file__).resolve().parents[1]
-TABLES = ROOT / 'src/main/resources/data/googology/loot_table/chests'
+TABLES = ROOT / 'src/main/resources/data/guogaology/loot_table/chests'
 
 # Entries are (registered item path, minimum count, maximum count). Every listed
 # theme product is guaranteed once; integer uniform counts supply the variety.
@@ -74,7 +74,7 @@ THEMES = {
 def pool(name, minimum, maximum):
     count = minimum if minimum == maximum else {
         'type': 'minecraft:uniform', 'min': minimum, 'max': maximum}
-    return {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'googology:'+name,
+    return {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'guogaology:'+name,
             'functions': [{'function': 'minecraft:set_count', 'count': count}]}]}
 
 
@@ -95,8 +95,8 @@ def audit():
     """Check the actual written JSON, exact guarantees, ranges and stack capacity."""
     rng = random.Random(403)
     reports = []
-    models = ROOT / 'src/main/resources/assets/googology/models/item'
-    blockstates = ROOT / 'src/main/resources/assets/googology/blockstates'
+    models = ROOT / 'src/main/resources/assets/guogaology/models/item'
+    blockstates = ROOT / 'src/main/resources/assets/guogaology/blockstates'
     known = {p.stem for p in models.glob('*.json')} | {p.stem for p in blockstates.glob('*.json')}
     for theme,spec in THEMES.items():
         for main in (True,False):

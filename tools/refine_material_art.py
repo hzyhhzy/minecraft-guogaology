@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw
 import json, math, random
 
 ROOT=Path(__file__).resolve().parents[1]
-A=ROOT/'src/main/resources/assets/googology'
+A=ROOT/'src/main/resources/assets/guogaology'
 T=A/'textures';S=ROOT/'tools/art_sources'
 def write(path,value):
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -101,7 +101,7 @@ def manuscripts():
             d.polygon([(14,22),(17,22),(18,24),(16,26),(13,24)],fill='#7292bb')
             d.line((14,22,17,22,18,24),fill='#ddf5f2');d.point((15,23),fill='#ffffff')
         im.save(T/f'item/{name}_manuscript.png')
-        write(A/f'models/item/{name}_manuscript.json',{'parent':'minecraft:item/generated','textures':{'layer0':f'googology:item/{name}_manuscript'}})
+        write(A/f'models/item/{name}_manuscript.json',{'parent':'minecraft:item/generated','textures':{'layer0':f'guogaology:item/{name}_manuscript'}})
 
 def quad(v,t,part=0,normal=None,color=0xffffffff):
     if normal is None:

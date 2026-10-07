@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:server_rack"
+    }
+  ],
+  "result": {
+    "id": "guogaology:compute_chip",
+    "count": 2
+  }
+}

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ROOT / 'src/main/resources/assets/googology'
+ASSETS = ROOT / 'src/main/resources/assets/guogaology'
 
 
 def core_names(assets=ASSETS):
@@ -18,7 +18,7 @@ def core_names(assets=ASSETS):
 
 def display_model(name):
     return {
-        'parent': 'googology:block/' + name,
+        'parent': 'guogaology:block/' + name,
         'display': {
             'thirdperson_righthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [.28, .28, .28]},
             'thirdperson_lefthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [.28, .28, .28]},
@@ -33,8 +33,8 @@ def display_model(name):
 
 def select_model(name):
     return {'type': 'minecraft:select', 'property': 'minecraft:display_context',
-            'cases': [{'when': 'gui', 'model': {'type': 'minecraft:model', 'model': 'googology:item/' + name}}],
-            'fallback': {'type': 'minecraft:model', 'model': 'googology:item/core_views/' + name}}
+            'cases': [{'when': 'gui', 'model': {'type': 'minecraft:model', 'model': 'guogaology:item/' + name}}],
+            'fallback': {'type': 'minecraft:model', 'model': 'guogaology:item/core_views/' + name}}
 
 
 def generate(check=False):

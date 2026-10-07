@@ -27,7 +27,7 @@ def main():
     classes.mkdir(parents=True, exist_ok=True)
     log = []
     inputs = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in (
-        ROOT/'src/main/java/dev/googology/world/CliffDescentChains.java',
+        ROOT/'src/main/java/dev/guogaology/world/CliffDescentChains.java',
         ROOT/'tools/tests/CliffChain048Checks.java')}
     (output/'audit.json').write_text(json.dumps({'status': 'RUNNING', 'inputs': inputs}, indent=2)+'\n', encoding='utf8')
 

@@ -1,0 +1,21 @@
+{
+  "type": "guogaology:numeric_tool",
+  "category": "equipment",
+  "result": {
+    "id": "guogaology:number_sword",
+    "count": 1
+  },
+  "pattern": [
+    " D ",
+    "D D",
+    " S "
+  ],
+  "key": {
+    "D": {
+      "tag": "guogaology:number_stones"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  }
+}

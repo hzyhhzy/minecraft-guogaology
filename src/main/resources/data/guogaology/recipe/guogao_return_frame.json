@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "guogaology:guogao_loam"
+    },
+    {
+      "item": "guogaology:guogao_loam"
+    },
+    {
+      "item": "guogaology:guogao_loam"
+    },
+    {
+      "item": "guogaology:guogao_loam"
+    },
+    {
+      "item": "guogaology:dread_planks"
+    }
+  ],
+  "result": {
+    "id": "guogaology:guogao_return_frame",
+    "count": 1
+  }
+}

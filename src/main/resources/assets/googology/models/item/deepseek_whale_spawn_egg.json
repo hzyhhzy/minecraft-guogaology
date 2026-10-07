@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "googology:item/deepseek_whale_spawn_egg"
-  }
-}

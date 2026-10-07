@@ -7,7 +7,7 @@ also delegates to Overworld noise). Climate thresholds, template coordinates and
 """
 import json,re
 from pathlib import Path
-from import_outer_content import ROOT,NS,ALIASES,DATA_NAMES,walk,write,remap_id,nbt_transform
+from import_outer_content import ROOT,NS,SOURCE_NS,ALIASES,DATA_NAMES,walk,write,remap_id,nbt_transform
 from generate_ore_distribution import apply_policy as ore_policy
 SOURCE=ROOT/'content/outer-1.0.0'
 GENERATED=json.loads((ROOT/'tools/outer_generated_resources.json').read_text('utf8'))
@@ -18,10 +18,10 @@ def clear_generated(out):
     assert out.is_relative_to(ROOT.resolve())
     for name in GENERATED:
         path=(out/name).resolve()
-        assert name.startswith('data/googology/') and path.is_relative_to(out/'data/googology')
-        assert name not in ('data/googology/dimension/googology.json','data/googology/dimension/guogao.json',
-                            'data/googology/dimension_type/googology.json','data/googology/dimension_type/guogao.json',
-                            'data/googology/worldgen/noise_settings/googology.json','data/googology/worldgen/noise_settings/guogao.json')
+        assert name.startswith('data/guogaology/') and path.is_relative_to(out/'data/guogaology')
+        assert name not in ('data/guogaology/dimension/guogaology.json','data/guogaology/dimension/guogao.json',
+                            'data/guogaology/dimension_type/guogaology.json','data/guogaology/dimension_type/guogao.json',
+                            'data/guogaology/worldgen/noise_settings/guogaology.json','data/guogaology/worldgen/noise_settings/guogao.json')
         path.unlink(missing_ok=True)
 
 def load(path):return json.loads(path.read_text(encoding='utf8'))
@@ -197,7 +197,7 @@ def prepare(target,out):
             if re.search(r'(?:_den\b|_axe\b|_hoe\b|_shovel\b|ordinal_heart|raw_omega|portal_generator|guide_book|hydra)',text):continue
             # Our common equipment recipes replace duplicate donor gear and ore recipes.
             result=v.get('result',{});id=result.get('id','') if isinstance(result,dict) else result
-            if id.startswith('googology:') and any(x in id for x in ('_material','_block','_pickaxe','_sword','_helmet','_chestplate','_leggings','_boots')):continue
+            if id.startswith('guogaology:') and any(x in id for x in ('_material','_block','_pickaxe','_sword','_helmet','_chestplate','_leggings','_boots')):continue
             if target=='1.21.1':
                 for k in ('ingredient','ingredients'):
                     if k in v:v[k]=old_ingredient(v[k])
@@ -232,10 +232,10 @@ def prepare(target,out):
             v=old
         destination=data/rel
         if rel.parts[:2]==('loot_table','blocks'):
-            namespace,name=remap_id('googology:'+rel.stem).split(':')
+            namespace,name=remap_id(SOURCE_NS+':'+rel.stem).split(':')
             destination=out/f'data/{namespace}/loot_table/blocks/{name}.json'
         elif rel.parts[0]=='worldgen':
-            namespace,name=remap_id('googology:'+rel.stem).split(':')
+            namespace,name=remap_id(SOURCE_NS+':'+rel.stem).split(':')
             destination=out/f'data/{namespace}'/rel.parent/(name+'.json')
         if rel.parts[0]=='worldgen':v=ore_policy(rel.parts[1],rel.stem,v)
         write(destination,v)
@@ -253,9 +253,9 @@ def prepare(target,out):
     # actual void. The filtered source restores proper inland biome features.
     source={k:v for k,v in dimension['generator']['biome_source'].items() if k!='type'}
     inland={**source,'biomes':[b for b in source['biomes'] if b['biome'] not in
-            ('googology:lho_edge','googology:lho_void','googology:underworld')]}
-    dimension['generator']['biome_source']={'type':'googology:lho_border','source':source,'inland':inland}
-    write(out/'data/googology/dimension/outer.json',dimension)
+            ('guogaology:lho_edge','guogaology:lho_void','guogaology:underworld')]}
+    dimension['generator']['biome_source']={'type':'guogaology:lho_border','source':source,'inland':inland}
+    write(out/'data/guogaology/dimension/outer.json',dimension)
     dim=walk(load(SOURCE/'dimension_type/googology.json'))
     if target=='1.21.1':
         dim.pop('attributes',None);dim.pop('timelines',None);dim.pop('default_clock',None);dim.pop('has_ender_dragon_fight',None)
@@ -273,7 +273,7 @@ def prepare(target,out):
         destination=out/'data/minecraft'/p.relative_to(SOURCE/'minecraft');v=walk(load(p))
         # The donor repeats full vanilla tags. Import only its additions: carrying
         # the vanilla lists across versions breaks tags for absent vanilla blocks.
-        v['values']=[x for x in v['values'] if 'googology' in json.dumps(x) and not any(t in json.dumps(x) for t in ('raw_omega','hydra','_den"'))]
+        v['values']=[x for x in v['values'] if 'guogaology' in json.dumps(x) and not any(t in json.dumps(x) for t in ('raw_omega','hydra','_den"'))]
         existing=load(destination) if destination.exists() else {'replace':False,'values':[]}
         existing['values']=list({json.dumps(x,sort_keys=True):x for x in existing['values']+v['values']}.values());write(destination,existing)
     if target=='1.21.1':write(out/'data/minecraft/tags/block/bats_spawnable_on.json',{'values':['#minecraft:base_stone_overworld']})
@@ -281,7 +281,7 @@ def prepare(target,out):
         path=out/'data/minecraft/tags/block/overworld_carver_replaceables.json'
         tag=load(path) if path.exists() else {'replace':False,'values':[]}
         stones=['ordinal_stone','hell_ordinal_stone','andesite_ordinal_stone','diorite_ordinal_stone','granite_ordinal_stone','tuff_ordinal_stone','cobbled_ordinal_stone']
-        tag['values']=list(dict.fromkeys(tag['values']+[remap_id('googology:'+s) for s in stones]));write(path,tag)
+        tag['values']=list(dict.fromkeys(tag['values']+[remap_id(SOURCE_NS+':'+s) for s in stones]));write(path,tag)
 
 if __name__=='__main__':
     import argparse

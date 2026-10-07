@@ -7,7 +7,7 @@ CATALOG = json.loads((Path(__file__).with_suffix('.json')).read_text(encoding='u
 
 def normalize(path, data):
     path = Path(path)
-    if path.parent.name != 'lang' or path.parent.parent.name != 'googology' or path.stem not in CATALOG['translations']:
+    if path.parent.name != 'lang' or path.parent.parent.name != 'guogaology' or path.stem not in CATALOG['translations']:
         return data
     result = dict(data)
     for key in CATALOG['removed']:
@@ -17,7 +17,7 @@ def normalize(path, data):
 
 def apply():
     for locale in CATALOG['translations']:
-        path = ROOT / f'src/main/resources/assets/googology/lang/{locale}.json'
+        path = ROOT / f'src/main/resources/assets/guogaology/lang/{locale}.json'
         data = normalize(path, json.loads(path.read_text(encoding='utf8')))
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
 

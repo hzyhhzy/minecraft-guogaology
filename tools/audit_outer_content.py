@@ -3,17 +3,11 @@ from pathlib import Path
 import json,re,argparse,gzip
 from audit_localization import arguments
 ROOT=Path(__file__).resolve().parents[1]
-NS='googology'
-RETIRED='googology_outer'
+NS='guogaology'
 
 def audit_namespace(resources):
-    for root in ('assets','data'):
-        assert not (resources/root/RETIRED).exists(),f'Retired namespace directory: {root}/{RETIRED}'
-        for path in (resources/root).rglob('*'):
-            if not path.is_file() or path.suffix not in ('.json','.nbt'):continue
-            raw=path.read_bytes()
-            if path.suffix=='.nbt':raw=gzip.decompress(raw)
-            assert RETIRED.encode() not in raw,f'Retired namespace reference: {path}'
+    from audit_namespace import audit_resources
+    return audit_resources(resources)
 
 def audit_data(resources):
     """Validate surviving recipe/loot/tag references against shipped item roots."""

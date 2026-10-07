@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:amber_guogao",
+    "guogaology:berry_guogao",
+    "guogaology:lime_guogao",
+    "guogaology:azure_guogao",
+    "guogaology:plain_amber_guogao",
+    "guogaology:plain_berry_guogao",
+    "guogaology:plain_lime_guogao",
+    "guogaology:plain_azure_guogao"
+  ]
+}

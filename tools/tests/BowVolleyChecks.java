@@ -1,4 +1,4 @@
-import dev.googology.mining.*;
+import dev.guogaology.mining.*;
 import java.util.UUID;
 
 /** Regression checks for cross-arrow/save-reload budgets, distinct targets and launch snapshots. */

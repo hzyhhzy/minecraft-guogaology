@@ -22,7 +22,7 @@ class CoreHarvestChecks(unittest.TestCase):
                 self.assertEqual(harvest.HARDNESS[root + ('' if grade == 1 else f'_lv{grade}')], hardness)
             self.assertEqual(harvest.HARDNESS[f'ordinal_crystal_lv{grade + 1}'], hardness)
         self.assertEqual(harvest.HARDNESS['ordinal_crystal'], 2)
-        original = harvest.read(harvest.RES / 'googology/block_balance.json')
+        original = harvest.read(harvest.RES / 'guogaology/block_balance.json')
         original['unrelated'] = {'hardness': 734, 'tier': 2, 'custom': ['preserve']}
         snapshot = copy.deepcopy(original)
         generated = harvest.profile_updates(original)
@@ -34,14 +34,14 @@ class CoreHarvestChecks(unittest.TestCase):
                 self.assertEqual(generated[name][key], original[name][key], (name, key))
 
     def test_ordinal_glowstone_drop_contract(self):
-        loot = harvest.read(harvest.RES / 'data/googology/loot_table/blocks/ordinal_crystal.json')
+        loot = harvest.read(harvest.RES / 'data/guogaology/loot_table/blocks/ordinal_crystal.json')
         alternatives = loot['pools'][0]['entries'][0]
         self.assertEqual(alternatives['type'], 'minecraft:alternatives')
         silk, ordinary = alternatives['children']
-        self.assertEqual(silk['name'], 'googology:ordinal_crystal')
+        self.assertEqual(silk['name'], 'guogaology:ordinal_crystal')
         self.assertEqual(silk['conditions'][0]['predicate']['predicates']['minecraft:enchantments'][0],
                          {'enchantments': 'minecraft:silk_touch', 'levels': {'min': 1}})
-        self.assertEqual(ordinary['name'], 'googology:ordinal_shard')
+        self.assertEqual(ordinary['name'], 'guogaology:ordinal_shard')
         self.assertNotIn('conditions', ordinary)
         functions = {entry['function']: entry for entry in ordinary['functions']}
         self.assertEqual(functions['minecraft:set_count']['count'], {'type': 'minecraft:uniform', 'min': 2, 'max': 4})
@@ -52,9 +52,9 @@ class CoreHarvestChecks(unittest.TestCase):
 
     def test_non_lho_core_loot_has_no_tool_condition(self):
         for name in harvest.HARDNESS.keys() - harvest.ANCHORED - {'ordinal_crystal'}:
-            loot = harvest.read(harvest.RES / f'data/googology/loot_table/blocks/{name}.json')
+            loot = harvest.read(harvest.RES / f'data/guogaology/loot_table/blocks/{name}.json')
             self.assertNotIn('minecraft:match_tool', json.dumps(loot), name)
-            self.assertEqual(loot['pools'][0]['entries'][0]['name'], 'googology:' + name)
+            self.assertEqual(loot['pools'][0]['entries'][0]['name'], 'guogaology:' + name)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:boundary_core_lv2"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    }
+  ],
+  "result": {
+    "id": "guogaology:boundary_core_lv3",
+    "count": 1
+  }
+}

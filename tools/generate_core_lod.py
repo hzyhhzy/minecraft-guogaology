@@ -8,7 +8,7 @@ from PIL import Image
 from repair_core_particles import particle_texture
 import json,math
 ROOT=Path(__file__).resolve().parents[1]
-A=ROOT/'src/main/resources/assets/googology'
+A=ROOT/'src/main/resources/assets/guogaology'
 def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,separators=(',',':'))+'\n','utf8')
 def generate():
     meshes=[];keys=set()
@@ -39,12 +39,12 @@ def generate():
             key=q.pop('_lod_key',None)
             if key is None:continue
             x,y=locations[key];q['lod_t']='lod_tints';q['lod_uv']=[[(x+u*16)/size,(y+w*16)/size] for u,w in q['uv']];tinted=True
-        if tinted:v['textures']['lod_tints']='googology:block/core_lod_tints'
+        if tinted:v['textures']['lod_tints']='guogaology:block/core_lod_tints'
         write(p,v)
         model=A/f'models/block/{p.stem}.json';m=json.loads(model.read_text('utf8'));m['textures']=v['textures'];write(model,m)
     # Keep the inspectable grade inventory consistent with the actual art.
     # Shape revisions must not leave historical face counts/motion metadata.
-    manifest=ROOT/'src/main/resources/googology/core_grades.json'
+    manifest=ROOT/'src/main/resources/guogaology/core_grades.json'
     grades=json.loads(manifest.read_text('utf8'))
     models={p.stem:v for p,v in meshes}
     for grade in grades:

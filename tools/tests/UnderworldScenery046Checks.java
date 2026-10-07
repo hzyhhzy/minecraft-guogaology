@@ -1,4 +1,4 @@
-import dev.googology.world.*;
+import dev.guogaology.world.*;
 import java.util.*;
 
 /** Real seeded plans: support, sparse rewards and chunk-order-invariant complete geometry. */

@@ -34,16 +34,16 @@ def main():
     survival = ['SanctuaryLayout', 'SanctuaryMotifs', 'SanctuaryOrnaments', 'SanctuaryInteriors',
                 'SanctuaryResources', 'CourtLaverPatterns', 'SanctuaryArenas', 'SurvivalTheme',
                 'MosaicMotifs', 'MosaicTreeLights', 'AstraCrown', 'EmojiRelief', 'FrontierSanctuary', 'PowerPagoda']
-    sources = [ROOT/f'src/main/java/dev/googology/world/{name}.java' for name in world]
-    sources += [ROOT/f'src/main/java/dev/googology/survival/{name}.java' for name in survival]
+    sources = [ROOT/f'src/main/java/dev/guogaology/world/{name}.java' for name in world]
+    sources += [ROOT/f'src/main/java/dev/guogaology/survival/{name}.java' for name in survival]
     sources += [ROOT/'tools/tests/Landmark043Checks.java', ROOT/'tools/tests/LandmarkChest043Checks.java']
     subprocess.run([javac, '--release', '21', '-encoding', 'UTF-8', '-d', str(output), *map(str, sources)], check=True)
     if args.baseline_jar:
         args.baseline = ROOT/'build/landmark-restoration-baseline'
         subprocess.run([java, '-Xmx768m', '-cp', os.pathsep.join([str(args.baseline_jar.resolve()), str(output)]),
-                        'dev.googology.survival.Landmark043Checks', '--write-baseline', str(args.baseline)], check=True)
+                        'dev.guogaology.survival.Landmark043Checks', '--write-baseline', str(args.baseline)], check=True)
     command = [java, '-Xmx768m', '-cp', os.pathsep.join([str(output), str(ROOT/'src/main/resources')]),
-               'dev.googology.survival.Landmark043Checks']
+               'dev.guogaology.survival.Landmark043Checks']
     if args.baseline:
         command += [str(args.baseline.resolve())]
     result = subprocess.run(command, text=True, encoding='utf8', capture_output=True)
@@ -52,7 +52,7 @@ def main():
         print(result.stderr, end='')
         raise SystemExit(result.returncode)
     chest_result = subprocess.run([java, '-Xmx768m', '-cp', os.pathsep.join([str(output), str(ROOT/'src/main/resources')]),
-                                   'dev.googology.survival.LandmarkChest043Checks'], text=True, encoding='utf8', capture_output=True)
+                                   'dev.guogaology.survival.LandmarkChest043Checks'], text=True, encoding='utf8', capture_output=True)
     print(chest_result.stdout, end='')
     if chest_result.returncode:
         print(chest_result.stderr, end='')
@@ -60,7 +60,7 @@ def main():
     # Restore the original material mapping too, including LIGHT's historical
     # crystal alias outside Astra/Guogao. These are separate from authored quotas.
     for folder in ('src/main/java', 'ports/common/main'):
-        source = (ROOT/f'{folder}/dev/googology/survival/SurvivalStructures.java').read_text('utf8')
+        source = (ROOT/f'{folder}/dev/guogaology/survival/SurvivalStructures.java').read_text('utf8')
         light = next(line for line in source.splitlines() if 'p[SanctuaryLayout.LIGHT]=' in line)
         assert 'ORDINAL_CRYSTAL' in light and 'CYAN_LANTERN' in light and 'ASTRA_LIGHT' in light, folder
         assert re.search(r'if\(finaleCore!=null\)return CoreGrades.levels\(finaleCore\).get\(1\)', source), 'The eight actual Lv2 finale cores must stay unchanged'

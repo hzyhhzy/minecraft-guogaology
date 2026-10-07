@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "googology:guogao_loam",
-    "googology:power_sand"
+    "guogaology:guogao_loam",
+    "guogaology:power_sand"
   ]
 }

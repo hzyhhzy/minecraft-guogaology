@@ -21,7 +21,7 @@ HARDNESS = {root + ('' if grade == 1 else f'_lv{grade}'): 25 * 2 ** (grade - 1)
 HARDNESS.update({f'ordinal_crystal_lv{stage}': 25 * 2 ** (stage - 2) for stage in range(2, 5)})
 HARDNESS.update({name: 25 for name in AUXILIARIES})
 HARDNESS['ordinal_crystal'] = 2
-IDS = frozenset('googology:' + name for name in HARDNESS)
+IDS = frozenset('guogaology:' + name for name in HARDNESS)
 
 
 def read(path):
@@ -81,7 +81,7 @@ def generate(check=False):
             changed.append(str(path.relative_to(ROOT)))
             if not check:
                 path.write_text(text, encoding='utf8', newline='\n')
-    path = RES / 'googology/block_balance.json'
+    path = RES / 'guogaology/block_balance.json'
     profiles = profile_updates(read(path))
     save(path, profiles)
     tags = RES / 'data/minecraft/tags/block'

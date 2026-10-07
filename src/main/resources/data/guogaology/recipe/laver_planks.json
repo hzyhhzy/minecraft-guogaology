@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LL",
+    "LL"
+  ],
+  "key": {
+    "L": {
+      "item": "guogaology:laver_ribbon"
+    }
+  },
+  "result": {
+    "id": "guogaology:laver_planks",
+    "count": 4
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "guogaology:giant_laver"
+    }
+  ],
+  "result": {
+    "id": "guogaology:laver_ribbon",
+    "count": 4
+  }
+}

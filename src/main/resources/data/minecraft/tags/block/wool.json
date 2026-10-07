@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "googology:astra_cloud",
-    "googology:astra_cloud_shade",
-    "googology:lty_yarn",
-    "googology:tianyi_fiber",
-    "googology:white_fiber"
+    "guogaology:astra_cloud",
+    "guogaology:astra_cloud_shade",
+    "guogaology:lty_yarn",
+    "guogaology:tianyi_fiber",
+    "guogaology:white_fiber"
   ]
 }

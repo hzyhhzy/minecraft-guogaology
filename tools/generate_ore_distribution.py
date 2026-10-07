@@ -38,7 +38,7 @@ def apply_policy(folder, name, value):
 
 
 def generate(root=ROOT, *, check=False):
-    worldgen = Path(root) / 'src/main/resources/data/googology/worldgen'
+    worldgen = Path(root) / 'src/main/resources/data/guogaology/worldgen'
     changed = []
     for mineral in COUNTS:
         for suffix in ('', '_hell'):

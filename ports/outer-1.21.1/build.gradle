@@ -2,7 +2,7 @@ plugins { id 'net.fabricmc.fabric-loom-remap' version '1.17.21' }
 def hostVersion=new Properties()
 new File(rootProject.projectDir.parentFile,'gradle.properties').withInputStream { hostVersion.load(it) }
 version=hostVersion.getProperty('mod_version')
-group='dev.googology'
+group='dev.guogaology'
 base { archivesName='guogaology-outer-legacy' }
 repositories { mavenCentral() }
 loom { splitEnvironmentSourceSets(); mods { outer { sourceSet sourceSets.main;sourceSet sourceSets.client } } }
@@ -14,11 +14,11 @@ dependencies {
 }
 def repo=rootProject.projectDir.parentFile
 tasks.register('prepareLegacyOuter',Exec){
-    inputs.dir(rootProject.file('common/main/dev/googology/outer'))
-    inputs.dir(rootProject.file('common/client/dev/googology/outer'))
+    inputs.dir(rootProject.file('common/main/dev/guogaology/outer'))
+    inputs.dir(rootProject.file('common/client/dev/guogaology/outer'))
     inputs.dir(file('src'))
     inputs.file(new File(repo,'tools/prepare_outer_legacy.py'))
-    inputs.files(rootProject.file('common/main/dev/googology/mixin/OuterNoiseSettingsMixin.java'),rootProject.file('common/main/dev/googology/mixin/OuterSpawnPlacementInvoker.java'))
+    inputs.files(rootProject.file('common/main/dev/guogaology/mixin/OuterNoiseSettingsMixin.java'),rootProject.file('common/main/dev/guogaology/mixin/OuterSpawnPlacementInvoker.java'))
     outputs.dir(layout.buildDirectory.dir('generated/sources'))
     commandLine providers.gradleProperty('portPython').getOrElse('python'),'-X','utf8',new File(repo,'tools/prepare_outer_legacy.py')
 }

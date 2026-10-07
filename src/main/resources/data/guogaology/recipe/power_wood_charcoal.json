@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "guogaology:power_bricks"
+  },
+  "result": {
+    "id": "minecraft:charcoal"
+  },
+  "experience": 0.15,
+  "cookingtime": 200
+}

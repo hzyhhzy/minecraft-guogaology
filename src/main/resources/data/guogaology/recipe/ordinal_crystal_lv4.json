@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv3"
+    }
+  ],
+  "result": {
+    "id": "guogaology:ordinal_crystal_lv4",
+    "count": 1
+  }
+}

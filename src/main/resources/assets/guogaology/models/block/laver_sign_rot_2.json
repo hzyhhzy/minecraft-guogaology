@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_sign_rot_2",
+  "textures": {
+    "all": "guogaology:block/laver_sign",
+    "particle": "guogaology:block/laver_planks"
+  }
+}

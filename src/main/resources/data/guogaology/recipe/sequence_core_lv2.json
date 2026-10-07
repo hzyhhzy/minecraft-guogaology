@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:sequence_core"
+    },
+    {
+      "item": "guogaology:ordinal_crystal_lv2"
+    }
+  ],
+  "result": {
+    "id": "guogaology:sequence_core_lv2",
+    "count": 1
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "guogaology:block/snake_head",
+    "head": "guogaology:block/snake_head"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "faces": {
+        "up": {
+          "texture": "#head",
+          "uv": [
+            4,
+            0,
+            8,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#head",
+          "uv": [
+            8,
+            0,
+            12,
+            4
+          ]
+        },
+        "north": {
+          "texture": "#head",
+          "uv": [
+            4,
+            4,
+            8,
+            8
+          ]
+        },
+        "east": {
+          "texture": "#head",
+          "uv": [
+            0,
+            4,
+            4,
+            8
+          ]
+        },
+        "west": {
+          "texture": "#head",
+          "uv": [
+            8,
+            4,
+            12,
+            8
+          ]
+        },
+        "south": {
+          "texture": "#head",
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.35,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 2506052,
+    "sky_color": 1121319,
+    "water_color": 1519157,
+    "water_fog_color": 792349,
+    "grass_color": 11254190,
+    "foliage_color": 3234129,
+    "particle": {
+      "options": {
+        "type": "minecraft:ash"
+      },
+      "probability": 0.003
+    },
+    "mood_sound": {
+      "sound": "minecraft:ambient.soul_sand_valley.mood",
+      "tick_delay": 5000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "ambient_sound": "minecraft:ambient.soul_sand_valley.loop"
+  },
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "guogaology:monumental_landmarks"
+    ],
+    []
+  ]
+}

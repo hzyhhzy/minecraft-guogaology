@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "guogaology:block/laver_sign_rot_0",
+      "y": 0
+    },
+    "rotation=1": {
+      "model": "guogaology:block/laver_sign_rot_1",
+      "y": 0
+    },
+    "rotation=2": {
+      "model": "guogaology:block/laver_sign_rot_2",
+      "y": 0
+    },
+    "rotation=3": {
+      "model": "guogaology:block/laver_sign_rot_3",
+      "y": 0
+    },
+    "rotation=4": {
+      "model": "guogaology:block/laver_sign_rot_0",
+      "y": 90
+    },
+    "rotation=5": {
+      "model": "guogaology:block/laver_sign_rot_1",
+      "y": 90
+    },
+    "rotation=6": {
+      "model": "guogaology:block/laver_sign_rot_2",
+      "y": 90
+    },
+    "rotation=7": {
+      "model": "guogaology:block/laver_sign_rot_3",
+      "y": 90
+    },
+    "rotation=8": {
+      "model": "guogaology:block/laver_sign_rot_0",
+      "y": 180
+    },
+    "rotation=9": {
+      "model": "guogaology:block/laver_sign_rot_1",
+      "y": 180
+    },
+    "rotation=10": {
+      "model": "guogaology:block/laver_sign_rot_2",
+      "y": 180
+    },
+    "rotation=11": {
+      "model": "guogaology:block/laver_sign_rot_3",
+      "y": 180
+    },
+    "rotation=12": {
+      "model": "guogaology:block/laver_sign_rot_0",
+      "y": 270
+    },
+    "rotation=13": {
+      "model": "guogaology:block/laver_sign_rot_1",
+      "y": 270
+    },
+    "rotation=14": {
+      "model": "guogaology:block/laver_sign_rot_2",
+      "y": 270
+    },
+    "rotation=15": {
+      "model": "guogaology:block/laver_sign_rot_3",
+      "y": 270
+    }
+  }
+}

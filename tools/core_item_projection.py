@@ -9,7 +9,7 @@ import json
 import numpy as np
 from PIL import Image, ImageFilter
 
-ASSETS = Path(__file__).resolve().parents[1] / 'src/main/resources/assets/googology'
+ASSETS = Path(__file__).resolve().parents[1] / 'src/main/resources/assets/guogaology'
 PROJECTION_CENTER = (29., 30.)  # Midpoint of opposite corners of the 64px case.
 
 

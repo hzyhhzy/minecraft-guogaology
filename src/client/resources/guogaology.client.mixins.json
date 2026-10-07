@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.guogaology.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "GuogaologyFogMixin",
+    "GuogaologySkyLightMixin",
+    "ManuscriptVerticalFlightMixin",
+    "InventoryOriginAccessor",
+    "CoreItemViewMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -8,7 +8,7 @@ import json
 from PIL import Image, ImageDraw
 
 ROOT=Path(__file__).resolve().parents[1]
-A=ROOT/'src/main/resources/assets/googology'
+A=ROOT/'src/main/resources/assets/guogaology'
 T=A/'textures/block'
 
 PALETTES=[
@@ -109,11 +109,11 @@ def station(rank):
                     ([1,13,5],[3,14,11]),([13,13,5],[15,14,11])]:
             elements.append(cube(a,b,'gem'))
     name='enhancement_table'+('' if rank==1 else '_'+str(rank))
-    textures={k:f'googology:block/enhancement_{rank}_{k}' for k in ('body','trim','top','gem')}
+    textures={k:f'guogaology:block/enhancement_{rank}_{k}' for k in ('body','trim','top','gem')}
     textures['particle']=textures['body']
     write(A/f'models/block/{name}.json',{'parent':'minecraft:block/block','textures':textures,'elements':elements})
-    write(A/f'models/item/{name}.json',{'parent':'googology:block/'+name})
-    write(A/f'blockstates/{name}.json',{'variants':{'':{'model':'googology:block/'+name}}})
+    write(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
+    write(A/f'blockstates/{name}.json',{'variants':{'':{'model':'guogaology:block/'+name}}})
 
 def generate():
     T.mkdir(parents=True,exist_ok=True)

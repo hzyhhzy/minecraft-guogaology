@@ -1,0 +1,172 @@
+{
+  "variants": {
+    "emotion=0,part=27": {
+      "model": "guogaology:block/scarlet_guogao_lantern"
+    },
+    "emotion=0,part=0": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_0"
+    },
+    "emotion=0,part=1": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_1"
+    },
+    "emotion=0,part=2": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_2"
+    },
+    "emotion=0,part=3": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_3"
+    },
+    "emotion=0,part=4": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_4"
+    },
+    "emotion=0,part=5": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_5"
+    },
+    "emotion=0,part=6": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_6"
+    },
+    "emotion=0,part=7": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_7"
+    },
+    "emotion=0,part=8": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_8"
+    },
+    "emotion=0,part=9": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_9"
+    },
+    "emotion=0,part=10": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_10"
+    },
+    "emotion=0,part=11": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_11"
+    },
+    "emotion=0,part=12": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_12"
+    },
+    "emotion=0,part=13": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_13"
+    },
+    "emotion=0,part=14": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_14"
+    },
+    "emotion=0,part=15": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_15"
+    },
+    "emotion=0,part=16": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_16"
+    },
+    "emotion=0,part=17": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_17"
+    },
+    "emotion=0,part=18": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_18"
+    },
+    "emotion=0,part=19": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_19"
+    },
+    "emotion=0,part=20": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_20"
+    },
+    "emotion=0,part=21": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_21"
+    },
+    "emotion=0,part=22": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_22"
+    },
+    "emotion=0,part=23": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_23"
+    },
+    "emotion=0,part=24": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_24"
+    },
+    "emotion=0,part=25": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_25"
+    },
+    "emotion=0,part=26": {
+      "model": "guogaology:block/scarlet_guogao_lantern_part_26"
+    },
+    "emotion=1,part=27": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad"
+    },
+    "emotion=1,part=0": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_0"
+    },
+    "emotion=1,part=1": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_1"
+    },
+    "emotion=1,part=2": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_2"
+    },
+    "emotion=1,part=3": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_3"
+    },
+    "emotion=1,part=4": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_4"
+    },
+    "emotion=1,part=5": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_5"
+    },
+    "emotion=1,part=6": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_6"
+    },
+    "emotion=1,part=7": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_7"
+    },
+    "emotion=1,part=8": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_8"
+    },
+    "emotion=1,part=9": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_9"
+    },
+    "emotion=1,part=10": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_10"
+    },
+    "emotion=1,part=11": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_11"
+    },
+    "emotion=1,part=12": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_12"
+    },
+    "emotion=1,part=13": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_13"
+    },
+    "emotion=1,part=14": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_14"
+    },
+    "emotion=1,part=15": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_15"
+    },
+    "emotion=1,part=16": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_16"
+    },
+    "emotion=1,part=17": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_17"
+    },
+    "emotion=1,part=18": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_18"
+    },
+    "emotion=1,part=19": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_19"
+    },
+    "emotion=1,part=20": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_20"
+    },
+    "emotion=1,part=21": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_21"
+    },
+    "emotion=1,part=22": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_22"
+    },
+    "emotion=1,part=23": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_23"
+    },
+    "emotion=1,part=24": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_24"
+    },
+    "emotion=1,part=25": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_25"
+    },
+    "emotion=1,part=26": {
+      "model": "guogaology:block/scarlet_guogao_lantern_sad_part_26"
+    }
+  }
+}

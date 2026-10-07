@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:gamma_block"
+    }
+  ],
+  "result": {
+    "id": "guogaology:gamma_material",
+    "count": 9
+  }
+}

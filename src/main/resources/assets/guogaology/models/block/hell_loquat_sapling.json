@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "guogaology:block/hell_loquat_sapling"
+  }
+}

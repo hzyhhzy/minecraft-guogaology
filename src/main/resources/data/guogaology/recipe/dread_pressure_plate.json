@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "PP"
+  ],
+  "key": {
+    "P": {
+      "item": "guogaology:dread_planks"
+    }
+  },
+  "result": {
+    "id": "guogaology:dread_pressure_plate",
+    "count": 1
+  }
+}

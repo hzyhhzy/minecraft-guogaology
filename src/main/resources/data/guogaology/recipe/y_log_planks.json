@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "guogaology:y_log"
+    }
+  ],
+  "result": {
+    "id": "minecraft:birch_planks",
+    "count": 4
+  }
+}

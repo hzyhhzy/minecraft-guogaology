@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "guogaology:laver_vein"
+    }
+  ],
+  "result": {
+    "id": "guogaology:laver_planks",
+    "count": 4
+  }
+}

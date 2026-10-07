@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:laver_planks"
+    },
+    {
+      "item": "guogaology:ordinal_shard"
+    }
+  ],
+  "result": {
+    "id": "guogaology:basic_laver_pattern",
+    "count": 2
+  }
+}

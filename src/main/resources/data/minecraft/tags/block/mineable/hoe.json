@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "googology:dread_leaves",
-    "googology:epsilon_turf",
-    "googology:giant_laver",
-    "googology:laver_mat",
-    "googology:y_leaves"
+    "guogaology:dread_leaves",
+    "guogaology:epsilon_turf",
+    "guogaology:giant_laver",
+    "guogaology:laver_mat",
+    "guogaology:y_leaves"
   ]
 }

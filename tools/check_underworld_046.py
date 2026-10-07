@@ -38,9 +38,9 @@ def main():
         run([java, '-Xmx768m', '-cp', str(current), 'Underworld046Checks', str(args.radius), str(seed)])
     before_files = 'WorldNoise WaterField UnderworldLakes TerrainField BiomeRegions CaveField TerrainSamples'.split()
     for name in before_files:
-        relative = f'src/main/java/dev/googology/world/{name}.java'
+        relative = f'src/main/java/dev/guogaology/world/{name}.java'
         source = subprocess.run(['git', 'show', f'{args.baseline_ref}:{relative}'], cwd=ROOT, check=True, capture_output=True).stdout
-        target = old_sources/'dev/googology/world'/f'{name}.java'
+        target = old_sources/'dev/guogaology/world'/f'{name}.java'
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(source)
     run([javac, '--release', '21', '-encoding', 'UTF-8', '-sourcepath', str(old_sources), '-d', str(old_classes), str(tests/'Underworld046Fingerprint.java')])

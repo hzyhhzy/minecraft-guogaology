@@ -14,7 +14,7 @@ import random
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT/'src/main/resources'
-ASSET = RES/'assets/googology'
+ASSET = RES/'assets/guogaology'
 COLORS = ('amber', 'cyan', 'rose', 'lime', 'violet', 'scarlet')
 RGB = ((255,174,48),(47,224,239),(255,112,182),(160,239,55),(188,130,255),(255,87,76))
 DIGITS = ('111 101 101 101 111','010 110 010 010 111','111 001 111 100 111',
@@ -60,22 +60,22 @@ def generate(check=False):
     for color,name in enumerate(COLORS):
         substrate=base(color)
         png(ASSET/f'textures/block/sequence_light_{color}.png',substrate)
-        write(ASSET/f'blockstates/{name}_light.json',{'variants':{'':{'model':f'googology:block/sequence_light_{color}'}}})
-        write(ASSET/f'models/item/{name}_light.json',{'parent':f'googology:block/sequence_light_{color}'})
+        write(ASSET/f'blockstates/{name}_light.json',{'variants':{'':{'model':f'guogaology:block/sequence_light_{color}'}}})
+        write(ASSET/f'models/item/{name}_light.json',{'parent':f'guogaology:block/sequence_light_{color}'})
         numeric={'variants':{}}
         overrides=[]
         for value in range(33):
             number=substrate.copy();number.paste(INK,(0,0,32,32),glyph_mask(value))
-            model=f'googology:block/christmas_digit_{color}_{value}'
+            model=f'guogaology:block/christmas_digit_{color}_{value}'
             png(ASSET/f'textures/block/christmas_digit_{color}_{value}.png',number)
             numeric['variants'][f'digit={value}']={'model':model}
-            overrides.append({'predicate':{'googology:appearance':value/256.0},'model':model})
+            overrides.append({'predicate':{'guogaology:appearance':value/256.0},'model':model})
         write(ASSET/f'blockstates/{name}_sequence_light.json',numeric)
-        write(ASSET/f'models/item/{name}_sequence_light.json',{'parent':f'googology:block/christmas_digit_{color}_0','overrides':overrides})
-        write(RES/f'data/googology/loot_table/blocks/{name}_light.json',{
-            'type':'minecraft:block','pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':f'googology:{name}_light'}],
+        write(ASSET/f'models/item/{name}_sequence_light.json',{'parent':f'guogaology:block/christmas_digit_{color}_0','overrides':overrides})
+        write(RES/f'data/guogaology/loot_table/blocks/{name}_light.json',{
+            'type':'minecraft:block','pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':f'guogaology:{name}_light'}],
                                              'conditions':[{'condition':'minecraft:survives_explosion'}]}]})
-    profile_path=RES/'googology/block_balance.json'
+    profile_path=RES/'guogaology/block_balance.json'
     profiles=json.loads(profile_path.read_text('utf8'))
     for color in COLORS:
         profiles[color+'_light']=copy.deepcopy(profiles[color+'_sequence_light'])
@@ -84,16 +84,16 @@ def generate(check=False):
     # Plain colors have the same harvesting/tool classification as their numbered partner.
     for path in (RES/'data/minecraft/tags/block').rglob('*.json'):
         data=json.loads(path.read_text('utf8'));values=data.get('values',[])
-        additions=[f'googology:{color}_light' for color in COLORS
-                   if f'googology:{color}_sequence_light' in values and f'googology:{color}_light' not in values]
+        additions=[f'guogaology:{color}_light' for color in COLORS
+                   if f'guogaology:{color}_sequence_light' in values and f'guogaology:{color}_light' not in values]
         if additions:data['values']=values+additions;write(path,data)
     # Only re-encode imported templates that actually contain the donor's plain lamp.
     # Their immutable canonical source preserves coordinates and every unrelated state.
     from import_outer_content import nbt_transform
     for path in (ROOT/'content/outer-1.0.0').rglob('*.nbt'):
-        if b'googology:christmas_light' not in gzip.decompress(path.read_bytes()):continue
+        if b'guogaology:christmas_light' not in gzip.decompress(path.read_bytes()):continue
         relative=path.relative_to(ROOT/'content/outer-1.0.0')
-        target=RES/'data/googology'/relative
+        target=RES/'data/guogaology'/relative
         if not target.exists():continue
         raw=nbt_transform(path.read_bytes(),legacy=True)
         if target.read_bytes()!=raw:

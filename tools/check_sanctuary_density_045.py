@@ -59,11 +59,11 @@ def main():
               'relative_probability_scales': None if args.inner_scale is None else {'inner': args.inner_scale, 'underworld': args.under_scale},
               'explicit_rates': args.rates,
               'production_sha256': {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-                    for path in [ROOT/'src/main/java/dev/googology/survival/SanctuaryPlacement.java',
-                                 ROOT/'src/main/java/dev/googology/survival/SanctuaryLayout.java',
-                                 ROOT/'src/main/java/dev/googology/world/TerrainField.java',
-                                 ROOT/'src/main/java/dev/googology/world/UnderworldLakes.java',
-                                 ROOT/'src/main/java/dev/googology/world/BiomeRegions.java']},
+                    for path in [ROOT/'src/main/java/dev/guogaology/survival/SanctuaryPlacement.java',
+                                 ROOT/'src/main/java/dev/guogaology/survival/SanctuaryLayout.java',
+                                 ROOT/'src/main/java/dev/guogaology/world/TerrainField.java',
+                                 ROOT/'src/main/java/dev/guogaology/world/UnderworldLakes.java',
+                                 ROOT/'src/main/java/dev/guogaology/world/BiomeRegions.java']},
               'stdout': lines, 'tables': tables}
     (args.output/'audit.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', 'utf8')
     (args.output/'run.log').write_text('\n'.join(lines)+'\n', 'utf8')

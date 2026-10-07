@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " MS",
+    "M S",
+    " MS"
+  ],
+  "key": {
+    "M": {
+      "item": "guogaology:omega_material"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "id": "guogaology:omega_bow",
+    "count": 1
+  }
+}

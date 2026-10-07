@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "guogaology:item/epsilon_bow_pulling_0"
+  }
+}

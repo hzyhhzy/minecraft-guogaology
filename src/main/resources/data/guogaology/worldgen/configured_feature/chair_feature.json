@@ -1,0 +1,31 @@
+{
+  "type": "guogaology:template",
+  "config": {
+    "templates": [
+      {
+        "data": {
+          "id": "guogaology:chair_north"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "guogaology:chair_east"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "guogaology:chair_south"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "guogaology:chair_west"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "CTC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "T": {
+      "item": "guogaology:enhancement_table"
+    }
+  },
+  "result": {
+    "id": "guogaology:enhancement_table_2",
+    "count": 1
+  }
+}

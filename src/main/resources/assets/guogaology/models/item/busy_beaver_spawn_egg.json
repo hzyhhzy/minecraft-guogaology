@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "guogaology:item/busy_beaver_spawn_egg"
+  }
+}

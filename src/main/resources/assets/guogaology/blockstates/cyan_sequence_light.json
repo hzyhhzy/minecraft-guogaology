@@ -1,0 +1,103 @@
+{
+  "variants": {
+    "digit=0": {
+      "model": "guogaology:block/christmas_digit_1_0"
+    },
+    "digit=1": {
+      "model": "guogaology:block/christmas_digit_1_1"
+    },
+    "digit=2": {
+      "model": "guogaology:block/christmas_digit_1_2"
+    },
+    "digit=3": {
+      "model": "guogaology:block/christmas_digit_1_3"
+    },
+    "digit=4": {
+      "model": "guogaology:block/christmas_digit_1_4"
+    },
+    "digit=5": {
+      "model": "guogaology:block/christmas_digit_1_5"
+    },
+    "digit=6": {
+      "model": "guogaology:block/christmas_digit_1_6"
+    },
+    "digit=7": {
+      "model": "guogaology:block/christmas_digit_1_7"
+    },
+    "digit=8": {
+      "model": "guogaology:block/christmas_digit_1_8"
+    },
+    "digit=9": {
+      "model": "guogaology:block/christmas_digit_1_9"
+    },
+    "digit=10": {
+      "model": "guogaology:block/christmas_digit_1_10"
+    },
+    "digit=11": {
+      "model": "guogaology:block/christmas_digit_1_11"
+    },
+    "digit=12": {
+      "model": "guogaology:block/christmas_digit_1_12"
+    },
+    "digit=13": {
+      "model": "guogaology:block/christmas_digit_1_13"
+    },
+    "digit=14": {
+      "model": "guogaology:block/christmas_digit_1_14"
+    },
+    "digit=15": {
+      "model": "guogaology:block/christmas_digit_1_15"
+    },
+    "digit=16": {
+      "model": "guogaology:block/christmas_digit_1_16"
+    },
+    "digit=17": {
+      "model": "guogaology:block/christmas_digit_1_17"
+    },
+    "digit=18": {
+      "model": "guogaology:block/christmas_digit_1_18"
+    },
+    "digit=19": {
+      "model": "guogaology:block/christmas_digit_1_19"
+    },
+    "digit=20": {
+      "model": "guogaology:block/christmas_digit_1_20"
+    },
+    "digit=21": {
+      "model": "guogaology:block/christmas_digit_1_21"
+    },
+    "digit=22": {
+      "model": "guogaology:block/christmas_digit_1_22"
+    },
+    "digit=23": {
+      "model": "guogaology:block/christmas_digit_1_23"
+    },
+    "digit=24": {
+      "model": "guogaology:block/christmas_digit_1_24"
+    },
+    "digit=25": {
+      "model": "guogaology:block/christmas_digit_1_25"
+    },
+    "digit=26": {
+      "model": "guogaology:block/christmas_digit_1_26"
+    },
+    "digit=27": {
+      "model": "guogaology:block/christmas_digit_1_27"
+    },
+    "digit=28": {
+      "model": "guogaology:block/christmas_digit_1_28"
+    },
+    "digit=29": {
+      "model": "guogaology:block/christmas_digit_1_29"
+    },
+    "digit=30": {
+      "model": "guogaology:block/christmas_digit_1_30"
+    },
+    "digit=31": {
+      "model": "guogaology:block/christmas_digit_1_31"
+    },
+    "digit=32": {
+      "model": "guogaology:block/christmas_digit_1_32"
+    }
+  }
+}

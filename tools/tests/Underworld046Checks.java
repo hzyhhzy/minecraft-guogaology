@@ -1,4 +1,4 @@
-import dev.googology.world.*;
+import dev.guogaology.world.*;
 import java.util.*;
 
 /** Pure production geometry checks; no Minecraft runtime or normal save access. */

@@ -53,14 +53,14 @@ def state_selector(entries, fallback):
 
 
 def convert_items(out):
-    assets = out / "assets/googology"
+    assets = out / "assets/guogaology"
     context_cores = set(core_names(assets))
     portable = 0
     for path in sorted((assets / "models/item").glob("*.json")):
         old = read(path)
-        rendered = model("googology:item/" + path.stem)
+        rendered = model("guogaology:item/" + path.stem)
         overrides = old.pop("overrides", [])
-        if overrides and "googology:appearance" in overrides[0].get("predicate", {}):
+        if overrides and "guogaology:appearance" in overrides[0].get("predicate", {}):
             variants = read(assets / "blockstates" / path.name)["variants"]
             entries = [(dict(p.split("=", 1) for p in key.split(",")), (value[0] if isinstance(value, list) else value)["model"])
                        for key, value in variants.items()]
@@ -171,8 +171,8 @@ def convert_263_noise(data, out, name):
     for key in ('barrier','fluid_level_floodedness','fluid_level_spread','lava','vein_gap','vein_ridged','vein_toggle'):
         router.pop(key, None)
     rule = data.pop('surface_rule')
-    write(out / 'data/googology/worldgen/material_rule' / name, rule)
-    data['material_rule'] = 'googology:' + Path(name).stem
+    write(out / 'data/guogaology/worldgen/material_rule' / name, rule)
+    data['material_rule'] = 'guogaology:' + Path(name).stem
     data.pop('aquifers_enabled', None)
     data.pop('ore_veins_enabled', None)
     # Players spawn in the overworld; the two custom dimensions use explicit portals.
@@ -193,27 +193,27 @@ def convert_263_misc(out):
             assert len(conditions)<=1,'Review compound predicates before porting'
             if conditions:result['condition']=conditions[0]
         return result
-    for path in (out / 'data/googology/loot_table').rglob('*.json'):
+    for path in (out / 'data/guogaology/loot_table').rglob('*.json'):
         write(path,loot(read(path)))
-    for path in (out / 'data/googology/advancement').rglob('*.json'):
+    for path in (out / 'data/guogaology/advancement').rglob('*.json'):
         data=read(path)
         for criterion in data.get('criteria', {}).values():
             if criterion.get('trigger') == 'minecraft:recipe_unlocked':
                 conditions=criterion['conditions']
                 conditions['recipes']=[conditions.pop('recipe')]
         write(path,data)
-    for path in (out / 'data/googology/worldgen/noise').glob('*.json'):
+    for path in (out / 'data/guogaology/worldgen/noise').glob('*.json'):
         data=read(path)
         amplitudes=data.pop('amplitudes')
         assert amplitudes == [1.0], 'Review nontrivial octave weighting before porting'
         write(path,{'base_octave':data['firstOctave'],'base_amplitude':1.0,'octave_count':1})
-    for path in (out / 'data/googology/worldgen/configured_feature').glob('*.json'):
+    for path in (out / 'data/guogaology/worldgen/configured_feature').glob('*.json'):
         data = read(path)
         data.update(data.pop('config', {}))
-        write(out / 'data/googology/worldgen/feature' / path.name, data)
+        write(out / 'data/guogaology/worldgen/feature' / path.name, data)
         path.unlink()
     for name, chance in [('plant',65),('leaf',50)]:
-        write(out / f'data/googology/context_int_provider/compostable/{name}.json', {
+        write(out / f'data/guogaology/context_int_provider/compostable/{name}.json', {
             'type':'minecraft:number_dispatcher',
             'cases':[{'condition':{'type':'minecraft:match_block','blocks':'minecraft:composter','state':{'level':'0'}},'value':1}],
             'default':{'type':'minecraft:weighted_list','distribution':[{'data':1,'weight':chance},{'data':0,'weight':100-chance}]}})
@@ -239,15 +239,15 @@ def prepare(target, release):
                               fabricloader=">=0.19.3", **{"fabric-api": ">=" + config["fabric"]})
     # Only the old atmosphere hooks are superseded by environment attributes.
     # Keep unrelated client hooks (flight prediction / inventory positioning).
-    metadata["mixins"] = ["googology.mixins.json", {"config": "googology.client.mixins.json", "environment": "client"}]
+    metadata["mixins"] = ["guogaology.mixins.json", {"config": "guogaology.client.mixins.json", "environment": "client"}]
     write(out / "fabric.mod.json", metadata)
-    client_mixins = read(out / "googology.client.mixins.json")
-    client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GoogologyFogMixin", "GoogologySkyLightMixin", "CoreItemViewMixin")]
-    write(out / "googology.client.mixins.json", client_mixins)
+    client_mixins = read(out / "guogaology.client.mixins.json")
+    client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GuogaologyFogMixin", "GuogaologySkyLightMixin", "CoreItemViewMixin")]
+    write(out / "guogaology.client.mixins.json", client_mixins)
     # Fabric supplies metadata for the active pack type. A shared numeric range cannot
     # describe both resource 75 and data 94 without conflicting legacy-format rules.
     (out / "pack.mcmeta").unlink(missing_ok=True)
-    for path in (out / "data/googology/recipe").glob("*.json"):
+    for path in (out / "data/guogaology/recipe").glob("*.json"):
         data = read(path)
         for key in ("ingredient", "ingredients", "left", "right", "catalyst"):
             if key in data:
@@ -255,7 +255,7 @@ def prepare(target, release):
         if "key" in data:
             data["key"] = {k: ingredient(v) for k, v in data["key"].items()}
         write(path, data)
-    for path in (out / "data/googology/worldgen/biome").glob("*.json"):
+    for path in (out / "data/guogaology/worldgen/biome").glob("*.json"):
         data = read(path)
         convert_biome(data)
         if target == '26.3':
@@ -266,11 +266,11 @@ def prepare(target, release):
             data['attributes']['minecraft:gameplay/natural_mob_spawns'] = {
                 'modifier':'overlay', 'argument':{'spawns_by_category':data.pop('spawners', {}), 'spawn_costs':data.pop('spawn_costs', {})}}
         write(path, data)
-    for path in (out / "data/googology/dimension_type").glob("*.json"):
+    for path in (out / "data/guogaology/dimension_type").glob("*.json"):
         data = read(path)
         convert_dimension(data, path.stem == "guogao", target)
         write(path, data)
-    for path in (out / "data/googology/worldgen/noise_settings").glob("*.json"):
+    for path in (out / "data/guogaology/worldgen/noise_settings").glob("*.json"):
         data = read(path)
         router = data['noise_router']
         density = router.pop('initial_density_without_jaggedness')

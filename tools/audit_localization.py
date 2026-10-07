@@ -49,7 +49,7 @@ def arguments(text):
 
 def audit(root):
     root = root.resolve()
-    assets = root / 'src/main/resources/assets/googology'
+    assets = root / 'src/main/resources/assets/guogaology'
     locales = {code: read(assets / f'lang/{code}.json') for code in ('en_us', 'zh_cn')}
     en, zh = locales['en_us'], locales['zh_cn']
     if en.keys() != zh.keys():
@@ -83,17 +83,17 @@ def audit(root):
     # their live models belong to lantern variants, not additional registry IDs.
     blocks = {p.stem for p in (assets / 'blockstates').glob('*.json')} - LEGACY_ENTRIES
     for name in sorted(blocks):
-        require('block.googology.' + name, 'blockstate')
+        require('block.guogaology.' + name, 'blockstate')
     items = {p.stem for p in (assets / 'models/item').glob('*.json')} - blocks - LEGACY_ENTRIES
     for name in sorted(items):
-        require('item.googology.' + name, 'item model')
+        require('item.guogaology.' + name, 'item model')
     for folder, kind in (('worldgen/biome', 'biome'), ('dimension', 'dimension')):
-        for path in (root / 'src/main/resources/data/googology' / folder).glob('*.json'):
-            require(f'{kind}.googology.{path.stem}', path)
+        for path in (root / 'src/main/resources/data/guogaology' / folder).glob('*.json'):
+            require(f'{kind}.guogaology.{path.stem}', path)
 
     def components(node, source):
         if isinstance(node, dict):
-            if isinstance(node.get('translate'), str) and '.googology.' in node['translate']:
+            if isinstance(node.get('translate'), str) and '.guogaology.' in node['translate']:
                 require(node['translate'], source)
             for value in node.values():
                 components(value, source)
@@ -123,17 +123,17 @@ def audit(root):
                 if HAN.search(literal):
                     raise ValueError(f'Hardcoded Chinese Java string: {path.relative_to(root)}')
             for match in re.finditer(r'(?:Text|Component)\.translatable\(\s*"([^"]+)"', source):
-                if '.googology.' in match[1]:
+                if '.guogaology.' in match[1]:
                     require(match[1], path, prefix=True)
-            if '"mining.googology."+key' in source:
+            if '"mining.guogaology."+key' in source:
                 for match in re.finditer(r'\btr\(\s*"([^"]+)"', source):
-                    require('mining.googology.' + match[1], path, prefix=True)
+                    require('mining.guogaology.' + match[1], path, prefix=True)
             for match in re.finditer(r'(?:Text|Component)\.literal\(\s*"([^"]+)"', source):
                 if re.search(r'[A-Za-z\u3400-\u9fff]', match[1]):
                     raise ValueError(f'Untranslated player-facing literal in {path.relative_to(root)}: {match[1]}')
 
     for kind in ('name', 'summary', 'description'):
-        require(f'modmenu.{kind}Translation.googology', 'Mod Menu')
+        require(f'modmenu.{kind}Translation.guogaology', 'Mod Menu')
     metadata = read(root / 'src/main/resources/fabric.mod.json')
     if not re.search(r'[A-Za-z]{3}', metadata['description']) or not HAN.search(metadata['description']):
         raise ValueError('Static launcher description must remain readable in English and Chinese')

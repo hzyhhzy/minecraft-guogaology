@@ -4,17 +4,17 @@ import argparse
 import json
 
 ROOT=Path(__file__).resolve().parents[1]
-A=ROOT/'src/main/resources/assets/googology'
+A=ROOT/'src/main/resources/assets/guogaology'
 PARTICLES={
     'sequence_core':'minecraft:block/light_blue_stained_glass',
-    'power_tower_core':'googology:block/core_d/power_tower_core',
-    'hydra_bud':'googology:block/core_d/hydra_bud',
-    'lho_trace':'googology:block/lho_c1',
-    'laver_core':'googology:block/core_d/laver_core',
-    'astra_critical_core':'googology:block/core_d/astra_critical_core',
-    'boundary_core':'googology:block/core_d/boundary_core_outer',
-    'guogao_heart':'googology:block/core_d/guogao_lantern_enamel',
-    'ordinal_crystal':'googology:block/core_d/ordinal_crystal',
+    'power_tower_core':'guogaology:block/core_d/power_tower_core',
+    'hydra_bud':'guogaology:block/core_d/hydra_bud',
+    'lho_trace':'guogaology:block/lho_c1',
+    'laver_core':'guogaology:block/core_d/laver_core',
+    'astra_critical_core':'guogaology:block/core_d/astra_critical_core',
+    'boundary_core':'guogaology:block/core_d/boundary_core_outer',
+    'guogao_heart':'guogaology:block/core_d/guogao_lantern_enamel',
+    'ordinal_crystal':'guogaology:block/core_d/ordinal_crystal',
 }
 def particle_texture(name):
     return PARTICLES[name.split('_lv')[0]]

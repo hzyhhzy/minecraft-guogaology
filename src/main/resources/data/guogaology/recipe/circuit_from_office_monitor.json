@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:office_monitor"
+    }
+  ],
+  "result": {
+    "id": "guogaology:compute_chip",
+    "count": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "tag": "guogaology:dread_logs"
+    }
+  ],
+  "result": {
+    "id": "guogaology:dread_planks",
+    "count": 4
+  }
+}

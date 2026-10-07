@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "guogaology:block/dread_planks",
+    "top": "guogaology:block/dread_planks",
+    "side": "guogaology:block/dread_planks"
+  }
+}

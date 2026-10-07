@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SAS",
+    "AGA",
+    "SAS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:smooth_sandstone"
+    },
+    "A": {
+      "item": "guogaology:star_gold"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    }
+  },
+  "result": {
+    "id": "guogaology:amber_inlay",
+    "count": 8
+  }
+}

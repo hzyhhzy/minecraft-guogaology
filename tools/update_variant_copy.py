@@ -5,24 +5,24 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 COPY = {
-    'block.googology.nuke_chair': ('震惊瘫坐椅', 'Shock-Slump Chair'),
-    'item.googology.expression_variant': ('%s · %s', '%s · %s'),
-    'item.googology.color_variant': ('%s · 色号 %s', '%s · Color %s'),
-    'item.googology.palette_color': ('色板：%s / %s', 'Palette color: %s / %s'),
-    'item.googology.chime_note': ('下次音符：第 %s / 8 项', 'Next note: %s / 8'),
-    'item.googology.lantern_expression': ('表情：%s', 'Expression: %s'),
+    'block.guogaology.nuke_chair': ('震惊瘫坐椅', 'Shock-Slump Chair'),
+    'item.guogaology.expression_variant': ('%s · %s', '%s · %s'),
+    'item.guogaology.color_variant': ('%s · 色号 %s', '%s · Color %s'),
+    'item.guogaology.palette_color': ('色板：%s / %s', 'Palette color: %s / %s'),
+    'item.guogaology.chime_note': ('下次音符：第 %s / 8 项', 'Next note: %s / 8'),
+    'item.guogaology.lantern_expression': ('表情：%s', 'Expression: %s'),
     # Verified from emotion=0/1 blockstate models AND the actual mouth pixels.
     # These user-requested names are intentional words; do not replace by emoji.
-    'item.googology.lantern_emotion.0': ('馃槹（张嘴）', 'Guogao (open mouth)'),
-    'item.googology.lantern_emotion.1': ('馃槬（闭嘴）', 'Guogua (closed mouth)'),
-    'item.googology.tape_ink.0': ('空心墨点', 'Hollow ink dot'),
-    'item.googology.tape_ink.1': ('实心墨点', 'Solid ink dot'),
-    'block.googology.amber_light': ('琥珀彩灯', 'Amber Light'),
-    'block.googology.cyan_light': ('青蓝彩灯', 'Cyan Light'),
-    'block.googology.rose_light': ('玫红彩灯', 'Rose Light'),
-    'block.googology.lime_light': ('青柠彩灯', 'Lime Light'),
-    'block.googology.violet_light': ('紫罗兰彩灯', 'Violet Light'),
-    'block.googology.scarlet_light': ('绯红彩灯', 'Scarlet Light'),
+    'item.guogaology.lantern_emotion.0': ('馃槹（张嘴）', 'Guogao (open mouth)'),
+    'item.guogaology.lantern_emotion.1': ('馃槬（闭嘴）', 'Guogua (closed mouth)'),
+    'item.guogaology.tape_ink.0': ('空心墨点', 'Hollow ink dot'),
+    'item.guogaology.tape_ink.1': ('实心墨点', 'Solid ink dot'),
+    'block.guogaology.amber_light': ('琥珀彩灯', 'Amber Light'),
+    'block.guogaology.cyan_light': ('青蓝彩灯', 'Cyan Light'),
+    'block.guogaology.rose_light': ('玫红彩灯', 'Rose Light'),
+    'block.guogaology.lime_light': ('青柠彩灯', 'Lime Light'),
+    'block.guogaology.violet_light': ('紫罗兰彩灯', 'Violet Light'),
+    'block.guogaology.scarlet_light': ('绯红彩灯', 'Scarlet Light'),
 }
 
 
@@ -34,7 +34,7 @@ def generate(root=ROOT, *, check=False):
     for index, locale in enumerate(('zh_cn', 'en_us')):
         values = {key: pair[index] for key, pair in COPY.items()}
         catalog['translations'][locale].update(values)
-        lang_path = root / f'src/main/resources/assets/googology/lang/{locale}.json'
+        lang_path = root / f'src/main/resources/assets/guogaology/lang/{locale}.json'
         language = json.loads(lang_path.read_text(encoding='utf-8'))
         language.update(values)
         expected[lang_path] = language

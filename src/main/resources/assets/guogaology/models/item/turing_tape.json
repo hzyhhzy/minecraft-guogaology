@@ -1,0 +1,101 @@
+{
+  "parent": "guogaology:block/turing_tape_0",
+  "overrides": [
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0
+      },
+      "model": "guogaology:block/turing_tape_0"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.00390625
+      },
+      "model": "guogaology:block/turing_tape_1"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0078125
+      },
+      "model": "guogaology:block/turing_tape_2"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01171875
+      },
+      "model": "guogaology:block/turing_tape_3"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.015625
+      },
+      "model": "guogaology:block/turing_tape_4"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.01953125
+      },
+      "model": "guogaology:block/turing_tape_5"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0234375
+      },
+      "model": "guogaology:block/turing_tape_6"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.02734375
+      },
+      "model": "guogaology:block/turing_tape_7"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03125
+      },
+      "model": "guogaology:block/turing_tape_8"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.03515625
+      },
+      "model": "guogaology:block/turing_tape_9"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0390625
+      },
+      "model": "guogaology:block/turing_tape_10"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.04296875
+      },
+      "model": "guogaology:block/turing_tape_11"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.046875
+      },
+      "model": "guogaology:block/turing_tape_12"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05078125
+      },
+      "model": "guogaology:block/turing_tape_13"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.0546875
+      },
+      "model": "guogaology:block/turing_tape_14"
+    },
+    {
+      "predicate": {
+        "guogaology:appearance": 0.05859375
+      },
+      "model": "guogaology:block/turing_tape_15"
+    }
+  ]
+}

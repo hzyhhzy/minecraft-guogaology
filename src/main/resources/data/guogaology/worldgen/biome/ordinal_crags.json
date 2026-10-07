@@ -1,0 +1,53 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.2,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 13229298,
+    "sky_color": 8305646,
+    "water_color": 6786762,
+    "water_fog_color": 1588032,
+    "grass_color": 9873355,
+    "foliage_color": 3234129,
+    "particle": {
+      "options": {
+        "type": "minecraft:end_rod"
+      },
+      "probability": 0.001
+    }
+  },
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "guogaology:monumental_landmarks"
+    ],
+    []
+  ]
+}

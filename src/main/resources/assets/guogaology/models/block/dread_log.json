@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "guogaology:block/dread_log",
+    "end": "guogaology:block/dread_log_top"
+  }
+}

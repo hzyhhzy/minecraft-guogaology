@@ -1,5 +1,5 @@
-import dev.googology.world.*;
-import dev.googology.survival.SanctuaryClearing;
+import dev.guogaology.world.*;
+import dev.guogaology.survival.SanctuaryClearing;
 import java.util.*;
 
 /** Independent production-terrain and raster-geometry audit; no Minecraft bootstrap. */

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "guogaology:block/dread_slab"
+    },
+    "type=top": {
+      "model": "guogaology:block/dread_slab_top"
+    },
+    "type=double": {
+      "model": "guogaology:block/dread_planks"
+    }
+  }
+}

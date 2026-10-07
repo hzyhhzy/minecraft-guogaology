@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:fffz_trace",
+              "guogaology:fos_trace",
+              "guogaology:lho_hydra_psi",
+              "guogaology:lho_hydra_z",
+              "guogaology:lho_trace",
+              "guogaology:ordinal_crystal_lv2"
+            ]
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:lho_trace_lv2"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_material",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:lho_trace_lv2"
+    ]
+  }
+}

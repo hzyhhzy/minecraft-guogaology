@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:omega_ore",
+    "guogaology:nether_omega_ore",
+    "guogaology:epsilon_ore",
+    "guogaology:nether_epsilon_ore",
+    "guogaology:gamma_ore",
+    "guogaology:nether_gamma_ore"
+  ]
+}

@@ -2,7 +2,7 @@
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
-**Outer Googology supplies minerals and basic equipment; Inner Googology and the Guogao Underworld supply crystal cores.** The Outer world retains seven ordinary donor creatures. Hydra creatures and bosses are excluded; giant Hydra plants remain in the Inner garden.
+**Outer Guogaology supplies minerals and basic equipment; Inner Guogaology and the Guogao Underworld supply crystal cores.** The Outer world retains seven ordinary donor creatures. Hydra creatures and bosses are excluded; giant Hydra plants remain in the Inner garden.
 
 The Outer LHO Edge is confined to a narrow coast around the void. Inner LHO islands and neighboring land taper into a real air gap. Terrain changes affect newly generated chunks only. Gummies on Outer Laver tables may mix plain and embossed styles, with an 80% chance of plain per gummy. All four plain colors can be harvested, sliced, and used in the existing portal rituals.
 
@@ -25,7 +25,14 @@ Destination styles are ivory/gold Omega for surface/home, indigo matrix-and-moun
 
 Activated frames have hardness 200, four times obsidian. They can be mined, but never drop items with any tool, including Silk Touch; breaking one still collapses the entire gate. Unactivated construction materials and return frames retain their original hardness and drops.
 
-Horizontal scales are Overworld:Outer:Inner:Underworld = 1:1:4:16. Falling to Y≤−500 in Outer leads to Inner Y=500; void damage remains active during the descent, so insufficient protection can be fatal. Falling to Y≤−120 in Inner leads to Underworld Y=500; quarter gravity and no fall damage apply there. New destinations still require chunk generation. Approaching a portal only prepares chunks. Entering first reuses a nearby complete, safe portal, then scans real ground. Ordinary replaceable vegetation and thin snow can be cleared, and short foundations can fill height differences of up to three blocks. When complete ground is unavailable, a connected ledge or near-water platform takes priority over a void platform. Exits are no longer deliberately raised into the sky; existing safe gates are not relocated. Loading and search have time and per-tick limits. An unsuccessful trip is silently cancelled and the player is returned outside the source gate; leaving allows another attempt. Containers and structures are not overwritten. `/googology` shows help; administrators have `visit`, `inner`, `guogao`, and `return`.
+Horizontal scales are Overworld:Outer:Inner:Underworld = 1:1:4:16. Falling to Y≤−500 in Outer leads to Inner Y=500; void damage remains active during the descent, so insufficient protection can be fatal. Falling to Y≤−120 in Inner leads to Underworld Y=500; quarter gravity and no fall damage apply there. New destinations still require chunk generation. Approaching a portal only prepares chunks. Entering first reuses a nearby complete, safe portal, then scans real ground. Ordinary replaceable vegetation and thin snow can be cleared, and short foundations can fill height differences of up to three blocks. When complete ground is unavailable, a connected ledge or near-water platform takes priority over a void platform. Exits are no longer deliberately raised into the sky; existing safe gates are not relocated. Loading and search have time and per-tick limits. An unsuccessful trip is silently cancelled and the player is returned outside the source gate; leaving allows another attempt. Containers and structures are not overwritten.
+
+Everyone can use `/guogaology` or `/guogaology help`. The following commands require administrator permission level 2:
+
+- `/guogaology tp <outer|inner|underworld|overworld>` goes directly to the named dimension; using it in that dimension only displays a message.
+- `/guogaology up` returns one layer: Underworld → Inner → Outer → Overworld. It does not return to a previous position, bed or spawn point.
+- `/guogaology kit portal <outer|inner|underworld>` provides the forward portal frame and activation materials for the named destination.
+- `/guogaology kit return` provides 12 Return Frames for the current layer and one Return Token.
 
 ## Four mineral tiers
 

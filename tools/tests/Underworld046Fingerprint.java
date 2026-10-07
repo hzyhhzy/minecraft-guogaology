@@ -1,4 +1,4 @@
-import dev.googology.world.*;
+import dev.guogaology.world.*;
 import java.security.MessageDigest;
 import java.nio.charset.StandardCharsets;
 import java.util.HexFormat;

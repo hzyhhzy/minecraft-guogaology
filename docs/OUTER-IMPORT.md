@@ -1,4 +1,4 @@
-# 表界内容移植与维护 · 0.3.6
+# 表界内容移植与维护 · 0.5.0
 
 基底始终是本项目。获授权的 `googology-dimension-1.0.0.jar` 内容作为表界模块加入；不加载或嵌入对方原 JAR，不运行其同名入口。来源、SHA-256、作者与许可声明见 [THIRD_PARTY.md](../THIRD_PARTY.md)。用户已明确说明取得作者许可。
 
@@ -23,8 +23,8 @@
 | 路径 | 用途 |
 |---|---|
 | `content/outer-1.0.0` | 导入时的原始数据与模板；仅供重建和比较，不整目录打包 |
-| `ports/26.3/src/main/java/dev/googology/outer` | 从原 JAR 重建的原生 26.3 模块 |
-| `ports/common/main/dev/googology/outer` | 1.21.11／26.2 的世界、景物、注册和生物适配 |
+| `ports/26.3/src/main/java/dev/guogaology/outer` | 从原 JAR 重建的原生 26.3 模块 |
+| `ports/common/main/dev/guogaology/outer` | 1.21.11／26.2 的世界、景物、注册和生物适配 |
 | 对应 `client` 目录 | 生物、船、牌子渲染；不进入专用服务器加载路径 |
 | `ports/outer-1.21.1` | 1.21.1 源码桥接，构建为宿主内嵌的 intermediary JAR |
 | `tools/prepare_outer_legacy.py` | 1.21.1 API 转换；有语义差异时使用明确源码覆盖 |
@@ -36,11 +36,11 @@
 | `tools/generate_merge_progression.py` | 共用四矿、装备、手稿、配方和文案生成 |
 | `tools/audit_outer_content.py` | 导入资源、语言、配方解锁和物品引用检查 |
 
-所有运行时 ID 和资源都属于宿主 `googology`，包括生物、群系、世界生成、模板、语言与美术。发行包不得保留旧域，1.21.1 的嵌套桥接 JAR 也一并检查。Java 包 `dev.googology.outer` 仅用于代码组织。矩阵数字砖、紫菜原木／木板／叶、果糕、灯、空境玻璃以及四套矿材装备各自只注册一份共用物品。Alice 序石及岩石变体映射到对应原版石头，地狱序石映射地狱岩；宿主数字刻石与果糕浮雕地形不是这些被删除的方块。
+所有运行时 ID 和资源都属于宿主 `guogaology`，包括生物、群系、世界生成、模板、语言与美术。发行包不得保留旧域，1.21.1 的嵌套桥接 JAR 也一并检查。Java 包 `dev.guogaology.outer` 仅用于代码组织。矩阵数字砖、紫菜原木／木板／叶、果糕、灯、空境玻璃以及四套矿材装备各自只注册一份共用物品。Alice 序石及岩石变体映射到对应原版石头，地狱序石映射地狱岩；宿主数字刻石与果糕浮雕地形不是这些被删除的方块。
 
-`outer/GoogologyMod.id` 是 Java 映射入口；Python 映射在 `import_outer_content.ALIASES`，其余保留物品由 `outer_content_ids.json` 识别。修改映射后运行 `unify_outer_content.py` 同步 Java 与资源入口，并检查 NBT 调色板、JSON 和 Java 三种来源。数字属性转换为 `number`，彩灯颜色转成对应宿主 ID、数字设为空白值33，原木保留轴向。没有旧存档迁移别名。
+`outer/GuogaologyMod.id` 是 Java 映射入口；Python 映射在 `import_outer_content.ALIASES`，其余保留物品由 `outer_content_ids.json` 识别。修改映射后运行 `unify_outer_content.py` 同步 Java 与资源入口，并检查 NBT 调色板、JSON 和 Java 三种来源。数字属性转换为 `number`，彩灯颜色转成对应宿主 ID、数字设为空白值33，原木保留轴向。没有旧存档迁移别名。
 
-`src/main/resources/data/googology` 同时存放表界与里界／地府数据。表界维度类型、噪声设置和 26.3 地表规则命名为 `outer`，避免覆盖里界原有的 `googology` 文件。生成器只清理精确归属清单中的文件，禁止删除整个目录。修改原始参数后运行：
+`src/main/resources/data/guogaology` 同时存放表界与里界／地府数据。表界维度类型、噪声设置和 26.3 地表规则命名为 `outer`，避免覆盖里界的 `guogaology` 文件。生成器只清理精确归属清单中的文件，禁止删除整个目录。修改原始参数后运行：
 
 ```sh
 python tools/prepare_outer_resources.py 1.21.1 src/main/resources

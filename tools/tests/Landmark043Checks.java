@@ -1,9 +1,9 @@
-package dev.googology.survival;
+package dev.guogaology.survival;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
-import static dev.googology.survival.SanctuaryLayout.*;
+import static dev.guogaology.survival.SanctuaryLayout.*;
 
 /** Exact blueprint harvest counts, retained furnishings, and real two-block walking routes. */
 public final class Landmark043Checks {

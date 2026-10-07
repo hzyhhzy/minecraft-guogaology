@@ -1,4 +1,4 @@
-import dev.googology.mining.EquipmentRules;
+import dev.guogaology.mining.EquipmentRules;
 
 /** Pure shared-rule regression for 0.4.4 socket eligibility; no Minecraft runtime. */
 public final class EquipmentRules044Checks {

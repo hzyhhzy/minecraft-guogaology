@@ -1,0 +1,11 @@
+{
+  "type": "guogaology:graham_vine",
+  "config": {
+    "block": "graham_vine",
+    "patch_down": 3,
+    "patch_up": 2,
+    "patch_radius": 3,
+    "patch_tries": 8,
+    "patch_max": 14
+  }
+}

@@ -6,7 +6,7 @@
   "environment": "*",
   "license": "GPL-3.0-only WITH GPL-3.0-linking-exception",
   "depends": {
-    "googology": "*",
+    "guogaology": "*",
     "minecraft": "1.21.1",
     "fabric-api": "*"
   },
@@ -15,10 +15,10 @@
   ],
   "entrypoints": {
     "guogaology:outer": [
-      "dev.googology.outer.LegacyBootstrap"
+      "dev.guogaology.outer.LegacyBootstrap"
     ],
     "guogaology:outer_client": [
-      "dev.googology.outer.client.LegacyClientBootstrap"
+      "dev.guogaology.outer.client.LegacyClientBootstrap"
     ]
   }
 }

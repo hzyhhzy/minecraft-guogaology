@@ -2,13 +2,13 @@
 
 [简体中文](README.md) | English
 
-![Guogaology](docs/branding/googology-mark.png)
+![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.4.0 · Minecraft Java / Fabric**
+**v0.5.0 · Minecraft Java / Fabric · Four builds and hidden fo262 regression passed**
 
-Three connected worlds: natural-scale Outer Googology, monumental Inner Googology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
+Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
-This is the merger experiment branch. Authorized Googology Dimension 1.0.0 terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
+Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
 
 ## Installation
 
@@ -21,7 +21,7 @@ Download **one** JAR matching your Minecraft version from [Releases](https://git
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID remains `googology`. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with 0.5.0. This change includes no old-save migration or aliases for the former IDs. The standalone core gallery and flight-speed utility are separate projects and are not required.
 
 ## Language
 
@@ -42,7 +42,7 @@ The names **Guogao** and **Denxi** are intentional transliterations of community
 | Boundary Highlands | Turing-machine tapes, set shells, proof and formula landscapes | Boundary Calculus Court |
 | Guogao Dreadwood | Eerie Christmas trees, thick vines, fractured terrain, lakes | Guogao Finality Tree |
 
-The first seven biomes belong to Inner Googology. Guogao Dreadwood is in the separate Guogao Underworld. Outer Googology adds the donor's seven natural-scale biomes and four mineral tiers. Nine crystal families support fusion and equipment enhancement in the deeper worlds.
+The first seven biomes belong to Inner Guogaology. Guogao Dreadwood is in the separate Guogao Underworld. Outer Guogaology adds the donor's seven natural-scale biomes and four mineral tiers. Nine crystal families support fusion and equipment enhancement in the deeper worlds.
 
 [Survival guide](docs/SURVIVAL-GUIDE.en.md) · [Harvesting reference](docs/BLOCK-BALANCE.en.md) · [Chinese–English terminology](docs/TERMINOLOGY.md)
 
@@ -55,7 +55,14 @@ All rings are twelve blocks in a 5×5 frame without corners, with an empty 3×3 
 - Inner: 12 Guogao blocks of any color plus one Guogao block → Underworld.
 - Return: 12 matching Return Frames plus one Return Token → previous layer.
 
-Outer Return Frames cost 4 cobblestone + 1 plank; Inner Return Frames cost 4 Ordinal Shards + 1 plank; Dread Forest Return Frames cost 4 Guogao Dreadsoil + 1 Dread Fir Plank. Each craft yields one frame; use any planks where unspecified. Twelve crafts make one ring. A Return Token costs one plank above one stick. Frame types cannot be mixed. All materials are locally obtainable; Ordinal Crystals drop shards when broken by hand. Normal arrivals create directly usable reverse gates. Horizontal scales are 1:1:4:16. Falling to Y≤−1000 in Outer Googology leads to Inner; void damage remains active during the descent and is reduced by protection. Falling through the Inner void leads to the Underworld at Y=500. Underworld gravity is quarter strength and prevents fall damage. `/googology` displays help; `visit`, `inner`, `guogao`, and `return` are administrator subcommands.
+Outer Return Frames cost 4 cobblestone + 1 plank; Inner Return Frames cost 4 Ordinal Shards + 1 plank; Dread Forest Return Frames cost 4 Guogao Dreadsoil + 1 Dread Fir Plank. Each craft yields one frame; use any planks where unspecified. Twelve crafts make one ring. A Return Token costs one plank above one stick. Frame types cannot be mixed. All materials are locally obtainable; Ordinal Crystals drop shards when broken by hand. Normal arrivals create directly usable reverse gates. Horizontal scales are 1:1:4:16. Falling to Y≤−500 in Outer Guogaology leads to Inner; void damage remains active during the descent and is reduced by protection. Falling through the Inner void leads to the Underworld at Y=500. Underworld gravity is quarter strength and prevents fall damage.
+
+Everyone can use `/guogaology` or `/guogaology help`. The following commands require administrator permission level 2:
+
+- `/guogaology tp <outer|inner|underworld|overworld>` goes directly to the named dimension; using it in that dimension only displays a message.
+- `/guogaology up` returns one layer: Underworld → Inner → Outer → Overworld. It does not return to a previous position, bed or spawn point.
+- `/guogaology kit portal <outer|inner|underworld>` provides the forward portal frame and activation materials for the named destination.
+- `/guogaology kit return` provides 12 Return Frames for the current layer and one Return Token.
 
 ## Building from source
 
@@ -77,13 +84,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.4.0/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.0/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-All four targets receive build and resource checks. Current gameplay verification is limited to an isolated Minecraft 26.2 instance; this does not imply full playtesting of the other versions. See [validation records](docs/VALIDATION.md).
+Version 0.5.0 passes all four builds, strict package namespace checks and 39 Python tests. A fresh world in isolated hidden fo262 / Minecraft 26.2 passes 26,395 native assertions with Sodium, Voxy and the standalone flight-speed utility loaded. Screenshot verification and installation into the normal instance are still pending; see [this release’s validation record](docs/WORK-050.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available.
 
 ## License
 
@@ -93,4 +100,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[Offline enhancement simulator](docs/enhancement-simulator.html) · [0.4.0 release notes](docs/RELEASE-0.4.0.md)
+[0.5.0 implementation and validation](docs/WORK-050.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.4.0 release notes](docs/RELEASE-0.4.0.md)

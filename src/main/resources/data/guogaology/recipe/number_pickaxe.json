@@ -1,0 +1,21 @@
+{
+  "type": "guogaology:numeric_tool",
+  "category": "equipment",
+  "result": {
+    "id": "guogaology:number_pickaxe",
+    "count": 1
+  },
+  "pattern": [
+    "DDD",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "D": {
+      "tag": "guogaology:number_stones"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  }
+}

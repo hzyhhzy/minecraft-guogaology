@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / 'src/main/resources/data/googology'
+DATA = ROOT / 'src/main/resources/data/guogaology'
 
 
 def read(path):
@@ -34,9 +34,9 @@ def main():
     dimension_path = DATA / 'dimension/guogao.json'
     dimension = read(dimension_path)
     dimension['generator']['biome_source'] = {
-        'type': 'googology:underworld', 'forest': 'googology:guogao_forest',
-        'strata': 'googology:misaligned_strata', 'mire': 'googology:silent_mire',
-        'descent': 'googology:descending_caverns',
+        'type': 'guogaology:underworld', 'forest': 'guogaology:guogao_forest',
+        'strata': 'guogaology:misaligned_strata', 'mire': 'guogaology:silent_mire',
+        'descent': 'guogaology:descending_caverns',
     }
     write(dimension_path, dimension)
     noise_path = DATA / 'worldgen/noise_settings/guogao.json'
@@ -45,9 +45,9 @@ def main():
     # Preserve the current Guogao substrate. The cave-surface restoration pass
     # removes loam only from carved internal floors, leaving true exterior skins.
     rules = noise['surface_rule']['sequence']
-    forest = next(rule for rule in rules if 'googology:guogao_forest' in rule.get('if_true', {}).get('biome_is', []))
-    forest['if_true']['biome_is'] = ['googology:guogao_forest', 'googology:misaligned_strata',
-                                    'googology:silent_mire', 'googology:descending_caverns']
+    forest = next(rule for rule in rules if 'guogaology:guogao_forest' in rule.get('if_true', {}).get('biome_is', []))
+    forest['if_true']['biome_is'] = ['guogaology:guogao_forest', 'guogaology:misaligned_strata',
+                                    'guogaology:silent_mire', 'guogaology:descending_caverns']
     write(noise_path, noise)
 
 
