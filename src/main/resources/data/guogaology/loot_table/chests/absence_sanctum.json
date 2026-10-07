@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:lho_trace_lv2",
+          "name": "guogaology:lho_trace_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
+          "name": "guogaology:ordinal_crystal_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -42,8 +42,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
+                "min": 32,
+                "max": 64
               }
             }
           ]
@@ -61,8 +61,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 3,
-                "max": 6
+                "min": 12,
+                "max": 24
               }
             }
           ]
@@ -80,8 +80,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 3,
-                "max": 6
+                "min": 12,
+                "max": 24
               }
             }
           ]
@@ -99,8 +99,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 3,
-                "max": 6
+                "min": 12,
+                "max": 24
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
+                "min": 4,
+                "max": 8
               }
             }
           ]
@@ -137,8 +137,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
+                "min": 4,
+                "max": 8
               }
             }
           ]

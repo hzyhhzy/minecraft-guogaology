@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.0 · Minecraft Java / Fabric · 四版构建与隐藏fo262回归通过**
+**v0.5.1 · Minecraft Java / Fabric · 四版构建与隐藏fo262回归通过**
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -70,9 +70,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.5.0/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.5.1/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.5.0已通过四版构建、严格打包命名空间审计和39项Python测试。独立新世界的隐藏fo262／26.2在Sodium、Voxy与独立飞行调速工具共同加载时通过26,395项原生断言；截图核验和正常实例安装尚待完成，详见[本轮验证记录](docs/WORK-050.md)。
+0.5.1为地府降链加入沿下降方向排列的大于号，并恢复八座巨构主副箱缩减前的完整战利品。四版构建、资源与语言检查、39项Python测试通过；独立隐藏fo262／26.2验证实际链条与8,192次宝箱填充，五张截图已核验。正常实例因游戏运行中暂未替换；本补丁尚未推送或发布，详见[本轮验证记录](docs/WORK-0501.md)。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -86,4 +86,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.5.0实施与验证进度](docs/WORK-050.md) · [强化模拟器](docs/enhancement-simulator.html) · [晶核与装备规则](docs/WORK-0312.md) · [0.4.0更新](docs/RELEASE-0.4.0.md)
+[0.5.1实施与验证进度](docs/WORK-0501.md) · [强化模拟器](docs/enhancement-simulator.html) · [晶核与装备规则](docs/WORK-0312.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)

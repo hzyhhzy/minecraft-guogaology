@@ -171,19 +171,47 @@ public final class Core047Checks {
         for(var tier:TIERS){check(resources.getResource(Identifier.parse("guogaology:items/"+tier+"_bow.json")).isPresent(),"modern client bow entrypoint "+tier);for(int stage=0;stage<3;stage++)check(resources.getResource(Identifier.parse("guogaology:models/item/bows/"+tier+"_bow_pulling_"+stage+".json")).isPresent(),"bow pull resource "+tier+" / "+stage);}
         check(icons==28,"client inventory covers27 flat models and original OrdinalLv1");System.out.println("CORE047_CLIENT_ICONS_OK items="+icons+" flat=27 ordinalOriginal3D=1 bows=4 drawVariants=12");
     }
+    /** Actual native table.fill, including theme products and maximum chest capacity. */
     static void sanctuaryLoot(ServerPlayer p){
-        String[] themes={"matrix","power","hydra","absence","weaver","astra","frontier","guogao"};int[] types={0,1,2,3,4,5,6,7};var world=p.level();var params=new LootParams.Builder(world).withParameter(LootContextParams.ORIGIN,p.position()).withOptionalParameter(LootContextParams.THIS_ENTITY,p).create(LootContextParamSets.CHEST);
+        String[] themes={"matrix","power","hydra","absence","weaver","astra","frontier","guogao"};
+        String[][] products={
+            {"matrix_archive_ceramic:8:16 ridge_lamina:24:48 projection_glass:24:48 y_log:24:48 y_leaves:16:32","ridge_lamina:4:12 y_sequence_stone:4:12 y_log:4:8"},
+            {"recursive_bronze:8:16 power_bricks:32:64 tree_node_red:4:8 tree_node_green:4:8 tree_node_blue:4:8","power_bricks:8:16 power_sand:8:16 amber_inlay:2:6"},
+            {"hydra_jade:8:16 veblen_petal:24:48 epsilon_turf:32:64 omega_symbol:8:16 phi_symbol:8:16","epsilon_turf:8:16 psi_fern:2:6 omega_bloom:2:6"},
+            {"absence_glass:32:64 lho_letter_l:12:24 lho_letter_h:12:24 lho_letter_o:12:24 fffz_trace:4:8 fos_trace:4:8","absence_glass:8:16 lho_letter_l:2:6 lho_letter_h:2:6 lho_letter_o:2:6"},
+            {"resonant_silk:8:16 laver_planks:32:64 basic_laver_pattern:16:32 lty_yarn:8:16 tianyi_fiber:8:16","laver_planks:8:16 white_fiber:2:6 giant_laver:4:8"},
+            {"astra_compute_crystal:8:16 compute_chip:16:32 astra_marble:32:64 astra_mint:16:32 astra_light:8:16","astra_marble:8:16 astra_mint:4:12 compute_chip:2:6"},
+            {"axiom_porcelain:8:16 set_jade:24:48 logic_ivory:24:48 rank_amber:16:32 proof_stone:24:48","limit_stone:8:16 formula_stone:4:12 proof_stone:4:12"},
+            {"guogao_heart_resin:8:16 rootbound_stone:32:64 dread_log:32:64 guogao_loam:24:48 plain_amber_guogao:4:8 plain_berry_guogao:4:8 plain_lime_guogao:4:8 plain_azure_guogao:4:8","guogao_loam:8:16 dread_log:8:16 plain_berry_guogao:2:6"}
+        };
+        int before=checks;
+        var world=p.level();var params=new LootParams.Builder(world).withParameter(LootContextParams.ORIGIN,p.position()).withOptionalParameter(LootContextParams.THIS_ENTITY,p).create(LootContextParamSets.CHEST);
         for(int theme=0;theme<8;theme++)for(boolean main:new boolean[]{true,false}){
-            var key=ResourceKey.create(Registries.LOOT_TABLE,Identifier.parse("guogaology:chests/"+themes[theme]+(main?"_sanctum":"_ruin")));var table=world.getServer().reloadableRegistries().getLootTable(key);check(table!=LootTable.EMPTY,"actual loaded landmark loot "+key);
-            int minRegional=99,maxRegional=0,minOrdinal=99,maxOrdinal=0;
+            var key=ResourceKey.create(Registries.LOOT_TABLE,Identifier.parse("guogaology:chests/"+themes[theme]+(main?"_sanctum":"_ruin")));
+            var table=world.getServer().reloadableRegistries().getLootTable(key);check(table!=LootTable.EMPTY,"actual loaded landmark loot "+key);
+            var bounds=new LinkedHashMap<String,int[]>();
+            String local=EquipmentRules.CORES[theme]+(main?"_lv3":""),ordinal=main?"ordinal_crystal_lv3":"ordinal_crystal";
+            bounds.put(local,main?new int[]{1,1}:new int[]{6,12});bounds.put(ordinal,main?new int[]{1,1}:new int[]{30,60});
+            for(String row:products[theme][main?0:1].split(" ")){var parts=row.split(":");bounds.put(parts[0],new int[]{Integer.parseInt(parts[1]),Integer.parseInt(parts[2])});}
+            var seenMin=new HashMap<String,Integer>();var seenMax=new HashMap<String,Integer>();
             for(int sample=0;sample<512;sample++){
-                var chest=new SimpleContainer(27);table.fill(chest,params,47000+sample);int regional=0,ordinal=0,occupied=0;
-                for(int slot=0;slot<27;slot++){var stack=chest.getItem(slot);if(stack.isEmpty())continue;occupied++;int type=GearData.type(stack);if(type<0)continue;check(type==types[theme]||type==8,"theme loot contains no foreign core "+key);check(GearData.level(stack)==(main?2:1),"raw material grade: main regional Lv2 / Ordinal Core Lv1; side natural crystal ungraded "+key);if(type==8)ordinal+=stack.getCount();else regional+=stack.getCount();}
-                check(main?regional==2&&ordinal==2:regional>=2&&regional<=3&&ordinal>=8&&ordinal<=15,"actual guaranteed core counts "+key+" / "+regional+" / "+ordinal);check(occupied<=27,"actual chest fits27slots "+key);minRegional=Math.min(minRegional,regional);maxRegional=Math.max(maxRegional,regional);minOrdinal=Math.min(minOrdinal,ordinal);maxOrdinal=Math.max(maxOrdinal,ordinal);
+                var chest=new SimpleContainer(27);table.fill(chest,params,47000+sample);var totals=new HashMap<String,Integer>();
+                for(int slot=0;slot<27;slot++){
+                    var stack=chest.getItem(slot);if(stack.isEmpty())continue;
+                    var id=BuiltInRegistries.ITEM.getKey(stack.getItem());check(id.getNamespace().equals("guogaology")&&bounds.containsKey(id.getPath()),"exact registered theme item, no foreign or unexpected loot "+key+" / "+id);
+                    check(stack.getCount()<=stack.getMaxStackSize(),"native chest stack capacity "+id);totals.merge(id.getPath(),stack.getCount(),Integer::sum);
+                    if(id.getPath().equals(local)||id.getPath().equals(ordinal))check(GearData.level(stack)==(main?3:1),"main rawLv3 = regionalLv3 / ordinal displayedLv2; side rawLv1 "+id);
+                }
+                check(totals.keySet().equals(bounds.keySet()),"every guaranteed product fits and survives actual chest fill "+key+" / "+totals);
+                for(var expected:bounds.entrySet()){
+                    int count=totals.get(expected.getKey());var range=expected.getValue();
+                    check(count>=range[0]&&count<=range[1],"restored native loot count "+key+" / "+expected.getKey()+"="+count);
+                    seenMin.merge(expected.getKey(),count,Math::min);seenMax.merge(expected.getKey(),count,Math::max);
+                }
             }
-            if(!main)check(minRegional==2&&maxRegional==3&&minOrdinal==8&&maxOrdinal==15,"loaded uniform distributions reach specified endpoints "+key);
+            for(var expected:bounds.entrySet())check(seenMin.get(expected.getKey())==expected.getValue()[0]&&seenMax.get(expected.getKey())==expected.getValue()[1],"loaded native uniform reaches both specified endpoints "+key+" / "+expected.getKey());
         }
-        System.out.println("CORE047_LOOT_OK tables=16 actualChestFills=8192 mainRegionalLv2+OrdinalCoreLv1=2+2 sideRegionalLv1=2..3 ungradedCrystals=8..15");
+        System.out.println("CORE047_LOOT_OK checks="+(checks-before)+" tables=16 actualChestFills=8192 mainRegionalLv3+OrdinalCoreLv2=1+1 sideRegionalLv1=6..12 ungradedCrystals=30..60 allThemeProducts=restored exactNativeStackCapacity=27");
     }
     public static void displayIcons(ServerPlayer p){
         p.closeContainer();var icons=new SimpleContainer(54);int n=0;for(int type=0;type<9;type++)for(int level=1;level<=(type==8?4:3);level++){var stack=item(EquipmentRules.CORES[type]+(level==1?"":"_lv"+level));stack.setCount(new int[]{16,32,64,64}[level-1]);icons.setItem(n++,stack);}for(var tier:TIERS)icons.setItem(n++,item(tier+"_bow"));p.openMenu(new SimpleMenuProvider((id,inventory,who)->ChestMenu.sixRows(id,inventory,icons),Component.literal("晶核等级与四档序数弓 · Rev47")));

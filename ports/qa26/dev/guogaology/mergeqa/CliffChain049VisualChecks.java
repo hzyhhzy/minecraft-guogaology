@@ -23,7 +23,11 @@ public final class CliffChain049VisualChecks {
     private static final int SEARCH_MIN=20000,SEARCH_MAX=26000;
     // Offline discoveries for the existing fixture; every candidate is replanned from the LIVE seed.
     private static final int[][] PREFERRED_CELLS={{422,443},{422,437},{425,431},{421,442}};
-    private static final String[] SCENES={"overview","upper-attachment","lower-attachment","second-chain-water-foot"};
+    private static final boolean CHAIN_LOOT0501=Boolean.getBoolean("guogaology.qa.chainloot0501");
+    private static final String PREFIX=CHAIN_LOOT0501?"CHAIN_LOOT0501":"CLIFF_CHAIN049";
+    private static final String[] SCENES=CHAIN_LOOT0501
+            ?new String[]{"overview","upper-attachment","lower-attachment","second-chain-water-foot","greater-sign-closeup"}
+            :new String[]{"overview","upper-attachment","lower-attachment","second-chain-water-foot"};
     private record Camera(Vec3 position,Vec3 target,float yaw,float pitch) {}
     private record CameraKey(long salt,int scene) {}
     private record Subject(CliffDescentChains.Plan plan,Map<BlockPos,Integer> geometry,
@@ -34,7 +38,8 @@ public final class CliffChain049VisualChecks {
     private volatile boolean taskFinished,ready,photographed,verificationQueued,verified,rescanRequested;
     private volatile Throwable failure;
     private volatile float yaw,pitch;
-    private Subject subject,primary;
+    private Subject subject,primary,secondary;
+    private boolean lootChecked;
     private final Set<Long> validatedGeometry=new HashSet<>(),rejectedViews=new HashSet<>();
     private final Map<CameraKey,List<Camera>> cameraChoices=new HashMap<>();
     private long seed;
@@ -53,7 +58,7 @@ public final class CliffChain049VisualChecks {
             if(c.level==null){if(!opening&&c.isGameLoadFinished()&&c.gui.overlay()==null){opening=true;c.createWorldOpenFlows().openWorld("port-qa",c::stop);}return;}
             if(c.player==null||c.getSingleplayerServer()==null)return;
             if(rescanRequested){
-                rescanRequested=false;subject=null;if(scene<3)scene=0;
+                rescanRequested=false;subject=null;if(scene<3)scene=0;else if(scene==4)throw new AssertionError("No natural close-up camera for greater-than signs");
                 ticks=0;settling=0;cameraAttempt=0;queued=false;ready=false;verified=false;verificationQueued=false;
                 return;
             }
@@ -71,9 +76,10 @@ public final class CliffChain049VisualChecks {
             if(capturing){
                 if(!photographed)return;
                 if(++scene==SCENES.length){
-                    done=true;Files.writeString(Path.of("port-client-ok.txt"),"CLIFF_CHAIN049_OK checks="+checks+" scenes=4 seed="+seed+" firstTopY="+primary.plan.top().y()+" secondTopY="+subject.plan.top().y()+" firstBottomY="+primary.plan.bottom().y()+" secondBottomY="+subject.plan.bottom().y()+" links="+primary.plan.links()+"/"+subject.plan.links()+" verifiedNativeBlocks="+(primary.samples.size()+subject.samples.size())+" waterHoles="+subject.holes.values().stream().filter(Boolean::booleanValue).count()+" native FULL generation / two Y250+ cliffs to real valley floors / all body voxels and alternating open links / four natural attachments / original air and water retained\n");c.stop();return;
+                    done=true;Files.writeString(Path.of("port-client-ok.txt"),PREFIX+"_OK checks="+checks+" scenes="+SCENES.length+" seed="+seed+" firstTopY="+primary.plan.top().y()+" secondTopY="+(secondary==null?subject:secondary).plan.top().y()+" firstBottomY="+primary.plan.bottom().y()+" secondBottomY="+(secondary==null?subject:secondary).plan.bottom().y()+" links="+primary.plan.links()+"/"+(secondary==null?subject:secondary).plan.links()+" verifiedNativeBlocks="+(primary.samples.size()+(secondary==null?subject:secondary).samples.size())+" waterHoles="+(secondary==null?subject:secondary).holes.values().stream().filter(Boolean::booleanValue).count()+" native FULL generation / two Y250+ cliffs to real valley floors / all body voxels and alternating open links / four natural attachments / original air and water retained / restoredNativeLoot="+lootChecked+"\n");c.stop();return;
                 }
                 if(scene==3){primary=subject;subject=null;searchIndex=0;plansFound=0;}
+                if(scene==4){secondary=subject;subject=primary;}
                 ticks=0;settling=0;cameraAttempt=0;queued=false;capturing=false;photographed=false;verified=false;verificationQueued=false;return;
             }
             if(++ticks<180||c.gui.screen()!=null||c.gui.overlay()!=null)return;
@@ -92,13 +98,14 @@ public final class CliffChain049VisualChecks {
             for(var pos:subject.samples.keySet())if(!c.level.hasChunkAt(pos))return;
             for(var pos:subject.holes.keySet())if(!c.level.hasChunkAt(pos))return;
             if(++settling<80)return;
-            var path=c.gameDirectory.toPath().resolve("screenshots/cliff-chain-049-"+scene+"-"+SCENES[scene]+".png");Files.createDirectories(path.getParent());
+            var path=c.gameDirectory.toPath().resolve("screenshots/"+(CHAIN_LOOT0501?"chain-loot-0501-":"cliff-chain-049-")+scene+"-"+SCENES[scene]+".png");Files.createDirectories(path.getParent());
             capturing=true;Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(path);photographed=true;}catch(Throwable e){failure=e;}});
         }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
     }
 
     private boolean setup(ServerPlayer player){
         require(player!=null,"QA player remains present");
+        if(CHAIN_LOOT0501&&!lootChecked){Core047Checks.sanctuaryLoot(player);lootChecked=true;}
         var world=player.level().getServer().getLevel(GuogaologyMod.GUOGAO);require(world!=null,"underworld exists");
         if(subject==null){
             seed=ProceduralTerrain.seed(world.getChunkSource().randomState());
@@ -117,14 +124,14 @@ public final class CliffChain049VisualChecks {
                 var candidate=prepareSubject(plan,scene==3);if(candidate==null)continue;
                 subject=candidate;
                 long wetSamples=subject.samples.keySet().stream().filter(pos->waterAt(seed,pos)).count();
-                System.out.println("CLIFF_CHAIN049_SITE seed="+seed+" owner="+cx+","+cz+" top="+plan.top()+" bottom="+plan.bottom()+" links="+plan.links()+" length="+length+" nativeSamples="+subject.samples.size()+" underwaterSamples="+wetSamples+" openLinks="+subject.holes.size()+" waterHoles="+subject.holes.values().stream().filter(Boolean::booleanValue).count());
-                for(int i=0;i<subject.cameras.length;i++)if(subject.cameras[i]!=null)System.out.println("CLIFF_CHAIN049_CAMERA "+(scene==3?SCENES[3]:SCENES[i])+" "+subject.cameras[i]);
+                System.out.println(PREFIX+"_SITE seed="+seed+" owner="+cx+","+cz+" top="+plan.top()+" bottom="+plan.bottom()+" links="+plan.links()+" length="+length+" nativeSamples="+subject.samples.size()+" underwaterSamples="+wetSamples+" openLinks="+subject.holes.size()+" waterHoles="+subject.holes.values().stream().filter(Boolean::booleanValue).count());
+                for(int i=0;i<subject.cameras.length;i++)if(subject.cameras[i]!=null)System.out.println(PREFIX+"_CAMERA "+(scene==3?SCENES[3]:(i==3?SCENES[4]:SCENES[i]))+" "+subject.cameras[i]);
                 break;
             }
             if(subject==null){require(searchIndex<total,"Y250+ valley-floor giant chain with clear cameras found in untouched 20000..26000 terrain; plans="+plansFound);return false;}
         }
         player.closeContainer();player.setGameMode(GameType.SPECTATOR);player.setNoGravity(true);
-        moveCamera(player,subject.cameras[scene==3?2:scene]);return true;
+        moveCamera(player,subject.cameras[cameraIndex()]);return true;
     }
     private void moveCamera(ServerPlayer player,Camera camera){
         var world=player.level().getServer().getLevel(GuogaologyMod.GUOGAO);player.removeAllEffects();
@@ -188,8 +195,8 @@ public final class CliffChain049VisualChecks {
         for(var end:List.of(plan.top(),plan.bottom()))for(var e:geometry.entrySet()){
             var p=e.getKey();if(Math.abs(p.getX()-end.x())<=1&&Math.abs(p.getZ()-end.z())<=1&&p.getY()>=end.y()-4&&p.getY()<=end.y()+3)samples.put(p,e.getValue());
         }
-        var cameras=new Camera[3];
-        for(int i=lowerOnly?2:0;i<cameras.length;i++){cameras[i]=camera(plan,field,geometry,i,0);if(cameras[i]==null)return null;}
+        var cameras=new Camera[CHAIN_LOOT0501?4:3];
+        for(int i=lowerOnly?2:0;i<(lowerOnly?3:cameras.length);i++){cameras[i]=camera(plan,field,geometry,i,0);if(cameras[i]==null)return null;}
         require(plan.valleyFoot()&&plan.top().y()>=250&&plan.top().y()-plan.bottom().y()>=180,"giant chain strictly descends from a Y250+ cliff to the real valley floor");
         require(byHeight.lastKey()-byHeight.firstKey()+1==byHeight.size(),"native expectation covers every height without a missing middle segment");
         require(holes.size()==plan.links(),"one unfilled central aperture in every alternating link");
@@ -203,6 +210,7 @@ public final class CliffChain049VisualChecks {
         return skip<choices.size()?choices.get(skip):null;
     }
     private static List<Camera> cameraOptions(CliffDescentChains.Plan plan,TerrainSamples field,Map<BlockPos,Integer> geometry,int scene){
+        if(scene==3)return signCameras(plan,field,geometry);
         var choices=new ArrayList<Camera>();
         boolean submergedEnd=scene==2&&waterAt(plan.seed(),new BlockPos((int)Math.round(plan.bottom().x()),(int)Math.round(plan.bottom().y())+2,(int)Math.round(plan.bottom().z())));
         double t=scene==0?.5:scene==1?.08:.92;
@@ -265,14 +273,26 @@ public final class CliffChain049VisualChecks {
                 var state=world.getBlockState(e.getKey());require(e.getValue()?state.is(Blocks.WATER):state.isAir(),"alternating chain loop retains native "+(e.getValue()?"water":"air")+" at "+e.getKey()+" found "+state);
             }
             for(var pos:subject.contacts){var state=world.getBlockState(pos);require(!state.isAir()&&state.getFluidState().isEmpty()&&!state.is(Blocks.POLISHED_ANDESITE)&&!state.is(Blocks.POLISHED_BLACKSTONE),"anchor directly touches retained natural ground "+pos+" found "+state);}
+            if(CHAIN_LOOT0501){
+                var signs=CliffDescentChains.chevrons(subject.plan);require(signs.size()>=5,"giant chain has repeated greater-than signs, not only a pointed end");
+                var axis=new Vec3(subject.plan.bottom().x()-subject.plan.top().x(),subject.plan.bottom().y()-subject.plan.top().y(),subject.plan.bottom().z()-subject.plan.top().z()).normalize();
+                for(var sign:signs){
+                    var left=point(sign.left());var tip=point(sign.tip());var right=point(sign.right());
+                    require(tip.subtract(left.add(right).scale(.5)).dot(axis)>5,"each greater-than tip points toward the lower ordinal / valley floor");
+                    require(left.distanceTo(right)>9,"two greater-than arms remain visibly distinct");
+                    for(var vertex:List.of(left,tip,right))require(world.getBlockState(rounded(vertex)).is(Blocks.POLISHED_ANDESITE),"actual native greater-than vertex uses bright inlay at "+vertex);
+                }
+                System.out.println(PREFIX+"_SIGNS_OK count="+signs.size()+" downhill=true repeated=true threeVerticesPerSign=true");
+            }
             validatedGeometry.add(subject.plan.salt());
-            System.out.println("CLIFF_CHAIN049_GEOMETRY_OK top="+subject.plan.top()+" bottom="+subject.plan.bottom()+" verifiedVoxels="+subject.samples.size()+" holes="+subject.holes.size()+" contacts="+subject.contacts.size());
+            System.out.println(PREFIX+"_GEOMETRY_OK top="+subject.plan.top()+" bottom="+subject.plan.bottom()+" verifiedVoxels="+subject.samples.size()+" holes="+subject.holes.size()+" contacts="+subject.contacts.size());
         }
         positions.clear();
-        int cameraIndex=scene==3?2:scene;var view=subject.cameras[cameraIndex];
+        int cameraIndex=cameraIndex();var view=subject.cameras[cameraIndex];
         var camera=BlockPos.containing(view.position);positions.add(camera);positions.add(camera.above());
         var rays=new LinkedHashSet<BlockPos>();var eye=view.position.add(0,1.62,0);
-        double[] targets=scene==0?new double[]{.02,.18,.35,.5,.65,.82,.98}:cameraIndex==1?new double[]{.02,.12,.25}:new double[]{.9,.97,1};
+        double signT=signFraction(subject.plan);
+        double[] targets=cameraIndex==3?new double[]{signT-.06,signT,signT+.06}:scene==0?new double[]{.02,.18,.35,.5,.65,.82,.98}:cameraIndex==1?new double[]{.02,.12,.25}:new double[]{.9,.97,1};
         for(double fraction:targets){var target=along(subject.plan,fraction);int steps=(int)Math.ceil(eye.distanceTo(target));for(int i=0;i<steps-2;i++)rays.add(BlockPos.containing(eye.lerp(target,i/(double)steps)));}
         rays.add(camera);rays.add(camera.above());positions.addAll(rays);
         for(var pos:positions)if(world.getChunkSource().getChunkNow(pos.getX()>>4,pos.getZ()>>4)==null)return false;
@@ -284,17 +304,46 @@ public final class CliffChain049VisualChecks {
             var alternative=camera(subject.plan,new TerrainSamples(seed,true),subject.geometry,cameraIndex,cameraAttempt);
             if(alternative==null||cameraAttempt>40){
                 rejectedViews.add(subject.plan.salt());
-                System.out.println("CLIFF_CHAIN049_PHOTO_SKIP scene="+SCENES[scene]+" geometryVerified=true attempts="+cameraAttempt+" lastOccluder="+state+" at="+pos+" top="+subject.plan.top()+"; seeking another naturally generated chain");
+                System.out.println(PREFIX+"_PHOTO_SKIP scene="+SCENES[scene]+" geometryVerified=true attempts="+cameraAttempt+" lastOccluder="+state+" at="+pos+" top="+subject.plan.top()+"; seeking another naturally generated chain");
                 rescanRequested=true;return false;
             }
             subject.cameras[cameraIndex]=alternative;moveCamera(player,alternative);
-            System.out.println("CLIFF_CHAIN049_REFRAME scene="+SCENES[scene]+" attempt="+cameraAttempt+" occluder="+state+" at="+pos+" camera="+alternative);
+            System.out.println(PREFIX+"_REFRAME scene="+SCENES[scene]+" attempt="+cameraAttempt+" occluder="+state+" at="+pos+" camera="+alternative);
             return false;
         }
         for(var pos:List.of(camera,camera.above())){var state=world.getBlockState(pos);require(waterAt(seed,pos)?state.is(Blocks.WATER):state.isAir(),"actual camera has native air/water clearance "+pos+" found "+state);}
-        System.out.println("CLIFF_CHAIN049_GENERATED scene="+SCENES[scene]+" sampled="+subject.samples.size()+" holes="+subject.holes.size()+" contacts="+subject.contacts.size()+" camera="+camera);
+        System.out.println(PREFIX+"_GENERATED scene="+SCENES[scene]+" sampled="+subject.samples.size()+" holes="+subject.holes.size()+" contacts="+subject.contacts.size()+" camera="+camera);
         return true;
     }
+    private int cameraIndex(){return scene==4?3:scene==3?2:scene;}
+    private static double signFraction(CliffDescentChains.Plan plan){
+        var signs=CliffDescentChains.chevrons(plan);int link=signs.get(signs.size()/2).link();
+        double length=distance(plan.top(),plan.bottom());
+        return (plan.halfLength()+link*(length-2*plan.halfLength())/(plan.links()-1))/length;
+    }
+    /** The sign plane contains the descent axis and horizontal side vector. View along its normal. */
+    private static List<Camera> signCameras(CliffDescentChains.Plan plan,TerrainSamples field,Map<BlockPos,Integer> geometry){
+        var choices=new ArrayList<Camera>();double fraction=signFraction(plan);var target=along(plan,fraction);
+        var axis=new Vec3(plan.bottom().x()-plan.top().x(),plan.bottom().y()-plan.top().y(),plan.bottom().z()-plan.top().z()).normalize();
+        var side=new Vec3(-axis.z,0,axis.x).normalize();var normal=axis.cross(side).normalize();
+        for(double radius:new double[]{30,38,46,24})for(double sign:new double[]{1,-1})for(double lateral:new double[]{0,-6,6})for(double shift:new double[]{0,-6,6}){
+            var eye=target.add(normal.scale(sign*radius)).add(side.scale(lateral)).add(axis.scale(shift));var position=eye.add(0,-1.62,0);var body=BlockPos.containing(position);
+            boolean clear=true;
+            for(int dx=-1;dx<=1&&clear;dx++)for(int dz=-1;dz<=1&&clear;dz++)for(int dy=0;dy<=2;dy++){
+                var pos=body.offset(dx,dy,dz);if(!open(field,pos)||geometry.containsKey(pos)){clear=false;break;}
+            }
+            if(!clear)continue;
+            for(double t:new double[]{fraction-.06,fraction,fraction+.06})if(!clearRay(field,eye,along(plan,t))){clear=false;break;}
+            if(!clear)continue;
+            for(var pos:geometry.keySet())if(Math.hypot(pos.getX()-position.x,pos.getZ()-position.z)>240){clear=false;break;}
+            if(!clear)continue;
+            float yaw=(float)Math.toDegrees(Math.atan2(position.x-target.x,target.z-position.z));
+            float pitch=(float)Math.toDegrees(Math.atan2(eye.y-target.y,Math.hypot(position.x-target.x,position.z-target.z)));
+            choices.add(new Camera(position,target,yaw,pitch));if(choices.size()==64)return List.copyOf(choices);
+        }
+        return List.copyOf(choices);
+    }
+    private static Vec3 point(CliffDescentChains.Point p){return new Vec3(p.x(),p.y(),p.z());}
     private static Block material(int id){return switch(id){case NaturalForms.SCG_EDGE->Blocks.POLISHED_ANDESITE;case UnderworldScenery.BLACKSTONE->Blocks.POLISHED_BLACKSTONE;default->throw new AssertionError("Unmapped cliff-chain material "+id);};}
     private static Vec3 along(CliffDescentChains.Plan plan,double t){return new Vec3(plan.top().x()+(plan.bottom().x()-plan.top().x())*t,plan.top().y()+2.5+(plan.bottom().y()-plan.top().y())*t,plan.top().z()+(plan.bottom().z()-plan.top().z())*t);}
     private static BlockPos rounded(Vec3 v){return new BlockPos((int)Math.round(v.x),(int)Math.round(v.y),(int)Math.round(v.z));}

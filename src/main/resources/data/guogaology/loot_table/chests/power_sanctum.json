@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:power_tower_core_lv2",
+          "name": "guogaology:power_tower_core_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
+          "name": "guogaology:ordinal_crystal_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -37,25 +37,6 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:recursive_bronze",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:power_bricks",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -74,14 +55,33 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "guogaology:power_bricks",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 32,
+                "max": 64
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "guogaology:tree_node_red",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
+                "min": 4,
+                "max": 8
               }
             }
           ]
@@ -99,8 +99,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
+                "min": 4,
+                "max": 8
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 2
+                "min": 4,
+                "max": 8
               }
             }
           ]

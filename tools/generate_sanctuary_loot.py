@@ -15,58 +15,59 @@ TABLES = ROOT / 'src/main/resources/data/guogaology/loot_table/chests'
 
 # Entries are (registered item path, minimum count, maximum count). Every listed
 # theme product is guaranteed once; integer uniform counts supply the variety.
-# Untiered thematic products retain roughly a quarter of their former count.
+# Restore the complete pre-0.4.3 reward policy (ad1b008). Ordinal raw stage3
+# is displayed as Ordinal Core Lv2; ordinary ordinal_crystal stays ungraded.
 THEMES = {
     'matrix': {
         'core': 'sequence_core',
-        'main': [('matrix_archive_ceramic',2,4),('ridge_lamina',6,12),
-                 ('projection_glass',6,12),('y_log',6,12),('y_leaves',4,8)],
-        'side': [('ridge_lamina',1,3),('y_sequence_stone',1,3),('y_log',1,2)],
+        'main': [('matrix_archive_ceramic',8,16),('ridge_lamina',24,48),
+                 ('projection_glass',24,48),('y_log',24,48),('y_leaves',16,32)],
+        'side': [('ridge_lamina',4,12),('y_sequence_stone',4,12),('y_log',4,8)],
     },
     'power': {
         'core': 'power_tower_core',
-        'main': [('recursive_bronze',2,4),('power_bricks',8,16),
-                 ('tree_node_red',1,2),('tree_node_green',1,2),('tree_node_blue',1,2)],
-        'side': [('power_bricks',2,4),('power_sand',2,4),('amber_inlay',1,2)],
+        'main': [('recursive_bronze',8,16),('power_bricks',32,64),
+                 ('tree_node_red',4,8),('tree_node_green',4,8),('tree_node_blue',4,8)],
+        'side': [('power_bricks',8,16),('power_sand',8,16),('amber_inlay',2,6)],
     },
     'hydra': {
         'core': 'hydra_bud',
-        'main': [('hydra_jade',2,4),('veblen_petal',6,12),('epsilon_turf',8,16),
-                 ('omega_symbol',2,4),('phi_symbol',2,4)],
-        'side': [('epsilon_turf',2,4),('psi_fern',1,2),('omega_bloom',1,2)],
+        'main': [('hydra_jade',8,16),('veblen_petal',24,48),('epsilon_turf',32,64),
+                 ('omega_symbol',8,16),('phi_symbol',8,16)],
+        'side': [('epsilon_turf',8,16),('psi_fern',2,6),('omega_bloom',2,6)],
     },
     'absence': {
         'core': 'lho_trace',
-        'main': [('absence_glass',8,16),('lho_letter_l',3,6),('lho_letter_h',3,6),
-                 ('lho_letter_o',3,6),('fffz_trace',1,2),('fos_trace',1,2)],
-        'side': [('absence_glass',2,4),('lho_letter_l',1,2),
-                 ('lho_letter_h',1,2),('lho_letter_o',1,2)],
+        'main': [('absence_glass',32,64),('lho_letter_l',12,24),('lho_letter_h',12,24),
+                 ('lho_letter_o',12,24),('fffz_trace',4,8),('fos_trace',4,8)],
+        'side': [('absence_glass',8,16),('lho_letter_l',2,6),
+                 ('lho_letter_h',2,6),('lho_letter_o',2,6)],
     },
     'weaver': {
         'core': 'laver_core',
-        'main': [('resonant_silk',2,4),('laver_planks',8,16),
-                 ('basic_laver_pattern',4,8),('lty_yarn',2,4),('tianyi_fiber',2,4)],
-        'side': [('laver_planks',2,4),('white_fiber',1,2),('giant_laver',1,2)],
+        'main': [('resonant_silk',8,16),('laver_planks',32,64),
+                 ('basic_laver_pattern',16,32),('lty_yarn',8,16),('tianyi_fiber',8,16)],
+        'side': [('laver_planks',8,16),('white_fiber',2,6),('giant_laver',4,8)],
     },
     'astra': {
         'core': 'astra_critical_core',
-        'main': [('astra_compute_crystal',2,4),('compute_chip',4,8),
-                 ('astra_marble',8,16),('astra_mint',4,8),('astra_light',2,4)],
-        'side': [('astra_marble',2,4),('astra_mint',1,3),('compute_chip',1,2)],
+        'main': [('astra_compute_crystal',8,16),('compute_chip',16,32),
+                 ('astra_marble',32,64),('astra_mint',16,32),('astra_light',8,16)],
+        'side': [('astra_marble',8,16),('astra_mint',4,12),('compute_chip',2,6)],
     },
     'guogao': {
         'core': 'guogao_heart',
-        'main': [('guogao_heart_resin',2,4),('rootbound_stone',8,16),
-                 ('dread_log',8,16),('guogao_loam',6,12),
-                 ('plain_amber_guogao',1,2),('plain_berry_guogao',1,2),
-                 ('plain_lime_guogao',1,2),('plain_azure_guogao',1,2)],
-        'side': [('guogao_loam',2,4),('dread_log',2,4),('plain_berry_guogao',1,2)],
+        'main': [('guogao_heart_resin',8,16),('rootbound_stone',32,64),
+                 ('dread_log',32,64),('guogao_loam',24,48),
+                 ('plain_amber_guogao',4,8),('plain_berry_guogao',4,8),
+                 ('plain_lime_guogao',4,8),('plain_azure_guogao',4,8)],
+        'side': [('guogao_loam',8,16),('dread_log',8,16),('plain_berry_guogao',2,6)],
     },
     'frontier': {
         'core': 'boundary_core',
-        'main': [('axiom_porcelain',2,4),('set_jade',6,12),('logic_ivory',6,12),
-                 ('rank_amber',4,8),('proof_stone',6,12)],
-        'side': [('limit_stone',2,4),('formula_stone',1,3),('proof_stone',1,3)],
+        'main': [('axiom_porcelain',8,16),('set_jade',24,48),('logic_ivory',24,48),
+                 ('rank_amber',16,32),('proof_stone',24,48)],
+        'side': [('limit_stone',8,16),('formula_stone',4,12),('proof_stone',4,12)],
     },
 }
 
@@ -80,8 +81,8 @@ def pool(name, minimum, maximum):
 
 def table(theme, main):
     spec = THEMES[theme]
-    rewards = ([(spec['core']+'_lv2',2,2),('ordinal_crystal_lv2',2,2)] if main else
-               [(spec['core'],2,3),('ordinal_crystal',8,15)])
+    rewards = ([(spec['core']+'_lv3',1,1),('ordinal_crystal_lv3',1,1)] if main else
+               [(spec['core'],6,12),('ordinal_crystal',30,60)])
     rewards += spec['main' if main else 'side']
     return {'type': 'minecraft:chest', 'pools': [pool(*entry) for entry in rewards]}
 
@@ -93,7 +94,7 @@ def write(path, value):
 
 def audit():
     """Check the actual written JSON, exact guarantees, ranges and stack capacity."""
-    rng = random.Random(403)
+    rng = random.Random(501)
     reports = []
     models = ROOT / 'src/main/resources/assets/guogaology/models/item'
     blockstates = ROOT / 'src/main/resources/assets/guogaology/blockstates'
@@ -106,7 +107,9 @@ def audit():
             bounds = {}
             for p in data['pools']:
                 assert p['rolls'] == 1 and len(p['entries']) == 1
-                entry = p['entries'][0]; item = entry['name'].split(':',1)[1]
+                entry = p['entries'][0]
+                assert entry['name'].startswith('guogaology:'), name+' has a foreign namespace'
+                item = entry['name'].split(':',1)[1]
                 assert item in known, 'Unregistered inventory/block entrypoint: '+item
                 assert entry['type'] == 'minecraft:item'
                 assert len(entry['functions']) == 1
@@ -115,10 +118,10 @@ def audit():
                 assert 1 <= lo <= hi <= 64, (name,item,lo,hi)
                 assert item not in bounds, 'Duplicate guaranteed item '+item
                 bounds[item] = (lo,hi)
-            core = spec['core'] + ('_lv2' if main else '')
-            ordinal = 'ordinal_crystal_lv2' if main else 'ordinal_crystal'
-            assert bounds[core] == ((2,2) if main else (2,3))
-            assert bounds[ordinal] == ((2,2) if main else (8,15))
+            core = spec['core'] + ('_lv3' if main else '')
+            ordinal = 'ordinal_crystal_lv3' if main else 'ordinal_crystal'
+            assert bounds[core] == ((1,1) if main else (6,12))
+            assert bounds[ordinal] == ((1,1) if main else (30,60))
             maximum_stacks = sum(math.ceil(hi/64) for lo,hi in bounds.values())
             assert maximum_stacks <= 27, name+' can overflow the chest'
             expected_core_roots = {core,ordinal}
@@ -142,7 +145,7 @@ def audit():
             'notes':['All rewards are stackable existing materials with individual counts <=64.',
                      'Vanilla chest shuffle may split stacks into available empty slots; initial stacks remain <=27.',
                      'No appearance-bearing bricks/lamps, foreign cores/minerals or legacy table IDs.']}
-    write(ROOT/'build/loot-0403.json',result)
+    write(ROOT/'build/loot-0501.json',result)
     return result
 
 

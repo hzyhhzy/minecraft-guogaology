@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:hydra_bud_lv2",
+          "name": "guogaology:hydra_bud_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
+          "name": "guogaology:ordinal_crystal_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -37,44 +37,6 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:hydra_jade",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:veblen_petal",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 6,
-                "max": 12
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:epsilon_turf",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -93,14 +55,52 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "guogaology:veblen_petal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 24,
+                "max": 48
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:epsilon_turf",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 32,
+                "max": 64
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "guogaology:omega_symbol",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
+                "min": 8,
+                "max": 16
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
+                "min": 8,
+                "max": 16
               }
             }
           ]

@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:astra_critical_core_lv2",
+          "name": "guogaology:astra_critical_core_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
+          "name": "guogaology:ordinal_crystal_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -37,44 +37,6 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:astra_compute_crystal",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:compute_chip",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:astra_marble",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -93,14 +55,52 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "guogaology:compute_chip",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 16,
+                "max": 32
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:astra_marble",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 32,
+                "max": 64
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "guogaology:astra_mint",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
+                "min": 16,
+                "max": 32
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
+                "min": 8,
+                "max": 16
               }
             }
           ]

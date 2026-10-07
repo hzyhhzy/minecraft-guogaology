@@ -6,11 +6,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:laver_core_lv2",
+          "name": "guogaology:laver_core_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -21,11 +21,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
+          "name": "guogaology:ordinal_crystal_lv3",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -37,25 +37,6 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:resonant_silk",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:laver_planks",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -74,14 +55,33 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "guogaology:laver_planks",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 32,
+                "max": 64
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "guogaology:basic_laver_pattern",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
+                "min": 16,
+                "max": 32
               }
             }
           ]
@@ -99,8 +99,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
+                "min": 8,
+                "max": 16
               }
             }
           ]
@@ -118,8 +118,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 4
+                "min": 8,
+                "max": 16
               }
             }
           ]

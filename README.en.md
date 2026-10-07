@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.0 · Minecraft Java / Fabric · Four builds and hidden fo262 regression passed**
+**v0.5.1 · Minecraft Java / Fabric · Four builds and hidden fo262 regression passed**
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -84,13 +84,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.0/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.1/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.5.0 passes all four builds, strict package namespace checks and 39 Python tests. A fresh world in isolated hidden fo262 / Minecraft 26.2 passes 26,431 native assertions with Sodium, Voxy and the standalone flight-speed utility loaded. Creative-tab and command-help screenshots were verified, and installation into the normal instance is complete; see [this release’s validation record](docs/WORK-050.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.5.1 adds downhill-pointing greater-than ornaments to Underworld chains and restores the full earlier rewards in all eight landmarks. All four builds, resource and language checks, and 39 Python tests pass. An isolated hidden fo262 / Minecraft 26.2 validates actual generated chains and 8,192 native chest fills with Sodium, Voxy and the standalone flight-speed utility loaded; five screenshots were inspected. Installation into the normal instance is deferred while Minecraft is running. This patch has not been pushed or published; see [the validation record](docs/WORK-0501.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -100,4 +100,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.5.0 implementation and validation](docs/WORK-050.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)
+[0.5.1 implementation and validation](docs/WORK-0501.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)

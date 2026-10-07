@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /** Whole exterior chains, independent of the older underground descending-chain caverns. */
 public final class CliffDescentChains {
-    public static final int CELL=48,REACH=184;
+    public static final int CELL=48,REACH=184,AXIS_CLEARANCE=14;
     public static final double UPPER_ATTACHMENT_LENGTH=12;
     private static final int WORLD_LIMIT=29_999_984,CACHE_LIMIT=4096;
     private static final double LIFT=2.5,OVERLAP=3.2;
@@ -20,6 +20,8 @@ public final class CliffDescentChains {
      * reaches a valley floor; the valleyFoot accessor remains for shared offline audit readers. */
     public record Plan(long seed,long salt,Point top,Point bottom,int links,
                        double halfLength,double halfWidth,double tubeRadius,boolean valleyFoot) {}
+    /** An open greater-than sign: two physical bars, no shaft or closing back edge. */
+    public record Chevron(int link,Point left,Point tip,Point right,double radius) {}
     private static final Map<Key,Optional<Plan>> CACHE=new ConcurrentHashMap<>();
     private static final Map<Key,Optional<Plan>> RAW_CACHE=new ConcurrentHashMap<>();
     private CliffDescentChains() {}
@@ -68,7 +70,12 @@ public final class CliffDescentChains {
                 if(baseX-REACH< -WORLD_LIMIT||baseX+CELL+REACH>WORLD_LIMIT
                         ||baseZ-REACH< -WORLD_LIMIT||baseZ+CELL+REACH>WORLD_LIMIT)continue;
                 var other=rawPlan(seed,cx,cz);
-                if(other!=null&&(distance(p.top,other.top)<32||segmentDistanceSquared(p,other)<121))return null;
+                // Each complete chain is inside radius 7 of its axis shifted by LIFT:
+                // the new > arms reach 5.2 + 1 = 6.2, and a buried anchor corner
+                // reaches at most sqrt(6.5² + 1² + 1²) < 7 beyond a shifted endpoint.
+                // All axes share that translation, so 14 separates signs AND anchors;
+                // the former 11 only covered the unadorned ring bodies.
+                if(other!=null&&(distance(p.top,other.top)<32||segmentDistanceSquared(p,other)<sq(AXIS_CLEARANCE)))return null;
             }
         return p;
     }
@@ -281,11 +288,41 @@ public final class CliffDescentChains {
             double wx=(i&1)==0?ux:vx,wy=(i&1)==0?0:vy,wz=(i&1)==0?uz:vz;
             for(int j=0;j<shape.length;j++) {
                 double[] s=shape[j],e=shape[(j+1)%shape.length];
-                int material=j==0||j==7?UnderworldScenery.BLACKSTONE:NaturalForms.SCG_EDGE;
                 b.tube(cx+ax*s[0]+wx*s[1],cy+ay*s[0]+wy*s[1],cz+az*s[0]+wz*s[1],
-                        cx+ax*e[0]+wx*e[1],cy+ay*e[0]+wy*e[1],cz+az*e[0]+wz*e[1],p.tubeRadius,material);
+                        cx+ax*e[0]+wx*e[1],cy+ay*e[0]+wy*e[1],cz+az*e[0]+wz*e[1],p.tubeRadius,UnderworldScenery.BLACKSTONE);
             }
         }
+        // Draw after every ring so perpendicular links cannot erase the pale symbol.
+        // The two bars cross the dark sides and project past them; they are real attached
+        // '>' ornaments rather than a recoloured closed ring or an arrow with a shaft.
+        for(var glyph:chevrons(p)) {
+            tube(b,glyph.left,glyph.tip,glyph.radius,NaturalForms.SCG_EDGE);
+            tube(b,glyph.right,glyph.tip,glyph.radius,NaturalForms.SCG_EDGE);
+        }
+    }
+
+    /** All signs lie in the same alternating-ring plane and point from rim to valley.
+     * End rings are left unobstructed for their buried anchors; bounds stay within the
+     * existing seven-block discovery envelope. Also used by offline/native visual audits. */
+    public static List<Chevron> chevrons(Plan p) {
+        double length=length(p),ax=(p.bottom.x-p.top.x)/length,ay=(p.bottom.y-p.top.y)/length,az=(p.bottom.z-p.top.z)/length;
+        double horizontal=Math.hypot(ax,az),ux=-az/horizontal,uz=ax/horizontal;
+        double spacing=(length-2*p.halfLength)/(p.links-1);
+        var out=new ArrayList<Chevron>();
+        for(int i=2;i<p.links-2;i+=4) {
+            double along=p.halfLength+i*spacing;
+            double cx=p.top.x+ax*along,cy=p.top.y+LIFT+ay*along,cz=p.top.z+az*along;
+            double rear=-3.4,forward=3.4,width=5.2;
+            var left=new Point(cx+ax*rear-ux*width,cy+ay*rear,cz+az*rear-uz*width);
+            var tip=new Point(cx+ax*forward,cy+ay*forward,cz+az*forward);
+            var right=new Point(cx+ax*rear+ux*width,cy+ay*rear,cz+az*rear+uz*width);
+            out.add(new Chevron(i,left,tip,right,p.tubeRadius));
+        }
+        return List.copyOf(out);
+    }
+
+    private static void tube(VoxelBrush b,Point from,Point to,double radius,int material) {
+        b.tube(from.x,from.y,from.z,to.x,to.y,to.z,radius,material);
     }
 
     private static void anchor(VoxelBrush b,Point p) {

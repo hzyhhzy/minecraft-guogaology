@@ -21,6 +21,7 @@ def run(a):
     metadata=json.loads((instance/'fo262.json').read_text('utf-8-sig'));minecraft=instance.parent.parent
     assert bool(a.fixture) != a.fresh_world,'Choose exactly one of --fixture or --fresh-world'
     assert not a.namespace_only or a.fresh_world,'Namespace QA must use --fresh-world'
+    assert not a.chain_loot0501_only or a.fresh_world,'0.5.1 chain/loot QA must use --fresh-world'
     assert a.seed is None or a.fresh_world,'--seed applies only to --fresh-world'
     assert a.seed is None or -(1<<63)<=a.seed<(1<<63),'Seed must fit a signed Java long'
     if a.fixture:assert a.fixture.name in ('port-0217','port-qa'),'Use only a disposable QA fixture'
@@ -52,7 +53,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:zh_cn\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.namespace050={str(a.namespace_only).lower()}',f'-Dguogaology.qa.freshworld={str(a.fresh_world).lower()}',
+             f'-Dguogaology.qa.chainloot0501={str(a.chain_loot0501_only).lower()}',f'-Dguogaology.qa.namespace050={str(a.namespace_only).lower()}',f'-Dguogaology.qa.freshworld={str(a.fresh_world).lower()}',
              '-Dfabric.development=false',f'-Dguogaology.qa.cliffchain049={str(a.cliff_chain049_only).lower()}',f'-Dguogaology.qa.cliffchain048={str(a.cliff_chain_only).lower()}',f'-Dguogaology.qa.coreitems046={str(a.core_items_only).lower()}',f'-Dguogaology.qa.underworld046={str(a.underworld_only).lower()}',f'-Dguogaology.qa.voxy={str(a.voxy).lower()}',f'-Dguogaology.qa.boundaries={str(a.boundaries_only).lower()}',f'-Dguogaology.qa.manuscripts={str(a.manuscripts_only).lower()}',f'-Dguogaology.qa.inventory={str(a.inventory_only).lower()}',f'-Dguogaology.qa.portals={str(a.portals_only).lower()}',f'-Dguogaology.qa.patch051={str(a.patch051_only or a.creative_icons_only).lower()}',f'-Dguogaology.qa.creativeicons047={str(a.creative_icons_only).lower()}',f'-Dguogaology.qa.landmarks043={str(a.landmarks_only).lower()}',f'-Djava.io.tmpdir={temp}',f'-Djna.tmpdir={temp}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
              '-cp',';'.join(map(str,classpath)),metadata['mainClass'],'--username','GuogaologyQA','--version','26.2','--gameDir',str(game),
              '--assetsDir',str(minecraft/'assets'),'--assetIndex',metadata['assetIndex']['id'],'--uuid','00000000000000000000000000000001',
@@ -72,5 +73,6 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True)
     p.add_argument('--fresh-world',action='store_true',help='Create a new default normal world; copy no fixture')
     p.add_argument('--seed',type=int,help='Signed 64-bit seed for a fresh world; omitted uses a new random seed')
+    p.add_argument('--chain-loot0501-only',action='store_true',help='0.5.1 chain signs, FULL generation photographs and restored native loot (requires --fresh-world)')
     p.add_argument('--namespace-only',action='store_true',help='Run the 0.5.0 namespace and command smoke test (requires --fresh-world)')
     p.add_argument('--fixture',type=Path);p.add_argument('--label',required=True);p.add_argument('--voxy',action='store_true');p.add_argument('--flight-addon',action='store_true');p.add_argument('--boundaries-only',action='store_true');p.add_argument('--manuscripts-only',action='store_true');p.add_argument('--inventory-only',action='store_true');p.add_argument('--portals-only',action='store_true');p.add_argument('--patch051-only',action='store_true');p.add_argument('--landmarks-only',action='store_true');p.add_argument('--underworld-only',action='store_true');p.add_argument('--core-items-only',action='store_true');p.add_argument('--creative-icons-only',action='store_true');p.add_argument('--cliff-chain-only',action='store_true');p.add_argument('--cliff-chain049-only',action='store_true');run(p.parse_args())
