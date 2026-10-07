@@ -90,7 +90,7 @@ Run `python tools/audit_resources.py --check` and `python tools/audit_localizati
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.5.0 passes all four builds, strict package namespace checks and 39 Python tests. A fresh world in isolated hidden fo262 / Minecraft 26.2 passes 26,395 native assertions with Sodium, Voxy and the standalone flight-speed utility loaded. Screenshot verification and installation into the normal instance are still pending; see [this release’s validation record](docs/WORK-050.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available.
+Version 0.5.0 passes all four builds, strict package namespace checks and 39 Python tests. A fresh world in isolated hidden fo262 / Minecraft 26.2 passes 26,431 native assertions with Sodium, Voxy and the standalone flight-speed utility loaded. Creative-tab and command-help screenshots were verified, and installation into the normal instance is complete; see [this release’s validation record](docs/WORK-050.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -100,4 +100,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.5.0 implementation and validation](docs/WORK-050.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.4.0 release notes](docs/RELEASE-0.4.0.md)
+[0.5.0 implementation and validation](docs/WORK-050.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)

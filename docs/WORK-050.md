@@ -9,7 +9,7 @@
 - 修改前完整备份提交为 `7f90e00`、备份分支为 `codex/backup-0.4.9-before-guogaology-namespace`，开发分支为 `codex/0.5.0-guogaology-namespace`。
 - 不做旧存档迁移，不增加旧命令或旧注册ID兼容别名。运行回归使用独立隐藏fo262实例的新世界，不改正常存档和配置。
 - 表示大数研究学科的 googology、Alice原作者／原模组名称、来源JAR名、原版权通知和历史版本／审计记录保留原事实。此次命名调整不改变第三方归属和许可。
-- 本轮没有push或GitHub Release授权。
+- 开发完成后，用户于2026-10-07另行明确授权合并main、push并发布v0.5.0；仅限此次发布。
 
 ## 实施清单
 
@@ -58,4 +58,10 @@ c轮截图选中了原版创造分类页，因此不计作晶核分类的视觉�
 
 游戏关闭后按长期授权安装 `guogaology-dimension-26.2-0.5.0.jar`。旧0.4.9备份到 `build/backups/fo262-before-0.5.0/`，安装回执 `build/install-050.json`。新包SHA-256：`d9447a323a971ad77a9b931308bf8bdf7ed3fbf3966ae6eea14f395561c267a2`。同时检查旧/新两个Mod ID，安装后仅一个主Mod，其余55个模组文件逐个哈希不变；未修改存档、配置或附加Mod。本轮不做旧存档迁移，应使用新世界。
 
-本轮未push或发布GitHub Release。
+## 发布跟进（2026-10-07）
+
+开发实现提交为 `5bb6b79`。用户随后明确授权合并main、push并发布v0.5.0。远端旧默认分支为 `codex/main`，与当前开发分支没有分叉；本次从旧主线创建字面名为 `main` 的分支，快进合入完整历史，并将其作为新的默认主线。旧分支与本地备份保留。
+
+发布前复核四份JAR与manifest哈希一致，39项Python测试再次通过。补充固定版本的Pillow开发依赖及CI安装步骤，修正英文README的过期验证状态；这些改动不影响已验证的游戏二进制。发布内容、安装限制和验证范围见 [v0.5.0发布说明](RELEASE-0.5.0.md)。完整源码以最终发布提交的git archive导出，附件另提供SHA-256清单。
+
+发布入口：[v0.5.0](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.0)。本次授权不延续到后续版本的推送或发布。

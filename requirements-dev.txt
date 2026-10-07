@@ -1,0 +1,2 @@
+# Asset tests and optional texture generators use the same Pillow version.
+Pillow==11.1.0
