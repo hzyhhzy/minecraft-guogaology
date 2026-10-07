@@ -4,10 +4,12 @@ import com.google.gson.*;
 import dev.googology.GoogologyMod;
 import dev.googology.CoreGrades;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +30,7 @@ import java.util.function.Supplier;
 /** Geometry is baked once; the block entity renderer only transforms the cached interior. */
 public final class CoreMeshModels {
     private static final Identifier ATLAS=Identifier.ofVanilla("textures/atlas/blocks.png");
+    private static volatile Set<String> portableNames=Set.of();
     private CoreMeshModels(){}
     public static void initialize(){
         PreparableModelLoadingPlugin.<Map<String,JsonObject>>register((resources,executor)->CompletableFuture.supplyAsync(()->{
@@ -42,17 +45,41 @@ public final class CoreMeshModels {
             for(String root:CoreGrades.ROOTS)for(int level=2;level<=(root.equals("ordinal_crystal")?4:3);level++)
                 if(!data.containsKey(root+"_lv"+level))throw new IllegalStateException("Missing crystal mesh: "+root+"_lv"+level);
             return Map.copyOf(data);
-        },executor),(data,context)->context.modifyModelAfterBake().register((model,event)->{
-            if(model==null||model instanceof GemModel)return model;
+        },executor),(data,context)->{
+            portableNames=data.keySet().stream().filter(name->!name.equals("ordinal_crystal")).collect(java.util.stream.Collectors.toUnmodifiableSet());
+            context.addModels(portableNames.stream().map(name->GoogologyMod.id("item/core_views/"+name)).toList());
+            context.modifyModelAfterBake().register((model,event)->{
+            if(model==null||model instanceof GemModel||model instanceof InventoryIcon)return model;
             // Ordinal Lv1 keeps its original three-dimensional inventory mesh.
             // Every other core has an independent flat item/generated sprite.
-            if(event.topLevelId()!=null&&event.topLevelId().variant().equals("inventory")&&!event.topLevelId().id().equals(GoogologyMod.id("ordinal_crystal")))return model;
+            if(event.topLevelId()!=null&&event.topLevelId().variant().equals("inventory")&&!event.topLevelId().id().equals(GoogologyMod.id("ordinal_crystal"))){
+                var item=event.topLevelId().id();
+                return item.getNamespace().equals("googology")&&portableNames.contains(item.getPath())?new InventoryIcon(model):model;
+            }
             Identifier id=event.resourceId();if(id==null&&event.topLevelId()!=null)id=event.topLevelId().id();
             if(id==null||!id.getNamespace().equals("googology"))return model;
-            String path=id.getPath();if(path.startsWith("item/")&&!path.equals("item/ordinal_crystal"))return model;
+            String path=id.getPath();boolean portable=path.startsWith("item/core_views/");
+            if(portable)path=path.substring("item/core_views/".length());
+            else if(path.startsWith("item/")&&!path.equals("item/ordinal_crystal"))return model;
             if(path.startsWith("block/")||path.startsWith("item/"))path=path.substring(path.indexOf('/')+1);
-            var geometry=data.get(path);return geometry==null?model:new GemModel(model,geometry,event.textureGetter());
-        }));
+            var geometry=data.get(path);return geometry==null?model:new GemModel(model,geometry,event.textureGetter(),portable);
+            });
+        });
+    }
+    /** Legacy item pipeline has no native display-context selector; only the model argument changes. */
+    public static BakedModel itemView(ItemStack stack,ModelTransformationMode mode,BakedModel original){
+        if(mode==ModelTransformationMode.GUI)return original instanceof InventoryIcon icon?icon.getWrappedModel():original;
+        if(stack.isEmpty())return original;
+        Identifier id=net.minecraft.registry.Registries.ITEM.getId(stack.getItem());
+        if(!id.getNamespace().equals("googology")||!portableNames.contains(id.getPath()))return original;
+        var models=(FabricBakedModelManager)net.minecraft.client.MinecraftClient.getInstance().getBakedModelManager();
+        var portable=models.getModel(GoogologyMod.id("item/core_views/"+id.getPath()));
+        return portable instanceof GemModel?portable:original;
+    }
+    /** Vanilla's dropped-stack layout checks depth before calling ItemRenderer. */
+    private static final class InventoryIcon extends ForwardingBakedModel {
+        InventoryIcon(BakedModel icon){super(icon);}
+        @Override public boolean hasDepth(){return true;}
     }
     public static boolean polished(BakedModel model){return model instanceof GemModel;}
     /** Read-only geometry inspection for the separate QA mod. No per-frame baking. */
@@ -74,7 +101,7 @@ public final class CoreMeshModels {
         private final List<BakedQuad> fallback;
         private final RenderMaterial material;
         private final Map<Direction,List<BakedQuad>> culled=new EnumMap<>(Direction.class);
-        GemModel(BakedModel base,JsonObject mesh,Function<SpriteIdentifier,Sprite> sprites){
+        GemModel(BakedModel base,JsonObject mesh,Function<SpriteIdentifier,Sprite> sprites,boolean portable){
             this.base=base;var all=new ArrayList<BakedQuad>();var fixed=new ArrayList<BakedQuad>();var distant=new ArrayList<BakedQuad>();
             material=RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(BlendMode.TRANSLUCENT).find();
             motion=mesh.has("motion")?mesh.get("motion").getAsString():"rotate";
@@ -118,7 +145,7 @@ public final class CoreMeshModels {
                 for(int axis=0;axis<3;axis++){double center=0;for(int i=0;i<4;i++)center+=Float.intBitsToFloat(vertices[i*8+axis])/4;radius+=(center-.5)*(center-.5);}
                 return radius;
             }));
-            general=List.copyOf(all);shell=List.copyOf(fixed);fallback=List.copyOf(distant);interior.replaceAll((part,list)->List.copyOf(list));
+            shell=List.copyOf(fixed);fallback=List.copyOf(distant);interior.replaceAll((part,list)->List.copyOf(list));
             var still=new ArrayList<BakedQuad>();float movingRadius=.866026f,stillRadius=.866026f;
             for(var entry:interior.entrySet()){
                 float scale=entry.getKey()>=10?1:motionScale;
@@ -131,6 +158,16 @@ public final class CoreMeshModels {
                 }
             }
             staticInterior=List.copyOf(still);animationRadius=movingRadius;staticRadius=stillRadius;
+            if(portable){
+                // Match the actual zero-phase body, including outer decorations;
+                // Voxy's clipped single-cell approximation is deliberately not used.
+                var held=new ArrayList<BakedQuad>(fixed);
+                for(var entry:interior.entrySet()){
+                    var pose=CoreStaticPose.matrix(motion,entry.getKey(),motionScale);
+                    for(var quad:entry.getValue())held.add(staticQuad(quad,pose));
+                }
+                general=List.copyOf(held);culled.clear();
+            }else general=List.copyOf(all);
             culled.replaceAll((side,list)->List.copyOf(list));
         }
         private static float radius(BakedQuad quad){

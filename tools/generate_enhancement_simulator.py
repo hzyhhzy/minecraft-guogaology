@@ -84,9 +84,9 @@ def main() -> None:
         raise SystemExit("Legacy engine alias differs from production; synchronize it before generation.")
     build = {"caseCount": len(exported["cases"]), "ruleSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
              "engineSha256": hashlib.sha256(engine.encode("utf-8")).hexdigest(), "revision": rules["revision"],
-             "healthPreview": False, "proposalPreview": False, "productionVersion": "0.4.4"}
+             "healthPreview": False, "proposalPreview": False, "productionVersion": "0.4.6"}
     template = (ROOT / "tools/enhancement_simulator_current.template.html").read_text(encoding="utf-8")
-    html = template.replace("__MODE_ZH__", "0.4.4 · 当前Mod规则").replace("__MODE_EN__", "0.4.4 · Current Mod rules")
+    html = template.replace("__MODE_ZH__", "0.4.6 · 当前Mod规则").replace("__MODE_EN__", "0.4.6 · Current Mod rules")
     html = html.replace("__RULES_JSON__", json.dumps(rules, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"))
     html = html.replace("__ENGINE_JS__", engine).replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":")))
     if re.search(r"__[A-Z_]+__", html):

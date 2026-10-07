@@ -64,7 +64,7 @@ EXTRA = {
     'status_flight': ('飞行：%s', 'Flight: %s'),
     'flight_slow': ('缓速飞行', 'Slow flight'),
     'flight_normal': ('自由飞行 · 冲刺两倍', 'Free · sprint ×2'),
-    'flight_deep': ('自由飞行 · 冲刺八倍', 'Free · sprint ×8'),
+    'flight_deep': ('自由飞行 · 冲刺四倍', 'Free · sprint ×4'),
     'native_armor': ('护甲 +%s · 韧性 +%s', 'Armor +%s · Toughness +%s'),
     'silk_on': ('精准采集：开启', 'Silk Touch: ON'),
     'silk_off': ('精准采集：关闭', 'Silk Touch: OFF'),

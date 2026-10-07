@@ -20,6 +20,7 @@ public final class SceneryPlacement {
     private static int maxShift(Form form,int cell){return form==Form.CLOUD?192:Math.min(112,Math.max(8,cell));}
     public static int maxShift(SceneryDistribution.Pass pass){return maxShift(body(pass.form()),pass.cell());}
     public static NaturalScenery.Site resolve(NaturalScenery.Site source,SceneryDistribution.Pass pass){
+        if(source.underworld()&&!UnderworldScenery.keeps(source.seed(),source.salt(),source.x(),source.z(),pass.form()))return null;
         var placed=architectural(source,pass);
         if(placed==null)return null;
         if(GardenSpacing.applies(pass.form())&&!GardenSpacing.accepts(source,placed,pass))return null;
@@ -46,6 +47,7 @@ public final class SceneryPlacement {
             int x=original.x()+(int)Math.round(Math.cos(angle)*dist),z=original.z()+(int)Math.round(Math.sin(angle)*dist);
             var a=SceneryDistribution.at(original.seed(),original.salt(),x,z,original.underworld(),SceneryDistribution.deepRoot(key.form));
             if(a.kind()!=original.kind())continue;
+            if(original.underworld()&&UnderworldRegions.surfaceKind(original.seed(),x,z)!=UnderworldRegions.surfaceKind(original.seed(),original.x(),original.z()))continue;
             var moved=new NaturalScenery.Site(a.seed(),a.salt(),a.x(),a.z(),a.kind(),a.floor(),a.ceiling(),a.underworld());
             if(fits(moved,key.form,key.reach,true))return moved;
         }
@@ -55,6 +57,7 @@ public final class SceneryPlacement {
         if(s.underworld()){
             double r=switch(form){case GREAT_VINE->NaturalScenery.greatVineHeight(s)*.34+15;case FIR->NaturalScenery.treeHeight(s,true)*.46+7;default->0;};
             if(r>0&&SanctuaryClearing.excludesPlant(s.seed(),s.x(),s.z(),r))return false;
+            if(r>0&&UnderworldScenery.blocksPlant(s.seed(),s.x(),s.z(),r))return false;
             if((form==Form.JELLY||form==Form.UNDERGROWTH)&&SanctuaryClearing.excludesApproach(s.seed(),s.x(),s.z(),reach))return false;
         }
         var box=new Bounds(s.x()-reach,-62,s.z()-reach,s.x()+reach,317,s.z()+reach);

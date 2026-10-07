@@ -13,7 +13,9 @@ public final class TerrainField {
         private final double broad,medium,detail,bottom,roofTop,floor,roof,lhoCut;
         private final boolean landmarks;
         private final UnderworldLakes.Column clearing;
+        private final UnderworldLandforms.Column underworldLandforms;
         private CaveField.Column caves;
+        private DescendingChain.Column descent;
         private Boolean nearWater;
         private Column[] mouthNeighbours;
         Column(long seed,int x,int z,boolean underworld) {
@@ -34,16 +36,30 @@ public final class TerrainField {
             roofTop=309+WorldNoise.n2(seed+271,x,z,170)*4;
             floor=(underworld?39:48)+broad*(underworld?43:65)+medium*24;
             roof=245+WorldNoise.fbm(seed+317,x,z,215)*34;
+            // Raw columns deliberately retain the original lake-siting relief. Thus adding
+            // biomes cannot move, multiply or strand the existing natural giant lakes.
+            underworldLandforms=underworld&&landmarks?new UnderworldLandforms.Column(seed,x,z,broad,medium,detail):null;
         }
         public double density(int y) {
             double base=uncarvedDensity(y);
             // Lake beds (including interpolation banks) and the underworld floor remain sealed.
             if(base<=0 || y< -28 || y>298 || (y>=water.level()-32&&y<=water.level()+24&&nearWater()))return base;
             if(caves==null)caves=new CaveField.Column(seed,x,z,underworld);
+            double chain=32;
+            boolean chainFloor=false;
+            if(underworld&&landmarks){
+                if(descent==null)descent=new DescendingChain.Column(seed,x,z);
+                chain=descent.density(y);
+                chainFloor=descent.protectsFloor(y);
+            }
             // Only the winding passages can pierce the exterior. Rooms retain a rock roof.
             // A nearby substantial mass excludes fragile island lips and isolated thin sheets.
-            double passage=caves.longTunnels(y);
-            if(passage<0&&massBehindMouth(y))return Math.min(base,passage);
+            double passage=chainFloor?32:caves.longTunnels(y);
+            if(passage<0&&massBehindMouth(y))return Math.min(base,Math.min(passage,chain));
+            // Keep the positive wall-distance too: dropping it at zero pinches a
+            // narrow diagonal passage shut during Minecraft's 4x8x4 interpolation.
+            if(chain<32)base=Math.min(base,chain);
+            if(chainFloor)return base;
             if(base<=10)return base;
             return Math.min(base,Math.max(caves.density(y),(16-base)*2));
         }
@@ -81,7 +97,9 @@ public final class TerrainField {
                 double rift=(Math.abs(WorldNoise.n2(seed+881,x+warp,z-warp,109))-.17)*110;
                 rift+=WorldNoise.noise(seed+907,x/61.0,y/97.0,z/61.0)*5;
                 double sealedFloor=-42+WorldNoise.n2(seed+929,x,z,140)*5;
-                d=Math.max(sealedFloor-y,naturalWater.floor(Math.min(Math.min(top-y,hollow),rift),y));
+                double land=Math.min(Math.min(top-y,hollow),rift);
+                if(underworldLandforms!=null)land=underworldLandforms.density(land,y);
+                d=Math.max(sealedFloor-y,naturalWater.floor(land,y));
             }
             else {
                 for(int kind=0;kind<weights.length;kind++) if(weights[kind]>.0001) d+=weights[kind]*shape(kind,y);

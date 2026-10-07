@@ -37,6 +37,9 @@ dev/googology/world/SceneryPlacement.java
 dev/googology/world/TerrainField.java
 dev/googology/world/TerrainSamples.java
 dev/googology/world/UnderworldLakes.java
+dev/googology/world/UnderworldRegions.java
+dev/googology/world/UnderworldLandforms.java
+dev/googology/world/DescendingChain.java
 dev/googology/world/VoxelBrush.java
 dev/googology/world/WaterField.java
 dev/googology/world/WorldNoise.java
@@ -44,3 +47,5 @@ dev/googology/mining/EquipmentRules.java
 dev/googology/mining/ManuscriptFlightRules.java
 dev/googology/mining/OreVeins.java
 dev/googology/mining/OreExposure.java
+dev/googology/world/UnderworldScenery.java
+dev/googology/world/CliffDescentChains.java

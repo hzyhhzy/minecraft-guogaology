@@ -32,6 +32,7 @@ public final class GoogologyMod implements ModInitializer {
         dev.googology.world.OrdinalDensity.initialize();
         GoogologyFeatures.initialize();
         GoogologyBiomeSource.initialize();
+        dev.googology.world.UnderworldBiomeSource.initialize();
         PortalTravel.initialize();
         dev.googology.ambience.LaverMusic.initialize();
         GoogologyCommands.initialize();

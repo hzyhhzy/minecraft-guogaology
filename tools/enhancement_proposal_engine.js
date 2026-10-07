@@ -145,7 +145,7 @@
     // Manuscript flight has its own fixed speed, independent of creative-flight sliders.
     const flightScale=mode>=3?1:mode===2?(s.deep?1/3:1/6):0;
     const flightSpeedCoefficient=.05*flightScale;
-    const flightSprint=mode>=3?(s.deep?8:2):1;
+    const flightSprint=mode>=3?(s.deep?4:2):1;
     const flightSpeeds=[10.89*flightScale,10.89*flightScale*flightSprint,7.5*flightScale,7.5*flightScale*flightSprint];
     const sword=[1,7].includes(s.mainhand.kind)?highest(list(s.mainhand),7):0;
     const debuffs=[[],[{effect:'slowness',level:1},{effect:'poison',level:2}],

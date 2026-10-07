@@ -383,7 +383,7 @@
   "mining.googology.status_flight": "Flight: %s",
   "mining.googology.flight_slow": "Slow flight",
   "mining.googology.flight_normal": "Free · sprint ×2",
-  "mining.googology.flight_deep": "Free · sprint ×8",
+  "mining.googology.flight_deep": "Free · sprint ×4",
   "mining.googology.native_armor": "Armor +%s · Toughness +%s",
   "mining.googology.silk_on": "Silk Touch: ON",
   "mining.googology.silk_off": "Silk Touch: OFF",
@@ -435,11 +435,7 @@
   "mining.googology.status_walking": "Walk/sprint: +%s%%",
   "mining.googology.status_landing": "Fall/wall: ×%s / ×%s",
   "mining.googology.status_safe_fall": "Safe fall: ×%s",
-  "item.googology.creative_icon_googology": "Guogaology · Terrain",
-  "item.googology.creative_icon_architecture": "Guogaology · Building",
-  "item.googology.creative_icon_numbers": "Guogaology · Numbers",
-  "item.googology.creative_icon_lighting": "Guogaology · Lights",
-  "item.googology.creative_icon_cores": "Guogaology · Cores",
-  "item.googology.creative_icon_mining": "Guogaology · Equipment",
-  "item.googology.creative_icon_materials": "Guogaology · Materials"
+  "biome.googology.misaligned_strata": "Misaligned Escarpments",
+  "biome.googology.silent_mire": "Silent Mire",
+  "biome.googology.descending_caverns": "Descending Chain Caverns"
 }

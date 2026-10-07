@@ -236,8 +236,8 @@ def bow_icon(tier, stage):
 
 
 def generate():
-    from generate_creative_icons import generate as generate_creative_icons
-    generate_creative_icons()
+    from generate_core_item_views import generate as generate_core_item_views
+    generate_core_item_views()
     T.mkdir(parents=True, exist_ok=True)
     for family in FAMILIES:
         for level in range(1, 5 if family == 'ordinal_crystal' else 4):

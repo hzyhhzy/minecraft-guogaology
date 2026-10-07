@@ -383,7 +383,7 @@
   "mining.googology.status_flight": "飞行：%s",
   "mining.googology.flight_slow": "缓速飞行",
   "mining.googology.flight_normal": "自由飞行 · 冲刺两倍",
-  "mining.googology.flight_deep": "自由飞行 · 冲刺八倍",
+  "mining.googology.flight_deep": "自由飞行 · 冲刺四倍",
   "mining.googology.native_armor": "护甲 +%s · 韧性 +%s",
   "mining.googology.silk_on": "精准采集：开启",
   "mining.googology.silk_off": "精准采集：关闭",
@@ -435,11 +435,7 @@
   "mining.googology.status_walking": "步行/跑步：+%s%%",
   "mining.googology.status_landing": "摔落/撞墙：×%s / ×%s",
   "mining.googology.status_safe_fall": "安全落差：×%s",
-  "item.googology.creative_icon_googology": "果糕逻辑 · 地形与植物",
-  "item.googology.creative_icon_architecture": "果糕逻辑 · 建筑与装饰",
-  "item.googology.creative_icon_numbers": "果糕逻辑 · 数字与数列",
-  "item.googology.creative_icon_lighting": "果糕逻辑 · 灯饰与果糕",
-  "item.googology.creative_icon_cores": "果糕逻辑 · 晶核与珍藏",
-  "item.googology.creative_icon_mining": "果糕逻辑 · 装备与强化台",
-  "item.googology.creative_icon_materials": "果糕逻辑 · 材料与矿物"
+  "biome.googology.misaligned_strata": "错层断崖",
+  "biome.googology.silent_mire": "沉寂冥泽",
+  "biome.googology.descending_caverns": "无穷降链洞域"
 }

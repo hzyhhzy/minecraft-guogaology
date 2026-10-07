@@ -54,7 +54,8 @@
         "xz_scale": 1.0,
         "y_scale": 1.0
       },
-      "regions": true
+      "regions": true,
+      "underworld": true
     },
     "vegetation": 0.0,
     "vein_gap": 0.0,
@@ -121,7 +122,10 @@
         "if_true": {
           "type": "minecraft:biome",
           "biome_is": [
-            "googology:guogao_forest"
+            "googology:guogao_forest",
+            "googology:misaligned_strata",
+            "googology:silent_mire",
+            "googology:descending_caverns"
           ]
         },
         "then_run": {

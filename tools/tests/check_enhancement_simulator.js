@@ -58,9 +58,9 @@ for (const [deep,underworld,environment] of [[false,false,1],[true,false,.5],[tr
     const flightScale=highest>=3?1:highest===2?(deep?1/3:1/6):0;
     near(m.flightSpeedCoefficient,.05*flightScale,'independent manuscript flight coefficient');
     near(m.flightSpeeds[0],10.89*flightScale,'horizontal flight estimate');
-    near(m.flightSpeeds[1],10.89*flightScale*(highest>=3?(deep?8:2):1),'horizontal sprint flight estimate');
+    near(m.flightSpeeds[1],10.89*flightScale*(highest>=3?(deep?4:2):1),'horizontal sprint flight estimate');
     near(m.flightSpeeds[2],7.5*flightScale,'vertical flight estimate');
-    near(m.flightSpeeds[3],7.5*flightScale*(highest>=3?(deep?8:2):1),'vertical sprint flight estimate');
+    near(m.flightSpeeds[3],7.5*flightScale*(highest>=3?(deep?4:2):1),'vertical sprint flight estimate');
     const received=engine.damage(20,'fall',{...m,epf:10,factor:2});
     near(received.healthDamage,20*m.fallFactor*.6/2,'environment/core/native protection compose');
     near(engine.damage(20,'fly_into_wall',{...m,factor:2}).healthDamage,10*m.wallFactor,'wall-environment/core compose');

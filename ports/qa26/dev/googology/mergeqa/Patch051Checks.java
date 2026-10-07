@@ -37,9 +37,10 @@ import java.util.*;
 
 /** Isolated fo262: actual item ownership, death paths, loaded ore providers and menu screenshots. */
 public final class Patch051Checks {
+    private static final List<String> TAB_ICONS=List.of("great_omega_bloom","server_rack","ordinal_bricks","guogao_lantern","ordinal_crystal","true_omega_pickaxe","true_omega_material");
     private int checks,phase,ticks;private boolean opening,queued,done,iconCapture;private volatile boolean ready,iconPhotographed;private volatile Throwable failure;
     private final long deadline=System.nanoTime()+360_000_000_000L;
-    public static void initialize(){var t=new Patch051Checks();ClientTickEvents.END_CLIENT_TICK.register(t::tick);}
+    public static void initialize(){var t=new Patch051Checks();if(Boolean.getBoolean("googology.qa.creativeicons047"))t.phase=15;ClientTickEvents.END_CLIENT_TICK.register(t::tick);}
     private void check(boolean ok,String message){if(!ok)throw new AssertionError(message);checks++;}
     private static ItemStack item(String id){return new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(id.contains(":")?id:"googology:"+id)));}
     private static ItemStack gear(String id,String... contents){var s=item(id);GearData.setCores(s,Arrays.stream(contents).map(Patch051Checks::item).toList());return s;}
@@ -62,15 +63,16 @@ public final class Patch051Checks {
             if(phase==15){
                 if(iconCapture){
                     if(!iconPhotographed)return;
-                    done=true;Files.writeString(Path.of("port-client-ok.txt"),"PATCH051_OK checks="+checks+" ore profiles / wear / native labels / socket totems / actual deaths / non-downward mining / 15 live bilingual dimming / dimension-aware contribution scenes and real quick-move / 7 actual creative tab icons\n");c.stop();return;
+                    done=true;Files.writeString(Path.of("port-client-ok.txt"),Boolean.getBoolean("googology.qa.creativeicons047")
+                            ?"CREATIVE_ICONS047_OK checks="+checks+" seven existing category items / synchronized appearances / loaded item models / native screenshot\n"
+                            :"PATCH051_OK checks="+checks+" ore profiles / wear / native labels / socket totems / actual deaths / non-downward mining / 15 live bilingual dimming / dimension-aware contribution scenes and real quick-move / 7 actual creative tab icons\n");c.stop();return;
                 }
                 check(c.player.containerMenu instanceof ChestMenu,"synchronized creative icon overview");
                 var missing=c.getModelManager().getItemModel(GoogologyMod.id("qa_missing_icon_044"));
                 for(int i=0;i<CreativeCatalog.TABS.size();i++){
-                    var id=GoogologyMod.id("creative_icon_"+CreativeCatalog.TABS.get(i));var stack=c.player.containerMenu.getSlot(10+i).getItem();
+                    var id=GoogologyMod.id(TAB_ICONS.get(i));var stack=c.player.containerMenu.getSlot(10+i).getItem();
                     check(stack.getCount()==1&&id.equals(BuiltInRegistries.ITEM.getKey(stack.getItem())),"actual tab icon synchronized "+id);
                     var model=stack.get(DataComponents.ITEM_MODEL);check(id.equals(model)&&c.getModelManager().getItemModel(model)!=missing,"loaded non-missing item model "+id);
-                    check(c.getResourceManager().getResource(GoogologyMod.id("textures/item/"+id.getPath()+".png")).isPresent(),"loaded icon texture "+id);
                 }
                 var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);iconCapture=true;
                 Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("patch-15-creative-icons.png"));iconPhotographed=true;}catch(Exception e){failure=e;}});return;
@@ -128,12 +130,12 @@ public final class Patch051Checks {
     private void creativeIcons(ServerPlayer p){
         check(CreativeCatalog.TABS.size()==7,"seven creative categories");
         var icons=new SimpleContainer(27);var ids=new HashSet<Identifier>();
-        var entries=CreativeCatalog.TABS.stream().flatMap(tab->CreativeCatalog.entries(tab).stream()).map(ItemStack::getItem).collect(java.util.stream.Collectors.toSet());
         for(int i=0;i<CreativeCatalog.TABS.size();i++){
             var name=CreativeCatalog.TABS.get(i);var tab=BuiltInRegistries.CREATIVE_MODE_TAB.getValue(GoogologyMod.id(name));
             check(tab!=null,"registered creative category "+name);var stack=tab.getIconItem().copy();var id=BuiltInRegistries.ITEM.getKey(stack.getItem());
-            check(!stack.isEmpty()&&id.equals(GoogologyMod.id("creative_icon_"+name)),"category uses its representative icon "+name);
-            check(ids.add(id),"distinct creative category icon "+name);check(!entries.contains(stack.getItem()),"presentation icon excluded from category entries "+name);
+            check(!stack.isEmpty()&&id.equals(GoogologyMod.id(TAB_ICONS.get(i))),"category uses its representative item "+name);
+            check(ids.add(id),"distinct creative category icon "+name);
+            check(CreativeCatalog.entries(name).stream().anyMatch(e->ItemStack.isSameItemSameComponents(e,stack)),"icon is an obtainable item in its own category "+name);
             icons.setItem(10+i,stack);
         }
         p.openMenu(new SimpleMenuProvider((id,inventory,who)->ChestMenu.threeRows(id,inventory,icons),Component.literal("Creative tab icons")));p.containerMenu.broadcastChanges();

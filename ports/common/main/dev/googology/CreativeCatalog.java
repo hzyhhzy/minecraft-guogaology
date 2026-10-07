@@ -62,13 +62,22 @@ public final class CreativeCatalog {
         }
         return List.copyOf(out);
     }
+    private static ItemStack icon(String tab){
+        return switch(tab){
+            case "googology"->new ItemStack(GoogologyBlocks.GREAT_OMEGA_BLOOM);
+            case "architecture"->new ItemStack(GoogologyBlocks.SERVER_RACK);
+            case "numbers"->StatefulDecorBlock.copyAppearance(new ItemStack(GoogologyBlocks.ORDINAL_BRICKS),GoogologyBlocks.ordinalBrick(3));
+            case "lighting"->new ItemStack(GoogologyBlocks.GUOGAO_LANTERN);
+            case "cores"->new ItemStack(GoogologyBlocks.ORDINAL_CRYSTAL);
+            case "mining"->new ItemStack(MiningContent.TOOLS[4][0]);
+            case "materials"->new ItemStack(MiningContent.MATERIALS[3]);
+            default->throw new IllegalArgumentException("Unknown creative category: "+tab);
+        };
+    }
     public static void initialize(){
         for(String tab:TABS){
-            // Presentation-only items never enter entries(), search, recipes or loot.
-            String id="creative_icon_"+tab;
-            var icon=Registry.register(BuiltInRegistries.ITEM,GoogologyMod.id(id),new Item(MiningContent.itemSettings(id).stacksTo(1)));
             Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,GoogologyMod.id(tab),FabricItemGroup.builder()
-                    .title(Component.translatable("itemGroup.googology."+tab)).icon(()->new ItemStack(icon))
+                    .title(Component.translatable("itemGroup.googology."+tab)).icon(()->icon(tab))
                     .displayItems((context,out)->entries(tab).forEach(out::accept)).build());
         }
     }

@@ -6,7 +6,8 @@
     "GoogologyFogMixin",
     "GoogologySkyLightMixin",
     "ManuscriptVerticalFlightMixin",
-    "InventoryOriginAccessor"
+    "InventoryOriginAccessor",
+    "CoreItemViewMixin"
   ],
   "injectors": {
     "defaultRequire": 1

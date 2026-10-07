@@ -95,7 +95,7 @@ final class ManuscriptFlight044Checks {
         for(int grade:new int[]{2,3})for(var axis:Axis.values()){
             for(int slider:new int[]{1,31}){
                 double normal=distances.get(new Scenario(grade,slider,axis,false)),sprint=distances.get(new Scenario(grade,slider,axis,true));
-                near(sprint/normal,grade==2?1:deep?8:2,"coordinate sprint multiplier grade="+grade+" slider="+slider+" axis="+axis);
+                near(sprint/normal,grade==2?1:deep?4:2,"coordinate sprint multiplier grade="+grade+" slider="+slider+" axis="+axis);
             }
             for(boolean sprint:new boolean[]{false,true})near(distances.get(new Scenario(grade,31,axis,sprint))/distances.get(new Scenario(grade,1,axis,sprint)),1,"creative slider does not alter manuscript movement grade="+grade+" axis="+axis+" sprint="+sprint);
         }

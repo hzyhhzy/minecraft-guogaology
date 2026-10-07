@@ -172,6 +172,9 @@ def adapt(text, target, name):
         if name == 'GoogologyBiomeSource.java':
             text = text.replace('    @Override\n    public Holder<Biome> getNoiseBiome',
                 '    @Override public net.minecraft.world.level.biome.BiomeResolver createResolver(Climate.Sampler noise){return (x,y,z)->getNoiseBiome(x,y,z,noise);}\n    public Holder<Biome> getNoiseBiome')
+        if name == 'UnderworldBiomeSource.java':
+            text = text.replace('    @Override public Holder<Biome> getNoiseBiome',
+                '    @Override public net.minecraft.world.level.biome.BiomeResolver createResolver(Climate.Sampler noise){return (x,y,z)->getNoiseBiome(x,y,z,noise);}\n    public Holder<Biome> getNoiseBiome')
     return text
 
 

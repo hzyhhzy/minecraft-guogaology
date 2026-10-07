@@ -49,7 +49,8 @@ public final class NaturalScenery {
             Blocks.AIR.defaultBlockState(),net.minecraft.world.level.block.Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(),
             Blocks.RED_STAINED_GLASS.defaultBlockState(),Blocks.GREEN_STAINED_GLASS.defaultBlockState(),Blocks.BLUE_STAINED_GLASS.defaultBlockState(),
             GoogologyBlocks.SEQUENCE_CORE.defaultBlockState(),GoogologyBlocks.HYDRA_BUD.defaultBlockState(),GoogologyBlocks.ASTRA_CRITICAL_CORE.defaultBlockState(),GoogologyBlocks.GUOGAO_HEART.defaultBlockState(),GoogologyBlocks.POWER_TOWER_CORE.defaultBlockState(),
-            Blocks.BIRCH_LOG.defaultBlockState(),GoogologyBlocks.OMEGA_SYMBOL.defaultBlockState(),GoogologyBlocks.GREAT_OMEGA_SYMBOL.defaultBlockState(),Blocks.MUSHROOM_STEM.defaultBlockState(),Blocks.POLISHED_ANDESITE.defaultBlockState()};
+            Blocks.BIRCH_LOG.defaultBlockState(),GoogologyBlocks.OMEGA_SYMBOL.defaultBlockState(),GoogologyBlocks.GREAT_OMEGA_SYMBOL.defaultBlockState(),Blocks.MUSHROOM_STEM.defaultBlockState(),Blocks.POLISHED_ANDESITE.defaultBlockState(),
+            Blocks.POLISHED_BLACKSTONE.defaultBlockState(),Blocks.GRAY_STAINED_GLASS.defaultBlockState()};
     public static Site site(long seed,int cell,int cx,int cz,boolean underworld) {
         return site(seed,cell,cx,cz,underworld,false);
     }
@@ -95,6 +96,7 @@ public final class NaturalScenery {
                 }
         }
         for(var pass:SceneryDistribution.passes(underworld))scatter(SceneryDistribution.aquatic(pass.form())?waterBrush:brush,seed,underworld,pass);
+        if(underworld)UnderworldScenery.render(forms(brush),forms(waterBrush),seed,brush.minX,brush.maxX,brush.minZ,brush.maxZ);
     }
     // Shared by actual drawing and the whole-object collision probe; never clips to a building.
     static void drawObject(SceneryBrush b,Site s,SceneryDistribution.Form form) {

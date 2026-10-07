@@ -26,7 +26,7 @@ public final class OrdinalDensity implements DensityFunction {
         return seed;
     }
     @Override public double compute(FunctionContext pos) {
-        if(regions) return BiomeRegions.kind(seed(),pos.blockX(),pos.blockZ());
+        if(regions) return underworld?UnderworldRegions.biomeKind(seed(),pos.blockX(),pos.blockY(),pos.blockZ()):BiomeRegions.kind(seed(),pos.blockX(),pos.blockZ());
         var column=lastColumn.get();
         if(column==null || column.x!=pos.blockX() || column.z!=pos.blockZ()) {
             column=ProceduralTerrain.column(seed(),pos.blockX(),pos.blockZ(),underworld);lastColumn.set(column);

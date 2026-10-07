@@ -21,7 +21,7 @@ async function apply(page,value){
   const page=await browser.newPage({viewport:{width:1440,height:1100},colorScheme:'light'});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(pathToFileURL(path.join(root,'docs/enhancement-simulator.html')).href);
-  check((await page.locator('body').innerText()).includes('0.4.4'),'current production version visible');
+  check((await page.locator('body').innerText()).includes('0.4.6'),'current production version visible');
   check((await page.locator('#testStatus').innerText()).includes('Java'),'Java golden parity status');
   check(await page.evaluate(()=>GuogaologySimulator.rules.revision)===48,'revision48 payload');
   check(await page.locator('[data-combat="endY"]').inputValue()==='-500','fresh forecast target defaults to -500');
@@ -174,7 +174,7 @@ async function apply(page,value){
   }
   for(const [deep,underworld]of[[false,false],[true,false],[true,true]])for(const level of [2,3]){
    await apply(page,config([], [crystal(6,level)],{deep,underworld}));
-   const speeds=level===2?(deep?'3.63 / 3.63 / 2.50 / 2.50':'1.815 / 1.815 / 1.25 / 1.25'):(deep?'10.89 / 87.12 / 7.50 / 60.00':'10.89 / 21.78 / 7.50 / 15.00');
+   const speeds=level===2?(deep?'3.63 / 3.63 / 2.50 / 2.50':'1.815 / 1.815 / 1.25 / 1.25'):(deep?'10.89 / 43.56 / 7.50 / 30.00':'10.89 / 21.78 / 7.50 / 15.00');
    check((await page.locator('#misc').innerText()).includes(speeds),'final per-realm flight speeds level'+level+' deep'+deep+' underworld'+underworld);
   }
   for(const [realm,deep,underworld,wall,safe]of[['normal',false,false,.5,2],['deep',true,false,.25,4],['underworld',true,true,.5,2]]){
@@ -216,10 +216,10 @@ async function apply(page,value){
   check(await ref.locator('#overviewBody tr').count()===9,'nine overview rows');
   check(await ref.locator('#detailsBody tr[data-core]').count()===28,'28 grade rows');
   check(await ref.locator('#detailsHead th').count()===7,'both realm columns');
-  check((await ref.locator('#notice').innerText()).includes('0.4.4'),'reference current rule notice');
+  check((await ref.locator('#notice').innerText()).includes('0.4.6'),'reference current rule notice');
   check((await ref.locator('#overviewBody').innerText()).includes('弓'),'reference includes bows');
   const freeFlightReference=await ref.locator('#detailsBody tr[data-core="6"][data-level="3"]').innerText();
-  check(freeFlightReference.includes('普通飞行2倍')&&freeFlightReference.includes('普通飞行8倍'),'reference shows Outer2x and Inner/Underworld8x on both axes');
+  check(freeFlightReference.includes('普通飞行2倍')&&freeFlightReference.includes('普通飞行4倍'),'reference shows Outer2x and Inner/Underworld4x on both axes');
   for(let level=1;level<=3;level++){
    const boundary=await ref.locator('#detailsBody tr[data-core="6"][data-level="'+level+'"]').innerText();
    check(boundary.includes('步行/跑步速度+50%')&&boundary.includes('50%×√界限颗数'),'reference every Boundary grade walking RSS');

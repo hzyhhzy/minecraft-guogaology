@@ -4,8 +4,11 @@
     "type": "minecraft:noise",
     "settings": "googology:guogao",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "googology:guogao_forest"
+      "type": "googology:underworld",
+      "forest": "googology:guogao_forest",
+      "strata": "googology:misaligned_strata",
+      "mire": "googology:silent_mire",
+      "descent": "googology:descending_caverns"
     }
   }
 }

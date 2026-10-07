@@ -31,6 +31,9 @@ public final class WaterField {
         double t=Math.clamp((edge+44)/34,0,1);t=t*t*(3-2*t);
         double depth=10+WorldNoise.n2(s+113,x,z,70)*4+(type==3?8:0);
         double bed=level-Math.min(depth,edge*.72);
-        return new Basin(level,bed,t,edge>=-8,type);
+        // Mire basins use the same sea level, but their lowland density supplies the
+        // floor. Fill low pockets without flattening the small intervening islands.
+        boolean mire=underworld&&UnderworldRegions.weights(seed,x,z)[UnderworldRegions.MARSH]>.48;
+        return new Basin(level,bed,t,edge>=-8||mire,type);
     }
 }

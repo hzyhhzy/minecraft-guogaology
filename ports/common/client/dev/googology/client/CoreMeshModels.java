@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Predicate;
 
-/** Reload-time world meshes; Ordinal Lv1 inherits its original block geometry in inventory. */
+/** Reload-time meshes shared by world blocks and static 3D held/dropped core views. */
 public final class CoreMeshModels {
     private static final Identifier ATLAS=Identifier.withDefaultNamespace("textures/atlas/blocks.png");
     private CoreMeshModels(){}
@@ -41,14 +41,18 @@ public final class CoreMeshModels {
             Map<String,Geometry> baked=new ConcurrentHashMap<>();
             context.modifyModelOnLoad().register((model,event)->{
                 Identifier id=event.id();
-                // Flat icons do not inherit a block model; original Ordinal Lv1 still does.
-                if(!id.getNamespace().equals("googology")||!id.getPath().startsWith("block/"))return model;
-                String name=id.getPath().substring(6);JsonObject mesh=data.get(name);
+                // GUI icons stay generated sprites. The native display_context
+                // selector routes all other item uses to these portable aliases.
+                boolean portable=id.getPath().startsWith("item/core_views/");
+                if(!id.getNamespace().equals("googology")||(!portable&&!id.getPath().startsWith("block/")))return model;
+                String name=id.getPath().substring(portable?"item/core_views/".length():6);JsonObject mesh=data.get(name);
                 if(mesh==null)return model;
                 return new WrapperUnbakedModel(model){
                     @Override public UnbakedGeometry geometry(){
-                        return (slots,baker,state,debug)->new MeshBakedGeometry(baked.computeIfAbsent(name,
-                                key->new Geometry(mesh,baker.sprites(),debug)).all);
+                        return (slots,baker,state,debug)->{
+                            var geometry=baked.computeIfAbsent(name,key->new Geometry(mesh,baker.sprites(),debug));
+                            return new MeshBakedGeometry(portable?geometry.portable:geometry.all);
+                        };
                     }
                 };
             });
@@ -78,7 +82,7 @@ public final class CoreMeshModels {
         @Override public Object createGeometryKey(BlockAndTintGetter view,BlockPos pos,BlockState state,RandomSource random){return this;}
     }
     static final class Geometry {
-        final Mesh all,fixed;
+        final Mesh all,fixed,portable;
         final List<BakedQuad> fallback;
         final Map<Integer,List<Surface>> interior;
         final String motion;
@@ -93,8 +97,8 @@ public final class CoreMeshModels {
             extended=mesh.has("extended")&&mesh.get("extended").getAsBoolean();
             Map<String,TextureAtlasSprite> textures=new HashMap<>();
             mesh.getAsJsonObject("textures").entrySet().forEach(e->textures.put(e.getKey(),sprites.get(new Material(ATLAS,Identifier.parse(e.getValue().getAsString())),debug)));
-            MutableMesh every=Renderer.get().mutableMesh(),shell=Renderer.get().mutableMesh();
-            QuadEmitter everyOut=every.emitter(),shellOut=shell.emitter();
+            MutableMesh every=Renderer.get().mutableMesh(),shell=Renderer.get().mutableMesh(),held=Renderer.get().mutableMesh();
+            QuadEmitter everyOut=every.emitter(),shellOut=shell.emitter(),heldOut=held.emitter();
             Map<Integer,List<Surface>> moving=new TreeMap<>();
             List<JsonObject> vanilla=new ArrayList<>();
             int fixedCount=0;float movingRadius=.866026f;
@@ -106,7 +110,7 @@ public final class CoreMeshModels {
                 // LOD cells retain the shell and static interior. Orbiting outer
                 // ornaments cannot be represented faithfully within one cell.
                 if(part<10)vanilla.add(q);
-                if(part==0)face.emit(shellOut);else moving.computeIfAbsent(part,k->new ArrayList<>()).add(face);
+                if(part==0){face.emit(shellOut);face.emit(heldOut);}else moving.computeIfAbsent(part,k->new ArrayList<>()).add(face);
             }
             all=every.immutableCopy();fixed=shell.immutableCopy();
             // Voxy's software baker writes depth even for translucent faces.
@@ -120,6 +124,11 @@ public final class CoreMeshModels {
                 for(var surface:entry.getValue()){var posed=new Surface(surface,pose);still.add(posed);stillRadius=Math.max(stillRadius,posed.radius());}
             }
             staticInterior=List.copyOf(still);animationRadius=movingRadius;staticRadius=stillRadius;fixedFaces=fixedCount;
+            for(var entry:moving.entrySet()){
+                var pose=CoreStaticPose.matrix(motion,entry.getKey(),motionScale);
+                for(var surface:entry.getValue())new Surface(surface,pose).emit(heldOut);
+            }
+            portable=held.immutableCopy();
         }
     }
     static final class Surface {

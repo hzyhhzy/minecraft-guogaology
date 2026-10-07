@@ -7,6 +7,7 @@ import argparse
 import json
 from pathlib import Path
 import shutil
+from generate_core_item_views import core_names, select_model
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src/main/resources"
@@ -53,6 +54,7 @@ def state_selector(entries, fallback):
 
 def convert_items(out):
     assets = out / "assets/googology"
+    context_cores = set(core_names(assets))
     portable = 0
     for path in sorted((assets / "models/item").glob("*.json")):
         old = read(path)
@@ -81,6 +83,8 @@ def convert_items(out):
                                     "entries": [{"threshold": v["predicate"]["pull"],
                                                  "model": model(v["model"])}
                                                 for v in overrides if "pull" in v["predicate"]]}}
+        if path.stem in context_cores:
+            rendered = select_model(path.stem)
         write(path, old)
         write(assets / "items" / path.name, {"model": rendered})
     return portable
@@ -238,7 +242,7 @@ def prepare(target, release):
     metadata["mixins"] = ["googology.mixins.json", {"config": "googology.client.mixins.json", "environment": "client"}]
     write(out / "fabric.mod.json", metadata)
     client_mixins = read(out / "googology.client.mixins.json")
-    client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GoogologyFogMixin", "GoogologySkyLightMixin")]
+    client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GoogologyFogMixin", "GoogologySkyLightMixin", "CoreItemViewMixin")]
     write(out / "googology.client.mixins.json", client_mixins)
     # Fabric supplies metadata for the active pack type. A shared numeric range cannot
     # describe both resource 75 and data 94 without conflicting legacy-format rules.
