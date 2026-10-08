@@ -150,7 +150,8 @@ def package(targets, output_dir=None):
     (output/'SHA256SUMS.txt').write_text(''.join(f"{m['sha256']}  {m['file']}\n" for m in manifest),encoding='utf-8')
     lines=['Guogaology / 果糕逻辑 '+release,'','Choose exactly ONE JAR matching the Minecraft version. Install Fabric Loader and matching Fabric API.','Both server and client need the same matching Guogaology JAR. Do not mix Minecraft versions in one mods folder.','No gallery or flight-speed addon is required. The 0.5.0 namespace change requires a new world; keep earlier saves with their previous Mod build.','']
     for m in manifest:lines.append(f"{m['minecraft']}: Java {m['java']}+, Fabric Loader {m['requires']['fabricloader']}, Fabric API {m['requires']['fabric-api']}")
-    lines.extend(['', 'Minecraft 1.21.1 only: the SAME 1.21.1 JAR also runs on NeoForge 21.1.248 with Sinytra Connector 2.0.0-beta.16 or beta.17 and Forgified Fabric API 0.116.15+2.3.1+1.21.1.',
+    lines.extend(['', 'Minecraft 1.21.1 only: the SAME 1.21.1 JAR also runs on NeoForge 21.1.248 with Sinytra Connector 2.0.0-beta.16 and Forgified Fabric API 0.116.15+2.3.1+1.21.1.',
+                  'Connector beta.16 was runtime-tested with 0.5.3; beta.17 was previously tested with 0.5.2.',
                   'Use Forgified Fabric API instead of the ordinary Fabric API in that NeoForge setup. Do not install both API distributions.',
                   'Connector is optional. There is no official Connector 26.2 build in this validation; 26.2 is tested on native Fabric.',
                   'Validation scope and reproducible checks: docs/CONNECTOR-COMPATIBILITY.md in the source repository.'])

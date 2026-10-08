@@ -6,7 +6,7 @@
 
 按原版摔落标签统一手稿免疫、Lv1减半和里界落地规则，涵盖石笋尖端及原版末影珍珠摔落伤害；不把掉下来的钟乳石当成玩家摔落。修复NeoForge忽略魔法减伤方法返回值导致的静默失效，改用两种加载器都消费的护甲结果挂钩。
 
-同一1.21.1发行JAR在原生Fabric与NeoForge＋Connector beta.16各通过544项实际检查；隐藏fo262通过705项落地专项、185项挖掘专项、169项手稿检查及8,932项主回归（包含96组真实键盘飞行场景）。四版构建、43项Python测试和发行核验通过。最终实测包已安装正常fo262，旧0.5.2备份、唯一主Mod及55个其他文件未变均已核对。范围、失败候选记录、依赖和哈希见 [WORK-0503.md](WORK-0503.md)。未推送／发布。
+同一1.21.1发行JAR在原生Fabric与NeoForge＋Connector beta.16各通过544项实际检查；隐藏fo262通过705项落地专项、185项挖掘专项、169项手稿检查及8,932项主回归（包含96组真实键盘飞行场景）。四版构建、43项Python测试和发行核验通过。最终实测包已安装正常fo262，旧0.5.2备份、唯一主Mod及55个其他文件未变均已核对。范围、失败候选记录、依赖和哈希见 [WORK-0503.md](WORK-0503.md)。用户随后授权push及发布，详见 [RELEASE-0.5.3.md](RELEASE-0.5.3.md)。
 
 The same1.21.1 release passes544 real checks on native Fabric and Connector beta.16. Native26.2 also passes actual stalagmite/landing, enchantment stacking, flight, mining and manuscript regression suites. These are hidden disposable clients with integrated servers, not dedicated-server multiplayer certification. Exact tested26.2 installed; other versions retain compile/resource support.
 
