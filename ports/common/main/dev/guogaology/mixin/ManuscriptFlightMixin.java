@@ -6,8 +6,8 @@ import net.minecraft.world.damagesource.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 @Mixin(Player.class)
 public abstract class ManuscriptFlightMixin implements ManuscriptFlightAccess {
@@ -23,7 +23,18 @@ public abstract class ManuscriptFlightMixin implements ManuscriptFlightAccess {
     // flight mod can return before ours even when it leaves vanilla speed unchanged.
     @Inject(method="getFlyingSpeed",at=@At("HEAD"),cancellable=true)
     private void guogaology$horizontal(CallbackInfoReturnable<Float> result){var player=(Player)(Object)this;if(ManuscriptEffects.controlsFlightSpeed(player))result.setReturnValue(ManuscriptEffects.horizontalSpeed(player,0));}
-    // Native mayfly suppresses every fall callback, including stalagmites. Our immunity is FALL only.
-    @ModifyExpressionValue(method="causeFallDamage",at=@At(value="FIELD",target="Lnet/minecraft/world/entity/player/Abilities;mayfly:Z"))
-    private boolean guogaology$onlyNormalFalls(boolean original,@Local(argsOnly=true) DamageSource source){return original&&(!ManuscriptEffects.ownsFlight((Player)(Object)this)||source.is(DamageTypes.FALL));}
+    // NeoForge replaces the vanilla ability-field read with Player.mayFly().
+    // Wrap the method, not that unstable instruction. Keep native fall statistics,
+    // wind-charge handling and other mods' hooks; only our permission is scoped out
+    // for non-FALL impacts. Never send an ability update or leave flight disabled.
+    @WrapMethod(method="causeFallDamage")
+    private boolean guogaology$onlyNormalFalls(double distance,float multiplier,DamageSource source,Operation<Boolean> original){
+        var player=(Player)(Object)this;
+        var abilities=player.getAbilities();
+        if(!abilities.mayfly||!ManuscriptEffects.ownsFlight(player)||player.isCreative()||player.isSpectator()||source.is(DamageTypes.FALL))
+            return original.call(distance,multiplier,source);
+        abilities.mayfly=false;
+        try{return original.call(distance,multiplier,source);}
+        finally{abilities.mayfly=true;}
+    }
 }

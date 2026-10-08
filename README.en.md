@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.1 · Minecraft Java / Fabric · Four builds and hidden fo262 regression passed**
+**v0.5.2 · Minecraft Java / Fabric · Native and 1.21.1 Connector regression passed**
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -13,6 +13,8 @@ Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mine
 ## Installation
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
+
+The same 1.21.1 JAR is also tested on NeoForge 21.1.248 with Sinytra Connector beta.16/beta.17 and Forgified Fabric API. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
 
 | Minecraft | Java | Fabric Loader | Fabric API used for builds |
 |---|---|---|---|
@@ -84,13 +86,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.1/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes validated JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.2/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.5.1 adds downhill-pointing greater-than ornaments to Underworld chains and restores the full earlier rewards in all eight landmarks. All four builds, resource and language checks, and 39 Python tests pass. An isolated hidden fo262 / Minecraft 26.2 validates actual generated chains and 8,192 native chest fills with Sodium, Voxy and the standalone flight-speed utility loaded; five screenshots were inspected. The normal fo262 instance has been updated to 0.5.1, with the previous JAR backed up and hashes verified. This patch has not been pushed or published; see [the validation record](docs/WORK-0501.md). Other Minecraft versions receive compile and resource checks only, not runtime playtesting. Earlier [validation records](docs/VALIDATION.md) remain available. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.5.2 repairs Connector fall/flight, durability and world-constructor injection compatibility, plus missing 1.21.1 resource adaptations. Native Fabric 1.21.1, Connector beta.16 and beta.17 each pass 384 actual checks on the same JAR. Hidden fo262 passes 8,932 manuscript checks and 26,430 fresh-world assertions, including Sodium/Voxy and the flight utility. Four builds, resource/language checks and 43 Python tests pass; 1.21.11/26.3 are compile/resource checked only. This patch has not been pushed or published; see [the validation record](docs/WORK-0502.md). The 0.5.1 chain and loot content is retained. Earlier [validation records](docs/VALIDATION.md) remain available. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -100,4 +102,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.5.1 implementation and validation](docs/WORK-0501.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)
+[0.5.2 implementation and validation](docs/WORK-0502.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)

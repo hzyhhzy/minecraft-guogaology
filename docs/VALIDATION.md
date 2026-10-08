@@ -1,6 +1,12 @@
 # Guogaology 验证记录
 
-最新验证日期：2026-10-06。
+最新验证日期：2026-10-08。以下历史条目的测试范围以各条当时的版本为准。
+
+## 0.5.2：原生 Fabric 与 Sinytra Connector
+
+同一1.21.1发行JAR在原生Fabric、NeoForge＋Connector beta.16、NeoForge＋Connector beta.17分别通过384项实际客户端／集成服务端检查，覆盖三个自定义世界、飞行／摔落、挖掘、箭、耐久、原版附魔、防护、损坏退核、GUI与晶核画面。fo262原生26.2通过8,932项手稿专项和26,430项新世界回归。四版构建、43项Python测试与发行核验通过；1.21.11／26.3本轮不启动。具体依赖、失败候选、日志和校验值见 [WORK-0502.md](WORK-0502.md)，安装方式见 [CONNECTOR-COMPATIBILITY.md](CONNECTOR-COMPATIBILITY.md)。
+
+The same1.21.1 JAR passes384 actual checks on native Fabric and on each tested Connector beta.16/beta.17 setup. Nativefo262 also passes the manuscript and fresh-world regression suites. These are hidden disposable clients with integrated servers, not dedicated-server multiplayer stress tests. Connector remains optional; no official26.2 Connector build was available for testing.
 
 ## 0.4.0：背包手稿编辑、飞行兼容与粒子修复
 

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"guogaology_connector_qa","version":"1.0.0","environment":"client","entrypoints":{"client":["dev.guogaology.connectorqa.ConnectorChecks"]},"depends":{"guogaology":"*","minecraft":"1.21.1"},"mixins":["guogaology-connector-qa.mixins.json"]}

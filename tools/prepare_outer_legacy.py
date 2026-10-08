@@ -10,6 +10,9 @@ from prepare_port_sources import adapt
 R=Path(__file__).resolve().parents[1];TARGET=R/'ports/outer-1.21.1'
 def legacy(s,name):
     s=adapt(s,'1.21.11',name)
+    if name=='GuogaologyClient.java':
+        s=s.replace('BlockRenderLayerMap.putBlock(ModBlocks.LHO_GLASS,', 'BlockRenderLayerMap.putBlocks(')
+        s=s.replace('ChunkSectionLayer.TRANSLUCENT);', 'ChunkSectionLayer.TRANSLUCENT,ModBlocks.LHO_GLASS,ModBlocks.STELLAR_STONE_BLOCK);')
     s=s.replace('net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlocks','net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlocks')
     s=s.replace('net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap.putBlock','net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlock')
     s=s.replace('net.minecraft.client.renderer.chunk.ChunkSectionLayer.CUTOUT','net.minecraft.client.renderer.RenderType.cutout()').replace('net.minecraft.client.renderer.chunk.ChunkSectionLayer.TRANSLUCENT','net.minecraft.client.renderer.RenderType.translucent()')

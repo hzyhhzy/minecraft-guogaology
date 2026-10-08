@@ -96,7 +96,7 @@ def package(targets, output_dir=None):
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))
             assert not loot.get('pools'),f'Activated frame must never drop: {target}'
             assert not any('PortalGroundChecks' in name for name in entries),'Ground-placement QA leaked into release'
-            assert not any('/qa/' in n or '/mergeqa/' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
+            assert not any('/qa/' in n or '/mergeqa/' in n or '/connectorqa/' in n or 'connector-qa' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'
             templates=[n for n in entries if n.startswith('data/guogaology/structure/') and n.endswith('.nbt')]
             assert len(templates)==61,(target,len(templates))
@@ -110,6 +110,12 @@ def package(targets, output_dir=None):
                         namespace,path=recipe.split(':',1)
                         assert f'data/{namespace}/recipe/{path}.json' in entries,(target,name,recipe)
             if target=='1.21.1':
+                from prepare_legacy_resources import adapt
+                for name in entries:
+                    if name.endswith('.json') and name.startswith(('data/guogaology/worldgen/', 'assets/guogaology/models/')):
+                        source=ROOT/'src/main/resources'/name
+                        if source.exists():
+                            assert json.loads(archive.read(name))==adapt(json.loads(source.read_text('utf8'))),f'Stale 1.21.1 resource adaptation: {name}'
                 nested=metadata['jars'][0]['file']
                 with ZipFile(BytesIO(archive.read(nested))) as bridge:
                     info=json.loads(bridge.read('fabric.mod.json'))
@@ -144,6 +150,10 @@ def package(targets, output_dir=None):
     (output/'SHA256SUMS.txt').write_text(''.join(f"{m['sha256']}  {m['file']}\n" for m in manifest),encoding='utf-8')
     lines=['Guogaology / 果糕逻辑 '+release,'','Choose exactly ONE JAR matching the Minecraft version. Install Fabric Loader and matching Fabric API.','Both server and client need the same matching Guogaology JAR. Do not mix Minecraft versions in one mods folder.','No gallery or flight-speed addon is required. The 0.5.0 namespace change requires a new world; keep earlier saves with their previous Mod build.','']
     for m in manifest:lines.append(f"{m['minecraft']}: Java {m['java']}+, Fabric Loader {m['requires']['fabricloader']}, Fabric API {m['requires']['fabric-api']}")
+    lines.extend(['', 'Minecraft 1.21.1 only: the SAME 1.21.1 JAR also runs on NeoForge 21.1.248 with Sinytra Connector 2.0.0-beta.16 or beta.17 and Forgified Fabric API 0.116.15+2.3.1+1.21.1.',
+                  'Use Forgified Fabric API instead of the ordinary Fabric API in that NeoForge setup. Do not install both API distributions.',
+                  'Connector is optional. There is no official Connector 26.2 build in this validation; 26.2 is tested on native Fabric.',
+                  'Validation scope and reproducible checks: docs/CONNECTOR-COMPATIBILITY.md in the source repository.'])
     (output/'INSTALL.txt').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     for notice in ('LICENSE','LICENSE-MINECRAFT-EXCEPTION','COPYRIGHT','THIRD_PARTY.md'):
         shutil.copy2(ROOT/notice,output/notice)

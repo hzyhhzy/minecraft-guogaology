@@ -3,18 +3,20 @@ package dev.guogaology.mixin;
 import dev.guogaology.mining.GearData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.server.network.ServerPlayerEntity;
+import dev.guogaology.mining.ArmorProtectionContext;
+import net.minecraft.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.sugar.Local;
 
-/** One filter at the shared wear path; vanilla Unbreaking processes the surviving points. */
-@Mixin(ItemStack.class)
+/** Stable shared native wear hook, before Unbreaking, on both 1.21.1 loaders. */
+@Mixin(EnchantmentHelper.class)
 public abstract class EquipmentDurabilityMixin {
-    @WrapOperation(method="damage(ILnet/minecraft/server/world/ServerWorld;Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Consumer;)V",at=@At(value="INVOKE",target="Lnet/minecraft/enchantment/EnchantmentHelper;getItemDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;I)I"))
-    private int guogaology$wear(ServerWorld world,ItemStack stack,int amount,Operation<Integer> original,@Local(argsOnly=true) ServerPlayerEntity player){
-        return original.call(world,stack,GearData.wearCost(stack,amount,player,world.random::nextDouble));
+    // NeoForge splits ItemStack.damage and widens its owner argument. Hook the
+    // unchanged helper instead; the native damage snapshot owns armor reduction.
+    @WrapMethod(method="getItemDamage")
+    private static int guogaology$wear(ServerWorld world,ItemStack stack,int amount,Operation<Integer> original){
+        int adjusted=GearData.wearCost(stack,amount,ArmorProtectionContext.owner(),world.random::nextDouble);
+        return original.call(world,stack,adjusted);
     }
 }

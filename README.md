@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.1 · Minecraft Java / Fabric · 四版构建与隐藏fo262回归通过**
+**v0.5.2 · Minecraft Java / Fabric · 原生及1.21.1 Connector回归通过**
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -20,6 +20,8 @@
 | 26.3 | 25 | 0.161.0+26.3 |
 
 四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；本轮不提供旧存档迁移或旧 ID 别名。
+
+1.21.1的同一JAR也已验证可通过NeoForge21.1.248＋Sinytra Connector beta.16／beta.17加载；这种安装方式使用Forgified Fabric API，不同时安装普通Fabric API。Connector不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
 
 游戏内支持简体中文和英语，随 Minecraft「选项 → 语言」切换；同一 JAR 包含两种语言。方块与装备名称、变体提示、强化台、创造分类、群系、建筑、进度、声音字幕和命令帮助均有对应翻译。装有 Mod Menu 时，模组名称与简介也可随语言切换，无需额外安装翻译包。
 
@@ -70,9 +72,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 位于 `build/releases/0.5.1/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 位于 `build/releases/0.5.2/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.5.1为地府降链加入沿下降方向排列的大于号，并恢复八座巨构主副箱缩减前的完整战利品。四版构建、资源与语言检查、39项Python测试通过；独立隐藏fo262／26.2验证实际链条与8,192次宝箱填充，五张截图已核验。正常fo262已安装0.5.1并备份旧包；本补丁尚未推送或发布，详见[本轮验证记录](docs/WORK-0501.md)。
+0.5.2修复Connector的飞行／耐久／表界生成注入兼容，同时补齐1.21.1的资源回移。原生Fabric1.21.1、Connector beta.16和beta.17各通过384项实际检查；fo262通过8,932项手稿专项与26,430项新世界回归。四版构建、资源／语言检查及43项Python测试通过。1.21.11和26.3仅做编译／资源验证。本补丁尚未推送或发布，详见[本轮验证记录](docs/WORK-0502.md)；0.5.1的地形与战利品内容保留。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -86,4 +88,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.5.1实施与验证进度](docs/WORK-0501.md) · [强化模拟器](docs/enhancement-simulator.html) · [晶核与装备规则](docs/WORK-0312.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)
+[0.5.2实施与验证进度](docs/WORK-0502.md) · [强化模拟器](docs/enhancement-simulator.html) · [晶核与装备规则](docs/WORK-0312.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)

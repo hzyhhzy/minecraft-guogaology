@@ -53,12 +53,17 @@ processResources {
     filteringCharset = 'UTF-8'
     inputs.property 'version', project.version
     inputs.property 'preserveJsonEscapes', true
+    inputs.file 'tools/prepare_legacy_resources.py'
     filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
     doLast {
         def configFile = new File(destinationDir, 'guogaology.mixins.json')
         def config = new groovy.json.JsonSlurper().parse(configFile, 'UTF-8')
         config.mixins.removeAll { it == 'OuterNoiseSettingsMixin' || it == 'OuterSpawnPlacementInvoker' }
         configFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(config)), 'UTF-8')
+        project.exec {
+            commandLine providers.gradleProperty('portPython').getOrElse('python'), '-X', 'utf8',
+                file('tools/prepare_legacy_resources.py').absolutePath, destinationDir.absolutePath
+        }
     }
 }
 
@@ -108,3 +113,32 @@ tasks.register('verifyReleaseMixins') {
     }
 }
 tasks.named('check') { dependsOn tasks.named('verifyReleaseMixins') }
+
+// Opt-in, separately remapped release-runtime harness. Never ships in the Mod.
+if (project.hasProperty('connectorQa')) {
+    sourceSets {
+        connectorQa {
+            java.srcDir 'tools/connector-qa/java'
+            resources.srcDir 'tools/connector-qa/resources'
+            compileClasspath += sourceSets.main.output + sourceSets.client.output + sourceSets.client.compileClasspath
+            runtimeClasspath += output + compileClasspath
+        }
+    }
+    loom.mixin.add(sourceSets.main, 'guogaology-dimension-1.21.1-refmap.json')
+    loom.mixin.add(sourceSets.client, 'client-guogaology-dimension-1.21.1-refmap.json')
+    loom.mixin.add(sourceSets.connectorQa, 'guogaology-connector-qa-refmap.json')
+    tasks.register('connectorQaDevJar', Jar) {
+        dependsOn tasks.named('connectorQaClasses')
+        from sourceSets.connectorQa.output
+        archiveBaseName = 'guogaology-connector-qa'
+        archiveClassifier = 'dev'
+        destinationDirectory = layout.buildDirectory.dir('qa')
+    }
+    tasks.register('connectorQaJar', net.fabricmc.loom.task.RemapJarTask) {
+        dependsOn tasks.named('connectorQaDevJar')
+        inputFile = tasks.named('connectorQaDevJar').flatMap { it.archiveFile }
+        archiveBaseName = 'guogaology-connector-qa'
+        archiveClassifier = ''
+        destinationDirectory = layout.buildDirectory.dir('qa')
+    }
+}

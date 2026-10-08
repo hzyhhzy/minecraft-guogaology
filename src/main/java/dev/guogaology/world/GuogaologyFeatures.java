@@ -12,5 +12,7 @@ public final class GuogaologyFeatures {
     private static Feature<DefaultFeatureConfig> register(String name, Feature<DefaultFeatureConfig> feature) {
         return Registry.register(Registries.FEATURE, GuogaologyMod.id(name), feature);
     }
-    public static void initialize() {}
+    public static void initialize() {
+        Registry.register(Registries.FEATURE, GuogaologyMod.id("legacy_block_blob"), new LegacyBlockBlobFeature());
+    }
 }

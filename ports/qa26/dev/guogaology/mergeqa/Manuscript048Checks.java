@@ -82,6 +82,7 @@ public final class Manuscript048Checks {
     }
     private void setup(ServerPlayer p)throws Exception{
         if(phase==0){
+            InnerLanding043Checks.run(p);ManuscriptMining043Checks.run(p);
             Manuscript047Checks.run(p);deaths(p);
             p.closeContainer();empty(p);p.setGameMode(GameType.SURVIVAL);p.setItemSlot(EquipmentSlot.OFFHAND,book("power_tower_core_lv3","boundary_core_lv3"));
             p.getInventory().setItem(9,item("laver_core_lv3"));p.getInventory().setItem(10,item("guogao_heart_lv3"));

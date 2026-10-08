@@ -10,14 +10,15 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 /** Vanilla otherwise supplies dummy noise settings to a delegating generator. */
 @Mixin(ChunkMap.class)
 public abstract class OuterNoiseSettingsMixin {
-    @Redirect(method="<init>",at=@At(value="INVOKE",target="Lnet/minecraft/world/level/levelgen/RandomState;create(Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;Lnet/minecraft/core/HolderGetter;J)Lnet/minecraft/world/level/levelgen/RandomState;"))
-    private RandomState outerSettings(NoiseGeneratorSettings settings,HolderGetter<NormalNoise.NoiseParameters> noises,long seed,@Local(argsOnly=true)ChunkGenerator generator){
+    @WrapOperation(method="<init>",at=@At(value="INVOKE",target="Lnet/minecraft/world/level/levelgen/RandomState;create(Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;Lnet/minecraft/core/HolderGetter;J)Lnet/minecraft/world/level/levelgen/RandomState;"))
+    private RandomState outerSettings(NoiseGeneratorSettings settings,HolderGetter<NormalNoise.NoiseParameters> noises,long seed,Operation<RandomState> original,@Local(argsOnly=true)ChunkGenerator generator){
         if(generator instanceof LhoChunkGenerator outer){outer.setWorldSeed(seed);settings=outer.generatorSettings().value();}
-        return RandomState.create(settings,noises,seed);
+        return original.call(settings,noises,seed);
     }
 }

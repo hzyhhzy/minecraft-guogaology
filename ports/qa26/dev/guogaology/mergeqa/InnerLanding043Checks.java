@@ -126,6 +126,12 @@ public final class InnerLanding043Checks {
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm/GearData.protectionFactor(p),"Boundary II collision still follows ordinary protection");
         p.setItemSlot(EquipmentSlot.OFFHAND,book(3));equipment(p);
         near(impact(p,DamageTypes.FALL,8),0,"Boundary III fall immunity survives realm rule");
+        ManuscriptEffects.tick(p);p.getAbilities().flying=true;
+        near(fall(p,15),0,"owned flight protects real normal-fall callback");
+        p.setHealth(p.getMaxHealth());p.invulnerableTime=0;float beforeSpike=p.getHealth();
+        p.causeFallDamage(15,1,source(p,DamageTypes.STALAGMITE));
+        check(underworld?p.getHealth()==beforeSpike:p.getHealth()<beforeSpike,"owned flight does not turn stalagmites into normal falls");
+        check(p.getAbilities().mayfly&&p.getAbilities().flying,"fall wrapper restores permission without cancelling flight");
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),0,"Boundary III elytra collision immunity survives realm rule");
         for(int[] cores:new int[][]{{1,1,1},{1,2},{1,3}}){
             p.setItemSlot(EquipmentSlot.OFFHAND,book(cores));equipment(p);
@@ -151,8 +157,8 @@ public final class InnerLanding043Checks {
                 double slow=.05/(deep?3:6);
                 near(nativeFlight(p),grade==2?slow:.05,"walking bonus does not enter native flight"+label);
                 near(ManuscriptEffects.verticalSpeed(p,.77f),grade==2?slow:.05,"walking bonus does not enter vertical flight"+label);
-                ManuscriptEffects.setFlightSprint(p,true);near(nativeFlight(p),grade==2?slow:deep?.4:.1,"dedicated sprint flight is independent of walking bonus"+label);
-                near(ManuscriptEffects.verticalSpeed(p,.77f),grade==2?slow:deep?.4:.1,"dedicated sprint has matching vertical coefficient"+label);
+                ManuscriptEffects.setFlightSprint(p,true);near(nativeFlight(p),grade==2?slow:deep?.2:.1,"dedicated sprint flight is independent of walking bonus"+label);
+                near(ManuscriptEffects.verticalSpeed(p,.77f),grade==2?slow:deep?.2:.1,"dedicated sprint has matching vertical coefficient"+label);
             }
         }
         clear(p);p.setItemSlot(EquipmentSlot.OFFHAND,book(1,2,3));equipment(p);ManuscriptEffects.tick(p);

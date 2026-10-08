@@ -1,4 +1,4 @@
-# Building Guogaology 0.3.3
+# Building Guogaology
 
 Use JDK 21 for Minecraft 1.21.1; the combined modern build runs with JDK 25 and targets the appropriate Java class version for each game. Python 3.10+ is required for the modern API/resource adapters and release audit. The normal build needs no pip packages.
 
@@ -41,6 +41,8 @@ Run `python tools/audit_outer_content.py` for the imported namespace's bilingual
 The 1.21.1 host uses Yarn names; reconstructed Outer sources use Mojang names. Its build invokes the Gradle 9.6 wrapper for `ports/outer-1.21.1`, then includes the remapped compatibility module inside the one public JAR. No separate installation is needed. JDK 21 runs both parts. `-PouterGradle=/path/to/gradle` optionally selects an installed Gradle 9.6 launcher. Source edits and adapters are in [OUTER-IMPORT.md](OUTER-IMPORT.md); a donor JAR is not required to build this repository.
 
 Development-only 26.2 merger checks can be compiled with `-PmergeQa :26.2:mergeQaJar`. Install that helper only in a disposable hidden test instance with a fixture save named `port-qa`; it automatically edits that save and exits after checking portals, cores, manuscripts, creatures, templates and scenery. Never add it to a normal player instance. Release packaging rejects QA classes. Building other targets does not launch their games.
+
+The1.21.1 build also adapts copied worldgen/model JSON to legacy codecs through `tools/prepare_legacy_resources.py`; source assets stay shared and unchanged. No additional Python dependencies are required. Opt-in `-PconnectorQa connectorQaJar` builds a separate native/Connector comparison helper. See [Connector validation and setup](CONNECTOR-COMPATIBILITY.md); neither that helper nor any Connector dependency ships inside the main Mod.
 
 ## Asset editing
 
