@@ -2,6 +2,14 @@
 
 最新验证日期：2026-10-08。以下历史条目的测试范围以各条当时的版本为准。
 
+## 0.5.3：石笋／摔落类保护与三环境回归
+
+按原版摔落标签统一手稿免疫、Lv1减半和里界落地规则，涵盖石笋尖端及原版末影珍珠摔落伤害；不把掉下来的钟乳石当成玩家摔落。修复NeoForge忽略魔法减伤方法返回值导致的静默失效，改用两种加载器都消费的护甲结果挂钩。
+
+同一1.21.1发行JAR在原生Fabric与NeoForge＋Connector beta.16各通过544项实际检查；隐藏fo262通过705项落地专项、185项挖掘专项、169项手稿检查及8,932项主回归（包含96组真实键盘飞行场景）。四版构建、43项Python测试和发行核验通过。最终实测包已安装正常fo262，旧0.5.2备份、唯一主Mod及55个其他文件未变均已核对。范围、失败候选记录、依赖和哈希见 [WORK-0503.md](WORK-0503.md)。未推送／发布。
+
+The same1.21.1 release passes544 real checks on native Fabric and Connector beta.16. Native26.2 also passes actual stalagmite/landing, enchantment stacking, flight, mining and manuscript regression suites. These are hidden disposable clients with integrated servers, not dedicated-server multiplayer certification. Exact tested26.2 installed; other versions retain compile/resource support.
+
 ## 0.5.2：原生 Fabric 与 Sinytra Connector
 
 同一1.21.1发行JAR在原生Fabric、NeoForge＋Connector beta.16、NeoForge＋Connector beta.17分别通过384项实际客户端／集成服务端检查，覆盖三个自定义世界、飞行／摔落、挖掘、箭、耐久、原版附魔、防护、损坏退核、GUI与晶核画面。fo262原生26.2通过8,932项手稿专项和26,430项新世界回归。四版构建、43项Python测试与发行核验通过；1.21.11／26.3本轮不启动。具体依赖、失败候选、日志和校验值见 [WORK-0502.md](WORK-0502.md)，安装方式见 [CONNECTOR-COMPATIBILITY.md](CONNECTOR-COMPATIBILITY.md)。

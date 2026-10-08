@@ -15,6 +15,10 @@ import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PointedDripstoneBlock;
+import net.minecraft.world.level.block.state.properties.SpeleothemThickness;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import java.util.*;
@@ -47,6 +51,13 @@ public final class InnerLanding043Checks {
         p.setHealth(p.getMaxHealth());p.setAbsorptionAmount(0);p.invulnerableTime=0;
         float before=p.getHealth();p.causeFallDamage(distance,1,source(p,DamageTypes.FALL));return before-p.getHealth();
     }
+    private static double spike(ServerPlayer p){
+        p.setHealth(p.getMaxHealth());p.setAbsorptionAmount(0);p.invulnerableTime=0;
+        float before=p.getHealth();
+        var tip=Blocks.POINTED_DRIPSTONE.defaultBlockState().setValue(PointedDripstoneBlock.TIP_DIRECTION,Direction.UP).setValue(PointedDripstoneBlock.THICKNESS,SpeleothemThickness.TIP);
+        tip.getBlock().fallOn(p.level(),tip,p.blockPosition(),p,15);
+        return before-p.getHealth();
+    }
     public static void run(ServerPlayer p)throws Exception{
         checks=0;var oldWorld=p.level();var oldPosition=p.position();var oldVelocity=p.getDeltaMovement();var oldMode=p.gameMode();
         float yaw=p.getYRot(),pitch=p.getXRot(),health=p.getHealth(),absorption=p.getAbsorptionAmount();double oldFall=p.fallDistance;
@@ -66,7 +77,9 @@ public final class InnerLanding043Checks {
                 near(impact(p,DamageTypes.FALL,8),8*factor,"raw normal fall impact once "+world.dimension());
                 near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*factor,"raw elytra impact once "+world.dimension());
                 near(impact(p,DamageTypes.GENERIC,8),8,"unrelated damage unchanged "+world.dimension());
-                near(impact(p,DamageTypes.STALAGMITE,8),8,"stalagmite raw damage receives no extra half-factor "+world.dimension());
+                near(impact(p,DamageTypes.STALAGMITE,8),8*factor,"stalagmite raw damage follows realm half "+world.dimension());
+                near(impact(p,DamageTypes.ENDER_PEARL,8),8*factor,"ender pearl follows native fall tag "+world.dimension());
+                near(spike(p),isGuogao?0:(isInner?23:29)*factor,"actual unprotected pointed-dripstone landing "+world.dimension());
                 near(fall(p,7),isGuogao?0:isInner?.5:4,"native landing combines threshold and impact once "+world.dimension());
                 near(fall(p,isInner?6:3),0,"safe-height native landing remains harmless "+world.dimension());
                 p.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST,400,1));double jumpSafe=p.getAttribute(Attributes.SAFE_FALL_DISTANCE).getValue();
@@ -93,7 +106,7 @@ public final class InnerLanding043Checks {
                 float before=zombie.getHealth();zombie.hurtServer(inner,source(p,DamageTypes.FALL),8);near(before-zombie.getHealth(),4,"nonplayer fall damage halves once");
             }finally{if(zombie!=null)zombie.discard();}
             move(p,server.getLevel(GuogaologyMod.OUTER));clear(p);near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),3,"leaving Inner immediately restores native threshold");
-            System.out.println("INNER_LANDING_043_OK checks="+checks+" exact Inner / independent Boundary I halves+safe x2 / Jump Boost+native modifiers / Feather Falling / all grades RSS walk+sprint / native flight / hand priority+editing / immunity / nonplayer");
+            System.out.println("INNER_LANDING_043_OK checks="+checks+" exact Inner / fall-tag+actual stalagmite+ender pearl / independent Boundary I halves+safe x2 / Jump Boost+native modifiers / Feather Falling / all grades RSS walk+sprint / native flight / hand priority+editing / immunity / nonplayer");
         }finally{
             p.getAttribute(Attributes.SAFE_FALL_DISTANCE).removeModifier(SAFE_ADD);p.getAttribute(Attributes.SAFE_FALL_DISTANCE).removeModifier(SAFE_RATE);
             clear(p);maximum.setBaseValue(oldMaximum);for(int n=0;n<saved.size();n++)inventory.setItem(n,saved.get(n));inventory.setSelectedSlot(selected);equipment(p);
@@ -107,11 +120,15 @@ public final class InnerLanding043Checks {
     private static void protection(ServerPlayer p,double realm)throws Exception{
         p.setItemSlot(EquipmentSlot.OFFHAND,book(1));equipment(p);double protection=GearData.protectionFactor(p);
         near(impact(p,DamageTypes.FALL,8),8*realm*.5/protection,"Boundary I half fall stacks with realm half");
+        near(impact(p,DamageTypes.STALAGMITE,8),8*realm*.5/protection,"Boundary I half stone-spike stacks with realm half");
+        near(impact(p,DamageTypes.ENDER_PEARL,8),8*realm*.5/protection,"Boundary I half ender-pearl damage follows fall tag");
+        near(impact(p,DamageTypes.FALLING_STALACTITE,8),8/protection,"falling stalactite is not a fall-family injury");
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm*.5/protection,"Boundary I half collision stacks with realm half");
         double safe=p.getAttribute(Attributes.SAFE_FALL_DISTANCE).getValue()*2/realm;
         near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),safe,"Boundary I safety x2 independently of realm");
         near(fall(p,safe),0,"Boundary I native threshold harmless");
         boolean underworld=p.level().dimension().equals(GuogaologyMod.GUOGAO);
+        near(spike(p),underworld?0:(realm==.5?11:23)*realm*.5/protection,"Boundary I actual stone-spike combines safe height and half damage");
         near(fall(p,safe+1),underworld?0:realm*.5/protection,"Boundary I first harmful block after doubled threshold");
         p.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST,400,1));double jumpSafe=p.getAttribute(Attributes.SAFE_FALL_DISTANCE).getValue()*2/realm;
         near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),jumpSafe,"Jump Boost receives both independent safety multipliers");
@@ -119,10 +136,16 @@ public final class InnerLanding043Checks {
         var boots=new ItemStack(Items.DIAMOND_BOOTS);boots.enchant(p.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FEATHER_FALLING),4);
         p.setItemSlot(EquipmentSlot.FEET,boots);equipment(p);
         near(impact(p,DamageTypes.FALL,8),8*realm*.5*.52/GearData.protectionFactor(p),"Feather Falling IV, book protection, Boundary I and realm multiply");
+        near(impact(p,DamageTypes.STALAGMITE,8),8*realm*.5*.52/GearData.protectionFactor(p),"Feather Falling IV stacks identically on stone-spike damage");
         p.addEffect(new MobEffectInstance(MobEffects.RESISTANCE,400,0));
-        near(impact(p,DamageTypes.FALL,8),8*realm*.5*.52*.8/GearData.protectionFactor(p),"native Resistance remains an additional multiplier");p.removeAllEffects();
+        near(impact(p,DamageTypes.FALL,8),8*realm*.5*.52*.8/GearData.protectionFactor(p),"native Resistance remains an additional multiplier");
+        near(impact(p,DamageTypes.STALAGMITE,8),8*realm*.5*.52*.8/GearData.protectionFactor(p),"native Resistance stacks on stone-spike damage");p.removeAllEffects();
         p.setItemSlot(EquipmentSlot.FEET,ItemStack.EMPTY);p.setItemSlot(EquipmentSlot.OFFHAND,book(2));equipment(p);
         near(impact(p,DamageTypes.FALL,8),0,"Boundary II fall immunity survives realm rule");
+        near(impact(p,DamageTypes.STALAGMITE,8),0,"Boundary II stone-spike immunity without active flight");
+        near(impact(p,DamageTypes.ENDER_PEARL,8),0,"Boundary II ender-pearl immunity without active flight");
+        near(spike(p),0,"Boundary II actual stone-spike immunity without active flight");
+        near(impact(p,DamageTypes.FALLING_STALACTITE,8),8/GearData.protectionFactor(p),"Boundary II does not exempt falling stalactites");
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm/GearData.protectionFactor(p),"Boundary II collision still follows ordinary protection");
         p.setItemSlot(EquipmentSlot.OFFHAND,book(3));equipment(p);
         near(impact(p,DamageTypes.FALL,8),0,"Boundary III fall immunity survives realm rule");
@@ -130,13 +153,21 @@ public final class InnerLanding043Checks {
         near(fall(p,15),0,"owned flight protects real normal-fall callback");
         p.setHealth(p.getMaxHealth());p.invulnerableTime=0;float beforeSpike=p.getHealth();
         p.causeFallDamage(15,1,source(p,DamageTypes.STALAGMITE));
-        check(underworld?p.getHealth()==beforeSpike:p.getHealth()<beforeSpike,"owned flight does not turn stalagmites into normal falls");
+        near(p.getHealth(),beforeSpike,"owned flight protects fall-tag stone-spike callback");
+        near(spike(p),0,"Boundary III actual pointed-dripstone immunity while flying");
+        near(impact(p,DamageTypes.STALAGMITE,8),0,"Boundary III raw stone-spike immunity");
+        near(impact(p,DamageTypes.ENDER_PEARL,8),0,"Boundary III raw ender-pearl immunity");
+        near(impact(p,DamageTypes.FALLING_STALACTITE,8),8/GearData.protectionFactor(p),"Boundary III does not exempt falling stalactites");
+        p.setHealth(p.getMaxHealth());p.invulnerableTime=0;beforeSpike=p.getHealth();
+        p.causeFallDamage(15,1,source(p,DamageTypes.GENERIC));
+        check(underworld?p.getHealth()==beforeSpike:p.getHealth()<beforeSpike,"owned permission does not exempt non-fall-tag callback");
         check(p.getAbilities().mayfly&&p.getAbilities().flying,"fall wrapper restores permission without cancelling flight");
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),0,"Boundary III elytra collision immunity survives realm rule");
         for(int[] cores:new int[][]{{1,1,1},{1,2},{1,3}}){
             p.setItemSlot(EquipmentSlot.OFFHAND,book(cores));equipment(p);
             near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),safe,"presence of Boundary I doubles safety once "+Arrays.toString(cores));
             near(impact(p,DamageTypes.FALL,8),cores[cores.length-1]>=2?0:8*realm*.5/GearData.protectionFactor(p),"repeated and mixed Boundary fall protection "+Arrays.toString(cores));
+            near(impact(p,DamageTypes.STALAGMITE,8),cores[cores.length-1]>=2?0:8*realm*.5/GearData.protectionFactor(p),"repeated and mixed Boundary stone-spike protection "+Arrays.toString(cores));
             near(impact(p,DamageTypes.FLY_INTO_WALL,8),cores[cores.length-1]>=3?0:8*realm*.5/GearData.protectionFactor(p),"mixed Boundary II retains Boundary I collision half "+Arrays.toString(cores));
         }
     }
@@ -181,8 +212,10 @@ public final class InnerLanding043Checks {
         near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),safe*2,"safe fall uses opening snapshot during editing");
         double realm=p.level().dimension().equals(GuogaologyMod.DIMENSION)?.5:1;
         near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm*.5/GearData.protectionFactor(p),"impact half uses opening snapshot during editing");
+        near(impact(p,DamageTypes.STALAGMITE,8),8*realm*.5/GearData.protectionFactor(p),"stone-spike half uses opening snapshot during editing");
         p.closeContainer();ManuscriptEffects.tick(p);near(p.getAttributeValue(Attributes.MOVEMENT_SPEED),base,"closed menu activates empty book walking");
         near(p.getAttributeValue(Attributes.SAFE_FALL_DISTANCE),safe,"closed menu activates empty book safety");
-        near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm/GearData.protectionFactor(p),"closed menu removes Lv1 impact half");clear(p);
+        near(impact(p,DamageTypes.FLY_INTO_WALL,8),8*realm/GearData.protectionFactor(p),"closed menu removes Lv1 impact half");
+        near(impact(p,DamageTypes.STALAGMITE,8),8*realm/GearData.protectionFactor(p),"closed menu removes Lv1 stone-spike half");clear(p);
     }
 }

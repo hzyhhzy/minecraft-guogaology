@@ -3,6 +3,7 @@ import dev.guogaology.mining.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.data.*;
 import net.minecraft.entity.damage.*;
+import net.minecraft.registry.tag.DamageTypeTags;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -26,12 +27,13 @@ public abstract class ManuscriptFlightMixin implements ManuscriptFlightAccess {
     // NeoForge replaces the vanilla ability-field read with Player.mayFly().
     // Wrap the method, not that unstable instruction. Keep native fall statistics,
     // wind-charge handling and other mods' hooks; only our permission is scoped out
-    // for non-FALL impacts. Never send an ability update or leave flight disabled.
+    // for impacts outside vanilla's fall tag (which includes stalagmites).
+    // Never send an ability update or leave flight disabled.
     @WrapMethod(method="handleFallDamage")
-    private boolean guogaology$onlyNormalFalls(float distance,float multiplier,DamageSource source,Operation<Boolean> original){
+    private boolean guogaology$onlyFallTypes(float distance,float multiplier,DamageSource source,Operation<Boolean> original){
         var player=(PlayerEntity)(Object)this;
         var abilities=player.getAbilities();
-        if(!abilities.allowFlying||!ManuscriptEffects.ownsFlight(player)||player.isCreative()||player.isSpectator()||source.isOf(DamageTypes.FALL))
+        if(!abilities.allowFlying||!ManuscriptEffects.ownsFlight(player)||player.isCreative()||player.isSpectator()||source.isIn(DamageTypeTags.IS_FALL))
             return original.call(distance,multiplier,source);
         abilities.allowFlying=false;
         try{return original.call(distance,multiplier,source);}

@@ -12,7 +12,9 @@ public abstract class EquipmentDefenseMixin {
     private float guogaology$defense(DamageSource source,float input,Operation<Float> original){
         var entity=(LivingEntity)(Object)this;double factor=ArmorProtectionContext.factor(entity);
         var prior=ArmorProtectionContext.enter(entity,factor);
-        try{return (float)(original.call(source,input)/factor);}
+        // Keep the landing scalar at the same armor-result stage as the Connector-safe legacy port.
+        // Native magic/enchantment reductions and absorption still follow.
+        try{return (float)(original.call(source,input)*ManuscriptEffects.landingDamageFactor(entity,source)/factor);}
         finally{ArmorProtectionContext.restore(prior);}
     }
 }

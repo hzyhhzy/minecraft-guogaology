@@ -6,14 +6,18 @@ import dev.guogaology.mining.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PointedDripstoneBlock;
+import net.minecraft.block.enums.Thickness;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.*;
 import net.minecraft.item.*;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.registry.*;
 import net.minecraft.resource.DataConfiguration;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -114,19 +118,63 @@ public final class ConnectorChecks implements ClientModInitializer {
         p.timeUntilRegen=0;p.setHealth(p.getMaxHealth());float start=p.getHealth();
         p.handleFallDamage(15,1,ordinary?p.getDamageSources().fall():p.getDamageSources().stalagmite());return start-p.getHealth();
     }
+    private double rawImpact(ServerPlayerEntity p,DamageSource source){
+        p.timeUntilRegen=0;p.setHealth(p.getMaxHealth());float start=p.getHealth();
+        p.damage(source,8);return start-p.getHealth();
+    }
+    private double spike(ServerPlayerEntity p){
+        p.timeUntilRegen=0;p.setHealth(p.getMaxHealth());float start=p.getHealth();
+        var tip=Blocks.POINTED_DRIPSTONE.getDefaultState().with(PointedDripstoneBlock.VERTICAL_DIRECTION,Direction.UP).with(PointedDripstoneBlock.THICKNESS,Thickness.TIP);
+        tip.getBlock().onLandedUpon(p.getWorld(),tip,p.getBlockPos(),p,15);
+        return start-p.getHealth();
+    }
     private void falls(ServerPlayerEntity p)throws Exception{
         boolean under=p.getWorld().getRegistryKey().equals(GuogaologyMod.GUOGAO);clear(p);
+        double realm=p.getWorld().getRegistryKey().equals(GuogaologyMod.DIMENSION)?.5:1;
         check(under||impact(p,true)>0,"native unprotected fall");
+        near(rawImpact(p,p.getDamageSources().fall()),8*realm,"raw ordinary fall follows realm reduction");
+        near(rawImpact(p,p.getDamageSources().flyIntoWall()),8*realm,"raw collision follows realm reduction");
+        near(rawImpact(p,p.getDamageSources().stalagmite()),8*realm,"raw stone-spike follows realm reduction");
+        near(spike(p),under?0:(realm==.5?22:28)*realm,"actual unprotected pointed-dripstone landing");
+        for(String[] cores:new String[][]{{"boundary_core"},{"boundary_core","boundary_core","boundary_core"}}){
+            clear(p);p.equipStack(EquipmentSlot.OFFHAND,book(cores));ManuscriptEffects.tick(p);
+            double defense=GearData.protectionFactor(p),safe=realm==.5?12:6;
+            near(p.getAttributeValue(EntityAttributes.GENERIC_SAFE_FALL_DISTANCE),safe,"Boundary I safe height scales once");
+            near(rawImpact(p,p.getDamageSources().fall()),8*realm*.5/defense,"Boundary I raw ordinary fall half stacks once");
+            near(rawImpact(p,p.getDamageSources().flyIntoWall()),8*realm*.5/defense,"Boundary I raw collision half stacks once");
+            near(rawImpact(p,p.getDamageSources().stalagmite()),8*realm*.5/defense,"Boundary I raw stone-spike half stacks once");
+            near(spike(p),under?0:2*(17-safe)*realm*.5/defense,"native spike callback combines threshold and independent reductions");
+            near(rawImpact(p,p.getDamageSources().fallingStalactite(null)),8/defense,"falling stalactite does not get fall-family half");
+            near(rawImpact(p,p.getDamageSources().generic()),8/defense,"generic damage does not get landing half");
+        }
+        var boots=new ItemStack(Items.DIAMOND_BOOTS);
+        boots.addEnchantment(p.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.FEATHER_FALLING).orElseThrow(),4);
+        p.equipStack(EquipmentSlot.FEET,boots);
+        near(rawImpact(p,p.getDamageSources().stalagmite()),8*realm*.5*.52/GearData.protectionFactor(p),"native Feather Falling IV multiplies with spike protection");
+        p.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE,400,0));
+        near(rawImpact(p,p.getDamageSources().stalagmite()),8*realm*.5*.52*.8/GearData.protectionFactor(p),"Resistance remains multiplicative on spikes");
         for(int level=2;level<=3;level++){
             clear(p);p.equipStack(EquipmentSlot.OFFHAND,book("boundary_core_lv"+level));ManuscriptEffects.tick(p);
-            check(ManuscriptEffects.ownsFlight(p),"manuscript owns permission");p.getAbilities().flying=true;
-            near(impact(p,true),0,"ordinary fall immunity");
-            double spike=impact(p,false);check(under?spike==0:spike>0,"stalagmite is not ordinary fall immunity "+spike);
+            check(ManuscriptEffects.ownsFlight(p),"manuscript owns permission");
+            for(boolean flying:new boolean[]{false,true}){
+                p.getAbilities().flying=flying;
+                near(impact(p,true),0,"ordinary fall immunity flying="+flying);
+                near(spike(p),0,"native stone-spike immunity flying="+flying);
+                near(rawImpact(p,p.getDamageSources().stalagmite()),0,"raw stone-spike immunity independent of flight ability");
+                near(rawImpact(p,p.getDamageSources().fallingStalactite(null)),8/GearData.protectionFactor(p),"falling stalactite remains harmful at grade "+level);
+                near(rawImpact(p,p.getDamageSources().generic()),8/GearData.protectionFactor(p),"unrelated damage remains harmful at grade "+level);
+            }
+            p.timeUntilRegen=0;p.setHealth(p.getMaxHealth());float before=p.getHealth();
+            p.handleFallDamage(15,1,p.getDamageSources().generic());
+            check(under?p.getHealth()==before:p.getHealth()<before,"owned permission does not suppress a non-fall-tag callback");
             check(p.getAbilities().allowFlying&&p.getAbilities().flying,"permission restored after native impact");
             p.setOnGround(false);ManuscriptEffects.setFlightSprint(p,true);
             near(ManuscriptEffects.horizontalSpeed(p,0),ManuscriptFlightRules.horizontal(level,ManuscriptEffects.deep(p.getWorld()),level>=3),"flight horizontal");
             near(ManuscriptEffects.verticalSpeed(p,0),ManuscriptFlightRules.vertical(level,ManuscriptEffects.deep(p.getWorld()),level>=3),"flight vertical");
         }
+        clear(p);p.equipStack(EquipmentSlot.OFFHAND,book("boundary_core","boundary_core_lv2"));ManuscriptEffects.tick(p);
+        near(spike(p),0,"mixed grades retain spike immunity");
+        clear(p);near(rawImpact(p,p.getDamageSources().stalagmite()),8*realm,"unequipping on ground removes immunity");
         clear(p);p.getAbilities().allowFlying=true;p.getAbilities().flying=true;
         near(impact(p,false),0,"foreign flight immunity untouched");check(p.getAbilities().allowFlying,"foreign permission preserved");
         clear(p);p.changeGameMode(GameMode.CREATIVE);near(impact(p,false),0,"creative immunity untouched");p.changeGameMode(GameMode.SURVIVAL);clear(p);

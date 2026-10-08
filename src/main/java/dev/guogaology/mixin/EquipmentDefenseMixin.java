@@ -12,7 +12,9 @@ public abstract class EquipmentDefenseMixin {
     private float guogaology$defense(DamageSource source,float input,Operation<Float> original){
         var entity=(LivingEntity)(Object)this;double factor=ArmorProtectionContext.factor(entity);
         var prior=ArmorProtectionContext.enter(entity,factor);
-        try{return (float)(original.call(source,input)/factor);}
+        // NeoForge consumes this return value, but discards modifyAppliedDamage's result.
+        // Apply the landing scalar here; native magic/enchantment reductions still follow.
+        try{return (float)(original.call(source,input)*ManuscriptEffects.landingDamageFactor(entity,source)/factor);}
         finally{ArmorProtectionContext.restore(prior);}
     }
 }

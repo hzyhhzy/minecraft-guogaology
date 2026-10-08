@@ -12,6 +12,7 @@ import net.minecraft.item.*;
 import net.minecraft.world.World;
 import net.minecraft.entity.effect.*;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import java.util.*;
@@ -47,6 +48,12 @@ public final class ManuscriptEffects {
     public static int jumpBlocks(LivingEntity player){int count=0;for(var core:GearData.profile(held(player)))if(core.type()==6&&core.level()==1)count++;return count;}
     /** Lv1 landing protection remains active alongside higher grades, without stacking per core. */
     public static boolean boundaryLandingProtection(LivingEntity entity){return jumpBlocks(entity)>0;}
+    /** Native fall-tag injuries and wall collisions share the independent landing reductions. */
+    public static float landingDamageFactor(LivingEntity entity,DamageSource source){
+        if(!source.isIn(DamageTypeTags.IS_FALL)&&!source.isOf(DamageTypes.FLY_INTO_WALL))return 1;
+        float factor=entity.getWorld().getRegistryKey().equals(GuogaologyMod.DIMENSION)?.5f:1;
+        return boundaryLandingProtection(entity)?factor*.5f:factor;
+    }
     private static double rise(double velocity,double gravity){double height=0;for(int i=0;i<256&&velocity>0;i++){height+=velocity;velocity=(velocity-gravity)*.98;}return height;}
     /** Solve discrete vanilla ascent so each Lv1 adds one block, including the underworld's lower gravity. */
     public static float jumpVelocity(PlayerEntity player,float vanilla){
@@ -146,7 +153,7 @@ public final class ManuscriptEffects {
         ServerTickEvents.END_SERVER_TICK.register(server->{for(var player:server.getPlayerManager().getPlayerList())tick(player);});
         ServerPlayConnectionEvents.DISCONNECT.register((handler,server)->{release(handler.player);clearEffects(handler.player);LANDING.remove(handler.player.getUuid());});
         ServerLifecycleEvents.SERVER_STOPPING.register(server->{for(var player:server.getPlayerManager().getPlayerList()){release(player);clearEffects(player);}FLIGHTS.clear();LANDING.clear();EFFECTS.clear();});
-        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity,source,amount)->!(entity instanceof ServerPlayerEntity)||!(source.isOf(DamageTypes.FALL)&&fallImmune(entity)||source.isOf(DamageTypes.FLY_INTO_WALL)&&level(held(entity),6)>=3));
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity,source,amount)->!(entity instanceof ServerPlayerEntity)||!(source.isIn(DamageTypeTags.IS_FALL)&&fallImmune(entity)||source.isOf(DamageTypes.FLY_INTO_WALL)&&level(held(entity),6)>=3));
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity,source,damage)->{
             if(!(entity instanceof ServerPlayerEntity player)||source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)||!consumeRescueTotem(player))return true;
             player.setHealth(1);clearEffects(player);player.clearStatusEffects();
