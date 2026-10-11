@@ -458,5 +458,6 @@
   "command.guogaology.realm.overworld": "主世界",
   "command.guogaology.no_parent": "当前维度没有上一层。",
   "command.guogaology.kit_given": "已领取前往%s的完整建门材料。",
-  "command.guogaology.return_kit_given": "已领取当前维度的完整返程材料。"
+  "command.guogaology.return_kit_given": "已领取当前维度的完整返程材料。",
+  "block.guogaology.gummy_jar": "软糖罐"
 }

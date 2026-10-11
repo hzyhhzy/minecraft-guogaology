@@ -188,6 +188,10 @@ def convert_263_misc(out):
         for old in ('function','condition'):
             if old in result and isinstance(result[old],str):result['type']=result.pop(old)
         if 'functions' in result:result['modifier']=result.pop('functions')
+        if result.get('type') == 'minecraft:block_state_property':
+            result['type'] = 'minecraft:match_block'
+            result['blocks'] = result.pop('block')
+            if 'properties' in result:result['state'] = result.pop('properties')
         if 'conditions' in result:
             conditions=result.pop('conditions')
             assert len(conditions)<=1,'Review compound predicates before porting'
@@ -200,7 +204,7 @@ def convert_263_misc(out):
         for criterion in data.get('criteria', {}).values():
             if criterion.get('trigger') == 'minecraft:recipe_unlocked':
                 conditions=criterion['conditions']
-                conditions['recipes']=[conditions.pop('recipe')]
+                if 'recipe' in conditions:conditions['recipes']=[conditions.pop('recipe')]
         write(path,data)
     for path in (out / 'data/guogaology/worldgen/noise').glob('*.json'):
         data=read(path)

@@ -5,13 +5,54 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "guogaology:giant_laver"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "guogaology:giant_laver",
+              "conditions": [
+                {
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "condition": "minecraft:match_tool"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "guogaology:laver_ribbon",
+              "conditions": [
+                {
+                  "terms": [
+                    {
+                      "condition": "minecraft:survives_explosion"
+                    },
+                    {
+                      "chances": [
+                        0.05,
+                        0.0625,
+                        0.083333336,
+                        0.1
+                      ],
+                      "enchantment": "minecraft:fortune",
+                      "condition": "minecraft:table_bonus"
+                    }
+                  ],
+                  "condition": "minecraft:all_of"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

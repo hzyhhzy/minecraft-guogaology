@@ -188,6 +188,21 @@ public class LhoChunkGenerator extends ChunkGenerator {
       LhoIslandField.EdgeStats var13 = new LhoIslandField.EdgeStats();
       int var14 = LhoIslandField.applyEdgeColumns(var3, var4, var5, var1.getHeight(), var6.surface(), var11, var12, var8, this::blockStateOf, 6, var13);
 
+      SurfaceShaftField.ShaftProbe shaftProbe = new SurfaceShaftField.ShaftProbe() {
+         @Override public boolean hasData(int x, int z) {
+            return x >= var3.getMinBlockX() && x <= var3.getMinBlockX() + 15
+                  && z >= var3.getMinBlockZ() && z <= var3.getMinBlockZ() + 15;
+         }
+         @Override public int top(int x, int z) { return var12.top(x, z); }
+         @Override public boolean isVoidOrEdge(int x, int y, int z) { return var9.isVoidOrEdge(x, y, z); }
+         @Override public boolean isFluid(int x, int y, int z) {
+            return !var1.getBlockState(var7.set(x, y, z)).getFluidState().isEmpty();
+         }
+      };
+      int shafts = SurfaceShaftField.apply(worldSeed, var3, var4, var5, shaftProbe,
+            var8, this::blockStateOf, SurfaceShaftField::conwayStep);
+      if (shafts > 0) GuogaologyMod.LOGGER.debug("[SURFACE_SHAFT] chunk=({}, {}) shafts={}", var3.getMinBlockX() >> 4, var3.getMinBlockZ() >> 4, shafts);
+
       if (var10 > 0) {
          GuogaologyMod.LOGGER.debug("[outer] LHO island/void columns rewritten at {}", var10);
       }
@@ -290,6 +305,11 @@ public class LhoChunkGenerator extends ChunkGenerator {
 
       boolean isLhoEdge(int var1, int var2) {
          return this.flags(var1, var2) == 2;
+      }
+
+      boolean isVoidOrEdge(int x, int y, int z) {
+         Holder<Biome> biome = this.resolver.getNoiseBiome(x >> 2, y >> 2, z >> 2);
+         return biome.is(LHO_VOID_BIOME) || biome.is(LHO_EDGE_BIOME);
       }
 
       boolean isUnderworld(int var1, int var2, int var3) {

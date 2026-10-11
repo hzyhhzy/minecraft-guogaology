@@ -1,6 +1,8 @@
 package dev.guogaology;
 
 import dev.guogaology.block.FruitJellyBlock;
+import dev.guogaology.block.GummyJarBlock;
+import dev.guogaology.block.ConwayLinkBlock;
 import dev.guogaology.block.GuogaologyPortalBlock;
 import dev.guogaology.block.AbsenceBlock;
 import dev.guogaology.block.LtyChimeBlock;
@@ -55,7 +57,7 @@ public final class GuogaologyBlocks {
     public static final Block PROJECTION_GLASS = landscape("projection_glass",true);
     public static final Block BEAF_MARBLE = landscape("beaf_marble",false);
     public static final Block BIRD_SHALE = landscape("bird_shale",false);
-    public static final Block CONWAY_LINK = landscape("conway_link",false);
+    public static final Block CONWAY_LINK = block("conway_link", new ConwayLinkBlock(dev.guogaology.survival.BlockBalance.apply("conway_link", BlockBehaviour.Properties.ofFullCopy(Blocks.CALCITE))));
     public static final Block VEBLEN_PETAL = landscape("veblen_petal",true);
     public static final Block LIMIT_STONE = landscape("limit_stone",false);
     public static final Block RANK_AMBER = landscape("rank_amber",false);
@@ -104,6 +106,7 @@ public final class GuogaologyBlocks {
     public static final Block PLAIN_BERRY_GUOGAO = jelly("plain_berry_guogao");
     public static final Block PLAIN_LIME_GUOGAO = jelly("plain_lime_guogao");
     public static final Block PLAIN_AZURE_GUOGAO = jelly("plain_azure_guogao");
+    public static final Block GUMMY_JAR = translucent("gummy_jar", new GummyJarBlock(dev.guogaology.survival.BlockBalance.apply("gummy_jar", BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion())));
 
     public static final Block OUTER_RETURN_FRAME = block("outer_return_frame", new dev.guogaology.block.ReturnFrameBlock(dev.guogaology.survival.BlockBalance.apply("outer_return_frame",BlockBehaviour.Properties.of().noOcclusion()),0));
     public static final Block INNER_RETURN_FRAME = block("inner_return_frame", new dev.guogaology.block.ReturnFrameBlock(dev.guogaology.survival.BlockBalance.apply("inner_return_frame",BlockBehaviour.Properties.of().noOcclusion()),1));
