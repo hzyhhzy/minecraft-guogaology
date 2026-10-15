@@ -4,11 +4,13 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.3 · Minecraft Java / Fabric · 原生及1.21.1 Connector回归通过**
+**v0.5.4.1 · Minecraft Java / Fabric · 四版本构建及 fo262 回归通过**
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档矿物、装备材料和七类普通生物；晶核来自里界与地府，通过可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
 表界的地形、模板与矿物装备美术来自获授权的 Googology Dimension 1.0.0（Alice版），移植来源和改动边界见[合并说明](docs/OUTER-IMPORT.md)。[当前玩法规则](docs/MERGE-REVIEW-CHECKLIST.md)
+
+**0.5.4.1 的原始修改由 Alice（AliceLdl）完成。** 本仓库从其提供的 JAR 还原可维护源码并适配四个 Minecraft 版本；原始修改与移植工作分别记录，见[贡献者](AUTHORS.md)和[0.5.4.1 来源与验证](docs/WORK-0541-IMPORT.md)。
 
 ## 支持版本
 
@@ -21,7 +23,7 @@
 
 四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；本轮不提供旧存档迁移或旧 ID 别名。
 
-1.21.1的同一JAR也已验证可通过NeoForge21.1.248＋Sinytra Connector beta.16加载（beta.17曾在0.5.2验证）；这种安装方式使用Forgified Fabric API，不同时安装普通Fabric API。Connector不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
+0.5.3 的同一份 1.21.1 JAR 已验证可通过 NeoForge21.1.248＋Sinytra Connector beta.16 加载（beta.17 曾在 0.5.2 验证）。0.5.4.1 保留这些兼容修复，但本轮未重跑 Connector；这种安装方式使用 Forgified Fabric API，不同时安装普通 Fabric API。Connector 不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
 
 游戏内支持简体中文和英语，随 Minecraft「选项 → 语言」切换；同一 JAR 包含两种语言。方块与装备名称、变体提示、强化台、创造分类、群系、建筑、进度、声音字幕和命令帮助均有对应翻译。装有 Mod Menu 时，模组名称与简介也可随语言切换，无需额外安装翻译包。
 

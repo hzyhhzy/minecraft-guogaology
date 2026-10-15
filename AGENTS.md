@@ -1,5 +1,7 @@
 # Guogaology development
 
+- 2026-10-15: user authorizes merging `codex/import-0.5.4.1-jar` into the real `main` branch, superseding the earlier no-merge restriction for this version. The original 0.5.4.1 changes are by **Alice (AliceLdl)**; preserve that attribution in contributor/provenance records and future release notes. Source reconstruction and four-version adaptation are integration work, not authorship of Alice's original changes. This request does not authorize push or Release publication.
+
 - 2026-10-11: reconstructed the received 0.5.4.1 JAR on `codex/import-0.5.4.1-jar` from main/923dfb9, with maintainable source and all four Minecraft builds. Do not merge into main or publish. Preserve donor shaft/jar/loot/art behavior; see `docs/WORK-0541-IMPORT.md` for provenance, exact scope and validation. Four builds, 47 Python tests, 3,404-resource comparison and 7,240,757 ordered shaft writes passed. Hidden fo262 passed 15,175 native checks; two screenshots inspected. Installed into closed normal fo262 with old JAR backup, matching SHA-256 and 55 unrelated files unchanged. The user's fo263_2 retains their exact received test JAR.
 
 - 2026-10-08 publication authorization: the user explicitly requested push and GitHub Release for the completed0.5.3 patch. Publish `codex/0.5.3-fall-type-protection` and tag `v0.5.3`, including all four verified JARs, matching complete source and checksums. This supersedes the earlier no-push/no-release note for this patch only; it is not standing permission for future publications. See docs/RELEASE-0.5.3.md.

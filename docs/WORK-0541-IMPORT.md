@@ -1,13 +1,14 @@
 # 0.5.4.1 JAR source reconstruction
 
-The user requested a separate source branch and all four Minecraft targets, without merging into `main`.
+The original import request was for a separate source branch and all four Minecraft targets, without merging into `main`. On 2026-10-15 the user authorized merging this version into `main` and confirmed **Alice (AliceLdl)** as the author of the original 0.5.4.1 changes.
 
 - Branch: `codex/import-0.5.4.1-jar`.
 - Baseline: `main`, `923dfb9698e2b3fa9e1415218e4b581bf4e1ad7e` (0.5.3).
 - Input: user-supplied `guogaology-dimension-26.3-0.5.4.1.jar`.
+- Original 0.5.4.1 author: **Alice (AliceLdl)**. Commit `82f31f0` records this repository's source reconstruction and cross-version integration, not authorship of the original modifications. See [contributors](../AUTHORS.md).
 - SHA-256: `056f959d2fa0c60a7686075fe9b971b78655fb7bb9f64eaf4cec96bc5e17b18d`.
 - The received JAR retains the project's GPL-3.0-only WITH GPL-3.0-linking-exception notices. Original attribution is retained. This is a reconstruction, not the donor's unavailable original source.
-- No push, Release or merge into `main` is authorized for this task.
+- Local merge into `main` is now authorized. Push and Release publication remain outside this request.
 
 ## Reconstruction scope
 
