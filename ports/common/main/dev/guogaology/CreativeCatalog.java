@@ -21,7 +21,7 @@ public final class CreativeCatalog {
         String id=BuiltInRegistries.BLOCK.getKey(block).getPath();
         if(block instanceof NumberStoneBlock||block instanceof OrdinalBrickBlock)return "numbers";
         if(CoreGrades.ROOTS.contains(id)||block instanceof PortableRelicBlock||RARE.contains(id))return "cores";
-        if(block instanceof ChristmasLightBlock||block instanceof EmojiLanternBlock||block instanceof FruitJellyBlock||block==GuogaologyBlocks.MOSAIC_LIGHT||block==GuogaologyBlocks.STAR_GOLD)return "lighting";
+        if(block instanceof ChristmasLightBlock||block instanceof EmojiLanternBlock||block instanceof FruitJellyBlock||block instanceof GummyJarBlock||block==GuogaologyBlocks.MOSAIC_LIGHT||block==GuogaologyBlocks.STAR_GOLD)return "lighting";
         if(block instanceof ReturnFrameBlock||BUILDING.contains(id)||id.startsWith("astra_")||id.startsWith("office_")||id.equals("server_rack")||block==GuogaologyBlocks.PORTAL_FRAME)return "architecture";
         return "guogaology";
     }

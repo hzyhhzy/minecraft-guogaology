@@ -15,24 +15,11 @@ def write(path,value):
     path.write_text(json.dumps(value,ensure_ascii=False,separators=(',',':'))+'\n','utf8')
 
 def epsilon():
-    # Preserve the material silhouette and substrate, replace only the sigil.
+    # The 0.5.4.1 source artwork already contains the approved plain epsilon.
+    # Keep byte-identical pixels instead of rebuilding the retired epsilon-zero sigil.
     for name in ('epsilon_ore','nether_epsilon_ore','epsilon_block','epsilon_material'):
-        im=Image.open(S/(name+'.png')).convert('RGBA')
-        for y in range(5,12):
-            for x in range(5,12):
-                c=im.getpixel((x,y))
-                if min(c[:3])>240 or max(c[:3])<50:
-                    fill=(148,121,174,255) if name.endswith('material') else im.getpixel((2,y)) if name=='epsilon_block' else im.getpixel((14,y))
-                    im.putpixel((x,y),fill)
-        eps=['01111','10000','01110','10000','01111']
-        sub=['010','101','101','010']
-        ink={(4+x,5+y) for y,row in enumerate(eps) for x,v in enumerate(row) if v=='1'}
-        ink|={(10+x,9+y) for y,row in enumerate(sub) for x,v in enumerate(row) if v=='1'}
-        for x,y in ink:
-            for dx,dy in ((-1,0),(1,0),(0,-1),(0,1)):
-                if (x+dx,y+dy) not in ink:im.putpixel((x+dx,y+dy),(252,250,255,255))
-        for xy in ink:im.putpixel(xy,(37,26,49,255))
-        im.save(T/('item' if name.endswith('material') else 'block')/(name+'.png'))
+        destination=T/('item' if name.endswith('material') else 'block')/(name+'.png')
+        destination.write_bytes((S/(name+'.png')).read_bytes())
 
 GLYPHS={
  'omega':['10001','10001','10101','10101','01010'],

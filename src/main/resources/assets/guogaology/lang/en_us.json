@@ -458,5 +458,6 @@
   "command.guogaology.realm.overworld": "the Overworld",
   "command.guogaology.no_parent": "This dimension has no previous layer.",
   "command.guogaology.kit_given": "Received a complete portal kit for %s.",
-  "command.guogaology.return_kit_given": "Received a complete return portal kit for this dimension."
+  "command.guogaology.return_kit_given": "Received a complete return portal kit for this dimension.",
+  "block.guogaology.gummy_jar": "Gummy Jar"
 }

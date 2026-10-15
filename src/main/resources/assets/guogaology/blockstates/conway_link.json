@@ -1,7 +1,20 @@
 {
   "variants": {
-    "": {
-      "model": "guogaology:block/conway_link"
+    "facing=east": {
+      "model": "guogaology:block/conway_link",
+      "y": 0
+    },
+    "facing=south": {
+      "model": "guogaology:block/conway_link",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "guogaology:block/conway_link",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "guogaology:block/conway_link",
+      "y": 270
     }
   }
 }

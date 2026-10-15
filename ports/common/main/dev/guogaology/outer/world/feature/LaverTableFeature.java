@@ -188,33 +188,27 @@ public record LaverTableFeature(WeightedList<TemplateEntry> templates, Optional<
       return var1;
    }
 
-   /** Independent appearance per gummy: mixed tables are allowed. */
-   public static Block tableGummy(RandomSource random, Block embossed) {
-      if(random.nextInt(5)==0)return embossed;
-      var id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(embossed);
-      var plain=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(dev.guogaology.outer.GuogaologyMod.id("plain_"+id.getPath()));
-      return plain==Blocks.AIR?embossed:plain;
+   public static final float GUMMY_JAR_CHANCE = 0.01F;
+
+   public static Block tableGummy(RandomSource random, Block fallback) {
+      Block jar = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(
+            dev.guogaology.outer.GuogaologyMod.id("gummy_jar"));
+      return jar == Blocks.AIR ? fallback : jar;
    }
 
-   public int placeGummies(WorldGenLevel var1, RandomSource var2, StructureTemplate var3, BlockPos var4, StructurePlaceSettings var5, Block var6) {
-      List var7 = tableSurface(var3, var4, var5);
-      int var8 = Math.min(gummyCount(var2), var7.size());
-
-      for (int var9 = 0; var9 < var8; var9++) {
-         int var10 = var9 + var2.nextInt(var7.size() - var9);
-         BlockPos var11 = (BlockPos)var7.get(var9);
-         var7.set(var9, (BlockPos)var7.get(var10));
-         var7.set(var10, var11);
+   /** Each eligible tabletop cell independently receives a jar with probability 1%. */
+   public int placeGummies(WorldGenLevel world, RandomSource random, StructureTemplate template,
+         BlockPos origin, StructurePlaceSettings settings, Block fallback) {
+      List<BlockPos> surface = tableSurface(template, origin, settings);
+      Block jar = tableGummy(random, fallback);
+      int placed = 0;
+      for (BlockPos pos : surface) {
+         if (random.nextFloat() < GUMMY_JAR_CHANCE) {
+            world.setBlock(pos.above(), jar.defaultBlockState(), 2);
+            placed++;
+         }
       }
-
-      int var13 = 0;
-
-      for (int var14 = 0; var14 < var8; var14++) {
-         var1.setBlock(((BlockPos)var7.get(var14)).above(), tableGummy(var2,var6).defaultBlockState(), 2);
-         var13++;
-      }
-
-      return var13;
+      return placed;
    }
 
    public static List<BlockPos> tableSurface(StructureTemplate var0, BlockPos var1, StructurePlaceSettings var2) {

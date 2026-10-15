@@ -4,17 +4,19 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.3 · Minecraft Java / Fabric · Native and 1.21.1 Connector regression passed**
+**v0.5.4.1 · Minecraft Java / Fabric · Four target builds and fo262 regression passed**
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four ordinal minerals and seven ordinary creatures; crystal cores come from the two deeper worlds. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
 Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mineral/equipment art are reconstructed in maintainable source. See [provenance and adaptations](docs/OUTER-IMPORT.md) and [current gameplay rules](docs/MERGE-REVIEW-CHECKLIST.en.md).
 
+**The original 0.5.4.1 changes were made by Alice (AliceLdl).** This repository reconstructs maintainable source from the supplied JAR and adapts it to all four Minecraft targets. Original authorship and integration work are recorded separately in [Contributors](AUTHORS.md) and the [0.5.4.1 provenance and validation notes](docs/WORK-0541-IMPORT.md).
+
 ## Installation
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
 
-The same 1.21.1 JAR is also tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
+The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Version 0.5.4.1 retains those compatibility fixes, but Connector was not rerun for this import. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
 
 | Minecraft | Java | Fabric Loader | Fabric API used for builds |
 |---|---|---|---|

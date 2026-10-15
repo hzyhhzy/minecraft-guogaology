@@ -128,7 +128,7 @@ def old_ingredient(v):
     if isinstance(v,str):return {'tag':v[1:]} if v.startswith('#') else {'item':v}
     return v
 
-def recipe_unlocks(data,recipe_paths):
+def recipe_unlocks(data,recipe_paths,target='1.21.1'):
     """Unlock surviving recipes from any ingredient, without stale donor rewards.
 
     The original recipe advancements refer to removed Den/axe/hoe items and
@@ -150,7 +150,8 @@ def recipe_unlocks(data,recipe_paths):
         identifier=NS+':'+p.stem
         criteria={f'ingredient_{i}':{'trigger':'minecraft:inventory_changed','conditions':{'items':[{'items':value}]}}
                   for i,value in enumerate(sorted(values))}
-        criteria['has_recipe']={'trigger':'minecraft:recipe_unlocked','conditions':{'recipe':identifier}}
+        conditions={'recipes':[identifier]} if target=='26.3' else {'recipe':identifier}
+        criteria['has_recipe']={'trigger':'minecraft:recipe_unlocked','conditions':conditions}
         write(data/f'advancement/recipes/{p.stem}.json',{
             'parent':'minecraft:recipes/root','criteria':criteria,
             'requirements':[list(criteria)],'rewards':{'recipes':[identifier]}})
@@ -241,7 +242,7 @@ def prepare(target,out):
         write(destination,v)
         if folder=='recipe':recipe_paths.append(destination)
         if rel.parts[:2]==('worldgen','biome'):biome_paths.append(destination)
-    recipe_unlocks(data,recipe_paths)
+    recipe_unlocks(data,recipe_paths,target)
     dimension=walk(load(SOURCE/'dimension/googology.json'))
     if target!='26.3':
         def climate(v):

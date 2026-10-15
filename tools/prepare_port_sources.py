@@ -141,6 +141,11 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'GuogaologyAtmosphere.java':
+            # The extension belongs to FabricRenderState, not the Minecraft class.
+            # Emitting invokeinterface also matches the received 0.5.4.1 fix.
+            text = text.replace('context.levelState().setData(', '((net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState)context.levelState()).setData(')
+            text = text.replace('context.levelState().getDataOrDefault(', '((net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState)context.levelState()).getDataOrDefault(')
         if name == 'BowEffects.java':
             text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
         if name == 'MiningEffects.java':
