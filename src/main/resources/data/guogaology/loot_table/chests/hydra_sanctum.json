@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:hydra_bud_lv3",
+          "name": "guogaology:hydra_bud_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -21,11 +21,30 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv3",
+          "name": "guogaology:ordinal_crystal_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:hydra_sprig",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 16,
+                "max": 32
+              }
             }
           ]
         }

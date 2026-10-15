@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "anchored=false": {
       "model": "guogaology:block/fffz_trace"
+    },
+    "anchored=true": {
+      "model": "guogaology:block/fffz_trace_anchored"
     }
   }
 }

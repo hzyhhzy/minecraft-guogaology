@@ -1,18 +1,22 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_material": {
+    "ingredient_0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "guogaology:ordinal_crystal_lv2",
-              "guogaology:power_tower_core",
-              "guogaology:tree_node_blue",
-              "guogaology:tree_node_green",
-              "guogaology:tree_node_red"
-            ]
+            "items": "guogaology:ordinal_crystal_lv2"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:power_tower_core"
           }
         ]
       }
@@ -26,7 +30,8 @@
   },
   "requirements": [
     [
-      "has_material",
+      "ingredient_0",
+      "ingredient_1",
       "has_recipe"
     ]
   ],

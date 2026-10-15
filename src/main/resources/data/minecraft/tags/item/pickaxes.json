@@ -1,9 +1,10 @@
 {
   "replace": false,
   "values": [
+    "guogaology:number_pickaxe",
     "guogaology:omega_pickaxe",
     "guogaology:epsilon_pickaxe",
     "guogaology:gamma_pickaxe",
-    "guogaology:number_pickaxe"
+    "guogaology:true_omega_pickaxe"
   ]
 }

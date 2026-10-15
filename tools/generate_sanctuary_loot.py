@@ -1,10 +1,11 @@
 """Generate the sixteen current giant-landmark chest tables.
 
 All rewards use existing survival materials. No retired content, equipment,
-foreign-family cores or mineral-tier shortcuts enter these tables. Appearance-
-dependent bricks/lamps are deliberately omitted instead of inventing components.
+foreign-family cores or mineral-tier shortcuts enter these tables. Recipe tags
+resolve to ordinary default-state building materials, including lights.
 """
 from pathlib import Path
+from collections import Counter
 import argparse
 import json
 import math
@@ -15,8 +16,8 @@ TABLES = ROOT / 'src/main/resources/data/guogaology/loot_table/chests'
 
 # Entries are (registered item path, minimum count, maximum count). Every listed
 # theme product is guaranteed once; integer uniform counts supply the variety.
-# Restore the complete pre-0.4.3 reward policy (ad1b008). Ordinal raw stage3
-# is displayed as Ordinal Core Lv2; ordinary ordinal_crystal stays ungraded.
+# 0.5.5: main rewards are one grade lower. Secondary cores become their
+# raw crafting ingredients and ordinary crystals become the same count of shards.
 THEMES = {
     'matrix': {
         'core': 'sequence_core',
@@ -79,12 +80,44 @@ def pool(name, minimum, maximum):
             'functions': [{'function': 'minecraft:set_count', 'count': count}]}]}
 
 
+PRIMARY = {'matrix':'matrix_sheet','power':'arrow_knot','hydra':'hydra_sprig',
+           'absence':'absence_glass','weaver':'laver_gel','astra':'cloud_pearl',
+           'guogao':'dread_resin','frontier':'set_membrane'}
+
+
+def raw_recipe(theme):
+    """Resolve the committed Lv1 recipe; no second hard-coded ingredient list."""
+    core=THEMES[theme]['core']
+    recipe=json.loads((ROOT/f'src/main/resources/data/guogaology/recipe/{core}.json').read_text('utf8'))
+    items=[]
+    for value in recipe['ingredients']:
+        if value.get('item')=='guogaology:ordinal_crystal':continue
+        if 'item' in value:item=value['item']
+        else:
+            tag=value['tag'].split(':')[1]
+            values=json.loads((ROOT/f'src/main/resources/data/guogaology/tags/item/{tag}.json').read_text('utf8'))['values']
+            item=values[0]
+        items.append(item.split(':')[1])
+    assert len(items)==8,(theme,items)
+    return Counter(items)
+
+
+def reward_bounds(theme,main):
+    spec=THEMES[theme]
+    rewards=([(spec['core']+'_lv2',1,1),('ordinal_crystal_lv2',1,1)] if main else
+             [(name,count*6,count*12) for name,count in raw_recipe(theme).items()]+[('ordinal_shard',30,60)])
+    if main and theme!='absence':rewards.append((PRIMARY[theme],16,32))
+    if main and theme=='power':rewards.append(('scg_node',8,16))
+    rewards+=spec['main' if main else 'side']
+    # Shared raw and theme-product entries occupy one pool, not duplicate stacks.
+    combined={}
+    for item,lo,hi in rewards:
+        before=combined.get(item,(0,0));combined[item]=(before[0]+lo,before[1]+hi)
+    return combined
+
+
 def table(theme, main):
-    spec = THEMES[theme]
-    rewards = ([(spec['core']+'_lv3',1,1),('ordinal_crystal_lv3',1,1)] if main else
-               [(spec['core'],6,12),('ordinal_crystal',30,60)])
-    rewards += spec['main' if main else 'side']
-    return {'type': 'minecraft:chest', 'pools': [pool(*entry) for entry in rewards]}
+    return {'type': 'minecraft:chest', 'pools': [pool(name,*bounds) for name,bounds in reward_bounds(theme,main).items()]}
 
 
 def write(path, value):
@@ -118,10 +151,15 @@ def audit():
                 assert 1 <= lo <= hi <= 64, (name,item,lo,hi)
                 assert item not in bounds, 'Duplicate guaranteed item '+item
                 bounds[item] = (lo,hi)
-            core = spec['core'] + ('_lv3' if main else '')
-            ordinal = 'ordinal_crystal_lv3' if main else 'ordinal_crystal'
-            assert bounds[core] == ((1,1) if main else (6,12))
-            assert bounds[ordinal] == ((1,1) if main else (30,60))
+            core = spec['core']+'_lv2' if main else None
+            ordinal = 'ordinal_crystal_lv2' if main else 'ordinal_shard'
+            if main:assert bounds[core]==(1,1)
+            else:
+                assert spec['core'] not in bounds
+                for raw,count in raw_recipe(theme).items():
+                    assert bounds[raw][0]>=count*6 and bounds[raw][1]>=count*12
+            assert bounds[ordinal]==((1,1) if main else (30,60))
+            assert bounds==reward_bounds(theme,main)
             maximum_stacks = sum(math.ceil(hi/64) for lo,hi in bounds.values())
             assert maximum_stacks <= 27, name+' can overflow the chest'
             expected_core_roots = {core,ordinal}
@@ -134,18 +172,20 @@ def audit():
             for _ in range(10000):
                 sample = {item:rng.randint(lo,hi) for item,(lo,hi) in bounds.items()}
                 assert sum(math.ceil(count/64) for count in sample.values()) <= 27
-                seen_core.add(sample[core]); seen_ordinal.add(sample[ordinal])
-            assert seen_core == set(range(bounds[core][0],bounds[core][1]+1))
+                if main:seen_core.add(sample[core])
+                seen_ordinal.add(sample[ordinal])
+            if main:assert seen_core == set(range(bounds[core][0],bounds[core][1]+1))
             assert seen_ordinal == set(range(bounds[ordinal][0],bounds[ordinal][1]+1))
-            reports.append({'table':name,'guaranteed_core':core,'core_count':list(bounds[core]),
+            reports.append({'table':name,'guaranteed_core':core,'core_count':list(bounds[core]) if main else [0,0],
                             'ordinal_count':list(bounds[ordinal]),'maximum_initial_stacks':maximum_stacks,
                             'samples':10000,'theme_products':{k:list(v) for k,v in bounds.items() if k not in (core,ordinal)}})
     result={'tables':len(reports),'sampled_chests':sum(x['samples'] for x in reports),
             'maximum_initial_stacks':max(x['maximum_initial_stacks'] for x in reports),'results':reports,
             'notes':['All rewards are stackable existing materials with individual counts <=64.',
                      'Vanilla chest shuffle may split stacks into available empty slots; initial stacks remain <=27.',
-                     'No appearance-bearing bricks/lamps, foreign cores/minerals or legacy table IDs.']}
-    write(ROOT/'build/loot-0501.json',result)
+                     'Secondary raw recipe variants use their default appearance; every numeral/emotion remains accepted.',
+                     'Main rewards are local displayedLv2 and Ordinal displayedLv1; side rewards6–12rawsets plus30–60shards.']}
+    write(ROOT/'build/loot-055.json',result)
     return result
 
 

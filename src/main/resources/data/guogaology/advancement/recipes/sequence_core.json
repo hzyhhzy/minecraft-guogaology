@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:matrix_sheet"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:projection_glass"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ridge_lamina"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:y_leaves"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:sequence_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "ingredient_1",
+      "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:sequence_core"
+    ]
+  }
+}

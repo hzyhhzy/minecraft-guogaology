@@ -106,9 +106,14 @@ public final class SurvivalStructures {
     }
     public static BlockState stateFor(Site s,int lx,int y,int lz,byte code){
         String finaleCore=s.layout().finaleCore(lx,y,lz);
-        if(finaleCore!=null)return CoreGrades.levels(finaleCore).get(1).defaultBlockState();
+        if(finaleCore!=null){
+            var state=CoreGrades.levels(finaleCore).get(0).defaultBlockState();
+            return state.hasProperty(dev.guogaology.block.AnchoredBlock.STABLE)?state.setValue(dev.guogaology.block.AnchoredBlock.STABLE,true):state;
+        }
         if(s.theme==SurvivalTheme.ABSENCE&&(code==SanctuaryLayout.PHANTOM_FFFZ||code==SanctuaryLayout.PHANTOM_FOS||code==SanctuaryLayout.PHANTOM_EMPTY)
                 &&s.layout().railingCollectible(lx,y,lz))
+            return palette(s.theme)[code].setValue(dev.guogaology.block.AnchoredBlock.STABLE,true);
+        if(s.theme==SurvivalTheme.ABSENCE&&code==SanctuaryLayout.PHANTOM_EMPTY)
             return palette(s.theme)[code].setValue(dev.guogaology.block.AnchoredBlock.STABLE,true);
         if(code==SanctuaryLayout.CROWN)return GuogaologyBlocks.ASTRA_WEAVE.defaultBlockState().setValue(dev.guogaology.block.AstraWeaveBlock.COLOR,AstraCrown.colorAt(lx,y,lz));
         if(code==SanctuaryLayout.BMS_DIGIT){
@@ -146,7 +151,7 @@ public final class SurvivalStructures {
         BlockState[] p=new BlockState[SanctuaryLayout.MATERIAL_COUNT];Arrays.fill(p,main.defaultBlockState());
         p[SanctuaryLayout.AIR]=Blocks.AIR.defaultBlockState();p[SanctuaryLayout.MAIN]=main.defaultBlockState();p[SanctuaryLayout.TRIM]=trim.defaultBlockState();p[SanctuaryLayout.FLOOR]=floor.defaultBlockState();
         p[SanctuaryLayout.GLASS]=(theme==SurvivalTheme.ABSENCE?GuogaologyBlocks.ABSENCE_GLASS:theme==SurvivalTheme.GUOGAO?Blocks.PURPLE_STAINED_GLASS:Blocks.LIGHT_BLUE_STAINED_GLASS).defaultBlockState();
-        p[SanctuaryLayout.LIGHT]=(theme==SurvivalTheme.GUOGAO?GuogaologyBlocks.CYAN_LANTERN:theme==SurvivalTheme.ASTRA?GuogaologyBlocks.ASTRA_LIGHT:GuogaologyBlocks.ORDINAL_CRYSTAL).defaultBlockState();
+        p[SanctuaryLayout.LIGHT]=(theme==SurvivalTheme.GUOGAO?GuogaologyBlocks.CYAN_LANTERN:theme==SurvivalTheme.POWER?GuogaologyBlocks.AMBER_INLAY:GuogaologyBlocks.ASTRA_LIGHT).defaultBlockState();
         p[SanctuaryLayout.LEAF]=GuogaologyBlocks.DREAD_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT,true);
         p[SanctuaryLayout.LOG]=GuogaologyBlocks.DREAD_LOG.defaultBlockState();p[SanctuaryLayout.YARN]=GuogaologyBlocks.TIANYI_FIBER.defaultBlockState();
         p[SanctuaryLayout.DARK]=Blocks.DEEPSLATE_TILES.defaultBlockState();p[SanctuaryLayout.METAL]=Blocks.IRON_BLOCK.defaultBlockState();
@@ -167,7 +172,7 @@ public final class SurvivalStructures {
         p[SanctuaryLayout.SHELF]=(theme==SurvivalTheme.ASTRA?GuogaologyBlocks.SERVER_RACK:Blocks.BOOKSHELF).defaultBlockState();
         p[SanctuaryLayout.SLAB]=(theme==SurvivalTheme.ASTRA?Blocks.SMOOTH_QUARTZ_SLAB:theme==SurvivalTheme.GUOGAO?Blocks.POLISHED_BLACKSTONE_SLAB:theme==SurvivalTheme.WEAVER?Blocks.DARK_OAK_SLAB:Blocks.SMOOTH_STONE_SLAB).defaultBlockState();
         p[SanctuaryLayout.CHAIN]=Blocks.IRON_CHAIN.defaultBlockState();p[SanctuaryLayout.LANTERN]=(theme==SurvivalTheme.GUOGAO?Blocks.SOUL_LANTERN:Blocks.LANTERN).defaultBlockState();
-        p[SanctuaryLayout.CRYSTAL]=GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState();p[SanctuaryLayout.BLOOM]=GuogaologyBlocks.EPSILON_BLOOM.defaultBlockState();
+        p[SanctuaryLayout.CRYSTAL]=GuogaologyBlocks.ASTRA_LIGHT.defaultBlockState();p[SanctuaryLayout.BLOOM]=GuogaologyBlocks.EPSILON_BLOOM.defaultBlockState();
         p[SanctuaryLayout.WORKSTATION]=(theme==SurvivalTheme.WEAVER?Blocks.LOOM:Blocks.CRAFTING_TABLE).defaultBlockState();
         p[SanctuaryLayout.PANE]=Blocks.GLASS_PANE.defaultBlockState();p[SanctuaryLayout.SMALL_FLOWER]=GuogaologyBlocks.EMOJI_FLOWER.defaultBlockState();p[SanctuaryLayout.FRUIT]=GuogaologyBlocks.JELLIES[0].defaultBlockState();
         p[SanctuaryLayout.PHANTOM_PSI]=GuogaologyBlocks.LHO_HYDRA_PSI.defaultBlockState();
@@ -235,6 +240,14 @@ public final class SurvivalStructures {
             p[SanctuaryLayout.TEAL]=GuogaologyBlocks.SET_JADE.defaultBlockState();
             p[SanctuaryLayout.SPAR]=GuogaologyBlocks.LIMIT_LAMINA.defaultBlockState();
         }
+        p[SanctuaryLayout.PRIMARY_RAW]=(switch(theme){
+            case MATRIX->CoreResources.MATRIX_SHEET;case POWER->CoreResources.ARROW_KNOT;
+            case HYDRA->CoreResources.HYDRA_SPRIG;case ABSENCE->GuogaologyBlocks.ABSENCE_GLASS;
+            case WEAVER->CoreResources.LAVER_GEL;case ASTRA->CoreResources.CLOUD_PEARL;
+            case GUOGAO->CoreResources.DREAD_RESIN;case FRONTIER->CoreResources.SET_MEMBRANE;
+        }).defaultBlockState();
+        p[SanctuaryLayout.SECONDARY_RAW]=(theme==SurvivalTheme.POWER?CoreResources.SCG_NODE:
+                theme==SurvivalTheme.FRONTIER?CoreResources.TURING_ENDCAP:CoreResources.CLOUD_PEARL).defaultBlockState();
         return p;
     }
 }

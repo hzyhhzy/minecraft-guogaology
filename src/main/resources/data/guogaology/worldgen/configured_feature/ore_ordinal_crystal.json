@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 9,
+    "targets": [
+      {
+        "state": {
+          "Name": "guogaology:ordinal_crystal_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "guogaology:ordinal_crystal_ore_replaceables"
+        }
+      },
+      {
+        "state": {
+          "Name": "guogaology:empty_crystal_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "guogaology:empty_crystal_ore_replaceables"
+        }
+      },
+      {
+        "state": {
+          "Name": "guogaology:dread_crystal_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "guogaology:dread_crystal_ore_replaceables"
+        }
+      }
+    ]
+  }
+}

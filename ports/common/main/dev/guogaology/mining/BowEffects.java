@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.*;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -25,7 +26,9 @@ public final class BowEffects {
         if(!(level instanceof ServerLevel world))return true;
         var own=GearData.profile(bow);var bookStack=ManuscriptEffects.held(owner);var book=GearData.profile(bookStack);
         int bookTier=GearData.bookTier(bookStack),branch=EquipmentRules.highest(own,2);
-        boolean deep=ManuscriptEffects.deep(world),free=player.hasInfiniteMaterials()||branch>0&&ammo.is(Items.ARROW);
+        boolean deep=ManuscriptEffects.deep(world);
+        int ammoCost=player.hasInfiniteMaterials()||branch>0&&ammo.is(Items.ARROW)?0:EnchantmentHelper.processAmmoUse(world,bow,ammo,1);
+        if(ammoCost>ammo.getCount())return false;boolean free=ammoCost==0;
         var shot=new BowShotData(UUID.randomUUID().toString(),player.getUUID().toString(),player.getTeam()==null?"":player.getTeam().getName(),
             deep?0:EquipmentRules.attack(0,own,book,false,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)),
             deep?EquipmentRules.attack(1,own,book,true,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)):1,
@@ -42,8 +45,8 @@ public final class BowEffects {
             arrow.shootFromRotation(player,player.getXRot(),player.getYRot()+spread,0,(float)(3*draw*EquipmentRules.arrowSpeedMultiplier(tier)),1);
             arrows.add(arrow);BowVolleyLedger.get(world.getServer()).register(shot.volley,arrow.getUUID());
         }
-        for(var arrow:arrows)if(!world.addFreshEntity(arrow))BowVolleyLedger.get(world.getServer()).destroy(shot.volley,arrow.getUUID());
-        if(!free)ammo.shrink(1);
+        for(var arrow:arrows)if(!world.addFreshEntity(arrow))BowVolleyLedger.get(world.getServer()).destroy(shot.volley,arrow.getUUID());else arrow.applyOnProjectileSpawned(world,bow);
+        if(!free)ammo.shrink(ammoCost);
         InteractionHand hand=owner.getUsedItemHand();bow.hurtAndBreak(1,owner,hand==InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
         world.playSound(null,player.getX(),player.getY(),player.getZ(),SoundEvents.ARROW_SHOOT,SoundSource.PLAYERS,1,1/(world.getRandom().nextFloat()*.4f+1.2f)+draw*.5f);
         player.awardStat(Stats.ITEM_USED.get(bow.getItem()));return true;

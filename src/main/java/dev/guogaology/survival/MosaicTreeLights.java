@@ -45,12 +45,13 @@ final class MosaicTreeLights {
             p.emojiLampCenter(new Point(x,y,z));
         }
     }
-    /** Hidden caches are additional rewards, independent of the fifty accessible indoor pieces. */
+    /** Lamps retain complete luminous chambers, with ordinary resin at the center. */
     static void populateCores(SanctuaryLayout p){
         for(var lamp:p.numberLamps()){
-            var q=lamp.center();p.box(q.x()-1,q.y()-1,q.z()-1,q.x()+1,q.y()+1,q.z()+1,CRYSTAL);
+            var q=lamp.center();p.box(q.x()-1,q.y()-1,q.z()-1,q.x()+1,q.y()+1,q.z()+1,GLASS);
+            p.set(q.x(),q.y(),q.z(),PRIMARY_RAW);
         }
-        for(var q:p.emojiLampCenters())p.set(q.x(),q.y(),q.z(),GUOGAO_HEART);
+        for(var q:p.emojiLampCenters())p.set(q.x(),q.y(),q.z(),LIGHT);
     }
     private static java.util.List<Point> planBand(SanctuaryLayout p,int startY,double start,java.util.List<Integer> digits){
         // Plan before writing. Turn a complete row around the crown if an internal ramp

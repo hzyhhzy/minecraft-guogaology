@@ -29,6 +29,6 @@ public final class FirDecorations {
                 brush.set(x+d,cy+dir*v,z+u,NaturalForms.GOLD_STAR);
             }
         }
-        brush.set(x,cy,z,NaturalForms.GUOGAO_HEART);
+        brush.set(x,cy,z,NaturalForms.GOLD_STAR);
     }
 }

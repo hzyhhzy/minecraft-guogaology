@@ -62,7 +62,7 @@ public final class MiningContent {
         }
         for(int tier=1;tier<=4;tier++){
             String id=EquipmentRules.MINERALS[tier-1]+"_bow";
-            Item bow=item(id,new OrdinalBowItem(itemSettings(id).durability(EquipmentRules.durability(tier,7)).component(CORES,List.of()).repairable(MATERIALS[tier-1]),tier));
+            Item bow=item(id,new OrdinalBowItem(itemSettings(id).durability(EquipmentRules.durability(tier,7)).enchantable(1).component(CORES,List.of()).repairable(MATERIALS[tier-1]),tier));
             BOWS[tier-1]=bow;GEAR.put(bow,new GearSpec(tier,7));
         }
         NumericRecipe.register();MiningEffects.initialize();ManuscriptEffects.initialize();OpenManuscriptPayload.initialize();

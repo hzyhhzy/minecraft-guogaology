@@ -59,7 +59,7 @@ public final class TuringTapeBlock extends StatefulDecorBlock {
         for(var d:Direction.values()){
             var neighbor=pos.relative(d);if(!world.hasChunkAt(neighbor))return null;
             var state=world.getBlockState(neighbor);
-            if(!state.is(this)&&!state.is(GuogaologyBlocks.BOUNDARY_CORE))continue;
+            if(!state.is(this)&&!state.is(GuogaologyBlocks.BOUNDARY_CORE)&&!state.is(dev.guogaology.CoreResources.TURING_ENDCAP))continue;
             if(first==null)first=d;else if(second==null)second=d;else return null;
         }
         return second==null?null:new Neighbors(first,second);

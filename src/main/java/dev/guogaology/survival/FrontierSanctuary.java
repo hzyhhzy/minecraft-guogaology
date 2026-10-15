@@ -10,7 +10,7 @@ final class FrontierSanctuary {
         p.box(-44,72,-1,44,76,2,AIR);
         p.box(-44,71,-1,44,71,2,DARK);
         p.box(-44,72,0,44,72,0,TURING);
-        p.set(-45,72,0,BOUNDARY_CORE);p.set(45,72,0,BOUNDARY_CORE);
+        p.set(-45,72,0,SECONDARY_RAW);p.set(45,72,0,SECONDARY_RAW);
     }
     static void build(SanctuaryLayout p){
         p.box(-61,0,-40,61,1,40,MAIN);

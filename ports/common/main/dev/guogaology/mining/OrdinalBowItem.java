@@ -15,6 +15,7 @@ public final class OrdinalBowItem extends BowItem {
     @Override public void inventoryTick(ItemStack s,ServerLevel world,Entity owner,EquipmentSlot slot){if(s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION||s.getOrDefault(MiningContent.DEEP,false)!=ManuscriptEffects.deep(world)){s.set(MiningContent.DEEP,ManuscriptEffects.deep(world));GearData.refresh(s);}}
     @Override public void appendHoverText(ItemStack stack,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
         out.accept(Component.translatable("mining.guogaology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,7)));
+        var hint=GearData.modificationHint(stack);if(hint!=null)out.accept(Component.translatable("mining.guogaology."+hint));
         out.accept(Component.translatable("mining.guogaology.bow_speed_tooltip",EquipmentRules.format(EquipmentRules.arrowSpeedMultiplier(tier))));
         int branch=EquipmentRules.highest(GearData.profile(stack),2);
         if(branch>=1)out.accept(Component.translatable("mining.guogaology.bow_infinity"));if(branch>=2)out.accept(Component.translatable("mining.guogaology.bow_multishot"));if(branch>=3)out.accept(Component.translatable("mining.guogaology.bow_pierce"));

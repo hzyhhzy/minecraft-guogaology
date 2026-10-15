@@ -128,12 +128,12 @@ def section(lang):
         mining_rows.append(cells)
     mining_names = {
         "bare_hand": tr("空手＋Ω裸书", "Hand + bare Omega book"),
-        "hand_one_sequence": tr("空手＋序列Lv1", "Hand + Sequence Lv1"),
-        "hand_mixed_sequence": tr("空手＋序列Lv1和Lv3", "Hand + Sequence Lv1 and Lv3"),
-        "omega_six_sequence": tr("Ω镐＋六颗序列Lv3", "Omega pick + six Sequence Lv3"),
-        "diamond_efficiency_v": tr("钻石效率V＋两颗序列Lv3", "Diamond Efficiency V + two Sequence Lv3"),
-        "wrong_tool": tr("错误工具／效率V＋两颗序列Lv3", "Wrong tool / Efficiency V + two Sequence Lv3"),
-        "haste_ii": tr("Ω镐＋两颗序列Lv3＋急迫II", "Omega pick + two Sequence Lv3 + Haste II"),
+        "hand_one_sequence": tr("空手＋矩阵Lv1", "Hand + Matrix Lv1"),
+        "hand_mixed_sequence": tr("空手＋矩阵Lv1和Lv3", "Hand + Matrix Lv1 and Lv3"),
+        "omega_six_sequence": tr("Ω镐＋六颗矩阵Lv3", "Omega pick + six Matrix Lv3"),
+        "diamond_efficiency_v": tr("钻石效率V＋两颗矩阵Lv3", "Diamond Efficiency V + two Matrix Lv3"),
+        "wrong_tool": tr("错误工具／效率V＋两颗矩阵Lv3", "Wrong tool / Efficiency V + two Matrix Lv3"),
+        "haste_ii": tr("Ω镐＋两颗矩阵Lv3＋急迫II", "Omega pick + two Matrix Lv3 + Haste II"),
         "fatigue_water_air": tr("上例＋疲劳I、水下、未站稳", "Previous + Fatigue I, water and airborne"),
     }
     mining_examples = []
@@ -152,7 +152,7 @@ def section(lang):
     compare_rows = [[tr("直接攻击／下界合金锋利V", "Direct attack / Netherite SharpnessV"), number(v["attackRatio"]["normal"]) + "×", number(v["attackRatio"]["deep"]) + "×"], [tr("固定80%最大承伤／四件保护IV", "Fixed80% hit capacity / four ProtectionIV"), number(v["fixed80ThresholdRatio"]["normal"]) + "×", number(v["fixed80ThresholdRatio"]["deep"]) + "×"]]
     return f'''<section class="language" data-lang="{lang}">
 <h1>{tr("强化系统 · 数值审计", "Enhancement system · Numerical audit")}</h1>
-<p class="notice">{tr("0.4.4生产规则revision48。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.4.4 rules, revision48. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
+<p class="notice">{tr("0.5.5生产规则revision48。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.5.5 rules, revision48. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
 <nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=1,2,3,4">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
 <p>{tr("Ω装备每件8槽、手稿6槽；群系晶核Lv3／序数晶核Lv3。序数晶体与晶核只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regional Core Lv3 / Ordinal Core Lv3. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
@@ -184,7 +184,7 @@ def section(lang):
 <article><h2>{tr("弓：速度相关的伤害范围", "Bows: velocity-dependent damage ranges")}</h2>
 <p>{tr("示例为同档裸弓＋裸手稿、满弦、碰撞速度等于初速、目标无防护；未加入任何晶核。保留原版箭系数2、ceil取整及满弦随机加伤，飞行阻力和射手速度可在模拟器的碰撞速度字段输入。表界固定HP加成随蓄力比例缩放，里界乘区施加于原版实际箭伤。", "Examples use matching bare bow/manuscript tiers, full draw, impact speed equal to launch speed and an unprotected target; no cores. Vanilla coefficient2, ceil and full-draw random damage remain. Enter impact speed in the simulator to account for drag or shooter motion. Outer fixedHP bonuses scale with charge; inner factors multiply actual native arrow damage.")}</p>
 {table([tr("环境", "Realm"), tr("档位", "Tier"), tr("初速 格/刻", "Launch blocks/tick"), tr("原版取整伤害", "Native ceil damage"), tr("含手稿直击范围", "Direct range with manuscript"), tr("基础耐久", "Base durability")], ranged_rows)}
-<p>{tr("分枝Lv1无限，Lv2三箭，Lv3每箭最多命中两个生物。三箭不把单目标伤害乘3；同轮同目标最多承受一次直击和一次爆裂。每箭仅首次有效生物命中产生爆裂，第二目标仍可获得果糕状态。特殊箭每轮消耗一支，仅中央保留特殊效果，侧箭不能回收；生存普通箭无限仍须背包有箭，创造空背包可发普通箭。临界核晶禁止放入手稿，防火由界限手稿Lv2／3提供。", "BranchLv1 Infinity, Lv2 three arrows, Lv3 up to two living targets per arrow. Three arrows never triple one target's damage; each target gets at most one direct hit and one burst per volley. Each arrow bursts only on its first valid living hit; its second target can receive Guogao effects. Special ammo consumes one per volley; only the centre keeps special effects and side arrows cannot be picked up. Survival Infinity still requires an arrow; Creative may fire ordinary arrows from an empty inventory. Criticality cannot fit manuscripts; Boundary manuscriptsLv2/3 provide fire resistance.")}</p>
+<p>{tr("分枝Lv1无限，Lv2三箭，Lv3每箭最多命中两个生物。三箭不把单目标伤害乘3；同轮同目标最多承受一次直击和一次爆裂。每箭仅首次有效生物命中产生爆裂，第二目标仍可获得果糕状态。特殊箭每轮消耗一支，仅中央保留特殊效果，侧箭不能回收；生存普通箭无限仍须背包有箭，创造空背包可发普通箭。核爆之心禁止放入手稿，防火由界限手稿Lv2／3提供。", "BranchLv1 Infinity, Lv2 three arrows, Lv3 up to two living targets per arrow. Three arrows never triple one target's damage; each target gets at most one direct hit and one burst per volley. Each arrow bursts only on its first valid living hit; its second target can receive Guogao effects. Special ammo consumes one per volley; only the centre keeps special effects and side arrows cannot be picked up. Survival Infinity still requires an arrow; Creative may fire ordinary arrows from an empty inventory. Nuclear Awe cannot fit manuscripts; Boundary manuscriptsLv2/3 provide fire resistance.")}</p>
 </article>
 <article><h2>{tr("真实裸甲与原版对比", "Actual bare armor and vanilla comparison")}</h2>
 {table([tr("档位", "Tier"), tr("整套护甲", "Set armor"), tr("整套韧性", "Set toughness"), "5HP", "10HP", "15HP", "20HP"], native_rows)}
@@ -196,10 +196,10 @@ def section(lang):
 <p>{tr(f"全部审计候选禁止装备序数材料；共{len(examples)}项加核单调性检查，均只填空槽，不替换别的晶核。每件甲分别计算再加权，手稿与套装分开，添正贡献不会反而降低防护。以下显示各部位示例与手稿项。", f"All audited candidates prohibit gear Ordinal. {len(examples)} empty-socket monotonicity checks add a core without replacing another. Per-piece weighted armor and independent book/set contributions cannot reduce defense when a positive core is added. Slot/book examples follow.")}</p>
 {table([tr("环境", "Realm"), tr("部位", "Slot"), tr("加核前F", "F before"), tr("加核后F", "F after"), tr("结果", "Result")], monotonic_rows)}
 <details><summary>{tr("防护与省耐久联合最优", "Joint protection and wear optima")}</summary><p>{tr("每行是单独最优配装，不能一套甲同时取得各行。F×W是相对原版耐久损耗预算的期望缩小倍数，不是固定免疫时间。", "Each row has its own optimal loadout; one set cannot simultaneously realize all rows. F×W reduces expected native wear budget, not guaranteed invulnerability time.")}</p>{table([tr("部位", "Slot"), realm_names["normal"], realm_names["deep"]], wear_rows)}</details>
-<details><summary>{tr("同档镐＋手稿挖速", "Matching pick/book tier mining")}</summary>{table([tr("档位", "Tier"), realm_names["normal"], realm_names["deep"]], mining_rows)}<p>{tr("序列手稿固定值4／8／16与百分比25%／50%／100%各自RSS；书固有10%／20%／30%／40%在RSS外加算。挖速=(工具基础＋适用原版效率＋序列固定值RSS)×(1＋书固有百分比＋序列百分比RSS＋20%×急迫等级)×疲劳×原版惩罚。空手／错误工具基础1也享有书两项；原版效率仅原始基础>1时生效。序数不参与挖速，矿物硬度与采集权限照常。", "Sequence manuscript flat4 /8 /16 and rates25% /50% /100% use separate RSS. Innate book10% /20% /30% /40% adds outside RSS. Mining=(tool base+applicable native Efficiency+Sequence flat RSS)×(1+innate book rate+Sequence rate RSS+20%×Haste level)×fatigue×native penalties. Hand/wrong tool base1 receives both book terms; native Efficiency requires raw base>1. Ordinal adds no mining speed; hardness and harvest permission remain.")}</p></details>
+<details><summary>{tr("同档镐＋手稿挖速", "Matching pick/book tier mining")}</summary>{table([tr("档位", "Tier"), realm_names["normal"], realm_names["deep"]], mining_rows)}<p>{tr("矩阵手稿固定值4／8／16与百分比25%／50%／100%各自RSS；书固有10%／20%／30%／40%在RSS外加算。挖速=(工具基础＋适用原版效率＋矩阵固定值RSS)×(1＋书固有百分比＋矩阵百分比RSS＋20%×急迫等级)×疲劳×原版惩罚。空手／错误工具基础1也享有书两项；原版效率仅原始基础>1时生效。序数不参与挖速，矿物硬度与采集权限照常。", "Matrix manuscript flat4 /8 /16 and rates25% /50% /100% use separate RSS. Innate book10% /20% /30% /40% adds outside RSS. Mining=(tool base+applicable native Efficiency+Matrix flat RSS)×(1+innate book rate+Matrix rate RSS+20%×Haste level)×fatigue×native penalties. Hand/wrong tool base1 receives both book terms; native Efficiency requires raw base>1. Ordinal adds no mining speed; hardness and harvest permission remain.")}</p></details>
 <h3>{tr("挖速拆解（两界相同，均持Ω手稿）", "Mining breakdown (same in both realms; Omega manuscript)")}</h3>
-{table([tr("场景", "Scenario"), tr("基础", "Base"), tr("原版效率加项", "Native Efficiency"), tr("序列加值RSS", "Sequence flat RSS"), tr("书固有", "Innate book"), tr("序列百分比RSS", "Sequence rate RSS"), tr("急迫", "Haste"), tr("最终挖速", "Final speed")], mining_examples)}
-<p>{tr("省耐久由空集装备承担；触距由分枝手稿承担。重复时运／抢夺、隐蔽与布尔免疫取最高，可能浪费槽位。周期治疗与饥饿保障可能叠加原版自然恢复，本页最优不包含食物回血。最终玩法需另测爆裂频率、特殊索敌和多人表现。", "Absence gear owns wear protection; Branch manuscripts own reach. Repeated Fortune/Looting, stealth and boolean immunities use max and can waste sockets. Periodic healing/food floors may coexist with native regeneration, excluded here. Gameplay will need tests for burst rate, special targeting and multiplayer.")}</p>
+{table([tr("场景", "Scenario"), tr("基础", "Base"), tr("原版效率加项", "Native Efficiency"), tr("矩阵加值RSS", "Matrix flat RSS"), tr("书固有", "Innate book"), tr("矩阵百分比RSS", "Matrix rate RSS"), tr("急迫", "Haste"), tr("最终挖速", "Final speed")], mining_examples)}
+<p>{tr("省耐久由空无装备承担；触距由分枝手稿承担。重复时运／抢夺、隐蔽与布尔免疫取最高，可能浪费槽位。周期治疗与饥饿保障可能叠加原版自然恢复，本页最优不包含食物回血。最终玩法需另测爆裂频率、特殊索敌和多人表现。", "Absence gear owns wear protection; Branch manuscripts own reach. Repeated Fortune/Looting, stealth and boolean immunities use max and can waste sockets. Periodic healing/food floors may coexist with native regeneration, excluded here. Gameplay will need tests for burst rate, special targeting and multiplayer.")}</p>
 <details><summary>{tr("可复现数据", "Reproducibility")}</summary><code>{DATA['evaluations']} evaluations<br>engine SHA-256: {esc(DATA['inputSha256']['engine'])}<br>rules SHA-256: {esc(DATA['inputSha256']['rules'])}<br>node tools/tests/audit_enhancement_proposal.js<br>python tools/generate_enhancement_audit.py</code></details>
 </article></section>'''
 

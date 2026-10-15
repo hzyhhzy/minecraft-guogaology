@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:lho_trace_lv3",
+          "name": "guogaology:lho_trace_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -21,7 +21,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv3",
+          "name": "guogaology:ordinal_crystal_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",

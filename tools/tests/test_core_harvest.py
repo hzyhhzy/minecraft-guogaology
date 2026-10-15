@@ -33,22 +33,13 @@ class CoreHarvestChecks(unittest.TestCase):
             for key in ('resistance', 'light', 'drop', 'friction', 'collision', 'renewable'):
                 self.assertEqual(generated[name][key], original[name][key], (name, key))
 
-    def test_ordinal_glowstone_drop_contract(self):
+    def test_ordinal_crystal_complete_drop_contract(self):
         loot = harvest.read(harvest.RES / 'data/guogaology/loot_table/blocks/ordinal_crystal.json')
-        alternatives = loot['pools'][0]['entries'][0]
-        self.assertEqual(alternatives['type'], 'minecraft:alternatives')
-        silk, ordinary = alternatives['children']
-        self.assertEqual(silk['name'], 'guogaology:ordinal_crystal')
-        self.assertEqual(silk['conditions'][0]['predicate']['predicates']['minecraft:enchantments'][0],
-                         {'enchantments': 'minecraft:silk_touch', 'levels': {'min': 1}})
-        self.assertEqual(ordinary['name'], 'guogaology:ordinal_shard')
-        self.assertNotIn('conditions', ordinary)
-        functions = {entry['function']: entry for entry in ordinary['functions']}
-        self.assertEqual(functions['minecraft:set_count']['count'], {'type': 'minecraft:uniform', 'min': 2, 'max': 4})
-        self.assertEqual(functions['minecraft:apply_bonus']['enchantment'], 'minecraft:fortune')
-        self.assertEqual(functions['minecraft:apply_bonus']['formula'], 'minecraft:uniform_bonus_count')
-        self.assertEqual(functions['minecraft:limit_count']['limit']['max'], 4)
-        self.assertIn('minecraft:explosion_decay', functions)
+        self.assertEqual(loot['pools'][0]['entries'], [{'type':'minecraft:item','name':'guogaology:ordinal_crystal'}])
+        self.assertNotIn('minecraft:match_tool',json.dumps(loot))
+        self.assertNotIn('guogaology:ordinal_shard',json.dumps(loot))
+        for name in ('tree_node_red','tree_node_green','tree_node_blue'):
+            self.assertEqual(harvest.HARDNESS[name],1.5,'TREE nodes are ordinary crafting materials')
 
     def test_non_lho_core_loot_has_no_tool_condition(self):
         for name in harvest.HARDNESS.keys() - harvest.ANCHORED - {'ordinal_crystal'}:

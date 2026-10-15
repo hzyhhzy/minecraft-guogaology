@@ -48,11 +48,12 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
         var gearLabel=tr(menu.manuscript()?"manuscript_label":"gear_label");
         graphics.drawString(font,gearLabel,78-font.width(gearLabel),42,0xff445753,false);
         graphics.drawString(font,tr("socket_count",menu.installed(),menu.capacity()),18,64,0xff354e4a,false);
-        if(!menu.canToggleSilk())graphics.drawString(font,tr(menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
+        if(!menu.canToggleSilk())graphics.drawString(font,tr(GearData.forbidsSockets(menu.gear())?"enchanted_no_sockets":menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
         graphics.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,0xff445753,false);
         line(graphics,tr("manuscript.preview"),34,0xffecdec0);
         var gear=menu.gear();var spec=MiningContent.GEAR.get(gear.getItem());
         if(spec==null){line(graphics,tr("insert_gear"),55,0xffc2d9d0);return;}
+        if(GearData.forbidsSockets(gear))line(graphics,tr("enchanted_no_sockets"),22,0xffffc285);
         int y=52;
         var preview=menu.preview();var values=preview.effects();
         var profile=GearData.profile(gear);

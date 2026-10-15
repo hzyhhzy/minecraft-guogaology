@@ -6,7 +6,64 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:lho_trace",
+          "name": "guogaology:lho_letter_l",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8,
+                "max": 18
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:lho_letter_h",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8,
+                "max": 18
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:lho_letter_o",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8,
+                "max": 18
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:fffz_trace",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -25,14 +82,52 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal",
+          "name": "guogaology:fos_trace",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 30,
-                "max": 60
+                "min": 6,
+                "max": 12
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:lho_hydra_psi",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 6,
+                "max": 12
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:lho_hydra_z",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 6,
+                "max": 12
               }
             }
           ]
@@ -50,8 +145,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
+                "min": 14,
+                "max": 28
               }
             }
           ]
@@ -63,52 +158,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:lho_letter_l",
+          "name": "guogaology:ordinal_shard",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 2,
-                "max": 6
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:lho_letter_h",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 6
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:lho_letter_o",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2,
-                "max": 6
+                "min": 30,
+                "max": 60
               }
             }
           ]

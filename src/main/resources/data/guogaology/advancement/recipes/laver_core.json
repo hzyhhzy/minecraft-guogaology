@@ -1,0 +1,98 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#guogaology:fruit_guogao"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:iblp_blank"
+          }
+        ]
+      }
+    },
+    "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:iblp_marked"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:iblp_node"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:laver_gel"
+          }
+        ]
+      }
+    },
+    "ingredient_5": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:tianyi_fiber"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:laver_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "ingredient_1",
+      "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
+      "ingredient_5",
+      "ingredient_6",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:laver_core"
+    ]
+  }
+}

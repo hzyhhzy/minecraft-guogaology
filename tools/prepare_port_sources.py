@@ -77,6 +77,12 @@ def adapt(text, target, name):
         text=text.replace('CraftingInput input,HolderLookup.Provider lookup,','CraftingInput input,')
     if name == 'MiningOres.java':
         text=re.sub(r'\bcp\.([xz])\b(?!\()',r'cp.\1()',text)
+    if name == 'OrdinalAnchoring.java':
+        # 26.x ChunkPos is a record; the Fabric load callback also supplies
+        # newlyGenerated. Keep the 1.21.11 two-argument callback in common.
+        text=re.sub(r'\b(unloading|chunk)\.([xz])\b(?!\()',r'\1.\2()',text)
+        text=text.replace('ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->',
+                          'ServerChunkEvents.CHUNK_LOAD.register((world,chunk,newlyGenerated)->')
     if name == 'OrdinalDensity.java':
         text = text.replace('mapAll(Visitor visitor)', 'mapChildren(Visitor visitor)')
         text = text.replace('return visitor.apply(new OrdinalDensity(seedNoise.mapAll(visitor),underworld,regions));', 'return new OrdinalDensity(visitor.apply(seedNoise),underworld,regions);')
@@ -89,6 +95,11 @@ def adapt(text, target, name):
     if name == 'EnhancementScreen.java':
         text=text.replace('super(menu,inventory,title);imageWidth=362;imageHeight=238;', 'super(menu,inventory,title,362,238);')
         text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('renderSlots(', 'extractSlots(').replace('graphics.drawString(', 'graphics.text(')
+        text=text.replace('protected void renderBg(GuiGraphicsExtractor graphics,float delta,int mouseX,int mouseY){', 'public void extractBackground(GuiGraphicsExtractor graphics,int mouseX,int mouseY,float delta){\n        super.extractBackground(graphics,mouseX,mouseY,delta);')
+    if name == 'LampShapingScreen.java':
+        text=text.replace('super(menu,inventory,title);imageWidth=256;imageHeight=238;', 'super(menu,inventory,title,256,238);')
+        text=text.replace('graphics.renderItem(', 'graphics.item(')
+        text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('graphics.drawString(', 'graphics.text(')
         text=text.replace('protected void renderBg(GuiGraphicsExtractor graphics,float delta,int mouseX,int mouseY){', 'public void extractBackground(GuiGraphicsExtractor graphics,int mouseX,int mouseY,float delta){\n        super.extractBackground(graphics,mouseX,mouseY,delta);')
     if name == 'ManuscriptInventoryButton.java':
         text=text.replace('Screens.getButtons(', 'Screens.getWidgets(').replace('ScreenEvents.beforeRender(', 'ScreenEvents.beforeExtract(')

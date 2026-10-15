@@ -1,6 +1,7 @@
 package dev.guogaology.world;
 
 import dev.guogaology.GuogaologyBlocks;
+import dev.guogaology.CoreResources;
 import dev.guogaology.block.TuringTapeBlock;
 import dev.guogaology.world.SceneryDistribution.Form;
 import java.util.Map;
@@ -20,7 +21,7 @@ public final class NotationLandscapes {
     private static final BlockState EDGE=GuogaologyBlocks.LIMIT_LAMINA.defaultBlockState();
     private static final BlockState SET=GuogaologyBlocks.SET_GLASS.defaultBlockState();
     private static final BlockState PROOF=GuogaologyBlocks.PROOF_STONE.defaultBlockState();
-    private static final BlockState CRYSTAL=GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState();
+    private static final BlockState CRYSTAL=GuogaologyBlocks.PROJECTION_GLASS.defaultBlockState();
     private record Ground(long seed,int x,int z,int desired,boolean under) {}
     private static final Map<Ground,Integer> GROUND=new ConcurrentHashMap<>();
     private static double random(long salt,int i){return WorldNoise.unit(WorldNoise.mix(salt+i*733L));}
@@ -115,9 +116,9 @@ public final class NotationLandscapes {
             int v=(k-layers/2)*5;
             var layer=new Frame(f.x(0,v),base+k*3,f.z(0,v),turn);
             profile(b,s,layer,p,0,k%2==0?RIDGE:GLASS,RIDGE,true);
-            if(ridgePageHasCore(s.salt(),k)){
+            if(k%2==0){
                 int u=-width(p)/2+p[1];
-                layer.set(b,u,Math.max(1,p[1]-2),0,GuogaologyBlocks.SEQUENCE_CORE.defaultBlockState());
+                layer.set(b,u,Math.max(1,p[1]-2),0,CoreResources.MATRIX_SHEET.defaultBlockState());
             }
         }
     }
@@ -191,7 +192,7 @@ public final class NotationLandscapes {
             }
         }
         // Emit the complete crown last; the six face-neighbors enclose exactly one bud.
-        b.set(s.x(),crown,s.z(),GuogaologyBlocks.HYDRA_BUD.defaultBlockState());
+        b.set(s.x(),crown,s.z(),CoreResources.HYDRA_SPRIG.defaultBlockState());
         for(int[] d:new int[][]{{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}})
             b.set(s.x()+d[0],crown+d[1],s.z()+d[2],CRYSTAL);
     }
@@ -265,7 +266,7 @@ public final class NotationLandscapes {
                 double q=Math.pow((x-rx)/r,2)+Math.pow((z-rz)/r,2)+Math.pow((y-yy)/(double)r,2);
                 if(q>.45&&q<1.2)b.set(x,y,z,SET);
             }
-            b.set((int)Math.round(rx),yy,(int)Math.round(rz),random(s.salt(),161+i)<.25?GuogaologyBlocks.BOUNDARY_CORE.defaultBlockState():CRYSTAL);
+            b.set((int)Math.round(rx),yy,(int)Math.round(rz),CoreResources.SET_MEMBRANE.defaultBlockState());
         }
     }
     private static void turing(SceneryBrush b,NaturalScenery.Site s){

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:amber_sequence_light",
+    "guogaology:cyan_sequence_light",
+    "guogaology:rose_sequence_light",
+    "guogaology:lime_sequence_light",
+    "guogaology:violet_sequence_light",
+    "guogaology:scarlet_sequence_light"
+  ]
+}

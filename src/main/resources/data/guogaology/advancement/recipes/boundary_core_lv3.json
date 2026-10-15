@@ -1,15 +1,22 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_material": {
+    "ingredient_0": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "guogaology:boundary_core_lv2",
-              "guogaology:ordinal_crystal_lv3"
-            ]
+            "items": "guogaology:boundary_core_lv2"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal_lv3"
           }
         ]
       }
@@ -23,7 +30,8 @@
   },
   "requirements": [
     [
-      "has_material",
+      "ingredient_0",
+      "ingredient_1",
       "has_recipe"
     ]
   ],

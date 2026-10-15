@@ -1,0 +1,98 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#guogaology:ancient_notation_materials"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:arrow_knot"
+          }
+        ]
+      }
+    },
+    "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:scg_node"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:tree_node_blue"
+          }
+        ]
+      }
+    },
+    "ingredient_5": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:tree_node_green"
+          }
+        ]
+      }
+    },
+    "ingredient_6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:tree_node_red"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:power_tower_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "ingredient_1",
+      "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
+      "ingredient_5",
+      "ingredient_6",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:power_tower_core"
+    ]
+  }
+}

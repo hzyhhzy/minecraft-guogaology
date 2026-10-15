@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:power_tower_core_lv3",
+          "name": "guogaology:power_tower_core_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -21,11 +21,49 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv3",
+          "name": "guogaology:ordinal_crystal_lv2",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:arrow_knot",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 16,
+                "max": 32
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:scg_node",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8,
+                "max": 16
+              }
             }
           ]
         }

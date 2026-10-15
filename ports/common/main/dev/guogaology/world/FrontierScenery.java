@@ -1,6 +1,7 @@
 package dev.guogaology.world;
 
 import dev.guogaology.GuogaologyBlocks;
+import dev.guogaology.CoreResources;
 import dev.guogaology.block.TuringTapeBlock;
 import dev.guogaology.world.SceneryDistribution.Form;
 import net.minecraft.world.level.block.Blocks;
@@ -13,8 +14,8 @@ final class FrontierScenery {
     private FrontierScenery() {}
     private static final BlockState ROCK=GuogaologyBlocks.LIMIT_STONE.defaultBlockState(),EDGE=GuogaologyBlocks.LIMIT_LAMINA.defaultBlockState(),
             GLASS=GuogaologyBlocks.SET_GLASS.defaultBlockState(),PROOF=GuogaologyBlocks.PROOF_STONE.defaultBlockState(),
-            FORMULA=GuogaologyBlocks.FORMULA_STONE.defaultBlockState(),CORE=GuogaologyBlocks.BOUNDARY_CORE.defaultBlockState(),
-            CRYSTAL=GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState();
+            FORMULA=GuogaologyBlocks.FORMULA_STONE.defaultBlockState(),CORE=CoreResources.SET_MEMBRANE.defaultBlockState(),
+            CRYSTAL=GuogaologyBlocks.SET_GLASS.defaultBlockState();
     private static final BlockState JADE=GuogaologyBlocks.SET_JADE.defaultBlockState(),AMBER=GuogaologyBlocks.RANK_AMBER.defaultBlockState(),
             IVORY=GuogaologyBlocks.LOGIC_IVORY.defaultBlockState(),ROSE=GuogaologyBlocks.RAYO_ROSE.defaultBlockState();
     private static double random(long salt,int n){return WorldNoise.unit(WorldNoise.mix(salt+n*9871L));}
@@ -109,7 +110,7 @@ final class FrontierScenery {
                 boolean end=u==lo||u==hi;
                 if(end||Math.floorMod(u-lo,16)==0)root(b,s,x,y-2,z,AMBER);
                 // The end marker replaces exactly the former E-lambda cap's supporting cell.
-                if(end)b.set(x,y,z,CORE);
+                if(end)b.set(x,y,z,CoreResources.TURING_ENDCAP.defaultBlockState());
                 else
                 b.set(x,y,z,GuogaologyBlocks.TURING_TAPE.defaultBlockState()
                     .setValue(TuringTapeBlock.INK,random(s.salt(),151+u)>.6));
@@ -134,7 +135,7 @@ final class FrontierScenery {
                     if(q>.72&&q<=1.3&&!(z<s.z()&&Math.abs(x-s.x())<=2&&y>1&&y<h-2))b.set(x,base+y,z,y%5==0?FORMULA:ROSE);
                 }
         root(b,s,s.x(),base+1,s.z(),FORMULA);
-        b.set(s.x(),base+2,s.z(),random(s.salt(),33)<.25?CORE:CRYSTAL);
+        b.set(s.x(),base+2,s.z(),CORE);
     }
     private static void laverReef(SceneryBrush b,NaturalScenery.Site s){
         var leaf=GuogaologyBlocks.GIANT_LAVER.defaultBlockState();var vein=GuogaologyBlocks.LAVER_VEIN.defaultBlockState();
@@ -153,7 +154,7 @@ final class FrontierScenery {
         if(turn){int t=x-s.x();x=s.x()+z-s.z();z=s.z()+t;}
         int bed=NotationLandscapes.ground(s,x,z);
         int coreY=Math.min(63,Math.max(s.floor()+5,bed==Integer.MIN_VALUE?s.floor()+5:bed+1));
-        root(b,s,x,coreY-1,z,vein);b.set(x,coreY,z,GuogaologyBlocks.LAVER_CORE.defaultBlockState());
+        root(b,s,x,coreY-1,z,vein);b.set(x,coreY,z,CoreResources.LAVER_GEL.defaultBlockState());
     }
     private static void waterFronds(SceneryBrush b,NaturalScenery.Site s){
         int height=Math.min(13,63-s.floor());if(height<3)return;
@@ -187,7 +188,7 @@ final class FrontierScenery {
             }
         }
         root(b,s,s.x(),s.floor()+4,s.z()-1,mint);
-        b.set(s.x(),s.floor()+5,s.z()-1,GuogaologyBlocks.ASTRA_CRITICAL_CORE.defaultBlockState());
+        b.set(s.x(),s.floor()+5,s.z()-1,CoreResources.CLOUD_PEARL.defaultBlockState());
     }
     private static void bubble(SceneryBrush b,NaturalScenery.Site s){
         int r=3+(int)(random(s.salt(),61)*3),cy=s.floor()+r;

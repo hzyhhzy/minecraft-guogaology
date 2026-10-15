@@ -12,12 +12,13 @@ import java.util.List;
 
 /** Worldgen uses unstable defaults; successful harvesting and player placement are permanent. */
 public class AnchoredBlock extends PortableRelicBlock {
+    public static final BooleanProperty ANCHORED=BooleanProperty.of("anchored");
     public static final BooleanProperty STABLE=BooleanProperty.of("stable");
-    public AnchoredBlock(Settings settings){super(settings);setDefaultState(getDefaultState().with(STABLE,false));}
-    @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){super.appendProperties(builder);builder.add(STABLE);}
+    public AnchoredBlock(Settings settings){super(settings);setDefaultState(getDefaultState().with(STABLE,false).with(ANCHORED,false));}
+    @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){super.appendProperties(builder);builder.add(STABLE,ANCHORED);}
     public static boolean stable(BlockState state){return placed(state)||(state.contains(STABLE)&&state.get(STABLE));}
     public static boolean protectedAt(BlockState state,World world,BlockPos pos){return stable(state)||OrdinalAnchoring.protects(world,pos);}
-    @Override public BlockState getPlacementState(ItemPlacementContext context){return super.getPlacementState(context).with(STABLE,true);}
+    @Override public BlockState getPlacementState(ItemPlacementContext context){return super.getPlacementState(context).with(STABLE,true).with(ANCHORED,OrdinalAnchoring.colorsAt(context.getWorld(),context.getBlockPos()));}
     @Override public ItemStack getPickStack(WorldView world,BlockPos pos,BlockState state){return item(state);}
     private ItemStack item(BlockState state){return StatefulDecorBlock.copyAppearance(new ItemStack(this),state.with(STABLE,true).with(PLAYER_PLACED,true));}
     @Override protected List<ItemStack> getDroppedStacks(BlockState state,LootContextParameterSet.Builder builder){

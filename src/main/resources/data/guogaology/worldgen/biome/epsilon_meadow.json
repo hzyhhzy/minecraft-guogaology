@@ -55,7 +55,11 @@
     [],
     [],
     [],
-    [],
+    [
+      "guogaology:ore_ordinal_crystal_upper",
+      "guogaology:ore_ordinal_crystal_middle",
+      "guogaology:ore_ordinal_crystal_small"
+    ],
     [],
     [],
     [

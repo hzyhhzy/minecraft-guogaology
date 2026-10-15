@@ -30,7 +30,8 @@ public final class SanctuaryLayout {
     public static final byte PHANTOM_FFFZ=118,PHANTOM_EMPTY=119;
     public static final byte BOUNDARY_CORE=120,TURING=121,SET_GLASS=122,FORMULA=123,PROOF=124;
     public static final byte TAPE_BUTTON=125,SCG_EDGE=126;
-    public static final int MATERIAL_COUNT=127;
+    public static final byte PRIMARY_RAW=47,SECONDARY_RAW=127;
+    public static final int MATERIAL_COUNT=128;
     public record RailingDisplay(Point pos,int run,int index,Point road) {}
     private final List<RailingDisplay> railingDisplays=new ArrayList<>();
     private final Set<Point> railingCollectibles=new HashSet<>();
@@ -209,7 +210,7 @@ public final class SanctuaryLayout {
             set(bx,y-1,bz,DARK);set(bx,y,bz,TAPE_BUTTON);
         }
     }
-    private static boolean tapeNeighbor(byte material){return material==TURING||material==BOUNDARY_CORE;}
+    private static boolean tapeNeighbor(byte material){return material==TURING||material==BOUNDARY_CORE||material==SECONDARY_RAW;}
     private void connectInteriorFloors(){
         switch(theme){
             case MATRIX -> {
@@ -399,7 +400,7 @@ public final class SanctuaryLayout {
             for(int sx:new int[]{-1,1})for(int sz:new int[]{-1,1})set(x+sx,arena.y+2,z+sz,RELIEF_EDGE);
             finaleRelic(x,arena.y+2,z,prizes[i]);
             finaleCores.put(new Point(x,arena.y+2,z),roots[i]);
-            finaleRelic(x,arena.y+3,z,CRYSTAL);
+            finaleRelic(x,arena.y+3,z,LIGHT);
             if(i==0){set(x-1,arena.y+2,z,Y_WOOD);set(x+1,arena.y+2,z,Y_WOOD);}
             if(i==1){set(x-1,arena.y+2,z,ARROW);set(x+1,arena.y+2,z,ARROW);}
             if(i==2){set(x-1,arena.y+2,z,PSI);set(x+1,arena.y+2,z,OMEGA);}
@@ -654,7 +655,7 @@ public final class SanctuaryLayout {
         // Keep an air block between displays even where differently angled runs meet.
         for(var other:railingCollectibles)if(Math.abs(other.x-x)<=1&&Math.abs(other.y-pos.y)<=1&&Math.abs(other.z-z)<=1)return;
         if(!railingCollectibles.add(pos))return;
-        byte[] sequence={CRYSTAL,PHANTOM_FFFZ,CRYSTAL,PHANTOM_FOS,CRYSTAL,PHANTOM_EMPTY};
+        byte[] sequence={LIGHT,PHANTOM_FFFZ,LIGHT,PHANTOM_FOS,LIGHT,PHANTOM_Z};
         index=Math.floorMod(index,sequence.length);
         set(x,y+2,z,sequence[index]);railingDisplays.add(new RailingDisplay(pos,run,index,road));
         reserve(clear,x,y+2,z,x,y+3,z);

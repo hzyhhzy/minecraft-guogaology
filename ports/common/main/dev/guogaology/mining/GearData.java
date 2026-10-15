@@ -11,13 +11,14 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import java.util.*;
 
 public final class GearData {
-    private record ProfileCache(List<ItemStack> source,List<EquipmentRules.Core> value){}
+    private record ProfileCache(List<ItemStack> source,boolean enchanted,List<EquipmentRules.Core> value){}
     private static final Map<ItemStack,ProfileCache> PROFILES=Collections.synchronizedMap(new WeakHashMap<>());
     public static List<EquipmentRules.Core> profile(ItemStack stack){
-        var source=coreSlots(stack);var old=PROFILES.get(stack);if(old!=null&&old.source()==source)return old.value();
+        var source=coreSlots(stack);boolean enchanted=hasNativeEnchantments(stack);var old=PROFILES.get(stack);if(old!=null&&old.source()==source&&old.enchanted()==enchanted)return old.value();
         var spec=MiningContent.GEAR.get(stack.getItem());
-        var value=source.stream().filter(c->!c.isEmpty()&&type(c)>=0&&(spec==null||EquipmentRules.compatible(spec.kind(),type(c)))).map(c->new EquipmentRules.Core(type(c),Math.clamp(level(c),1,type(c)==8?4:3))).toList();
-        PROFILES.put(stack,new ProfileCache(source,value));return value;
+        // Malformed command/mod-created mixed stacks retain ownership, but never stack both systems.
+        var value=enchanted?List.<EquipmentRules.Core>of():source.stream().filter(c->!c.isEmpty()&&type(c)>=0&&(spec==null||EquipmentRules.compatible(spec.kind(),type(c)))).map(c->new EquipmentRules.Core(type(c),Math.clamp(level(c),1,type(c)==8?4:3))).toList();
+        PROFILES.put(stack,new ProfileCache(source,enchanted,value));return value;
     }
     public static EquipmentRules.Gear gear(ItemStack stack,int emptyKind){var spec=MiningContent.GEAR.get(stack.getItem());return spec==null?EquipmentRules.Gear.empty(emptyKind):new EquipmentRules.Gear(spec.tier(),spec.kind(),digit(stack),profile(stack));}
     public static EquipmentRules.Snapshot snapshot(LivingEntity owner){return new EquipmentRules.Snapshot(gear(ManuscriptEffects.effective(owner,owner.getMainHandItem()),0),gear(ManuscriptEffects.effective(owner,owner.getOffhandItem()),-1),gear(owner.getItemBySlot(EquipmentSlot.HEAD),2),gear(owner.getItemBySlot(EquipmentSlot.CHEST),3),gear(owner.getItemBySlot(EquipmentSlot.LEGS),4),gear(owner.getItemBySlot(EquipmentSlot.FEET),5),ManuscriptEffects.deep(owner.level()));}
@@ -30,15 +31,19 @@ public final class GearData {
     public static double healing(LivingEntity owner){return owner==null?0:EquipmentRules.regen(profile(ManuscriptEffects.held(owner)),EquipmentRules.bookHealingBase(bookTier(owner)));}
     public static double controlDuration(ItemStack weapon,LivingEntity owner){return EquipmentRules.controlDuration(profile(weapon),owner==null?List.of():profile(ManuscriptEffects.held(owner)),EquipmentRules.bookDurationBase(bookTier(owner)));}
     public static double bonusHealth(LivingEntity owner){var state=snapshot(owner);return EquipmentRules.bonusHealth(state.armor(),state.book(),state.deep());}
-    public static boolean forbidsEnchantments(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.tier()>0;}
+    public static boolean hasNativeEnchantments(ItemStack stack){return stack.isEnchanted();}
+    /** Every occupied carrier slot, including a manuscript Totem, reserves the socket path. */
+    public static boolean forbidsEnchantments(ItemStack stack){return MiningContent.GEAR.containsKey(stack.getItem())&&!cores(stack).isEmpty();}
+    public static boolean forbidsSockets(ItemStack stack){return MiningContent.GEAR.containsKey(stack.getItem())&&hasNativeEnchantments(stack);}
+    public static String modificationHint(ItemStack stack){return forbidsSockets(stack)?forbidsEnchantments(stack)?"enchantment_socket_conflict":"enchanted_no_sockets":forbidsEnchantments(stack)?"socketed_no_enchantments":null;}
     public static int capacity(ItemStack gear){var spec=MiningContent.GEAR.get(gear.getItem());return spec==null?0:EquipmentRules.slots(spec.tier(),spec.kind());}
     public static List<ItemStack> coreSlots(ItemStack s){return s.getOrDefault(MiningContent.CORES,List.of());}
     public static List<ItemStack> cores(ItemStack s){return coreSlots(s).stream().filter(c->!c.isEmpty()).toList();}
     public static boolean isSocketTotem(ItemStack gear,ItemStack item){return gear.getItem() instanceof DenxiManuscript&&item.is(Items.TOTEM_OF_UNDYING);}
-    public static int socketTotems(ItemStack gear){return gear.getItem() instanceof DenxiManuscript?(int)coreSlots(gear).stream().filter(s->s.is(Items.TOTEM_OF_UNDYING)).count():0;}
+    public static int socketTotems(ItemStack gear){return gear.getItem() instanceof DenxiManuscript&&!hasNativeEnchantments(gear)?(int)coreSlots(gear).stream().filter(s->s.is(Items.TOTEM_OF_UNDYING)).count():0;}
     /** Call only for an owned item, or explicitly to debit an effect snapshot after a real consumption. */
     public static boolean consumeSocketTotem(ItemStack gear){
-        if(!(gear.getItem() instanceof DenxiManuscript))return false;
+        if(!(gear.getItem() instanceof DenxiManuscript)||hasNativeEnchantments(gear))return false;
         var slots=coreSlots(gear);for(int i=0;i<slots.size();i++)if(slots.get(i).is(Items.TOTEM_OF_UNDYING)){remove(gear,i);return true;}return false;
     }
     public static int digit(ItemStack s){return EquipmentRules.digit(s.getOrDefault(MiningContent.DIGIT,0d));}
@@ -66,7 +71,7 @@ public final class GearData {
     public static int type(ItemStack s){var id=BuiltInRegistries.ITEM.getKey(s.getItem());return id.getNamespace().equals("guogaology")?EquipmentRules.coreType(id.getPath()):-1;}
     public static int level(ItemStack s){return EquipmentRules.coreLevel(BuiltInRegistries.ITEM.getKey(s.getItem()).getPath());}
     public static double points(List<ItemStack> cores,int type){double sum=0;for(var c:cores)if(type(c)==type)sum+=EquipmentRules.weight(type,level(c));return sum;}
-    public static double points(ItemStack gear,int type){return points(cores(gear),type);}
+    public static double points(ItemStack gear,int type){return hasNativeEnchantments(gear)?0:points(cores(gear),type);}
     public static double power(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());if(spec==null||spec.kind()==6||spec.kind()==EquipmentRules.BOW)return 0;if(spec.kind()>=2)return EquipmentRules.nativeArmor(spec.tier(),spec.kind());return EquipmentRules.attack(EquipmentRules.baseAttack(spec.tier(),spec.kind(),digit(s)),spec.kind()==1?profile(s):EquipmentRules.without(profile(s),1),List.of(),s.getOrDefault(MiningContent.DEEP,false));}
     public static double baseAttack(ItemStack s){var spec=MiningContent.GEAR.get(s.getItem());if(spec!=null&&spec.kind()<2)return EquipmentRules.baseAttack(spec.tier(),spec.kind(),digit(s));double[] a={1,0,1};s.forEachModifier(EquipmentSlot.MAINHAND,(attribute,modifier)->{if(attribute.equals(Attributes.ATTACK_DAMAGE))switch(modifier.operation()){case ADD_VALUE->a[0]+=modifier.amount();case ADD_MULTIPLIED_BASE->a[1]+=modifier.amount();case ADD_MULTIPLIED_TOTAL->a[2]*=1+modifier.amount();}});return Math.max(.1,a[0]*(1+a[1])*a[2]);}
     public static double attackWithBook(ItemStack stack,LivingEntity owner){var spec=MiningContent.GEAR.get(stack.getItem());var own=spec!=null&&spec.kind()<2?(spec.kind()==1?profile(stack):EquipmentRules.without(profile(stack),1)):List.<EquipmentRules.Core>of();var book=profile(ManuscriptEffects.held(owner));int tier=bookTier(owner);return EquipmentRules.attack(baseAttack(stack),own,book,ManuscriptEffects.deep(owner.level()),EquipmentRules.bookBase(tier),EquipmentRules.bookAttackHp(tier));}
@@ -93,19 +98,19 @@ public final class GearData {
     }
     public static void refresh(ItemStack s){
         var spec=MiningContent.GEAR.get(s.getItem());if(spec==null)return;
-        if(forbidsEnchantments(s))s.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS,net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
         if(spec.kind()==6){s.set(MiningContent.RULES,EquipmentRules.REVISION);return;}
         if(spec.tier()==0)s.set(MiningContent.DIGIT,(double)digit(s));
         int priorMax=s.getMaxDamage(),damage=s.getDamageValue();
         int max=EquipmentRules.durability(spec.tier(),spec.kind(),digit(s));
         s.set(DataComponents.MAX_DAMAGE,max);s.setDamageValue(EquipmentRules.rescaledDamage(damage,priorMax,max));
         s.set(MiningContent.RULES,EquipmentRules.REVISION);
-        s.set(DataComponents.ATTRIBUTE_MODIFIERS,attributes(spec.tier(),spec.kind(),cores(s),s.getOrDefault(MiningContent.DIGIT,0d),s.getOrDefault(MiningContent.DEEP,false)));
+        s.set(DataComponents.ATTRIBUTE_MODIFIERS,attributes(spec.tier(),spec.kind(),hasNativeEnchantments(s)?List.of():cores(s),s.getOrDefault(MiningContent.DIGIT,0d),s.getOrDefault(MiningContent.DEEP,false)));
     }
     /** Returns an error translation key, or null. Validation happens again on every click. */
     public static String installationError(ItemStack gear,ItemStack core,int station){
         var spec=MiningContent.GEAR.get(gear.getItem());int type=type(core);
         if(spec==null)return "invalid";
+        if(forbidsSockets(gear))return "enchanted";
         if(isSocketTotem(gear,core))return cores(gear).size()>=capacity(gear)?"full":null;
         if(type<0)return "invalid";
         if(!EquipmentRules.compatible(spec.kind(),type))return "incompatible";

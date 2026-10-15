@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:lho_letter_l"
+    },
+    {
+      "item": "guogaology:lho_letter_h"
+    },
+    {
+      "item": "guogaology:lho_letter_o"
+    },
+    {
+      "item": "guogaology:fffz_trace"
+    },
+    {
+      "item": "guogaology:fos_trace"
+    },
+    {
+      "item": "guogaology:lho_hydra_psi"
+    },
+    {
+      "item": "guogaology:lho_hydra_z"
+    },
+    {
+      "item": "guogaology:absence_glass"
+    },
+    {
+      "item": "guogaology:ordinal_crystal"
+    }
+  ],
+  "result": {
+    "id": "guogaology:lho_trace",
+    "count": 1
+  }
+}

@@ -11,10 +11,11 @@ public final class OrdinalBowItem extends BowItem {
     public OrdinalBowItem(Settings properties,int tier){super(properties);this.tier=tier;}
     @Override public void onStoppedUsing(ItemStack stack,World world,LivingEntity owner,int remaining){BowEffects.release(stack,world,owner,getPullProgress(getMaxUseTime(stack,owner)-remaining),tier);}
     @Override public void inventoryTick(ItemStack s,World world,Entity owner,int slot,boolean selected){if(!world.isClient&&(s.getOrDefault(MiningContent.RULES,0)!=EquipmentRules.REVISION||s.getOrDefault(MiningContent.DEEP,false)!=ManuscriptEffects.deep(world))){s.set(MiningContent.DEEP,ManuscriptEffects.deep(world));GearData.refresh(s);}}
-    @Override public int getEnchantability(){return 0;}
+    @Override public int getEnchantability(){return 1;}
     @Override public boolean canRepair(ItemStack bow,ItemStack ingredient){return ingredient.isOf(MiningContent.MATERIALS[tier-1]);}
     @Override public void appendTooltip(ItemStack stack,TooltipContext context,List<Text> out,TooltipType flag){
         out.add(Text.translatable("mining.guogaology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,7)));
+        var hint=GearData.modificationHint(stack);if(hint!=null)out.add(Text.translatable("mining.guogaology."+hint));
         out.add(Text.translatable("mining.guogaology.bow_speed_tooltip",EquipmentRules.format(EquipmentRules.arrowSpeedMultiplier(tier))));
         int branch=EquipmentRules.highest(GearData.profile(stack),2);
         if(branch>=1)out.add(Text.translatable("mining.guogaology.bow_infinity"));if(branch>=2)out.add(Text.translatable("mining.guogaology.bow_multishot"));if(branch>=3)out.add(Text.translatable("mining.guogaology.bow_pierce"));

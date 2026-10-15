@@ -15,11 +15,11 @@ REGIONAL = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart')
 AUXILIARIES = ('tree_node_red', 'tree_node_green', 'tree_node_blue',
                'fffz_trace', 'fos_trace', 'lho_hydra_psi', 'lho_hydra_z')
-ANCHORED = frozenset(('lho_trace', 'fffz_trace', 'fos_trace', 'lho_hydra_psi', 'lho_hydra_z'))
+ANCHORED = frozenset(('fffz_trace', 'fos_trace', 'lho_hydra_psi', 'lho_hydra_z'))
 HARDNESS = {root + ('' if grade == 1 else f'_lv{grade}'): 25 * 2 ** (grade - 1)
             for root in REGIONAL for grade in range(1, 4)}
 HARDNESS.update({f'ordinal_crystal_lv{stage}': 25 * 2 ** (stage - 2) for stage in range(2, 5)})
-HARDNESS.update({name: 25 for name in AUXILIARIES})
+HARDNESS.update({name: 1.5 if name.startswith('tree_node_') else 25 for name in AUXILIARIES})
 HARDNESS['ordinal_crystal'] = 2
 IDS = frozenset('guogaology:' + name for name in HARDNESS)
 
@@ -36,7 +36,11 @@ def profile_updates(profiles):
         if name in ANCHORED:
             p['use'] = '序数晶体锚定或已稳定后，徒手／任意工具完整采集；镐加速；放置后永久稳定'
         elif name == 'ordinal_crystal':
-            p['use'] = '徒手／任意工具掉2～4晶屑，镐加速；时运上限4；精准采集完整方块；爆炸衰减'
+            p['use'] = '徒手／任意工具完整采集，镐加速；4晶屑可合成或反向拆解；稳定周围两圈LHO材料'
+        elif name.startswith('tree_node_'):
+            p['use'] = 'TREE三色普通节点原料；任意工具完整采集，镐加速'
+        elif any(name==root or name.startswith(root+'_lv') for root in REGIONAL):
+            p['use'] = '群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速'
         else:
             p['use'] = re.sub(r'自然方块铁镐采集|铁镐采集完整方块|铁镐采集',
                               '徒手／任意工具完整采集，镐加速', p['use'])

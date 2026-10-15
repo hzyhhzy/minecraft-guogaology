@@ -367,23 +367,23 @@
   ],
   "coreNames": {
     "zh": [
-      "序列晶核",
+      "矩阵晶核",
       "幂塔晶核",
       "分枝芽核",
-      "空集晶核",
+      "空无晶核",
       "紫菜凝核",
-      "临界核晶",
+      "核爆之心",
       "界限晶核",
       "果糕之心",
       "序数晶核"
     ],
     "en": [
-      "Sequence Core",
+      "Matrix Core",
       "Power Tower Core",
       "Hydra Bud",
-      "Empty Set Core",
+      "Absence Core",
       "Laver Condensation Core",
-      "Criticality Core",
+      "Heart of Nuclear Awe",
       "Boundary Core",
       "Heart of Guogao",
       "Ordinal Core"
@@ -392,9 +392,9 @@
   "coreStageNames": {
     "zh": [
       [
-        "序列晶核 · Lv1",
-        "序列晶核 · Lv2",
-        "序列晶核 · Lv3"
+        "矩阵晶核 · Lv1",
+        "矩阵晶核 · Lv2",
+        "矩阵晶核 · Lv3"
       ],
       [
         "幂塔晶核 · Lv1",
@@ -407,9 +407,9 @@
         "分枝芽核 · Lv3"
       ],
       [
-        "空集晶核 · Lv1",
-        "空集晶核 · Lv2",
-        "空集晶核 · Lv3"
+        "空无晶核 · Lv1",
+        "空无晶核 · Lv2",
+        "空无晶核 · Lv3"
       ],
       [
         "紫菜凝核 · Lv1",
@@ -417,9 +417,9 @@
         "紫菜凝核 · Lv3"
       ],
       [
-        "临界核晶 · Lv1",
-        "临界核晶 · Lv2",
-        "临界核晶 · Lv3"
+        "核爆之心 · Lv1",
+        "核爆之心 · Lv2",
+        "核爆之心 · Lv3"
       ],
       [
         "界限晶核 · Lv1",
@@ -440,9 +440,9 @@
     ],
     "en": [
       [
-        "Sequence Core · Lv1",
-        "Sequence Core · Lv2",
-        "Sequence Core · Lv3"
+        "Matrix Core · Lv1",
+        "Matrix Core · Lv2",
+        "Matrix Core · Lv3"
       ],
       [
         "Power Tower Core · Lv1",
@@ -455,9 +455,9 @@
         "Hydra Bud · Lv3"
       ],
       [
-        "Empty Set Core · Lv1",
-        "Empty Set Core · Lv2",
-        "Empty Set Core · Lv3"
+        "Absence Core · Lv1",
+        "Absence Core · Lv2",
+        "Absence Core · Lv3"
       ],
       [
         "Laver Condensation Core · Lv1",
@@ -465,9 +465,9 @@
         "Laver Condensation Core · Lv3"
       ],
       [
-        "Criticality Core · Lv1",
-        "Criticality Core · Lv2",
-        "Criticality Core · Lv3"
+        "Heart of Nuclear Awe · Lv1",
+        "Heart of Nuclear Awe · Lv2",
+        "Heart of Nuclear Awe · Lv3"
       ],
       [
         "Boundary Core · Lv1",

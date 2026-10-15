@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "PSP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "guogaology:proof_stone"
+    },
+    "S": {
+      "tag": "minecraft:stone_crafting_materials"
+    }
+  },
+  "result": {
+    "id": "guogaology:turing_endcap",
+    "count": 4
+  }
+}

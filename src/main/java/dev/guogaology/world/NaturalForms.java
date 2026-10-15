@@ -7,7 +7,9 @@ public final class NaturalForms {
             POWER_BRICK=7,CRYSTAL=8,TRACE=10,FFFZ=11,FOS=12,Y_WOOD=13,Y_LEAF=14,YARN_CYAN=15,YARN_WHITE=16,
             FIR_WOOD=17,FIR_LEAF=18,FRUIT=20,EMOJI=24,ABSENCE_GLASS=49,LHO_LETTER=50,LHO_PSI=60,LHO_Z=61,GOLD_STAR=66,
             SCG_SHELL=68,TREE_SHELL=69,SEQUENCE_CORE=72,HYDRA_BUD=73,ASTRA_CRITICAL_CORE=74,GUOGAO_HEART=75,POWER_TOWER_CORE=76,
-            BIRCH_WOOD=77,OMEGA_GLYPH=78,GREAT_OMEGA_GLYPH=79,MUSHROOM_STEM=80,SCG_EDGE=81;
+            BIRCH_WOOD=77,OMEGA_GLYPH=78,GREAT_OMEGA_GLYPH=79,MUSHROOM_STEM=80,SCG_EDGE=81,
+            MATRIX_SHEET=84,ARROW_KNOT=85,SCG_NODE=86,HYDRA_SPRIG=87,LAVER_GEL=88,
+            CLOUD_PEARL=89,SET_MEMBRANE=90,DREAD_RESIN=91,TURING_ENDCAP=92;
     private static double random(long salt,int i) { return WorldNoise.unit(WorldNoise.mix(salt+i*733L)); }
     public static int cloudWidth(long salt) { return 2*(40+(int)Math.floorMod(salt>>>13,31L)); }
     public static int cloudHeight(long salt) {
@@ -111,7 +113,7 @@ public final class NaturalForms {
 
     public static void absence(VoxelBrush b,int cx,int base,int cz,long salt) {
         double angle=random(salt,21)*Math.PI*2;
-        int echo=TRACE+(int)Math.floorMod(salt,3L);
+        int echo=absenceFragmentMaterial(salt,0);
         int mode=(int)Math.floorMod(salt>>>8,3L);
         if(mode==0) {
             // Thin incomplete arcs float around an empty center; they never close into a frame.
@@ -144,7 +146,7 @@ public final class NaturalForms {
         }
         for(int i=0;i<7;i++) {
             int x=cx+(int)(Math.cos(angle+i)*9),y=base+3+i*2,z=cz+(int)(Math.sin(angle+i)*9);
-            if(absenceFragmentPresent(salt,x,y,z))b.set(x,y,z,TRACE+i%3);
+            if(absenceFragmentPresent(salt,x,y,z))b.set(x,y,z,absenceFragmentMaterial(salt,i));
         }
         // Whole L -> H -> O triples, one letter per block, separated by blank glass and air.
         for(int group=0;group<2;group++) {
@@ -153,9 +155,12 @@ public final class NaturalForms {
             int x=cx+(group==0?0:(int)Math.round(Math.cos(angle)*8)),z=cz+(group==0?0:(int)Math.round(Math.sin(angle)*8));
             int y=base+2+group*8;
             for(int i=0;i<3;i++) b.set(x+i*dx,y,z+i*dz,LHO_LETTER+i);
-            b.set(x-dx,y,z-dz,CRYSTAL);b.set(x+3*dx,y,z+3*dz,CRYSTAL);
+            b.set(x-dx,y,z-dz,ABSENCE_GLASS);b.set(x+3*dx,y,z+3*dz,ABSENCE_GLASS);
         }
     }
+
+    /** The former empty-core third is redistributed equally to FOS and fffZ. */
+    public static int absenceFragmentMaterial(long salt,int index){return (WorldNoise.mix(salt+index*731L)&1)==0?FFFZ:FOS;}
 
     public static boolean absenceWordPresent(long salt,int group){return Math.floorMod(WorldNoise.mix(salt+811+group*131L),6L)==0;}
     public static boolean absenceFragmentPresent(long salt,int x,int y,int z){return Math.floorMod(WorldNoise.hash(salt^0x464f5312L,x,y,z),8L)==0;}
@@ -195,7 +200,7 @@ public final class NaturalForms {
             }
         }
         // Write last so a crossing branch or another canopy cannot overwrite the rare center.
-        for(var core:cores)b.set(core[0],core[1],core[2],SEQUENCE_CORE);
+        for(var core:cores)b.set(core[0],core[1],core[2],Y_LEAF);
     }
     public static boolean yClumpHasCore(long salt,int clump) { return Math.floorMod(WorldNoise.mix(salt+2909+clump*18777L),2L)==0; }
 
@@ -218,7 +223,7 @@ public final class NaturalForms {
             ends.add(new int[]{(int)Math.round(previousX),(int)Math.round(previousY),(int)Math.round(previousZ)});
         }
         // Emit every end after all strands so crossing yarn cannot erase a crystal.
-        for(var q:ends)b.set(q[0],q[1],q[2],CRYSTAL);
+        for(var q:ends)b.set(q[0],q[1],q[2],YARN_WHITE);
     }
 
     public static int omegaHeight(long salt){return 8+(int)Math.floorMod(salt>>>17,5L);}
@@ -280,7 +285,7 @@ public final class NaturalForms {
         // one new crystal per chunk and loading chunks in a different order changes nothing.
         if(random(salt,157)>=.5||surface.isEmpty())return;
         var p=new java.util.ArrayList<>(surface.entrySet()).get((int)(random(salt,163)*surface.size()));
-        b.set((int)(p.getKey()>>32),p.getValue()+1,(int)(long)p.getKey(),CRYSTAL);
+        b.set((int)(p.getKey()>>32),p.getValue()+1,(int)(long)p.getKey(),GREAT_OMEGA_GLYPH);
     }
 
     public static void understoryTree(VoxelBrush b,int cx,int base,int cz,int height,long salt,boolean emoji) {

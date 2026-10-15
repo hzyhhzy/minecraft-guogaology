@@ -10,6 +10,7 @@ public final class GuogaologyClient implements ClientModInitializer {
         new dev.guogaology.outer.client.GuogaologyClient().onInitializeClient();
         net.minecraft.client.gui.screens.MenuScreens.register(dev.guogaology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
         net.minecraft.client.gui.screens.MenuScreens.register(dev.guogaology.mining.MiningContent.MANUSCRIPT_MENU,EnhancementScreen::new);
+        LampShapingClient.initializeClient();
         PortalAppearance.initialize();
         PortalLoading.initialize();
         ManuscriptInventoryButton.initialize();

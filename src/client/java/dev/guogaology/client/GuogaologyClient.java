@@ -12,6 +12,7 @@ public final class GuogaologyClient implements ClientModInitializer {
         net.fabricmc.loader.api.FabricLoader.getInstance().getEntrypoints("guogaology:outer_client",Runnable.class).forEach(Runnable::run);
         net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.guogaology.mining.MiningContent.ENHANCEMENT_MENU,EnhancementScreen::new);
         net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.guogaology.mining.MiningContent.MANUSCRIPT_MENU,EnhancementScreen::new);
+        LampShapingClient.initializeClient();
         PortalAppearance.initialize();
         PortalLoading.initialize();
         ManuscriptInventoryButton.initialize();

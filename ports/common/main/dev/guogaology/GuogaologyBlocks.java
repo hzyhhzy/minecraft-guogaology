@@ -52,7 +52,7 @@ public final class GuogaologyBlocks {
     public static final Block EPSILON_TURF = block("epsilon_turf", new Block(dev.guogaology.survival.BlockBalance.apply("epsilon_turf",BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK).mapColor(MapColor.COLOR_CYAN))));
     public static final Block DREAD_LOG = block("dread_log", new RotatedPillarBlock(dev.guogaology.survival.BlockBalance.apply("dread_log",BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_STEM).mapColor(MapColor.PLANT).sound(SoundType.WOOD))));
     public static final Block DREAD_LEAVES = block("dread_leaves", new net.minecraft.world.level.block.TintedParticleLeavesBlock(0.01f,dev.guogaology.survival.BlockBalance.apply("dread_leaves",BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((state,world,pos,type)->type==net.minecraft.world.entity.EntityType.OCELOT||type==net.minecraft.world.entity.EntityType.PARROT).isSuffocating((state,world,pos)->false).isViewBlocking((state,world,pos)->false))));
-    public static final Block ORDINAL_CRYSTAL = translucent("ordinal_crystal", new TransparentBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_crystal",BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE).sound(SoundType.AMETHYST).noOcclusion().lightLevel(s -> 5))));
+    public static final Block ORDINAL_CRYSTAL = translucent("ordinal_crystal", new dev.guogaology.block.OrdinalCrystalBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_crystal",BlockBehaviour.Properties.ofFullCopy(Blocks.GLOWSTONE).sound(SoundType.AMETHYST).noOcclusion().lightLevel(s -> 5))));
     public static final Block RIDGE_LAMINA = landscape("ridge_lamina",false);
     public static final Block PROJECTION_GLASS = landscape("projection_glass",true);
     public static final Block BEAF_MARBLE = landscape("beaf_marble",false);
@@ -231,5 +231,5 @@ public final class GuogaologyBlocks {
     }
     private static Block symbol(String name) { return block(name,new Block(dev.guogaology.survival.BlockBalance.apply(name,dev.guogaology.survival.BlockBalance.amethystSettings().lightLevel(s->9)))); }
 
-    public static void initialize() { CoreGrades.initialize(); }
+    public static void initialize() { CoreResources.initialize(); CoreGrades.initialize(); }
 }

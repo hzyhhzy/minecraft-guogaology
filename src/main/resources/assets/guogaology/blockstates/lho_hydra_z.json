@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "anchored=false": {
       "model": "guogaology:block/lho_hydra_z"
+    },
+    "anchored=true": {
+      "model": "guogaology:block/lho_hydra_z_anchored"
     }
   }
 }

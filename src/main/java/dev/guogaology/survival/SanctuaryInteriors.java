@@ -12,6 +12,8 @@ final class SanctuaryInteriors {
     private SanctuaryInteriors(SanctuaryLayout p){this.p=p;clearance=p.interiorClearance();accessible=reachable();}
     static void decorate(SanctuaryLayout p){
         var d=new SanctuaryInteriors(p);
+        // Reserve complete, readable rare devices first; ordinary studies fit around them.
+        d.resourceDisplays();
         switch(p.theme){
             case MATRIX -> {
                 d.grid(new int[]{3,15,16,35,40,55},-44,44,-44,44,15,new Model[]{archive(),ySpecimen()});
@@ -105,7 +107,6 @@ final class SanctuaryInteriors {
                     d.place(studies[(level+(z+22)/14+(sign<0?1:0))%studies.length],sign*44,2+18*level,z,0,false);
             }
         }
-        d.resourceDisplays();
         SanctuaryResources.apply(p,d.placedCells);
     }
     private void treeRoom(Model model,int floor,int limit){
@@ -132,66 +133,91 @@ final class SanctuaryInteriors {
         if(support(p.at(x,ceiling,z)))place(m,x,ceiling-m.maxY-1,z,0,true);
     }
     private static boolean support(byte b){return b==MAIN||b==FLOOR||b==TRIM||b==LOG||b==GLASS||b==PATTERN||b==LEAF||b==LIGHT||b==GOLD||b>=PIXEL;}
-    /** Purpose-built mounts; no harvesting reward is inserted into an arbitrary furniture voxel. */
+    /** Eight authored single-core devices, with a deliberate upper-floor bias. */
     private void resourceDisplays(){
-        if(p.theme==SurvivalTheme.POWER){powerResourceDisplays();return;}
-        int crystals=0,regional=0;
-        for(var group:placedCells)for(var q:group){byte m=p.at(q.x(),q.y(),q.z());if(m==CRYSTAL)crystals++;if(SanctuaryResources.isRegional(p.theme,m))regional++;}
-        var floors=new TreeSet<Integer>();
-        for(var f:p.furnishings())if(!f.suspended())floors.add(f.floor().y());
-        for(var q:p.route())floors.add(q.y());
-        // Every display has a named center and a bright frame, fitted whole beside the circulation.
-        int step=p.theme==SurvivalTheme.ABSENCE?2:5;
-        for(int x=-p.width/2+7;x<p.width/2-6;x+=step)for(int z=-p.depth/2+7;z<p.depth/2-6;z+=step)for(int y:floors){
-            if(crystals>=50&&regional>=50)return;
-            int nr=Math.min(3,Math.max(0,50-regional)),nc=Math.min(3,Math.max(0,50-crystals));
-            if(place(resourceCase(p.theme,nr,nc,regional),x,y,z,0,false)){regional+=nr;crystals+=nc;}
-        }
-        if(crystals<50||regional<50)throw new IllegalStateException("Not enough whole fixed resource displays: "+p.theme+" "+regional+"/"+crystals);
-    }
-    private void powerResourceDisplays(){
-        var counts=new HashMap<Byte,Integer>();
-        for(var group:placedCells)for(var q:group)counts.merge(p.at(q.x(),q.y(),q.z()),1,Integer::sum);
-        var missing=new ArrayDeque<Byte>();
-        for(byte m:new byte[]{POWER_CORE,RED,GREEN,BLUE})for(int i=counts.getOrDefault(m,0);i<(m==POWER_CORE?50:30);i++)missing.add(m);
-        int crystals=counts.getOrDefault(CRYSTAL,0);
-        // Keep the same fixed, conspicuous display mounts; only the requested per-type quota differs.
-        for(int x=-22;x<=22;x+=5)for(int z=-22;z<=22;z+=5)for(int level=0;level<10;level++){
-            if(missing.isEmpty()&&crystals>=50)return;
-            var eligible=new ArrayList<Byte>();
-            for(byte m:missing)if(level>=8||(m==POWER_CORE?level<4:level==4||level==5)){eligible.add(m);if(eligible.size()==3)break;}
-            int nr=eligible.size(),nc=Math.min(3,Math.max(0,50-crystals));
-            if(nr==0&&nc==0)continue;
-            byte[] materials=new byte[nr];for(int i=0;i<nr;i++)materials[i]=eligible.get(i);
-            if(place(resourceCase(p.theme,nr,nc,0,materials),x,PowerPagoda.floor(level),z,0,false)){
-                for(byte m:materials)missing.removeFirstOccurrence(m);crystals+=nc;
+        int[][] allocation=switch(p.theme){
+            case MATRIX->new int[][]{{3,1},{16,2},{40,5}};
+            case POWER->new int[][]{{PowerPagoda.floor(1),1},{PowerPagoda.floor(2),1},{PowerPagoda.floor(3),1},{PowerPagoda.floor(4),1},{PowerPagoda.floor(5),1},{PowerPagoda.floor(6),1},{PowerPagoda.floor(7),1},{PowerPagoda.floor(8),1}};
+            case HYDRA->new int[][]{{2,3},{24,5}};
+            case ABSENCE->new int[][]{{7,1},{14,2},{21,2},{30,3}};
+            case WEAVER->new int[][]{{32,3}}; // Five cores belong to the four playable tables.
+            case ASTRA->new int[][]{{2,1},{18,1},{36,2},{70,4}};
+            case GUOGAO->new int[][]{{25,1},{49,1},{89,1},{129,2},{169,3}};
+            case FRONTIER->new int[][]{{2,1},{20,2},{38,2},{56,3}};
+        };
+        int placed=0;
+        for(int[] floor:allocation)for(int n=0;n<floor[1];n++){
+            var model=coreDisplay(p.theme,floor[0]);
+            double angle=(placed++%4)*Math.PI/2+Math.PI/4;
+            int tx=(int)Math.round(Math.cos(angle)*p.width*.27),tz=(int)Math.round(Math.sin(angle)*p.depth*.27);
+            var positions=new ArrayList<Point>();
+            for(int x=-p.width/2+6;x<p.width/2-5;x+=2)for(int z=-p.depth/2+6;z<p.depth/2-5;z+=2)
+                positions.add(new Point(x,floor[0],z));
+            positions.sort(Comparator.comparingInt(q->(q.x()-tx)*(q.x()-tx)+(q.z()-tz)*(q.z()-tz)));
+            boolean fitted=false;
+            search:for(int dy:new int[]{0,-1,1,-2,2})for(var q:positions)for(int turn=0;turn<4;turn++)
+                if(place(model,q.x(),q.y()+dy,q.z(),turn,false)){fitted=true;break search;}
+            if(!fitted){
+                int available=0;for(var q:positions)if(accessible.get(index(q.x(),q.y()+1,q.z())))available++;
+                throw new IllegalStateException("No complete core device on floor "+p.theme+" "+floor[0]+" reachable="+available);
             }
         }
-        if(!missing.isEmpty()||crystals<50)throw new IllegalStateException("Insufficient pagoda display mounts: "+missing.size()+" / "+crystals);
     }
-    private static Model resourceCase(SurvivalTheme theme,int regional,int crystals,int first){
-        return resourceCase(theme,regional,crystals,first,null);
-    }
-    private static Model resourceCase(SurvivalTheme theme,int regional,int crystals,int first,byte[] materials){
-        var m=new Model("fixed_"+theme.id+"_specimen_display");
-        if(theme==SurvivalTheme.ABSENCE){
-            m.box(-1,1,-1,1,1,1,RELIC_INLAY);m.box(-1,2,1,-1,8,1,GLASS);m.box(1,2,1,1,8,1,GLASS);
-            m.box(-1,8,-1,1,8,1,GLASS);
-            for(int y:new int[]{3,5,7})m.block(-1,y,1,LIGHT);
-            for(int i=0;i<regional;i++)m.block(0,3+i*2,0,SanctuaryResources.material(theme,first+i));
-            for(int i=0;i<crystals;i++)m.block(1,3+i*2,-1,CRYSTAL);
-            return m;
+    private static Model coreDisplay(SurvivalTheme theme,int floor){
+        var m=new Model("core_"+theme.id+"_reliquary");
+        if(theme==SurvivalTheme.HYDRA&&floor>=24){
+            m.box(-1,1,-1,1,1,1,SOIL);m.block(0,2,0,LOG);
+            m.block(-1,3,0,PSI);m.block(1,3,0,OMEGA);m.block(0,4,0,HYDRA_BUD);
+            m.block(-1,5,1,PRIMARY_RAW);m.block(1,5,1,PRIMARY_RAW);return m;
         }
-        m.box(-3,1,-1,3,1,1,RELIC_INLAY);
-        for(int x:new int[]{-3,3})m.box(x,2,0,x,6,0,GLASS);
-        m.box(-3,6,0,3,6,0,WHITE);
-        for(int i=0;i<regional;i++){
-            int x=-2+2*i;
-            m.block(x,2,0,GOLD);m.block(x,3,0,materials==null?SanctuaryResources.material(theme,first+i):materials[i]);
+        if(theme==SurvivalTheme.GUOGAO&&floor>=169){
+            m.box(-1,1,-1,1,1,1,RELIC_INLAY);m.block(0,2,0,PRIMARY_RAW);m.block(0,3,0,GUOGAO_HEART);
+            m.block(-1,3,1,LEAF);m.block(1,3,1,LEAF);m.block(0,5,1,EMOJI);return m;
         }
-        for(int i=0;i<crystals;i++)m.block(-2+2*i,5,0,CRYSTAL);
-        // LHO samples are all separated, and this permanent light anchors them even after other prizes are taken.
-        if(theme==SurvivalTheme.ABSENCE)m.block(0,6,0,LIGHT);
+        switch(theme){
+            case MATRIX->{
+                m.box(-2,1,-2,2,1,2,RELIC_INLAY);m.box(-2,2,-1,-2,5,1,Y_WOOD);m.box(2,2,-1,2,5,1,Y_WOOD);
+                for(int r=0;r<2;r++)for(int c=0;c<2;c++)m.bms(c*2-1,r+3,1,r,c);
+                m.block(0,2,0,PRIMARY_RAW);m.block(0,4,0,SEQUENCE_CORE);m.box(-2,6,0,2,6,0,GLASS);
+            }
+            case POWER->{
+                m.box(-2,1,-2,2,1,2,LOG);m.block(-2,2,-1,RED);m.block(2,2,-1,GREEN);m.block(0,2,2,BLUE);
+                m.block(0,2,0,SECONDARY_RAW);m.line(-2,2,0,0,5,0,ARROW);m.line(2,2,0,0,5,0,ARROW);
+                m.block(0,6,0,POWER_CORE);m.block(0,7,0,LIGHT);
+            }
+            case HYDRA->{
+                m.box(-2,1,-2,2,1,2,SOIL);m.box(0,2,0,0,3,0,LOG);
+                for(int sign:new int[]{-1,1}){m.line(0,3,0,sign*2,5,0,PSI);m.block(sign*2,6,0,PRIMARY_RAW);}
+                m.block(0,4,0,HYDRA_BUD);m.block(-1,2,1,BLOOM);m.block(1,2,-1,SMALL_FLOWER);
+            }
+            case ABSENCE->{
+                m.box(-2,1,-1,2,1,1,GLASS);m.box(-2,2,0,-2,4,0,GLASS);m.box(2,4,0,2,6,0,GLASS);
+                m.box(-1,6,0,1,6,0,GLASS);m.block(0,4,0,PHANTOM_EMPTY);m.block(0,2,0,LIGHT);
+                m.block(-1,2,1,PHANTOM_FFFZ);m.block(1,2,1,PHANTOM_FOS);
+            }
+            case WEAVER->{
+                m.box(-2,1,-2,2,1,2,PATTERN);m.block(0,2,0,IBLP_MARKED);
+                for(int x=-1;x<=1;x++)m.block(x,2,1,IBLP_NODE);
+                m.block(-2,2,-1,PRIMARY_RAW);m.block(2,2,-1,PRIMARY_RAW);m.block(0,4,0,LAVER_CORE);
+                m.line(-2,2,0,0,6,0,YARN);m.line(2,2,0,0,6,0,YARN);
+            }
+            case ASTRA->{
+                m.box(-2,1,-1,2,1,1,TRIM);m.box(-2,2,1,2,5,1,SERVER);
+                m.block(-2,2,0,PRIMARY_RAW);m.block(2,2,0,PRIMARY_RAW);
+                m.box(-1,5,-1,1,6,-1,CLOUD);m.block(0,4,0,ASTRA_CORE);m.block(0,2,0,MONITOR);
+            }
+            case GUOGAO->{
+                m.box(-2,1,-2,2,1,2,RELIC_INLAY);m.box(0,2,0,0,3,0,LOG);
+                m.box(-2,3,1,2,3,1,LEAF);m.box(-1,5,1,1,5,1,LEAF);m.block(0,7,1,GOLD);
+                m.block(-2,4,1,EMOJI);m.block(2,4,1,EMOJI_CYAN);m.block(0,4,0,GUOGAO_HEART);
+                m.block(-1,2,-1,PRIMARY_RAW);m.block(1,2,-1,PRIMARY_RAW);
+            }
+            case FRONTIER->{
+                m.box(-2,1,-2,2,1,2,PROOF);m.box(-1,2,-1,1,2,1,PROOF);
+                for(int sign:new int[]{-1,1}){m.box(sign*2,2,0,sign*2,6,0,SET_GLASS);m.block(sign*2,7,0,PRIMARY_RAW);}
+                m.box(-2,7,1,2,7,1,SET_GLASS);m.block(0,4,0,BOUNDARY_CORE);m.block(0,3,1,FORMULA);
+            }
+        }
         return m;
     }
     private int index(int x,int y,int z){return (y*p.depth+z+p.depth/2)*p.width+x+p.width/2;}
@@ -249,6 +275,13 @@ final class SanctuaryInteriors {
         return true;
     }
     private byte furnishingMaterial(Model model,byte material,Point local){
+        if(model.name.startsWith("core_"))return material;
+        if(material==CRYSTAL)return model.name.contains("scg")?SECONDARY_RAW:LIGHT;
+        if(SanctuaryResources.isRegional(p.theme,material)){
+            // The four legal playable tables retain their five functional cores.
+            if(p.theme==SurvivalTheme.WEAVER&&model.name.startsWith("playable_iblp_"))return material;
+            return PRIMARY_RAW;
+        }
         // Rare inlays belong to small interior objects, never the enormous outer shell.
         // Keep playable cells, BMS digits, flowers and functional crystal anchors intact.
         Byte above=model.blocks.get(new Point(local.x(),local.y()+1,local.z()));
@@ -288,15 +321,17 @@ final class SanctuaryInteriors {
     }
     private static Model tapeStudy(){
         var m=new Model("turing_tape_workbench");
-        m.box(-3,1,-2,3,1,2,TRIM);m.box(-3,2,0,3,2,0,TURING);
+        m.box(-4,1,-2,4,1,2,TRIM);m.box(-3,2,0,3,2,0,TURING);
+        m.block(-4,2,0,SECONDARY_RAW);m.block(4,2,0,SECONDARY_RAW);
         m.box(-1,2,-2,1,5,-2,PROOF);m.block(0,6,-2,BOUNDARY_CORE);
         m.block(-3,3,2,CRYSTAL);m.block(3,3,2,CRYSTAL);return m;
     }
     private static Model tapeArchive(){
         var m=new Model("turing_parallel_tape_archive");
         for(int x:new int[]{-2,2}){
-            m.box(x,1,-5,x+1,1,5,TRIM);
+            m.box(x,1,-6,x+1,1,6,TRIM);
             m.box(x,2,-5,x,2,5,TURING);
+            m.block(x,2,-6,SECONDARY_RAW);m.block(x,2,6,SECONDARY_RAW);
             for(int z=-4;z<=4;z++)m.block(x+1,2,z,TAPE_BUTTON);
         }
         return m;

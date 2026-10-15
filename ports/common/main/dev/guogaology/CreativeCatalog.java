@@ -19,6 +19,8 @@ public final class CreativeCatalog {
     private CreativeCatalog(){}
     private static String category(Block block){
         String id=BuiltInRegistries.BLOCK.getKey(block).getPath();
+        if(Set.of("tree_node_red","tree_node_green","tree_node_blue").contains(id))return "materials";
+        if(CoreResources.ALL.contains(block))return "materials";
         if(block instanceof NumberStoneBlock||block instanceof OrdinalBrickBlock)return "numbers";
         if(CoreGrades.ROOTS.contains(id)||block instanceof PortableRelicBlock||RARE.contains(id))return "cores";
         if(block instanceof ChristmasLightBlock||block instanceof EmojiLanternBlock||block instanceof FruitJellyBlock||block instanceof GummyJarBlock||block==GuogaologyBlocks.MOSAIC_LIGHT||block==GuogaologyBlocks.STAR_GOLD)return "lighting";
@@ -48,6 +50,7 @@ public final class CreativeCatalog {
                 else out.add(new ItemStack(e.getKey()));
             }
             for(var table:MiningContent.TABLES)out.add(new ItemStack(table));
+            out.add(new ItemStack(dev.guogaology.lamp.LampShapingContent.BLOCK));
         }
         if(tab.equals("materials")){
             for(var item:MiningContent.ITEMS)if(!MiningContent.GEAR.containsKey(item)&&Arrays.stream(MiningContent.TABLES).noneMatch(b->b.asItem()==item))out.add(new ItemStack(item));

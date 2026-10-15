@@ -1,0 +1,87 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:astra_cloud"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:astra_marble"
+          }
+        ]
+      }
+    },
+    "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:astra_mint"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:cloud_pearl"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:compute_chip"
+          }
+        ]
+      }
+    },
+    "ingredient_5": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:astra_critical_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "ingredient_1",
+      "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
+      "ingredient_5",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:astra_critical_core"
+    ]
+  }
+}

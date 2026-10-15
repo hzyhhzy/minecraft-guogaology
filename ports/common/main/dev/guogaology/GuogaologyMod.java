@@ -23,10 +23,12 @@ public final class GuogaologyMod implements ModInitializer {
     @Override
     public void onInitialize() {
         GuogaologyBlocks.initialize();
+        dev.guogaology.block.OrdinalAnchoring.initialize();
         GuogaologySounds.initialize();
         WorldMaterials.initialize();
         dev.guogaology.mining.MiningContent.initialize();
         dev.guogaology.outer.GuogaologyMod.initialize();
+        dev.guogaology.lamp.LampShapingContent.initialize();
         CreativeCatalog.initialize();
         dev.guogaology.portal.PortalRitual.initialize();
         dev.guogaology.world.OrdinalDensity.initialize();

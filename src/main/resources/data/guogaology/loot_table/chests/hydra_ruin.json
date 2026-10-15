@@ -6,7 +6,45 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:hydra_bud",
+          "name": "guogaology:hydra_sprig",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 12,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:veblen_petal",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 12,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:psi_symbol",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -25,7 +63,45 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal",
+          "name": "guogaology:great_omega_symbol",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 6,
+                "max": 12
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:epsilon_bloom",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 12,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:ordinal_shard",
           "functions": [
             {
               "function": "minecraft:set_count",

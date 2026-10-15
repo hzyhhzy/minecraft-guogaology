@@ -255,7 +255,7 @@ final class SanctuaryOrnaments {
             else {
             p.box(x-3,y+1,z-3,x-2,y+3,z+2,p.theme==SurvivalTheme.ABSENCE?GLASS:SHELF);
             p.box(x-1,y+1,z-2,x+2,y+1,z-1,SLAB);
-            p.set(x,y+2,z-2,switch(p.theme){case MATRIX->NUMBER;case POWER->ARROW;case HYDRA->CRYSTAL;
+            p.set(x,y+2,z-2,switch(p.theme){case MATRIX->NUMBER;case POWER->ARROW;case HYDRA->PRIMARY_RAW;
                 case ABSENCE->ZED;case WEAVER->WORKSTATION;case ASTRA->MONITOR;case GUOGAO->FRUIT;case FRONTIER->FORMULA;});
             p.set(x+2,y+2,z-2,p.theme==SurvivalTheme.GUOGAO?EMOJI:LANTERN);
             p.set(x+2,y+1,z+2,switch(p.theme){case HYDRA->BLOOM;case WEAVER->YARN;case GUOGAO->SMALL_FLOWER;default->SLAB;});

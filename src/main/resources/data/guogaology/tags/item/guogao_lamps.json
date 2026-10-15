@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:guogao_lantern",
+    "guogaology:cyan_guogao_lantern",
+    "guogaology:rose_guogao_lantern",
+    "guogaology:lime_guogao_lantern",
+    "guogaology:violet_guogao_lantern",
+    "guogaology:scarlet_guogao_lantern"
+  ]
+}

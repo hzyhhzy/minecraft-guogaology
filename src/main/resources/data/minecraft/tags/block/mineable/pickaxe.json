@@ -126,6 +126,19 @@
     "guogaology:rose_light",
     "guogaology:lime_light",
     "guogaology:violet_light",
-    "guogaology:scarlet_light"
+    "guogaology:scarlet_light",
+    "guogaology:arrow_knot",
+    "guogaology:cloud_pearl",
+    "guogaology:dread_crystal_ore",
+    "guogaology:dread_resin",
+    "guogaology:empty_crystal_ore",
+    "guogaology:hydra_sprig",
+    "guogaology:laver_gel",
+    "guogaology:matrix_sheet",
+    "guogaology:ordinal_crystal_ore",
+    "guogaology:scg_node",
+    "guogaology:set_membrane",
+    "guogaology:turing_endcap",
+    "guogaology:guogao_lamp_shaper"
   ]
 }

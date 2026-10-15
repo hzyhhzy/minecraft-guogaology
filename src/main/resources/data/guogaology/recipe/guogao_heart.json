@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:dread_resin"
+    },
+    {
+      "item": "guogaology:dread_resin"
+    },
+    {
+      "item": "guogaology:dread_leaves"
+    },
+    {
+      "item": "guogaology:dread_leaves"
+    },
+    {
+      "tag": "guogaology:fruit_guogao"
+    },
+    {
+      "item": "guogaology:star_gold"
+    },
+    {
+      "tag": "guogaology:numbered_lamps"
+    },
+    {
+      "tag": "guogaology:guogao_lamps"
+    },
+    {
+      "item": "guogaology:ordinal_crystal"
+    }
+  ],
+  "result": {
+    "id": "guogaology:guogao_heart",
+    "count": 1
+  }
+}

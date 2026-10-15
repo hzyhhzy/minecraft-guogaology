@@ -6,33 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:sequence_core",
+          "name": "guogaology:matrix_sheet",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 6,
-                "max": 12
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 30,
-                "max": 60
+                "min": 12,
+                "max": 24
               }
             }
           ]
@@ -50,8 +31,65 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 4,
-                "max": 12
+                "min": 16,
+                "max": 36
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:projection_glass",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 12,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:y_leaves",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 12,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:ordinal_shard",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 30,
+                "max": 60
               }
             }
           ]

@@ -24,6 +24,8 @@ def matrices():
 def absence():
     from refine_material_art import absence as current_absence
     current_absence()
+    from generate_lho_anchor_art import generate as anchor_art
+    anchor_art()
 
 def slice_icon():
     # The original mint-and-violet jelly silhouette, with bevels, translucency

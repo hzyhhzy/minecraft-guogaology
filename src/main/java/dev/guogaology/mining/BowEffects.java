@@ -13,6 +13,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.*;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
+import net.minecraft.enchantment.EnchantmentHelper;
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -25,7 +26,9 @@ public final class BowEffects {
         if(!(level instanceof ServerWorld world))return true;
         var own=GearData.profile(bow);var bookStack=ManuscriptEffects.held(owner);var book=GearData.profile(bookStack);
         int bookTier=GearData.bookTier(bookStack),branch=EquipmentRules.highest(own,2);
-        boolean deep=ManuscriptEffects.deep(world),free=player.getAbilities().creativeMode||branch>0&&ammo.isOf(Items.ARROW);
+        boolean deep=ManuscriptEffects.deep(world);
+        int ammoCost=player.getAbilities().creativeMode||branch>0&&ammo.isOf(Items.ARROW)?0:EnchantmentHelper.getAmmoUse(world,bow,ammo,1);
+        if(ammoCost>ammo.getCount())return false;boolean free=ammoCost==0;
         var shot=new BowShotData(UUID.randomUUID().toString(),player.getUuid().toString(),player.getScoreboardTeam()==null?"":player.getScoreboardTeam().getName(),
             deep?0:EquipmentRules.attack(0,own,book,false,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)),
             deep?EquipmentRules.attack(1,own,book,true,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)):1,
@@ -43,7 +46,7 @@ public final class BowEffects {
             arrows.add(arrow);BowVolleyLedger.get(world.getServer()).register(shot.volley,arrow.getUuid());
         }
         for(var arrow:arrows)if(!world.spawnEntity(arrow))BowVolleyLedger.get(world.getServer()).destroy(shot.volley,arrow.getUuid());
-        if(!free)ammo.decrement(1);
+        if(!free)ammo.decrement(ammoCost);
         Hand hand=owner.getActiveHand();bow.damage(1,owner,hand==Hand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
         world.playSound(null,player.getX(),player.getY(),player.getZ(),SoundEvents.ENTITY_ARROW_SHOOT,SoundCategory.PLAYERS,1,1/(world.getRandom().nextFloat()*.4f+1.2f)+draw*.5f);
         player.incrementStat(Stats.USED.getOrCreateStat(bow.getItem()));return true;

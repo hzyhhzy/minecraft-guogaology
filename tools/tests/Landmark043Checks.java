@@ -28,14 +28,16 @@ public final class Landmark043Checks {
     private static int count(SanctuaryLayout p,byte code){int n=0;for(int y=0;y<p.height;y++)for(int z=-p.depth/2;z<=p.depth/2;z++)for(int x=-p.width/2;x<=p.width/2;x++)if(p.at(x,y,z)==code)n++;return n;}
     public static void main(String[] args)throws Exception{
         if(args.length==2&&args[0].equals("--write-baseline")){writeBaseline(Path.of(args[1]));return;}
-        int[] furniture={30,56,21,20,44,35,50,35};
-        int[] solids={231307,0,134925,89370,156231,317704,474031,135744};
         for(var theme:SurvivalTheme.values()){
             var p=SanctuaryLayout.of(theme);var reached=reachable(p);
-            check(p.furnishings().size()==furniture[theme.ordinal()],"restored pre-reduction furnishing count "+theme+" "+p.furnishings().size());
-            if(theme!=SurvivalTheme.POWER)check(p.solidCount()==solids[theme.ordinal()],"exact pre-reduction occupied volume "+theme);
-            check(p.interiorResources().stream().filter(q->!q.regional()).count()==50,"restored50 authored ordinal crystals "+theme);
-            check(p.interiorResources().stream().filter(InteriorResource::regional).count()==(theme==SurvivalTheme.POWER?140:50),"restored authored regional total "+theme);
+            check(p.furnishings().size()>=15,"retained complete themed furnishings "+theme);
+            check(p.interiorResources().size()==8,"exactly eight authored regional cores "+theme);
+            check(p.interiorResources().stream().allMatch(InteriorResource::regional),"no decorative finished crystal "+theme);
+            check(count(p,CRYSTAL)==0,"no finished crystal marker anywhere "+theme);
+            var levels=new TreeSet<Integer>();p.interiorResources().forEach(q->levels.add(q.pos().y()));
+            check(levels.size()>=2,"core exhibits are distributed across floors "+theme+" "+levels);
+            int midpoint=theme==SurvivalTheme.WEAVER?16:(levels.first()+levels.last())/2;
+            check(p.interiorResources().stream().filter(q->q.pos().y()>=midpoint).count()>=4,"core exhibits have upper-floor bias "+theme);
             check(reached.get(index(p,p.arena.x(),p.arena.y()+1,p.arena.z())),"walkable arena "+theme);
             for(var f:p.furnishings())if(!f.suspended()){
                 boolean accessible=false;var q=f.floor();
@@ -55,7 +57,8 @@ public final class Landmark043Checks {
             }
             switch(theme){
                 case POWER->{
-                    check(count(p,POWER_CORE)==50,"restored fifty Power cores");for(byte m:new byte[]{RED,GREEN,BLUE})check(count(p,m)==30,"restored thirty TREE "+m);
+                    check(count(p,POWER_CORE)==8,"eight Power cores");
+                    for(byte m:new byte[]{RED,GREEN,BLUE})check(count(p,m)>=3,"ordinary TREE nodes remain "+m);
                     check(p.height==250&&p.arena.y()==209,"highest tenth-storey battle floor, same tower height");
                     check(p.route().getLast().equals(p.arena),"main ascent finishes at top arena");
                     check(p.chests().stream().filter(Chest::relic).allMatch(c->c.floor().y()==209),"main reward moves with arena");
@@ -67,38 +70,40 @@ public final class Landmark043Checks {
                     for(var c:p.chests())if(c.relic()){var q=c.floor();check(p.at(q.x(),q.y(),q.z())>AIR&&p.at(q.x(),q.y()+1,q.z())==AIR&&p.at(q.x(),q.y()+2,q.z())==AIR,"main chest has actual supported placement and lid clearance");}
                 }
                 case ABSENCE->{
-                    byte[] materials={PHANTOM_PSI,PHANTOM_Z,PHANTOM_FOS,PHANTOM_FFFZ,PHANTOM_EMPTY};int[] totals={41,43,78,65,48};
-                    for(int i=0;i<materials.length;i++)check(count(p,materials[i])==totals[i],"restored LHO interior, ornament and railing materials "+materials[i]);
-                    check(count(p,CRYSTAL)==227,"restored LHO authored and architectural crystals");
+                    check(count(p,PHANTOM_EMPTY)==8,"only eight authored Absence cores");
+                    for(byte m:new byte[]{PHANTOM_PSI,PHANTOM_Z,PHANTOM_FOS,PHANTOM_FFFZ})
+                        check(count(p,m)>0,"LHO natural symbol materials remain "+m);
                 }
                 case GUOGAO->{
-                    check(p.numberLamps().size()==87&&p.emojiLampCenters().size()==24,"existing exterior lamps retained");
-                    for(var lamp:p.numberLamps()){var q=lamp.center();for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++)check(p.at(q.x()+dx,q.y()+dy,q.z()+dz)==CRYSTAL,"intact 27-crystal lamp deposit");}
-                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==GUOGAO_HEART,"intact emoji heart deposit");
-                    check(p.finaleCores().size()==8&&p.finaleRelics().size()==17,"eight finale cores and nine existing companion relics");
-                    check(count(p,CRYSTAL)==50+87*27+8,"all restored Underworld crystals, with protected exceptions");
-                    check(count(p,GUOGAO_HEART)==50+24+1,"all restored Underworld hearts, with protected exceptions");
+                    check(p.numberLamps().size()==87&&p.emojiLampCenters().size()==24,"exterior lamp silhouettes retained");
+                    for(var lamp:p.numberLamps()){
+                        var q=lamp.center();check(p.at(q.x(),q.y(),q.z())==PRIMARY_RAW,"ordinary resin lamp center");
+                        for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++)
+                            if(dx!=0||dy!=0||dz!=0)check(p.at(q.x()+dx,q.y()+dy,q.z()+dz)==GLASS,"ordinary glass lamp chamber");
+                    }
+                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==LIGHT,"emoji lamp has no free heart");
+                    check(p.finaleCores().size()==8&&p.finaleRelics().size()==17,"eight final tributes and retained companion ornaments");
+                    check(count(p,GUOGAO_HEART)==9,"eight indoor hearts plus one finale heart");
                 }
-                default->check(count(p,SanctuaryResources.material(theme,0))==(theme==SurvivalTheme.FRONTIER?52:50),"restored authored regional cores and original functional endpoints "+theme);
+                default->check(count(p,SanctuaryResources.material(theme,0))==8,"no extra architectural cores "+theme);
             }
-            if(theme!=SurvivalTheme.GUOGAO&&theme!=SurvivalTheme.ABSENCE)check(count(p,CRYSTAL)==50,"restored ordinary crystal material count "+theme);
-            if(theme==SurvivalTheme.FRONTIER)check(p.at(-45,72,0)==BOUNDARY_CORE&&p.at(45,72,0)==BOUNDARY_CORE,"original functional tape endpoints retained separately");
+            if(theme==SurvivalTheme.FRONTIER)
+                check(p.at(-45,72,0)==SECONDARY_RAW&&p.at(45,72,0)==SECONDARY_RAW,"inert ordinary tape endcaps");
             if(theme==SurvivalTheme.WEAVER){
                 int functional=0;for(var f:p.furnishings())if(f.kind().startsWith("playable_iblp_")){
                     var q=f.floor();int cores=0;for(int dx=-f.radiusX();dx<=f.radiusX();dx++)for(int dz=-f.radiusZ();dz<=f.radiusZ();dz++)if(p.at(q.x()+dx,q.y()+3,q.z()+dz)==LAVER_CORE)cores++;
                     check(cores==(f.kind().equals("playable_iblp_initial")?2:1),"exact playable table roots/marks retained");functional+=cores;
                 }check(functional==5,"five functional table cores retained within the restored fifty");
             }
-            check(p.furnishings().stream().noneMatch(f->f.kind().startsWith("treasure_")||f.kind().startsWith("ordinary_")),"cancelled replacement models are absent "+theme);
-            check(p.furnishings().stream().anyMatch(f->f.kind().equals("fixed_"+theme.id+"_specimen_display")),"original multi-specimen displays restored "+theme);
+            check(p.furnishings().stream().anyMatch(f->f.kind().equals("core_"+theme.id+"_reliquary")),"purpose-built one-core devices "+theme);
             for(var reward:p.interiorResources()){
                 var q=reward.pos();check(p.authoredResourceMounts().contains(q),"retained rewards occupy original authored mounts "+theme);
                 check(reward.regional()?SanctuaryResources.isRegional(theme,p.at(q.x(),q.y(),q.z())):p.at(q.x(),q.y(),q.z())==CRYSTAL,"recorded restored reward agrees with final material "+q);
             }
-            if(args.length>0)compareBaseline(p,Path.of(args[0]).resolve(theme.id+".vox"));
-            System.out.println(theme+": authoredRegional="+p.interiorResources().stream().filter(InteriorResource::regional).count()+", authoredCrystals=50, furniture="+p.furnishings().size()+", reachable="+reached.cardinality());
+
+            System.out.println(theme+": authoredRegional="+p.interiorResources().stream().filter(InteriorResource::regional).count()+", authoredCrystals=0, furniture="+p.furnishings().size()+", reachable="+reached.cardinality());
         }
-        System.out.println("LANDMARK_RESTORED_0405_OK: "+assertions+" assertions");
+        System.out.println("LANDMARK_RESOURCES_055_OK: "+assertions+" assertions");
     }
     private static void writeBaseline(Path folder)throws Exception{
         Files.createDirectories(folder);

@@ -4,6 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.registry.RegistryKeys;
+import java.util.List;
 
 /** Each of 26 exterior tiles stores its exact part and emotion; the center is a crystal. */
 public final class EmojiLanternBlock extends StatefulDecorBlock {
@@ -14,11 +21,19 @@ public final class EmojiLanternBlock extends StatefulDecorBlock {
         setDefaultState(getStateManager().getDefaultState().with(PART, 27).with(EMOTION,0));
     }
     @Override protected void appendProperties(StateManager.Builder<Block, BlockState> builder) { builder.add(PART,EMOTION); }
+    @Override protected List<ItemStack> getDroppedStacks(BlockState state,LootContextParameterSet.Builder builder){
+        var drops=super.getDroppedStacks(state,builder);
+        var tool=builder.getOptional(LootContextParameters.TOOL);
+        boolean silk=tool!=null&&EnchantmentHelper.getLevel(builder.getWorld().getRegistryManager()
+                .getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH),tool)>0;
+        if(!silk)for(var stack:drops)if(stack.isOf(asItem()))copyAppearance(stack,getDefaultState());
+        return drops;
+    }
     public static BlockState tile(Block lamp, int x, int y, int z) {
         return tile(lamp,x,y,z,0);
     }
     public static BlockState tile(Block lamp,int x,int y,int z,int emotion){
-        if(x==1&&y==1&&z==1)return dev.guogaology.GuogaologyBlocks.ORDINAL_CRYSTAL.getDefaultState();
+        if(x==1&&y==1&&z==1)return net.minecraft.block.Blocks.GLOWSTONE.getDefaultState();
         return lamp.getDefaultState().with(PART,x+3*y+9*z).with(EMOTION,emotion);
     }
 }

@@ -26,10 +26,10 @@ public final class CombinatorialForms {
                 b.set(x+dx,base+y,z+dz,DIGIT+towerDigit(salt,dx,y,dz));
         }
         int tip=base+t.height+antennaHeight(salt)-1;
-        b.box(x,base+t.height,z,x,tip-1,z,NaturalForms.CRYSTAL);
-        b.set(x,tip,z,NaturalForms.POWER_TOWER_CORE);
+        b.box(x,base+t.height,z,x,tip-1,z,NaturalForms.POWER_BRICK);
+        b.set(x,tip,z,NaturalForms.ARROW_KNOT);
         for(int[] face:new int[][]{{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}})
-            b.set(x+face[0],tip+face[1],z+face[2],NaturalForms.CRYSTAL);
+            b.set(x+face[0],tip+face[1],z+face[2],NaturalForms.POWER_BRICK);
     }
     public static int towerDigit(long salt,int x,int y,int z) {
         return 2+(int)Math.floorMod(WorldNoise.mix(salt+x*73428767L+y*912931L+z*438289L),8L);
@@ -93,7 +93,7 @@ public final class CombinatorialForms {
         for(int i=0;i<graph.nodes.size();i++){
             var n=graph.nodes.get(i);
             b.set((int)Math.round(x+n.x*height),(int)Math.round(base+n.y*height),(int)Math.round(z+n.z*height),
-                    !subcubic&&treeNodeIsRare(salt,i,n.label)?LABEL+n.label:NaturalForms.CRYSTAL);
+                    subcubic?NaturalForms.SCG_NODE:LABEL+n.label);
         }
     }
     /** Preserve graph topology while giving every glass node room, even on the smallest trees. */
@@ -121,14 +121,14 @@ public final class CombinatorialForms {
         return new Graph(List.copyOf(nodes),source.edges);
     }
     public static boolean treeNodeIsRare(long salt,int index){var nodes=tree(salt,false).nodes;return treeNodeIsRare(salt,index,nodes.get(Math.floorMod(index,nodes.size())).label);}
-    private static boolean treeNodeIsRare(long salt,int index,int color){return WorldNoise.unit(WorldNoise.mix(salt+45289L+index*837917L))<(color==0?.30:.365);}
+    private static boolean treeNodeIsRare(long salt,int index,int color){return true;}
     public static void grahamTree(VoxelBrush b,int x,int base,int z,int height,long salt) {
         b.line(x,base-1,z,x,base+height*.24,z,0,NaturalForms.POWER_BRICK);
         double angle=WorldNoise.unit(salt)*Math.PI*2;
         for(int i=0;i<4;i++) grahamBranch(b,x,base+height*.24,z,(height-1)*.375,angle+i*Math.PI/2,0,WorldNoise.mix(salt+i));
         // One exposed jewel in the central cup directly above the four-way trunk fork.
         b.set(x,base+(int)Math.round(height*.24)+2,z,
-                WorldNoise.unit(WorldNoise.mix(salt+21443))<.20?NaturalForms.POWER_TOWER_CORE:NaturalForms.CRYSTAL);
+                NaturalForms.ARROW_KNOT);
     }
     private static void grahamBranch(VoxelBrush b,double x,double y,double z,double length,double angle,int level,long salt) {
         double xx=x+Math.cos(angle)*length*.62,zz=z+Math.sin(angle)*length*.62,yy=y+length;

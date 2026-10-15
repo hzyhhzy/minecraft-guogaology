@@ -1,6 +1,7 @@
 package dev.guogaology.world;
 
 import dev.guogaology.GuogaologyBlocks;
+import dev.guogaology.CoreResources;
 import dev.guogaology.block.EmojiLanternBlock;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,8 +31,8 @@ public final class NaturalScenery {
             GuogaologyBlocks.ASTRA_CLOUD.defaultBlockState(),GuogaologyBlocks.ASTRA_CLOUD_SHADE.defaultBlockState(),
             GuogaologyBlocks.GIANT_LAVER.defaultBlockState(),GuogaologyBlocks.LAVER_VEIN.defaultBlockState(),
             Blocks.SANDSTONE.defaultBlockState(),Blocks.RED_SANDSTONE.defaultBlockState(),
-            GuogaologyBlocks.POWER_BRICKS.defaultBlockState(),GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState(),
-            Blocks.AIR.defaultBlockState(),GuogaologyBlocks.LHO_TRACE.defaultBlockState(),
+            GuogaologyBlocks.POWER_BRICKS.defaultBlockState(),Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(),
+            Blocks.AIR.defaultBlockState(),GuogaologyBlocks.FFFZ_TRACE.defaultBlockState(),
             GuogaologyBlocks.FFFZ_TRACE.defaultBlockState(),GuogaologyBlocks.FOS_TRACE.defaultBlockState(),
             GuogaologyBlocks.Y_LOG.defaultBlockState(),GuogaologyBlocks.Y_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT,true).setValue(LeavesBlock.DISTANCE,1),
             GuogaologyBlocks.TIANYI_FIBER.defaultBlockState(),GuogaologyBlocks.WHITE_FIBER.defaultBlockState(),WOOD,LEAF,Blocks.AIR.defaultBlockState(),
@@ -48,9 +49,9 @@ public final class NaturalScenery {
             Blocks.SMOOTH_QUARTZ_STAIRS.defaultBlockState(),GuogaologyBlocks.STAR_GOLD.defaultBlockState(),
             Blocks.AIR.defaultBlockState(),net.minecraft.world.level.block.Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(),
             Blocks.RED_STAINED_GLASS.defaultBlockState(),Blocks.GREEN_STAINED_GLASS.defaultBlockState(),Blocks.BLUE_STAINED_GLASS.defaultBlockState(),
-            GuogaologyBlocks.SEQUENCE_CORE.defaultBlockState(),GuogaologyBlocks.HYDRA_BUD.defaultBlockState(),GuogaologyBlocks.ASTRA_CRITICAL_CORE.defaultBlockState(),GuogaologyBlocks.GUOGAO_HEART.defaultBlockState(),GuogaologyBlocks.POWER_TOWER_CORE.defaultBlockState(),
+            CoreResources.MATRIX_SHEET.defaultBlockState(),CoreResources.HYDRA_SPRIG.defaultBlockState(),CoreResources.CLOUD_PEARL.defaultBlockState(),CoreResources.DREAD_RESIN.defaultBlockState(),CoreResources.ARROW_KNOT.defaultBlockState(),
             Blocks.BIRCH_LOG.defaultBlockState(),GuogaologyBlocks.OMEGA_SYMBOL.defaultBlockState(),GuogaologyBlocks.GREAT_OMEGA_SYMBOL.defaultBlockState(),Blocks.MUSHROOM_STEM.defaultBlockState(),Blocks.POLISHED_ANDESITE.defaultBlockState(),
-            Blocks.POLISHED_BLACKSTONE.defaultBlockState(),Blocks.GRAY_STAINED_GLASS.defaultBlockState()};
+            Blocks.POLISHED_BLACKSTONE.defaultBlockState(),Blocks.GRAY_STAINED_GLASS.defaultBlockState(),CoreResources.MATRIX_SHEET.defaultBlockState(),CoreResources.ARROW_KNOT.defaultBlockState(),CoreResources.SCG_NODE.defaultBlockState(),CoreResources.HYDRA_SPRIG.defaultBlockState(),CoreResources.LAVER_GEL.defaultBlockState(),CoreResources.CLOUD_PEARL.defaultBlockState(),CoreResources.SET_MEMBRANE.defaultBlockState(),CoreResources.DREAD_RESIN.defaultBlockState(),CoreResources.TURING_ENDCAP.defaultBlockState()};
     public static Site site(long seed,int cell,int cx,int cz,boolean underworld) {
         return site(seed,cell,cx,cz,underworld,false);
     }
@@ -192,6 +193,13 @@ public final class NaturalScenery {
         }
         int topX=(int)Math.round(treeX(s,1,height,haunted)),topZ=(int)Math.round(treeZ(s,1,height,haunted));
         FirDecorations.star(forms(b),topX,root+dir*height,topZ,height,dir);
+        // Resin protrudes from the lower trunk's natural fissures; stars remain plain light.
+        if(haunted)for(int i=0;i<4;i++){
+            double t=.035+i*.027;int dy=Math.max(1,(int)(t*height));
+            int x=(int)Math.round(treeX(s,t,height,true)),z=(int)Math.round(treeZ(s,t,height,true));
+            int r=Math.max(0,(int)((1-t)*height/28));
+            b.set(x+(i%2==0?r+1:0),root+dir*dy,z+(i%2==0?0:r+1),CoreResources.DREAD_RESIN.defaultBlockState());
+        }
     }
     private static void treeOrnaments(SceneryBrush b,Site s,boolean haunted,int root,int dir,int height,int radius,int tiers) {
         var reserved=new java.util.HashSet<HauntedVines.LampPosition>();
@@ -223,7 +231,12 @@ public final class NaturalScenery {
         boolean upsideDown=inverted(s);int dir=upsideDown?-1:1,root=upsideDown?s.ceiling-1:s.floor;
         if(root==Integer.MIN_VALUE) return;
         var plan=VINES.computeIfAbsent(new VineKey(s,great),key->great?HauntedVines.plan(s.x,root,s.z,height,dir,s.salt):HauntedVines.treePlan(s.x,root,s.z,height,dir,s.salt));
-        if(!ornamentsOnly) { plan.draw(forms(b));return; }
+        if(!ornamentsOnly) {
+            plan.draw(forms(b));
+            // Giant twisted stems expose several small resin pockets near the accessible root.
+            for(int i=0;i<(great?8:4);i++)b.set(s.x+(i%2==0?2:-2),root+dir*(3+i*2),s.z+(i%2==0?0:1),CoreResources.DREAD_RESIN.defaultBlockState());
+            return;
+        }
         var protectedLights=new java.util.HashSet<HauntedVines.LampPosition>();
         var lightBands=new java.util.ArrayList<>(plan.bands());
         for(var band:lightBands) protectedLights.addAll(band.blocks());
@@ -307,8 +320,7 @@ public final class NaturalScenery {
         for(var q:new java.util.LinkedHashSet<>(tips)){
             double roll=WorldNoise.unit(WorldNoise.hash(s.salt+21453,q.getX()-s.x,q.getY()-base,q.getZ()-s.z));
             // Independent chances, not a quota: a crown with fewer tips has fewer prizes.
-            if(roll<.077)b.set(q.getX(),q.getY(),q.getZ(),GuogaologyBlocks.HYDRA_BUD.defaultBlockState());
-            else if(roll<.462)b.set(q.getX(),q.getY(),q.getZ(),GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState());
+            if(roll<.65)b.set(q.getX(),q.getY(),q.getZ(),CoreResources.HYDRA_SPRIG.defaultBlockState());
         }
     }
     static int hydraBranchCount(long salt){return WorldNoise.unit(WorldNoise.mix(salt+21437))<.6829?2:1;}
@@ -332,7 +344,13 @@ public final class NaturalScenery {
             int u=col-matrix.width()/2;int x=s.x+(turn%2==0?u:0),z=s.z+(turn%2==1?u:0);
             b.set(x,base+matrix.height()-1-row,z,GuogaologyBlocks.ordinalBrick(matrix.rows()[row][col]));
         }
-        var reward=(bmsHasCore(s.salt)?GuogaologyBlocks.SEQUENCE_CORE:GuogaologyBlocks.ORDINAL_CRYSTAL).defaultBlockState();
+        var reward=CoreResources.MATRIX_SHEET.defaultBlockState();
+        // Thin authored backing plates are harvestable without erasing the visible expression.
+        for(int col=0;col<matrix.width();col+=3){
+            int u=col-matrix.width()/2;
+            int x=s.x+(turn%2==0?u:1),z=s.z+(turn%2==1?u:1);
+            b.set(x,base,z,CoreResources.MATRIX_SHEET.defaultBlockState());
+        }
         // The expression's first column is the flagpole side, independent of viewing axis.
         {
             int col=0;
@@ -413,7 +431,7 @@ public final class NaturalScenery {
         int n=t.pattern.size();
         for(int row=0;row<=n;row++) {
             for(int col=0;col<=row;col++) {
-                int kind=t.pattern.cell(row,col);var state=(row==0?GuogaologyBlocks.LAVER_CORE:kind==0?GuogaologyBlocks.IBLP_BLANK:kind==1?GuogaologyBlocks.IBLP_NODE:GuogaologyBlocks.IBLP_MARKED).defaultBlockState();
+                int kind=t.pattern.cell(row,col);var state=(row==0?CoreResources.LAVER_GEL:kind==0?GuogaologyBlocks.IBLP_BLANK:kind==1?GuogaologyBlocks.IBLP_NODE:GuogaologyBlocks.IBLP_MARKED).defaultBlockState();
                 var p=tableCell(t,row,col);b.set(p.getX(),p.getY(),p.getZ(),state);
                 if(!t.vertical) b.set(p.getX(),p.getY()-1,p.getZ(),GuogaologyBlocks.LAVER_PLANKS.defaultBlockState());
             }
@@ -487,11 +505,13 @@ public final class NaturalScenery {
             b.set(s.x,s.floor+height+1,s.z,GuogaologyBlocks.SET_GLASS.defaultBlockState());
         }
         if(s.kind==3 && Math.floorMod(s.salt,4L)==0&&NaturalForms.absenceFragmentPresent(s.salt,s.x,s.floor+1,s.z))
-            b.set(s.x,s.floor+1,s.z,FORM_MATERIALS[NaturalForms.TRACE+(int)Math.floorMod(s.salt>>>17,3L)]);
+            b.set(s.x,s.floor+1,s.z,FORM_MATERIALS[NaturalForms.absenceFragmentMaterial(s.salt,0)]);
     }
     private static void laver(SceneryBrush b,Site s) {
         int height=laverHeight(s);if(height<8) return;
         NaturalForms.laver(forms(b),s.x,s.floor,s.z,height,s.salt);
+        // Collectible gel sits at the exposed root/vein junction, outside the ordinary leaf blade.
+        for(int i=0;i<3;i++)b.set(s.x+1,s.floor+2+i,s.z,CoreResources.LAVER_GEL.defaultBlockState());
     }
     public static int laverHeight(Site s) {
         if(s.floor==Integer.MIN_VALUE) return 0;
@@ -553,7 +573,7 @@ public final class NaturalScenery {
     }
     public record CloudFir(int x,int root,int z,int height) {}
     private static void cloudCores(SceneryBrush b,Site s){
-        for(var p:cloudCorePositions(s))b.set(p.getX(),p.getY(),p.getZ(),GuogaologyBlocks.ASTRA_CRITICAL_CORE.defaultBlockState());
+        for(var p:cloudCorePositions(s))b.set(p.getX(),p.getY(),p.getZ(),CoreResources.CLOUD_PEARL.defaultBlockState());
     }
     public static java.util.List<BlockPos> cloudCorePositions(Site s){
         return CLOUD_CORES.computeIfAbsent(s,key->{
@@ -626,8 +646,8 @@ public final class NaturalScenery {
             }
         }
         // All six rotated loops share this exact center, regardless of the sculpture's attitude.
-        b.set(cx,(int)Math.round(cy),cz,GuogaologyBlocks.ASTRA_CRITICAL_CORE.defaultBlockState());
+        b.set(cx,(int)Math.round(cy),cz,CoreResources.CLOUD_PEARL.defaultBlockState());
         for(var direction:net.minecraft.core.Direction.values())
-            b.set(cx+direction.getStepX(),(int)Math.round(cy)+direction.getStepY(),cz+direction.getStepZ(),GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState());
+            b.set(cx+direction.getStepX(),(int)Math.round(cy)+direction.getStepY(),cz+direction.getStepZ(),Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState());
     }
 }

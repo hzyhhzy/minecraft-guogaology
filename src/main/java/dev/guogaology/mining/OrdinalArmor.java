@@ -13,6 +13,7 @@ public final class OrdinalArmor extends ArmorItem {
     @Override public void appendTooltip(ItemStack stack,TooltipContext context,List<Text> out,TooltipType type){
         out.add(Text.translatable("mining.guogaology.native_armor",EquipmentRules.format(EquipmentRules.nativeArmor(tier,kind)),EquipmentRules.format(EquipmentRules.nativeToughness(tier,kind))));
         out.add(Text.translatable("mining.guogaology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,kind)));
+        var hint=GearData.modificationHint(stack);if(hint!=null)out.add(Text.translatable("mining.guogaology."+hint));
         if(GearData.points(stack,3)>0)out.add(Text.translatable("mining.guogaology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(stack),java.util.List.of()))));
         for(var c:GearData.cores(stack))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable("mining.guogaology.effect."+GearData.type(c))));
     }

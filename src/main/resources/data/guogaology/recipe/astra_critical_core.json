@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:cloud_pearl"
+    },
+    {
+      "item": "guogaology:cloud_pearl"
+    },
+    {
+      "item": "guogaology:compute_chip"
+    },
+    {
+      "item": "guogaology:compute_chip"
+    },
+    {
+      "item": "guogaology:astra_cloud"
+    },
+    {
+      "item": "guogaology:astra_cloud"
+    },
+    {
+      "item": "guogaology:astra_marble"
+    },
+    {
+      "item": "guogaology:astra_mint"
+    },
+    {
+      "item": "guogaology:ordinal_crystal"
+    }
+  ],
+  "result": {
+    "id": "guogaology:astra_critical_core",
+    "count": 1
+  }
+}

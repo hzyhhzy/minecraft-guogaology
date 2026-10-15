@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:ordinal_crystal_ore",
+    "guogaology:empty_crystal_ore",
+    "guogaology:dread_crystal_ore"
+  ]
+}

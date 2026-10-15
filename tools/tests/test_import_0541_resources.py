@@ -44,7 +44,11 @@ class ImportedResources(unittest.TestCase):
         source = json.loads((ROOT / 'src/main/resources/data/guogaology/loot_table/blocks/giant_laver.json').read_text())
         children = source['pools'][0]['entries'][0]['children']
         self.assertEqual([x['name'] for x in children], ['guogaology:giant_laver', 'guogaology:laver_ribbon'])
-        self.assertEqual(children[0]['conditions'][0]['predicate']['predicates']['minecraft:enchantments'][0]['enchantments'], 'minecraft:silk_touch')
+        collection = children[0]['conditions'][0]
+        self.assertEqual(collection['condition'], 'minecraft:any_of')
+        silk, shears = collection['terms']
+        self.assertEqual(silk['predicate']['predicates']['minecraft:enchantments'][0]['enchantments'], 'minecraft:silk_touch')
+        self.assertEqual(shears, {'condition':'minecraft:match_tool','predicate':{'items':'minecraft:shears'}})
         terms = children[1]['conditions'][0]['terms']
         self.assertEqual(terms[0]['condition'], 'minecraft:survives_explosion')
         self.assertEqual(terms[1]['chances'], [.05, .0625, .083333336, .1])

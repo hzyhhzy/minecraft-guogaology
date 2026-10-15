@@ -18,12 +18,13 @@ import java.util.List;
 
 /** Worldgen uses unstable defaults; successful harvesting and player placement are permanent. */
 public class AnchoredBlock extends PortableRelicBlock {
+    public static final BooleanProperty ANCHORED=BooleanProperty.create("anchored");
     public static final BooleanProperty STABLE=BooleanProperty.create("stable");
-    public AnchoredBlock(Properties settings){super(settings);registerDefaultState(defaultBlockState().setValue(STABLE,false));}
-    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){super.createBlockStateDefinition(builder);builder.add(STABLE);}
+    public AnchoredBlock(Properties settings){super(settings);registerDefaultState(defaultBlockState().setValue(STABLE,false).setValue(ANCHORED,false));}
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){super.createBlockStateDefinition(builder);builder.add(STABLE,ANCHORED);}
     public static boolean stable(BlockState state){return placed(state)||(state.hasProperty(STABLE)&&state.getValue(STABLE));}
     public static boolean protectedAt(BlockState state,Level world,BlockPos pos){return stable(state)||OrdinalAnchoring.protects(world,pos);}
-    @Override public BlockState getStateForPlacement(BlockPlaceContext context){return super.getStateForPlacement(context).setValue(STABLE,true);}
+    @Override public BlockState getStateForPlacement(BlockPlaceContext context){return super.getStateForPlacement(context).setValue(STABLE,true).setValue(ANCHORED,OrdinalAnchoring.colorsAt(context.getLevel(),context.getClickedPos()));}
     @Override public ItemStack getCloneItemStack(LevelReader world,BlockPos pos,BlockState state,boolean includeData){return item(state);}
     private ItemStack item(BlockState state){return StatefulDecorBlock.copyAppearance(new ItemStack(this),state.setValue(STABLE,true).setValue(PLAYER_PLACED,true));}
     @Override protected List<ItemStack> getDrops(BlockState state,LootParams.Builder builder){

@@ -204,6 +204,9 @@ def prepare(target,out):
                     if k in v:v[k]=old_ingredient(v[k])
                 if 'key' in v:v['key']={k:old_ingredient(w) for k,w in v['key'].items()}
         if folder=='loot_table':
+            if rel.stem == 'laver_leaves':
+                from generate_core_resources import collectible_laver_loot
+                v=collectible_laver_loot(v)
             if 'nine_headed_hydra' in str(rel) or 'raw_omega' in str(rel):continue
             if len(rel.parts)>1 and rel.parts[1]=='blocks' and rel.stem in ALIASES:continue
             if target!='26.3':v=old_loot(v)

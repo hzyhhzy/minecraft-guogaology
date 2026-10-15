@@ -41,7 +41,7 @@ public final class GuogaologyBlocks {
     public static final Block EPSILON_TURF = block("epsilon_turf", new Block(dev.guogaology.survival.BlockBalance.apply("epsilon_turf",AbstractBlock.Settings.copy(Blocks.MOSS_BLOCK).mapColor(MapColor.CYAN))));
     public static final Block DREAD_LOG = block("dread_log", new PillarBlock(dev.guogaology.survival.BlockBalance.apply("dread_log",AbstractBlock.Settings.copy(Blocks.WARPED_STEM).mapColor(MapColor.DARK_GREEN).sounds(BlockSoundGroup.WOOD))));
     public static final Block DREAD_LEAVES = block("dread_leaves", new LeavesBlock(dev.guogaology.survival.BlockBalance.apply("dread_leaves",AbstractBlock.Settings.create().mapColor(MapColor.DARK_GREEN).ticksRandomly().sounds(BlockSoundGroup.GRASS).nonOpaque().allowsSpawning((state,world,pos,type)->type==net.minecraft.entity.EntityType.OCELOT||type==net.minecraft.entity.EntityType.PARROT).suffocates((state,world,pos)->false).blockVision((state,world,pos)->false))));
-    public static final Block ORDINAL_CRYSTAL = translucent("ordinal_crystal", new TransparentBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_crystal",AbstractBlock.Settings.copy(Blocks.GLOWSTONE).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().luminance(s -> 5))));
+    public static final Block ORDINAL_CRYSTAL = translucent("ordinal_crystal", new dev.guogaology.block.OrdinalCrystalBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_crystal",AbstractBlock.Settings.copy(Blocks.GLOWSTONE).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().luminance(s -> 5))));
     public static final Block RIDGE_LAMINA = landscape("ridge_lamina",false);
     public static final Block PROJECTION_GLASS = landscape("projection_glass",true);
     public static final Block BEAF_MARBLE = landscape("beaf_marble",false);
@@ -218,5 +218,5 @@ public final class GuogaologyBlocks {
     }
     private static Block symbol(String name) { return block(name,new Block(dev.guogaology.survival.BlockBalance.apply(name,dev.guogaology.survival.BlockBalance.amethystSettings().luminance(s->9)))); }
 
-    public static void initialize() { CoreGrades.initialize(); }
+    public static void initialize() { CoreResources.initialize(); CoreGrades.initialize(); }
 }

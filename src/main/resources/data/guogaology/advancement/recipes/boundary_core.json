@@ -1,0 +1,87 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "ingredient_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:formula_stone"
+          }
+        ]
+      }
+    },
+    "ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:proof_stone"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:rayo_rose"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:set_membrane"
+          }
+        ]
+      }
+    },
+    "ingredient_5": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:turing_tape"
+          }
+        ]
+      }
+    },
+    "has_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "guogaology:boundary_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ingredient_0",
+      "ingredient_1",
+      "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
+      "ingredient_5",
+      "has_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "guogaology:boundary_core"
+    ]
+  }
+}

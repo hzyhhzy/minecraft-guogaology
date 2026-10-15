@@ -46,11 +46,12 @@ public final class EnhancementScreen extends HandledScreen<EnhancementMenu> {
         var gearLabel=tr(handler.manuscript()?"manuscript_label":"gear_label");
         graphics.drawText(textRenderer,gearLabel,78-textRenderer.getWidth(gearLabel),42,0xff445753,false);
         graphics.drawText(textRenderer,tr("socket_count",handler.installed(),handler.capacity()),18,64,0xff354e4a,false);
-        if(!handler.canToggleSilk())graphics.drawText(textRenderer,tr(handler.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
+        if(!handler.canToggleSilk())graphics.drawText(textRenderer,tr(GearData.forbidsSockets(handler.gear())?"enchanted_no_sockets":handler.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
         graphics.drawText(textRenderer,playerInventoryTitle,playerInventoryTitleX,playerInventoryTitleY,0xff445753,false);
         line(graphics,tr("manuscript.preview"),34,0xffecdec0);
         var gear=handler.gear();var spec=MiningContent.GEAR.get(gear.getItem());
         if(spec==null){line(graphics,tr("insert_gear"),55,0xffc2d9d0);return;}
+        if(GearData.forbidsSockets(gear))line(graphics,tr("enchanted_no_sockets"),22,0xffffc285);
         int y=52;
         var preview=handler.preview();var values=preview.effects();
         var profile=GearData.profile(gear);

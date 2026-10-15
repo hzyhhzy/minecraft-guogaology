@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "guogaology:set_membrane"
+    },
+    {
+      "item": "guogaology:set_membrane"
+    },
+    {
+      "item": "guogaology:turing_tape"
+    },
+    {
+      "item": "guogaology:turing_tape"
+    },
+    {
+      "item": "guogaology:proof_stone"
+    },
+    {
+      "item": "guogaology:proof_stone"
+    },
+    {
+      "item": "guogaology:formula_stone"
+    },
+    {
+      "item": "guogaology:rayo_rose"
+    },
+    {
+      "item": "guogaology:ordinal_crystal"
+    }
+  ],
+  "result": {
+    "id": "guogaology:boundary_core",
+    "count": 1
+  }
+}

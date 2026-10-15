@@ -141,7 +141,7 @@ public final class UnderworldScenery {
                 crown(b,x,y,z,radius,5,4,FIR_WOOD,SMOKED_GLASS,j*Math.PI/4);
                 // Exactly corresponding solid joints; sparse crystal on only one authored tier.
                 b.line(x,y,z,x,y+5,z,0,BLACKSTONE);
-                if(j==2&&side==1&&Math.floorMod(p.salt(),5)==0)b.set(x,y+5,z,CRYSTAL);
+                if(j==2&&side==1&&Math.floorMod(p.salt(),5)==0)b.set(x,y+5,z,DREAD_RESIN);
             }
             for(int leg=0;leg<4;leg++){
                 double a=Math.PI/4+leg*Math.PI/2;
@@ -173,8 +173,8 @@ public final class UnderworldScenery {
             crown(b,x,y,z,radius,5-i*.5,4,FIR_WOOD,SMOKED_GLASS,i*Math.PI/4);
         }
         b.line(x,floor+1,z,x,floor+4,z,0,BLACKSTONE);
-        if(c.index()%4==3)b.set(x,floor+5,z,GUOGAO_HEART);
-        else if(c.index()%3==0)b.set(x,floor+5,z,CRYSTAL);
+        if(c.index()%4==3)b.set(x,floor+5,z,DREAD_RESIN);
+        else if(c.index()%3==0)b.set(x,floor+5,z,SMOKED_GLASS);
     }
     private static void crown(VoxelBrush b,int x,int y,int z,double r,double height,int ribs,int material,int rim,double phase){
         ring(b,x,y,z,r,rim,phase);

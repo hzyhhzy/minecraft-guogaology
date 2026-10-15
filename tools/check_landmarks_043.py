@@ -1,4 +1,4 @@
-"""Check restored pre-reduction interiors, retained top arena and current chest loot offline."""
+"""Check 0.5.5 acquisition exhibits, retained top arena and downgraded chest loot offline."""
 from pathlib import Path
 import argparse
 import json
@@ -57,23 +57,22 @@ def main():
     if chest_result.returncode:
         print(chest_result.stderr, end='')
         raise SystemExit(chest_result.returncode)
-    # Restore the original material mapping too, including LIGHT's historical
-    # crystal alias outside Astra/Guogao. These are separate from authored quotas.
+    # Every material alias must also resolve to ordinary decorative lighting.
     for folder in ('src/main/java', 'ports/common/main'):
         source = (ROOT/f'{folder}/dev/guogaology/survival/SurvivalStructures.java').read_text('utf8')
         light = next(line for line in source.splitlines() if 'p[SanctuaryLayout.LIGHT]=' in line)
-        assert 'ORDINAL_CRYSTAL' in light and 'CYAN_LANTERN' in light and 'ASTRA_LIGHT' in light, folder
-        assert re.search(r'if\(finaleCore!=null\)return CoreGrades.levels\(finaleCore\).get\(1\)', source), 'The eight actual Lv2 finale cores must stay unchanged'
+        assert 'ORDINAL_CRYSTAL' not in light and 'ASTRA_LIGHT' in light, folder
+        assert 'CoreGrades.levels(finaleCore).get(0)' in source, 'Final eight cores must be displayed Lv1'
     loot = audit()
-    report = {'status': 'PASS', 'scope': 'restored pre-reduction interiors with retained Power top arena and current loot', 'blueprint_output': result.stdout.splitlines(),
+    report = {'status': 'PASS', 'scope': '0.5.5 material exhibits, eight cores per landmark, retained top arena and downgraded loot', 'blueprint_output': result.stdout.splitlines(),
               'chest_geometry_output': chest_result.stdout.splitlines(),
               'baseline_compared': str(args.baseline) if args.baseline else None,
               'loot_tables': loot['tables'], 'sampled_chests': loot['sampled_chests'],
-              'protected_underworld': {'number_lamps': 87, 'crystals_per_number_lamp': 27,
-                                      'emoji_heart_deposits': 24, 'finale_lv2_cores': 8,
-                                      'finale_crystals': 8, 'finale_z': 1}}
+              'protected_underworld': {'number_lamps': 87, 'crystals_per_number_lamp': 0,
+                                      'emoji_heart_deposits': 0, 'finale_lv1_cores': 8,
+                                      'finale_crystals': 0, 'finale_z': 1}}
     (ROOT/'build/landmark-0403.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', 'utf8')
-    print(f"LANDMARK_RESTORATION_0405_OK: restored renderer palettes, {loot['tables']} current loot tables, {loot['sampled_chests']} sampled chests")
+    print(f"LANDMARK_RESOURCES_055_OK: ordinary renderer palettes, {loot['tables']} current loot tables, {loot['sampled_chests']} sampled chests")
 
 
 if __name__ == '__main__':

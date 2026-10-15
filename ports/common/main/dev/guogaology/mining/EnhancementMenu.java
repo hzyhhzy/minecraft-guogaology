@@ -86,7 +86,7 @@ public class EnhancementMenu extends AbstractContainerMenu {
     }
     private boolean accepts(int index,ItemStack stack){
         var spec=MiningContent.GEAR.get(gear().getItem());int type=GearData.type(stack);
-        if(index<0||index>=capacity()||spec==null)return false;
+        if(index<0||index>=capacity()||spec==null||GearData.forbidsSockets(gear()))return false;
         if(GearData.isSocketTotem(gear(),stack))return true;
         if(type<0||!EquipmentRules.compatible(spec.kind(),type))return false;
         int grade=EquipmentRules.stationGrade(type,GearData.level(stack));return grade<=rank()&&grade<=gearGrade();
