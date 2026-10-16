@@ -9,11 +9,11 @@ final class SanctuaryInteriors {
     private final BitSet clearance;
     private final BitSet accessible;
     private final List<List<Point>> placedCells=new ArrayList<>();
+    // Preserve the old specimen-display geometry even after its contents change.
+    private final Map<Point,Byte> specimenRoles=new HashMap<>();
     private SanctuaryInteriors(SanctuaryLayout p){this.p=p;clearance=p.interiorClearance();accessible=reachable();}
     static void decorate(SanctuaryLayout p){
         var d=new SanctuaryInteriors(p);
-        // Reserve complete, readable rare devices first; ordinary studies fit around them.
-        d.resourceDisplays();
         switch(p.theme){
             case MATRIX -> {
                 d.grid(new int[]{3,15,16,35,40,55},-44,44,-44,44,15,new Model[]{archive(),ySpecimen()});
@@ -107,6 +107,10 @@ final class SanctuaryInteriors {
                     d.place(studies[(level+(z+22)/14+(sign<0?1:0))%studies.length],sign*44,2+18*level,z,0,false);
             }
         }
+        // Ordinary furniture keeps its original room positions. Finished cores
+        // belong only to the deliberately designed devices and playable tables.
+        d.resourceDisplays();
+        d.rawSpecimenDisplays();
         SanctuaryResources.apply(p,d.placedCells);
     }
     private void treeRoom(Model model,int floor,int limit){
@@ -133,6 +137,61 @@ final class SanctuaryInteriors {
         if(support(p.at(x,ceiling,z)))place(m,x,ceiling-m.maxY-1,z,0,true);
     }
     private static boolean support(byte b){return b==MAIN||b==FLOOR||b==TRIM||b==LOG||b==GLASS||b==PATTERN||b==LEAF||b==LIGHT||b==GOLD||b>=PIXEL;}
+    private static boolean specimenRole(SurvivalTheme theme,byte material){return switch(theme){
+        case MATRIX->material==SEQUENCE_CORE;case POWER->material==POWER_CORE||material>=RED&&material<=BLUE;
+        case HYDRA->material==HYDRA_BUD;case ABSENCE->material>=PHANTOM_PSI&&material<=PHANTOM_FOS;
+        case WEAVER->material==LAVER_CORE;case ASTRA->material==ASTRA_CORE;
+        case GUOGAO->material==GUOGAO_HEART;case FRONTIER->material==BOUNDARY_CORE;};}
+    private static byte specimenMaterial(SurvivalTheme theme,int index){return switch(theme){
+        case POWER->index%4==3?POWER_CORE:(byte)(RED+index%4);
+        case ABSENCE->(byte)(PHANTOM_PSI+index%3);
+        default->SanctuaryResources.material(theme,index);};}
+    /** Restore every former display case with ordinary, explicitly themed contents. */
+    private void rawSpecimenDisplays(){
+        var counts=new HashMap<Byte,Integer>();for(byte material:specimenRoles.values())counts.merge(material,1,Integer::sum);
+        int crystals=counts.getOrDefault(CRYSTAL,0),regional=0;
+        for(var entry:counts.entrySet())if(specimenRole(p.theme,entry.getKey()))regional+=entry.getValue();
+        if(p.theme==SurvivalTheme.POWER){
+            var missing=new ArrayDeque<Byte>();
+            for(byte m:new byte[]{POWER_CORE,RED,GREEN,BLUE})for(int n=counts.getOrDefault(m,0);n<(m==POWER_CORE?50:30);n++)missing.add(m);
+            for(int x=-22;x<=22;x+=5)for(int z=-22;z<=22;z+=5)for(int level=0;level<10;level++){
+                if(missing.isEmpty()&&crystals>=50)return;
+                var eligible=new ArrayList<Byte>();
+                for(byte m:missing)if(level>=8||(m==POWER_CORE?level<4:level==4||level==5)){eligible.add(m);if(eligible.size()==3)break;}
+                int nc=Math.min(3,Math.max(0,50-crystals));if(eligible.isEmpty()&&nc==0)continue;
+                byte[] materials=new byte[eligible.size()];for(int i=0;i<materials.length;i++)materials[i]=eligible.get(i);
+                if(place(rawSpecimenCase(p.theme,materials.length,nc,0,materials),x,PowerPagoda.floor(level),z,0,false)){
+                    for(byte m:materials)missing.removeFirstOccurrence(m);crystals+=nc;
+                }
+            }
+            if(!missing.isEmpty()||crystals<50)throw new IllegalStateException("Missing original pagoda specimen furniture: "+missing.size()+"/"+crystals);
+            return;
+        }
+        var floors=new TreeSet<Integer>();for(var f:p.furnishings())if(!f.suspended()&&!f.kind().startsWith("core_"))floors.add(f.floor().y());
+        for(var q:p.route())floors.add(q.y());
+        int step=p.theme==SurvivalTheme.ABSENCE?2:5;
+        for(int x=-p.width/2+7;x<p.width/2-6;x+=step)for(int z=-p.depth/2+7;z<p.depth/2-6;z+=step)for(int y:floors){
+            if(crystals>=50&&regional>=50)return;
+            int nr=Math.min(3,Math.max(0,50-regional)),nc=Math.min(3,Math.max(0,50-crystals));
+            if(place(rawSpecimenCase(p.theme,nr,nc,regional,null),x,y,z,0,false)){regional+=nr;crystals+=nc;}
+        }
+        if(crystals<50||regional<50)throw new IllegalStateException("Missing original specimen furniture: "+p.theme+" "+regional+"/"+crystals);
+    }
+    private static Model rawSpecimenCase(SurvivalTheme theme,int regional,int crystals,int first,byte[] materials){
+        var m=new Model("fixed_"+theme.id+"_specimen_display");
+        if(theme==SurvivalTheme.ABSENCE){
+            m.box(-1,1,-1,1,1,1,RELIC_INLAY);m.box(-1,2,1,-1,8,1,GLASS);m.box(1,2,1,1,8,1,GLASS);
+            m.box(-1,8,-1,1,8,1,GLASS);for(int y:new int[]{3,5,7})m.block(-1,y,1,LIGHT);
+            for(int i=0;i<regional;i++)m.block(0,3+i*2,0,specimenMaterial(theme,first+i));
+            for(int i=0;i<crystals;i++)m.block(1,3+i*2,-1,CRYSTAL);
+            return m;
+        }
+        m.box(-3,1,-1,3,1,1,RELIC_INLAY);for(int x:new int[]{-3,3})m.box(x,2,0,x,6,0,GLASS);
+        m.box(-3,6,0,3,6,0,WHITE);
+        for(int i=0;i<regional;i++){int x=-2+2*i;m.block(x,2,0,GOLD);m.block(x,3,0,materials==null?specimenMaterial(theme,first+i):materials[i]);}
+        for(int i=0;i<crystals;i++)m.block(-2+2*i,5,0,CRYSTAL);
+        return m;
+    }
     /** Eight authored single-core devices, with a deliberate upper-floor bias. */
     private void resourceDisplays(){
         int[][] allocation=switch(p.theme){
@@ -170,7 +229,7 @@ final class SanctuaryInteriors {
             m.block(-1,3,0,PSI);m.block(1,3,0,OMEGA);m.block(0,4,0,HYDRA_BUD);
             m.block(-1,5,1,PRIMARY_RAW);m.block(1,5,1,PRIMARY_RAW);return m;
         }
-        if(theme==SurvivalTheme.GUOGAO&&floor>=169){
+        if(theme==SurvivalTheme.GUOGAO&&floor>=49){
             m.box(-1,1,-1,1,1,1,RELIC_INLAY);m.block(0,2,0,PRIMARY_RAW);m.block(0,3,0,GUOGAO_HEART);
             m.block(-1,3,1,LEAF);m.block(1,3,1,LEAF);m.block(0,5,1,EMOJI);return m;
         }
@@ -264,7 +323,8 @@ final class SanctuaryInteriors {
         var cells=new ArrayList<Point>();
         for(var e:m.blocks.entrySet()){
             var q=rotate(e.getKey(),rotation);
-            cells.add(new Point(x+q.x(),y+q.y(),z+q.z()));
+            var absolute=new Point(x+q.x(),y+q.y(),z+q.z());cells.add(absolute);
+            if(!m.name.startsWith("core_")&&(e.getValue()==CRYSTAL||specimenRole(p.theme,e.getValue())))specimenRoles.put(absolute,e.getValue());
             if(e.getValue()==BMS_DIGIT){var cell=m.bms.get(e.getKey());p.bms(x+q.x(),y+q.y(),z+q.z(),new Point(x,y,z),cell[0],cell[1]);}
             else if(p.theme==SurvivalTheme.ABSENCE&&e.getValue()>=PHANTOM_PSI&&e.getValue()<=PHANTOM_FOS)
                 p.anchoredSample(x+q.x(),y+q.y(),z+q.z(),e.getValue());
@@ -276,11 +336,28 @@ final class SanctuaryInteriors {
     }
     private byte furnishingMaterial(Model model,byte material,Point local){
         if(model.name.startsWith("core_"))return material;
-        if(material==CRYSTAL)return model.name.contains("scg")?SECONDARY_RAW:LIGHT;
+        if(material==CRYSTAL)return model.name.contains("scg")?SECONDARY_RAW:
+                model.name.equals("graham_sapling_study")?PRIMARY_RAW:LIGHT;
         if(SanctuaryResources.isRegional(p.theme,material)){
             // The four legal playable tables retain their five functional cores.
             if(p.theme==SurvivalTheme.WEAVER&&model.name.startsWith("playable_iblp_"))return material;
-            return PRIMARY_RAW;
+            if(model.name.startsWith("fixed_"))return PRIMARY_RAW;
+            // Reviewed per complete furnishing, never a seeded replacement of
+            // arbitrary blocks. New specimen kinds must make an explicit choice.
+            return switch(model.name){
+                case "matrix_archive","iteration_engine","iteration_arrow_arch","graham_recursive_canopy",
+                     "hydra_nursery","astra_colossal_compute_bank","nested_set_specimen","guogao_twisted_tree_study"->PRIMARY_RAW;
+                case "y_branch_specimen"->SECONDARY_RAW;
+                case "ordinal_flower_bed"->BLOOM;
+                case "laver_weaving_loom"->IBLP_MARKED;
+                case "tianyi_yarn_spools"->YARN;
+                case "guogao_indoor_fir","guogao_bell_organ"->EMOJI_CABLE;
+                case "guogao_confection_table","guogao_number_light_gallery","guogao_emoji_flower_bed"->FRUIT;
+                case "guogao_star_heart_shrine"->GOLD;
+                case "turing_tape_workbench","rayo_formula_cabinet"->FORMULA;
+                case "pto_proof_steps"->PROOF;
+                default->throw new IllegalStateException("Unreviewed rare material in furnishing "+model.name);
+            };
         }
         // Rare inlays belong to small interior objects, never the enormous outer shell.
         // Keep playable cells, BMS digits, flowers and functional crystal anchors intact.
@@ -321,17 +398,17 @@ final class SanctuaryInteriors {
     }
     private static Model tapeStudy(){
         var m=new Model("turing_tape_workbench");
-        m.box(-4,1,-2,4,1,2,TRIM);m.box(-3,2,0,3,2,0,TURING);
-        m.block(-4,2,0,SECONDARY_RAW);m.block(4,2,0,SECONDARY_RAW);
+        m.box(-3,1,-2,3,1,2,TRIM);m.box(-3,2,0,3,2,0,TURING);
+        m.block(-3,2,-1,SECONDARY_RAW);m.block(3,2,-1,SECONDARY_RAW);
         m.box(-1,2,-2,1,5,-2,PROOF);m.block(0,6,-2,BOUNDARY_CORE);
         m.block(-3,3,2,CRYSTAL);m.block(3,3,2,CRYSTAL);return m;
     }
     private static Model tapeArchive(){
         var m=new Model("turing_parallel_tape_archive");
         for(int x:new int[]{-2,2}){
-            m.box(x,1,-6,x+1,1,6,TRIM);
+            m.box(x,1,-5,x+1,1,5,TRIM);
             m.box(x,2,-5,x,2,5,TURING);
-            m.block(x,2,-6,SECONDARY_RAW);m.block(x,2,6,SECONDARY_RAW);
+            m.block(x+1,2,-5,SECONDARY_RAW);m.block(x+1,2,5,SECONDARY_RAW);
             for(int z=-4;z<=4;z++)m.block(x+1,2,z,TAPE_BUTTON);
         }
         return m;

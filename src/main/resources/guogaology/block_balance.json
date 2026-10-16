@@ -1940,7 +1940,7 @@
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   },
   "scg_node": {
@@ -1952,7 +1952,7 @@
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   },
   "hydra_sprig": {
@@ -1976,7 +1976,7 @@
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   },
   "cloud_pearl": {
@@ -1988,7 +1988,7 @@
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   },
   "set_membrane": {
@@ -2012,7 +2012,7 @@
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   },
   "ordinal_crystal_ore": {

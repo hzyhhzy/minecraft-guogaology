@@ -28,16 +28,13 @@ MATERIALS = {
 ORES = ('ordinal_crystal_ore', 'empty_crystal_ore', 'dread_crystal_ore')
 REGIONAL = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart')
-# Bounds deliberately match each material's readable, physically distinct model.
+# Raw materials are ordinary Minecraft blocks, not a second set of jewels.
+CUBES = frozenset(('arrow_knot','scg_node','laver_gel','cloud_pearl','dread_resin'))
 BOXES = {
-    'matrix_sheet': [((1,0,1),(13,2,13)),((3,4,3),(15,6,15)),((1,8,1),(13,10,13))],
-    'arrow_knot': [((2,0,2),(14,12,14)),((5,12,5),(11,14,11))],
-    'scg_node': [((5,3,5),(11,11,11)),((0,5,6),(5,9,10)),((11,5,6),(16,9,10)),((6,11,6),(10,14,10)),((6,5,0),(10,9,5))],
-    'hydra_sprig': [((6,0,6),(10,8,10)),((2,7,5),(7,10,10)),((10,7,5),(14,10,10)),((1,10,4),(5,15,8)),((6,9,9),(10,14,13)),((11,10,3),(15,15,7))],
-    'laver_gel': [((2,0,3),(14,5,13)),((3,5,4),(12,8,12)),((5,8,6),(10,9,10))],
-    'cloud_pearl': [((4,0,4),(12,2,12)),((2,2,3),(14,8,13)),((4,8,4),(12,12,12)),((1,4,5),(4,7,10))],
-    'set_membrane': [((1,0,1),(15,1,15)),((2,1,2),(3,8,14)),((13,1,2),(14,8,14)),((4,3,4),(12,4,12)),((4,4,4),(5,10,12)),((11,4,4),(12,10,12)),((6,7,6),(10,8,10))],
-    'dread_resin': [((4,0,4),(12,3,12)),((3,3,4),(13,8,12)),((5,8,5),(11,11,11)),((7,11,6),(10,14,9))],
+    'matrix_sheet': [((1,0,1),(15,2,15)),((2,3,2),(14,5,14))],
+    'hydra_sprig': [((6,0,6),(10,9,10)),((2,7,5),(7,12,10)),((10,6,6),(14,10,11))],
+    'set_membrane': [((1,0,1),(15,2,15)),((1,2,13),(15,9,15))],
+    **{name:[((0,0,0),(16,16,16))] for name in CUBES},
 }
 TAG_VALUES = {
     'ancient_notation_materials': ['beaf_marble', 'bird_shale', 'conway_link'],
@@ -130,40 +127,35 @@ def element(bounds, texture='body'):
 def material_texture(name, palette):
     rng=random.Random(name)
     im=Image.new('RGBA',(32,32),palette[1]);d=ImageDraw.Draw(im)
-    for _ in range(70):
+    for _ in range(45):
         x,y=rng.randrange(32),rng.randrange(32)
-        d.rectangle((x,y,min(x+1,31),min(y+1,31)),fill=palette[rng.choice((0,1,1,2))])
+        d.rectangle((x,y,min(x+2,31),min(y+1,31)),fill=palette[rng.choice((0,1,1,2))])
     if name=='matrix_sheet':
-        d.rectangle((3,3,28,28),outline=palette[3],width=2)
         for x in (8,20):
-            for y in (8,20): d.rectangle((x,y,x+4,y+4),fill=palette[0]);d.point((x,y),fill=palette[3])
+            for y in (8,20): d.rectangle((x,y,x+4,y+4),fill=palette[0])
     elif name=='arrow_knot':
         for x in range(1,32,5):d.line((x,0,x+2,31),fill=palette[0],width=2)
-        for y in (9,20):d.line((7,y+5,15,y-3,23,y+5),fill=palette[3],width=3)
+        for y in (9,20):d.line((7,y+5,15,y-3,23,y+5),fill=palette[2],width=3)
     elif name=='scg_node':
-        d.rectangle((11,11,20,20),fill=palette[2],outline=palette[3],width=2)
+        d.rectangle((11,11,20,20),fill=palette[0])
         for line in ((0,15,11,15),(20,15,31,15),(15,0,15,11)):
-            d.line(line,fill=palette[0],width=5);d.line(line,fill=palette[2],width=2)
+            d.line(line,fill=palette[0],width=3)
     elif name=='hydra_sprig':
-        d.line((15,31,15,15,5,4),fill=palette[3],width=3)
-        d.line((15,18,26,5),fill=palette[3],width=3)
+        d.line((15,31,15,15,5,4),fill=palette[0],width=3)
+        d.line((15,18,26,5),fill=palette[0],width=3)
         d.line((15,20,23,27),fill=palette[2],width=3)
     elif name=='laver_gel':
-        for y in (8,17,25):d.arc((1,y-6,30,y+6),10,170,fill=palette[3],width=2)
-        d.rectangle((5,3,11,5),fill=palette[3]);d.rectangle((6,5,8,10),fill=palette[2])
+        for y in (8,17,25):d.line((0,y,9,y+2,19,y-1,31,y+1),fill=palette[0],width=2)
     elif name=='cloud_pearl':
         d.rectangle((0,0,31,31),fill=palette[2])
-        for box in ((2,14,17,25),(10,4,28,22),(15,14,31,31)):
-            d.ellipse(box,fill=palette[3],outline=palette[1],width=2)
+        for y in (4,15,25):d.line((0,y,10,y+3,21,y+1,31,y+3),fill=palette[1],width=3)
     elif name=='set_membrane':
-        for box in ((2,2,29,29),(8,7,26,25),(12,12,22,22)):
-            d.rectangle(box,outline=palette[3],width=2)
-        d.line((3,28,12,21,21,21),fill=palette[0],width=2)
+        d.line((3,28,12,21,21,21,29,7),fill=palette[0],width=2)
+        d.line((0,8,16,12,31,9),fill=palette[2],width=2)
     else:
         d.line((16,31,16,15,7,5),fill=palette[0],width=3)
         d.line((16,16,25,4),fill=palette[0],width=3)
         d.line((16,23,26,17),fill=palette[2],width=2)
-        d.rectangle((8,6,11,11),fill=palette[3]);d.rectangle((11,4,17,6),fill=palette[3])
     if name in ('laver_gel','set_membrane','dread_resin'):
         alpha=220 if name!='set_membrane' else 170
         im.putalpha(Image.eval(im.getchannel('A'),lambda a:alpha))
@@ -182,7 +174,8 @@ def crystal_ore_texture(name):
         samples=[source.getpixel((x,y)) for x in range(2,9) for y in range(2,9)]
         im=Image.new('RGBA',(32,32));im.putdata([rng.choice(samples) for _ in range(1024)])
     im=im.resize((32,32),Image.Resampling.NEAREST);d=ImageDraw.Draw(im)
-    shades=('#628da8','#a8d7e1','#eefbfa','#ad9bd0')
+    shades=(((115,159,183,84),(178,214,226,125),(226,245,246,160),(178,168,209,112))
+            if name=='empty_crystal_ore' else ('#628da8','#a8d7e1','#eefbfa','#ad9bd0'))
     for x,y in ((5,5),(20,3),(11,15),(25,23),(2,25)):
         d.polygon([(x,y+1),(x+3,y),(x+6,y+3),(x+4,y+7),(x,y+5)],fill=shades[0])
         d.polygon([(x+1,y+2),(x+3,y+1),(x+4,y+3),(x+3,y+5),(x+1,y+4)],fill=shades[1])
@@ -206,9 +199,11 @@ def generated_files():
     for name,(cn,en,palette) in MATERIALS.items():
         put(A/f'textures/block/{name}.png',material_texture(name,palette))
         put(A/f'blockstates/{name}.json',{'variants':{'':{'model':'guogaology:block/'+name}}})
-        put(A/f'models/block/{name}.json',{'parent':'minecraft:block/block',
-            'textures':{'body':'guogaology:block/'+name,'particle':'guogaology:block/'+name},
-            'elements':[element(b) for b in BOXES[name]]})
+        model=({'parent':'minecraft:block/cube_all','textures':{'all':'guogaology:block/'+name}}
+               if name in CUBES else {'parent':'minecraft:block/block',
+                   'textures':{'body':'guogaology:block/'+name,'particle':'guogaology:block/'+name},
+                   'elements':[element(b) for b in BOXES[name]]})
+        put(A/f'models/block/{name}.json',model)
         put(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
         put(D/f'loot_table/blocks/{name}.json',self_loot(name))
     for name in (*ORES,'turing_endcap'):
@@ -263,7 +258,7 @@ def generated_files():
             'tool':'pickaxe','tier':0,'light':1 if name in ('cloud_pearl','dread_resin') else 0,
             'drop':'4～6晶屑；时运增产；精准采集矿石' if name in ORES else 'self',
             'use':'序数晶体的采矿来源；徒手可采集，镐加速' if name in ORES else '本群系晶核的自然原料；徒手／任意工具完整采集，镐加速',
-            'friction':0.6,'collision':'完整方块' if name in ORES or name=='turing_endcap' else '自然材料形状',
+            'friction':0.6,'collision':'完整方块' if name in ORES or name in CUBES or name=='turing_endcap' else '自然材料形状',
             'renewable':'采集／合成' if name=='turing_endcap' else '自然生成'}
     for name in ('tree_node_red','tree_node_green','tree_node_blue'):
         balance[name].update(hardness=1.5,tool='pickaxe',tier=0,use='TREE三色普通节点原料；任意工具完整采集，镐加速')

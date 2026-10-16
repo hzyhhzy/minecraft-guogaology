@@ -56,6 +56,33 @@ def verify_ore_policy(archive, target):
                     'max_inclusive':{'absolute':TOPS[mineral]},'inner':1}],f'Stale ore height: {target}/{name}'
 
 
+def verify_crystal_ore_policy(archive, target):
+    """Check the final overlay, including the flattened26.3 feature codec."""
+    from generate_ordinal_crystal_ore import BIOMES, HOSTS, FEATURES, LEGACY_FEATURES, BATCHES, ore_config, placed_config
+    prefix='data/guogaology/worldgen/'
+    folder='feature' if target=='26.3' else 'configured_feature'
+    actual=json.loads(archive.read(prefix+folder+'/ore_ordinal_crystal.json'))
+    assert actual.get('config', {k:v for k,v in actual.items() if k!='type'})==ore_config(9)['config'],f'Stale crystal vein targets: {target}'
+    for batch in BATCHES:
+        actual=json.loads(archive.read(prefix+f'placed_feature/ore_ordinal_crystal_{batch}.json'))
+        assert actual==placed_config(batch),f'Stale uniform/LHO crystal distribution: {target}/{batch}'
+    for name,values in HOSTS.items():
+        actual=json.loads(archive.read(f'data/guogaology/tags/block/{name}.json'))
+        assert actual['values']==values,f'Stale crystal host tag: {target}/{name}'
+    for name in BIOMES:
+        data=json.loads(archive.read(prefix+f'biome/{name}.json'))
+        def refs(value):
+            if isinstance(value,str):return [value]
+            if isinstance(value,list):return [s for child in value for s in refs(child)]
+            if isinstance(value,dict):return [s for child in value.values() for s in refs(child)]
+            return []
+        strings=refs(data);expected=FEATURES[1 if name=='lho_absence' else 0]
+        for feature in FEATURES+LEGACY_FEATURES:
+            assert strings.count(feature)==int(feature==expected),f'Duplicate/stale crystal biome feature: {target}/{name}/{feature}'
+    for batch in ('upper','middle','small'):
+        assert prefix+f'placed_feature/ore_ordinal_crystal_{batch}.json' not in archive.namelist(),f'Retired height band retained: {target}/{batch}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -91,6 +118,7 @@ def package(targets, output_dir=None):
             verify_client_hooks(archive, metadata)
             verify_namespace(archive)
             verify_ore_policy(archive, target)
+            verify_crystal_ore_policy(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
             assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))

@@ -28,7 +28,7 @@ public final class CoreResources055Checks {
     private static int checks;
     private static final String[] REGIONAL={"sequence_core","power_tower_core","hydra_bud","lho_trace","laver_core","astra_critical_core","boundary_core","guogao_heart"};
     private static final String[] BIOMES={"ordinal_crags","power_desert","epsilon_meadow","lho_absence","laver_tablelands","astra_awakening","limit_highlands","guogao_forest","misaligned_strata","silent_mire","descending_caverns"};
-    private static final String[] BATCHES={"upper","middle","small"};
+    private static final String[] BATCHES={"uniform","lho"};
     private static void check(boolean ok,String why){checks++;if(!ok)throw new AssertionError("Core resources055: "+why);}
     private static Identifier id(String name){return Identifier.parse(name.contains(":")?name:"guogaology:"+name);}
     private static Block block(String name){return BuiltInRegistries.BLOCK.getValue(id(name));}
@@ -103,17 +103,17 @@ public final class CoreResources055Checks {
     }
     private static void oreRegistries(ServerPlayer player){
         var access=player.level().registryAccess();var features=access.lookupOrThrow(Registries.CONFIGURED_FEATURE);var placed=access.lookupOrThrow(Registries.PLACED_FEATURE);
-        for(String suffix:new String[]{"","_small"}){
+        for(String suffix:new String[]{""}){
             var feature=features.getValue(id("ore_ordinal_crystal"+suffix));check(feature!=null&&feature.feature()==Feature.ORE,"native OreFeature configured "+suffix);
             check(feature.config() instanceof OreConfiguration,"native OreConfiguration codec");var config=(OreConfiguration)feature.config();
-            check(config.size==(suffix.isEmpty()?9:4)&&config.discardChanceOnAirExposure==0&&config.targetStates.size()==3,"iron vein/exposure benchmark");
+            check(config.size==9&&config.discardChanceOnAirExposure==0&&config.targetStates.size()==3,"small uniform veins and visible cave-wall ore");
             var random=RandomSource.create(55);
             for(int digit=0;digit<10;digit++)check(config.targetStates.get(0).target.test(GuogaologyBlocks.NUMBER_STONES[digit].defaultBlockState(),random),"all numeric mother rocks are replaceable");
             check(config.targetStates.get(1).target.test(GuogaologyBlocks.ABSENCE_GLASS.defaultBlockState(),random),"transparent LHO mother rock is replaceable");
             check(config.targetStates.get(2).target.test(GuogaologyBlocks.ROOTBOUND_STONE.defaultBlockState(),random),"Underworld mother rock is replaceable");
             for(var target:config.targetStates)check(!target.target.test(Blocks.BEDROCK.defaultBlockState(),random)&&!target.target.test(Blocks.OAK_PLANKS.defaultBlockState(),random),"native rules exclude bedrock/building material");
         }
-        for(String name:BIOMES){var biome=access.lookupOrThrow(Registries.BIOME).getValue(id(name));check(biome!=null,"biome present "+name);for(String batch:BATCHES){var feature=placed.getOrThrow(ResourceKey.create(Registries.PLACED_FEATURE,id("ore_ordinal_crystal_"+batch)));check(biome.getGenerationSettings().features().get(6).contains(feature),"registered ore step6 "+name+batch);}}
+        for(String name:BIOMES){var biome=access.lookupOrThrow(Registries.BIOME).getValue(id(name));check(biome!=null,"biome present "+name);for(String batch:BATCHES){var feature=placed.getOrThrow(ResourceKey.create(Registries.PLACED_FEATURE,id("ore_ordinal_crystal_"+batch)));check(biome.getGenerationSettings().features().get(6).contains(feature)==batch.equals(name.equals("lho_absence")?"lho":"uniform"),"one biome-specific ore feature step6 "+name+batch);}}
         var ores=TagKey.create(Registries.BLOCK,id("ordinal_crystal_ores"));for(var ore:CoreResources.ORES)check(ore.defaultBlockState().is(ores),"three ore skins share native ore tag");
     }
     private static void lhaAnchors(ServerPlayer player){

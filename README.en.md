@@ -4,7 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.5 · Minecraft Java / Fabric · Local version, not yet published**
+**v0.5.6 · Minecraft Java / Fabric · Local version, not yet published**
+
+This update corrects full-height Ordinal ore density and sparse LHO veins, simplifies the eight new ingredients, and restores the original giant-landmark furniture and display cases with ordinary replacement materials. Cores occupy deliberately designed devices only. See [the work record](docs/WORK-056.md) and [furnishing audit](docs/INTERIOR-AUDIT-056.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 

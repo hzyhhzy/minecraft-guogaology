@@ -104,7 +104,7 @@ Four bows use the vanilla bow layout with three matching minerals replacing stic
 
 Hydra Bud Lv1 provides Infinity in Survival, requiring one ordinary arrow; Lv2 fires three arrows without duplicate direct damage on one target; Lv3 allows each arrow to hit at most two creatures, passing through the first to hit the second. Special ammunition costs one per volley and only the center arrow retains its effects. Nuclear bursts include the direct target without destroying terrain or harming allies; a target takes at most one direct hit plus one burst per volley.
 
-Each of the eight giant landmarks retains eight local Lv1 display cores, distributed across fixed prominent or central installations. Ordinary furnishings remain dense, but no base Ordinal Crystals are displayed. The Underworld final eight-family collection is additional, with one Lv1 core per family. The Power Pagoda arena and main chest remain on the true highest floor.
+Each of the eight giant landmarks retains eight local Lv1 cores in deliberately designed fixed devices or functional Laver tables. Version0.5.6 restores the former ordinary furniture and specimen-case shapes and counts, using theme materials, ordinary nodes or lamps in their former treasure positions. Ordinary furniture is never randomly promoted to a core exhibit. No base Ordinal Crystals are displayed. The Underworld final eight-family collection is additional, with one Lv1 core per family. The Power Pagoda arena and main chest remain on the true highest floor.
 
 | Reward | Contents |
 |---|---|
@@ -130,7 +130,9 @@ Inner and Underworld wilderness no longer places finished cores or base crystal 
 | Set Membrane | Set shells and egg scenery in Boundary Highlands |
 | Dread Fir Resin | Underworld conifer and Dread Fir scenery |
 
-Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Its average density uses vanilla iron as the benchmark. Distribution considers depth within local rock, rather than only absolute world Y. Ore can show on cave walls; exposed outer terrain has a reduced rate. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
+Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Version0.5.6 replaces the iron-specific altitude bands with small veins distributed uniformly throughout the rock, calibrated against the average iron-to-host-rock ratio in a typical vanilla sample. LHO receives one fifth as many vein attempts, with more transparent glass and crystal markings. Both cave walls and exterior rock can expose ore; no extra air-exposure discard applies. Only newly generated chunks change. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
+
+The eight new ingredients look like simple natural materials. Arrowgrain Knots, SCG Junctions, Laver Gel, Condensed Cloud Pearls and Dread Fir Resin use full cubes; Matrix Sheets, Hydra Sprigs and Set Membranes retain plain slab, sprig and folded-membrane shapes without jewel frames.
 
 Four shards and one base crystal convert both ways. Mining a base crystal returns the block itself, including by hand. It still provides light, LHO stabilization and basic manuscript enhancement.
 

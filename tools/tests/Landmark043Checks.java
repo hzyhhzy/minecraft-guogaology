@@ -30,7 +30,9 @@ public final class Landmark043Checks {
         if(args.length==2&&args[0].equals("--write-baseline")){writeBaseline(Path.of(args[1]));return;}
         for(var theme:SurvivalTheme.values()){
             var p=SanctuaryLayout.of(theme);var reached=reachable(p);
-            check(p.furnishings().size()>=15,"retained complete themed furnishings "+theme);
+            int priorFurniture=switch(theme){case MATRIX->30;case POWER->56;case HYDRA->21;case ABSENCE->20;case WEAVER->44;case ASTRA->35;case GUOGAO->50;case FRONTIER->35;};
+            check(p.furnishings().size()>=priorFurniture,"restore at least the pre0.5.5 furniture count "+theme);
+            check(p.furnishings().stream().anyMatch(f->f.kind().equals("fixed_"+theme.id+"_specimen_display")),"original specimen case shape is retained "+theme);
             check(p.interiorResources().size()==8,"exactly eight authored regional cores "+theme);
             check(p.interiorResources().stream().allMatch(InteriorResource::regional),"no decorative finished crystal "+theme);
             check(count(p,CRYSTAL)==0,"no finished crystal marker anywhere "+theme);
@@ -96,6 +98,10 @@ public final class Landmark043Checks {
                 }check(functional==5,"five functional table cores retained within the restored fifty");
             }
             check(p.furnishings().stream().anyMatch(f->f.kind().equals("core_"+theme.id+"_reliquary")),"purpose-built one-core devices "+theme);
+            for(var f:p.furnishings())if(f.kind().startsWith("core_")){
+                var origin=f.floor();long cores=p.interiorResources().stream().filter(q->Math.abs(q.pos().x()-origin.x())<=f.radiusX()&&Math.abs(q.pos().z()-origin.z())<=f.radiusZ()&&q.pos().y()>origin.y()&&q.pos().y()<=origin.y()+8).count();
+                check(cores==1,"each copy of a purpose-built device contains exactly one fixed core "+f);
+            }
             for(var reward:p.interiorResources()){
                 var q=reward.pos();check(p.authoredResourceMounts().contains(q),"retained rewards occupy original authored mounts "+theme);
                 check(reward.regional()?SanctuaryResources.isRegional(theme,p.at(q.x(),q.y(),q.z())):p.at(q.x(),q.y(),q.z())==CRYSTAL,"recorded restored reward agrees with final material "+q);
