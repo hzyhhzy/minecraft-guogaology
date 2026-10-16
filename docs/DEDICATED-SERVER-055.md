@@ -2,6 +2,8 @@
 
 日期：2026-10-16。对象为现有 Guogaology 0.5.5，不修改玩法、正式 JAR 或版本号。本轮只验证 Minecraft 26.2。
 
+随后用户另行授权的 Voxy World Generator 联机远景/维度切换/重启测试也已通过，安装分工及证据见 [DEDICATED-VOXY-055.md](DEDICATED-VOXY-055.md)。下文记录的是此前不含World Generator的基础服务端检查。
+
 ## 环境与隔离
 
 | 项目 | 实际测试环境 |

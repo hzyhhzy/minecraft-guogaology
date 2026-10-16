@@ -58,6 +58,7 @@ public final class Dedicated055ServerChecks implements DedicatedServerModInitial
     }
     @Override public void onInitializeServer(){
         if(!Boolean.getBoolean("guogaology.qa.dedicated055"))return;
+        if(Boolean.getBoolean("guogaology.qa.voxyworldgen")){DedicatedVoxyServerChecks.initialize();return;}
         ServerPlayNetworking.registerGlobalReceiver(Dedicated055Common.Step.TYPE,(packet,context)->{
             try{action(context.player(),packet.code());}catch(Throwable error){fail(context.player(),error);}
         });

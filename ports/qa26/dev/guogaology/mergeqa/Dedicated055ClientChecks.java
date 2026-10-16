@@ -29,6 +29,7 @@ public final class Dedicated055ClientChecks {
     private int stage,ticks,checks;
     private final long deadline=System.nanoTime()+720_000_000_000L;
     public static void initialize(){
+        if(Boolean.getBoolean("guogaology.qa.voxyworldgen")){DedicatedVoxyClientChecks.initialize();return;}
         var test=new Dedicated055ClientChecks();
         ClientPlayNetworking.registerGlobalReceiver(Dedicated055Common.Step.TYPE,(packet,context)->test.remote=packet.code());
         ClientTickEvents.END_CLIENT_TICK.register(test::tick);

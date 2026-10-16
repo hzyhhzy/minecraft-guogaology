@@ -46,7 +46,7 @@ def metadata_libraries():
     return metadata, libs
 
 
-def prepare_server(game, port, with_qa):
+def prepare_server(game, port, with_qa, voxy_worldgen=False):
     assert game.parent == (ROOT/'build/dedicated-qa').resolve() and not game.exists()
     (game/'mods').mkdir(parents=True)
     temp = game/'temp'; temp.mkdir()
@@ -72,13 +72,20 @@ def prepare_server(game, port, with_qa):
         try:
             with ZipFile(jar) as archive:
                 if 'fabric.mod.json' not in archive.namelist(): continue
-                identity = json.loads(archive.read('fabric.mod.json'))['id']
+                identity = json.loads(archive.read('fabric.mod.json'), strict=False)['id']
         except (KeyError, json.JSONDecodeError):
             continue
         if identity == 'fabric-api': copy_mod(game, jar); found = True
+        if voxy_worldgen and identity == 'voxyworldgenv2': copy_mod(game, jar)
     assert found, 'Matching installed Fabric API is missing'
     if with_qa:
         copy_mod(game, ROOT/f'ports/26.2/build/qa/guogaology-merge-qa-{VERSION}.jar')
+    if voxy_worldgen:
+        assert any('World Gen' in p.name for p in (game/'mods').glob('*.jar'))
+        (game/'config').mkdir()
+        (game/'config/voxyworldgenv2.json').write_text(json.dumps({
+            'enabled': True, 'generationRadius': 32, 'update_interval': 20,
+            'maxQueueSize': 4096, 'maxActiveTasks': 2, 'showF3MenuStats': True}, indent=2), 'utf8')
     (game/'eula.txt').write_text('eula=true\n', encoding='utf8')
     (game/'server.properties').write_text(
         'server-ip=127.0.0.1\n'+f'server-port={port}\n'+
@@ -91,6 +98,7 @@ def prepare_server(game, port, with_qa):
     args = ['-Xms1G', '-Xmx5G', '--enable-native-access=ALL-UNNAMED', '-Djava.awt.headless=true',
             '-Dfile.encoding=UTF-8', '-Dfabric.development=false', f'-Djava.io.tmpdir={temp}',
             f'-Djna.tmpdir={temp}', f'-Dguogaology.qa.dedicated055={str(with_qa).lower()}',
+            f'-Dguogaology.qa.voxyworldgen={str(voxy_worldgen).lower()}',
             '-cp', ';'.join(map(str, cp)), 'net.fabricmc.loader.impl.launch.knot.KnotServer', 'nogui']
     argfile = game/'server.args'
     argfile.write_text('\n'.join('"'+str(x).replace('\\', '/').replace('"', '\\"')+'"' for x in args), 'utf8')
@@ -122,10 +130,12 @@ def run(a):
     game = (ROOT/'build/dedicated-qa'/a.label).resolve()
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 0)); port = probe.getsockname()[1]
-    command = prepare_server(game, port, a.with_qa)
+    command = prepare_server(game, port, a.with_qa, a.voxy_worldgen)
     logpath = game/'server-output.log'
     report = {'version': VERSION, 'minecraft': '26.2', 'bind': '127.0.0.1', 'port': port,
               'serverJar': f'guogaology-dimension-26.2-{VERSION}.jar', 'serverClientClassesPresent': False}
+    report['voxyWorldgen'] = a.voxy_worldgen
+    report['serverMods'] = {p.name: sha(p.read_bytes()) for p in (game/'mods').glob('*.jar')}
     print(f'Loopback-only dedicated QA: {game}, 127.0.0.1:{port}', flush=True)
     with logpath.open('w', encoding='utf8') as log:
         server = subprocess.Popen(command, cwd=game, stdin=subprocess.PIPE, stdout=log,
@@ -149,6 +159,7 @@ def run(a):
             report['shutdown'] = 'passed'
             if a.with_qa:
                 report['mechanics'] = text(game/'dedicated-mechanics-ok.txt').strip()
+            if a.with_qa and not a.skip_restart:
                 with logpath.open('a', encoding='utf8') as reload_log:
                     server = subprocess.Popen(command, cwd=game, stdin=subprocess.PIPE, stdout=reload_log,
                                               stderr=subprocess.STDOUT, creationflags=subprocess.CREATE_NO_WINDOW)
@@ -192,13 +203,20 @@ def run_network_client(game, port, a, reload=False):
     # The optional renderer stays in the client. It never enters server mods/classpath.
     for jar in (INSTANCE/'mods').glob('*.jar'):
         try:
-            with ZipFile(jar) as archive: identity = json.loads(archive.read('fabric.mod.json'))['id']
+            with ZipFile(jar) as archive: identity = json.loads(archive.read('fabric.mod.json'), strict=False)['id']
         except (KeyError, json.JSONDecodeError): continue
-        if identity == 'sodium': copy_mod(client, jar)
+        if identity == 'sodium' or a.voxy_worldgen and identity in ('voxy', 'cloth-config'): copy_mod(client, jar)
+    if a.voxy_worldgen:
+        shutil.copytree(game/'config', client/'config')
+        (client/'config/voxy-config.json').write_text(json.dumps({
+            'enabled': True, 'enable_rendering': True, 'ingest_enabled': True,
+            'section_render_distance': 32.0, 'service_threads': 4, 'sub_division_size': 64.0,
+            'fog_mode': 'off', 'dont_use_sodium_builder_threads': False}, indent=2), 'utf8')
     temp = client/'temp'; temp.mkdir()
     (client/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:4\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:zh_cn\nguiScale:4\n', 'utf8')
     args = ['-Xmx4G', '--enable-native-access=ALL-UNNAMED', '-Dfile.encoding=UTF-8', '-Dfabric.development=false',
             '-Dguogaology.qa.dedicated055=true', f'-Dguogaology.qa.address=127.0.0.1:{port}',
+            f'-Dguogaology.qa.voxyworldgen={str(a.voxy_worldgen).lower()}', f'-Dguogaology.qa.reload={str(reload).lower()}',
             f'-Djava.io.tmpdir={temp}', f'-Djna.tmpdir={temp}', f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
             '-cp', ';'.join(map(str, cp)), metadata['mainClass'], '--username', 'GuogaologyQA', '--version', '26.2',
             '--gameDir', str(client), '--assetsDir', str(MC/'assets'), '--assetIndex', metadata['assetIndex']['id'],
@@ -210,7 +228,7 @@ def run_network_client(game, port, a, reload=False):
     with logfile.open('w', encoding='utf8') as log:
         process = subprocess.Popen([str(JAVA/'bin/java.exe'), '@'+str(argfile)], cwd=client, stdout=log,
                                    stderr=subprocess.STDOUT, creationflags=subprocess.CREATE_NO_WINDOW)
-        try: code = process.wait(timeout=840)
+        try: code = process.wait(timeout=1500 if a.voxy_worldgen else 840)
         except subprocess.TimeoutExpired: raise RuntimeError('Dedicated network client timeout')
         finally:
             if process.poll() is None:
@@ -225,4 +243,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--label', required=True)
     parser.add_argument('--with-qa', action='store_true')
-    run(parser.parse_args())
+    parser.add_argument('--voxy-worldgen', action='store_true')
+    parser.add_argument('--skip-restart', action='store_true', help='Optional visual follow-up; full checks restart by default')
+    args = parser.parse_args()
+    if args.voxy_worldgen: args.with_qa = True
+    run(args)
