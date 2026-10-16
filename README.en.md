@@ -16,6 +16,8 @@ Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mine
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
 
+Version 0.5.5 passed a local 26.2 dedicated Fabric server check with a separate client: manuscript/station interactions, dimension travel, flight and saved-world restart. The test bound only to 127.0.0.1 and was not exposed to the LAN or Internet. See [the test record and scope](docs/DEDICATED-SERVER-055.md); this was not a multiplayer capacity benchmark.
+
 The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Version 0.5.5 retains those compatibility fixes, but Connector was not rerun for this update. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
 
 | Minecraft | Java | Fabric Loader | Fabric API used for builds |
