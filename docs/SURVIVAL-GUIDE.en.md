@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.5.8
+# Three-world survival guide · 0.5.9
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -196,4 +196,4 @@ Underworld cliffs carry giant diagonal chains from actual rims at Y250 or higher
 
 ## Survival guide advancements
 
-The Unfolding Begins tab is available upon joining. It guides cake gates, Outer ores and gear, return supplies, Inner/Underworld travel, raw-material fusion, enhancement, lamp shaping and all eight megastructures. Gate milestones require the player’s successful offering; megastructure milestones require opening an actual reward chest. These do not gate gameplay, demand a strict order, or replace vanilla advancements. Full list: [Survival guide advancements](ADVANCEMENTS-057.en.md).
+The Guogaology directory root auto-completes on joining so the page remains visible; its icon combines cake and an apple. The actual journey begins with Into the Outer Realm. First entering Outer, Inner and the Underworld grants their respective milestones, whose descriptions explain each frame and offering. Forward-gate activation has no separate milestone; the Return Gate still credits its successful Return Token offering. The page also guides Outer ores and gear, return supplies, raw-material fusion, enhancement, lamp shaping and all eight megastructures. Number tools and computing sit in the Inner branch; megastructures require opening an actual reward chest. These do not gate gameplay, demand a strict order, or replace vanilla advancements. Full list: [Survival guide advancements](ADVANCEMENTS-057.en.md).

@@ -29,8 +29,13 @@ public final class Advancement057Runtime {
                     var initialHandler=c.getConnection().getAdvancements();var screen=screen(initialHandler,FabricLoader.getInstance().isModLoaded("paginatedadvancements"));c.gui.setScreen(screen);
                     var tabs=screen.getClass().getDeclaredField("tabs");tabs.setAccessible(true);int count=((Map<?,?>)tabs.get(screen)).size();
                     if(count!=(BASELINE?0:1))throw new AssertionError("Unexpected initial visible tab count "+count);
+                    if(!BASELINE){
+                        initialHandler.setSelectedTab(initialHandler.get(Identifier.parse("guogaology:arrival")),true);
+                        if(c.getResourceManager().getResource(Identifier.parse("guogaology:textures/item/guide_emblem.png")).isEmpty())throw new AssertionError("Missing cake-and-apple guide icon");
+                    }
                     System.out.println("ADVANCEMENT057_INITIAL tabs="+count+" baseline="+BASELINE+" before vanilla root conditions; "+screen.getClass().getSimpleName());initialShown=true;
                 }
+                if(initialTicks==80&&!BASELINE)hover(c,c.getConnection().getAdvancements(),"guogaology:guide/enter_outer",FabricLoader.getInstance().isModLoaded("paginatedadvancements"));
                 if(initialTicks==110){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("advancements057-initial.png"));initialCaptured=true;}catch(Throwable e){failure=e;}});}
                 if(!initialCaptured)return;c.gui.setScreen(null);
             }
@@ -39,7 +44,7 @@ public final class Advancement057Runtime {
             var handler=c.getConnection().getAdvancements();
             for(String root:Advancement057Checks.ROOTS)if(handler.get(Identifier.parse(root))==null)return;
             boolean paginated=FabricLoader.getInstance().isModLoaded("paginatedadvancements");
-            String root=Advancement057Checks.ROOTS[frame%6];
+            String root=Advancement057Checks.ROOTS[Math.min(frame,5)];
             if(!shown){
                 for(var node:handler.getTree().nodes())if(node.advancement().isRoot()&&node.advancement().display().isPresent()){
                     var texture=node.advancement().display().orElseThrow().getBackground().orElseThrow().texturePath();
@@ -54,10 +59,10 @@ public final class Advancement057Runtime {
                 var selected=screen.getClass().getDeclaredField("selectedTab");selected.setAccessible(true);if(selected.get(screen)==null)throw new AssertionError("Selected advancement page was lost");
                 System.out.println("ADVANCEMENT057_PAGE "+screen.getClass().getSimpleName()+" "+root+" tabs="+values.size()+" clientNodes="+handler.getTree().nodes().size());shown=true;ticks=0;
             }
-            if(++ticks==20)hover(c,handler,root,paginated);
+            if(++ticks==20)hover(c,handler,frame==6?"guogaology:guide/enter_inner":frame==7?"guogaology:guide/enter_underworld":root,paginated);
             if(ticks==70){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=frame;Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("advancements057-"+picture+".png"));captured=true;}catch(Throwable e){failure=e;}});}
             if(!captured)return;
-            if(++frame==6){
+            if(++frame==8){
                 String report="ADVANCEMENT057_RUNTIME_OK baseline="+BASELINE+" vanilla five roots/native criteria and resource paths, guide decoding/actions, client synchronization and "+frame+" inspected-page candidates.\n";Files.writeString(Path.of("port-client-ok.txt"),report);done=true;c.stop();
             }else{c.gui.setScreen(null);shown=false;captured=false;ticks=0;}
         }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
@@ -67,7 +72,7 @@ public final class Advancement057Runtime {
     }
     private static void hover(Minecraft c,ClientAdvancements handler,String root,boolean paginated)throws Exception{
         var screen=(AdvancementsScreen)c.gui.screen();var field=screen.getClass().getDeclaredField("selectedTab");field.setAccessible(true);var tab=field.get(screen);
-        String target=root.equals("guogaology:arrival")&&!BASELINE?"guogaology:guide/portal_inner":root;
+        String target=root;
         var node=handler.getTree().get(Identifier.parse(target));var widget=screen.getAdvancementWidget(node);
         if(widget==null)throw new AssertionError("Missing native advancement widget "+target);
         int x=screen.width/2,y=screen.height/2;

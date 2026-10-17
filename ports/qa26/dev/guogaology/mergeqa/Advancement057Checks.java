@@ -37,6 +37,17 @@ public final class Advancement057Checks {
         check(vanilla>1200,"vanilla advancement/recipe definitions retained: "+vanilla);
         for(String root:ROOTS)check(holder(p,root).value().display().isPresent(),"visible root "+root);
         check(!done(p,"minecraft:story/root"),"fresh world has no vanilla Story root before acquiring a crafting table");
+        if(!baseline){
+            complete(p,"guogaology:arrival");
+            check(!done(p,"guogaology:guide/enter_outer"),"directory root is complete, but the first actual milestone is not");
+            inventory(p,"minecraft:cake","minecraft:apple");check(!done(p,"guogaology:guide/enter_outer"),"cake and apple alone do not mean entering Outer");
+            CriteriaTriggers.CHANGED_DIMENSION.trigger(p,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION);
+            check(!done(p,"guogaology:guide/enter_outer"),"entering Inner does not count as entering Outer");
+            check(manager.get(Identifier.parse("guogaology:guide/portal_outer"))==null,"duplicate first-gate node retired");
+            var icon=holder(p,"guogaology:arrival").value().display().orElseThrow().getIcon();
+            check(icon.is(dev.guogaology.GuogaologyBlocks.GUIDE_EMBLEM),"directory uses the cake-and-apple icon");
+            for(String tab:dev.guogaology.CreativeCatalog.TABS)check(dev.guogaology.CreativeCatalog.entries(tab).stream().noneMatch(s->s.is(dev.guogaology.GuogaologyBlocks.GUIDE_EMBLEM)),"guide icon is not a creative item");
+        }
         // The actual registered vanilla predicates, not manual awards.
         inventory(p,"minecraft:crafting_table");complete(p,"minecraft:story/root");
         inventory(p,"minecraft:cobblestone");complete(p,"minecraft:story/mine_stone");
@@ -54,8 +65,7 @@ public final class Advancement057Checks {
     }
     private static void guide(ServerPlayer p)throws Exception{
         var manager=p.level().getServer().getAdvancements();
-        check(manager.getAllAdvancements().stream().filter(a->a.id().getNamespace().equals("guogaology")&&a.value().display().isPresent()).count()==39,"all39guide definitions decoded");
-        check(!done(p,"guogaology:guide/portal_outer"),"travel does not fake a player-built gate");
+        check(manager.getAllAdvancements().stream().filter(a->a.id().getNamespace().equals("guogaology")&&a.value().display().isPresent()).count()==36,"all36guide definitions decoded");
         inventory(p,"omega_material");complete(p,"guogaology:guide/first_ore");
         inventory(p,"omega_pickaxe");complete(p,"guogaology:guide/first_tool");
         inventory(p,"omega_manuscript");complete(p,"guogaology:guide/first_book");
@@ -95,10 +105,13 @@ public final class Advancement057Checks {
     private static void portals(ServerPlayer p){
         var server=p.level().getServer();
         var sources=List.of(Level.OVERWORLD,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION,GuogaologyMod.GUOGAO);
-        String[] goals={"portal_outer","portal_inner","portal_underworld","portal_return","portal_return","portal_return"};
+        String[] goals={null,null,null,"portal_return","portal_return","portal_return"};
+        String[] entries={"enter_outer","enter_inner","enter_underworld"};
+        var destinations=List.of(GuogaologyMod.OUTER,GuogaologyMod.DIMENSION,GuogaologyMod.GUOGAO);
         String[] offerings={"minecraft:apple","true_omega_material","amber_guogao","return_token","return_token","return_token"};
         String[] frames={"minecraft:cake","true_omega_block","amber_guogao","outer_return_frame","inner_return_frame","guogao_return_frame"};
         for(int i=0;i<sources.size();i++){
+            if(i<3)p.getAdvancements().revoke(holder(p,"guogaology:guide/"+entries[i]),"travelled");
             var world=server.getLevel(sources.get(i));check(world!=null,"portal source exists");var center=new BlockPos(8+i*16,250,8);var saved=new LinkedHashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
             for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)world.getChunk((center.getX()>>4)+x,(center.getZ()>>4)+z);
             try{
@@ -108,10 +121,14 @@ public final class Advancement057Checks {
                 var offering=new ItemEntity(world,center.getX()+.5,250.5,8.5,item(offerings[i]));offering.setThrower(p);
                 if(i==0){
                     var missing=center.offset(2,0,0);world.setBlock(missing,Blocks.AIR.defaultBlockState(),2);
-                    check(!PortalRitual.tryActivate(world,offering)&&!done(p,"guogaology:guide/portal_outer"),"incomplete ring gives no progress");
+                    check(!PortalRitual.tryActivate(world,offering)&&!done(p,"guogaology:guide/enter_outer"),"incomplete ring gives no progress");
                     world.setBlock(missing,Blocks.CAKE.defaultBlockState(),2);
                 }
-                check(PortalRitual.tryActivate(world,offering),"real activation route "+i);complete(p,"guogaology:guide/"+goals[i]);
+                check(PortalRitual.tryActivate(world,offering),"real activation route "+i);
+                if(i<3){
+                    check(!done(p,"guogaology:guide/"+entries[i]),"forward gate activation alone does not count as entering its dimension");
+                    CriteriaTriggers.CHANGED_DIMENSION.trigger(p,sources.get(i),destinations.get(i));complete(p,"guogaology:guide/"+entries[i]);
+                }else complete(p,"guogaology:guide/"+goals[i]);
             }finally{for(var e:saved.entrySet())world.setBlock(e.getKey(),e.getValue(),2);}
         }
     }

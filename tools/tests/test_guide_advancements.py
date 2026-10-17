@@ -13,7 +13,7 @@ class GuideChecks(unittest.TestCase):
         guide.generate(check=True)
 
     def test_reachable_graph_and_real_item_loot_references(self):
-        nodes,_,_=guide.build();self.assertEqual(len(nodes),39)
+        nodes,_,_=guide.build();self.assertEqual(len(nodes),36)
         for name,node in nodes.items():
             seen={name};parent=node.get('parent')
             while parent:
@@ -29,6 +29,14 @@ class GuideChecks(unittest.TestCase):
             for group in node['requirements']:
                 self.assertTrue(group);self.assertTrue(set(group)<=node['criteria'].keys())
         self.assertEqual(nodes['arrival']['criteria'],{'begin':{'trigger':'minecraft:tick'}})
+        self.assertEqual(nodes['arrival']['display']['icon']['id'],'guogaology:guide_emblem')
+        for realm,dimension in [('outer','outer'),('inner','guogaology'),('underworld','guogao')]:
+            self.assertEqual(nodes['guide/enter_'+realm]['criteria'],guide.travel('guogaology:'+dimension))
+        self.assertEqual(nodes['guide/enter_outer']['parent'],'guogaology:arrival')
+        for retired in guide.RETIRED_NODES:self.assertNotIn(retired,nodes)
+        self.assertEqual(nodes['guide/portal_return']['criteria'],{'done':{'trigger':'minecraft:impossible'}})
+        for child in ('number_tools','compute_setup'):
+            self.assertEqual(nodes['guide/'+child]['parent'],'guogaology:guide/enter_inner')
         self.assertEqual(len(nodes['guide/landmarks_all']['requirements']),8)
         self.assertTrue(all(len(group)==2 for group in nodes['guide/landmarks_all']['requirements']))
 

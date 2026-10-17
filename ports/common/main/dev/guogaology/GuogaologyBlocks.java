@@ -182,6 +182,8 @@ public final class GuogaologyBlocks {
 
     public static final Item GUOGAO_SLICE = Registry.register(BuiltInRegistries.ITEM, GuogaologyMod.id("guogao_slice"), new Item(itemSettings("guogao_slice").food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6f).build())));
     public static final Item RETURN_TOKEN = Registry.register(BuiltInRegistries.ITEM, GuogaologyMod.id("return_token"), new Item(itemSettings("return_token")));
+    // Presentation-only advancement icon; not a survival item or creative entry.
+    public static final Item GUIDE_EMBLEM = Registry.register(BuiltInRegistries.ITEM, GuogaologyMod.id("guide_emblem"), new Item(itemSettings("guide_emblem")));
     public static final Item ORDINAL_SHARD = Registry.register(BuiltInRegistries.ITEM, GuogaologyMod.id("ordinal_shard"), new Item(itemSettings("ordinal_shard")));
     public static final Block[] JELLIES = {AMBER_GUOGAO, BERRY_GUOGAO, LIME_GUOGAO, AZURE_GUOGAO};
     public static final Block[] ALL_JELLIES = {AMBER_GUOGAO, BERRY_GUOGAO, LIME_GUOGAO, AZURE_GUOGAO, PLAIN_AMBER_GUOGAO, PLAIN_BERRY_GUOGAO, PLAIN_LIME_GUOGAO, PLAIN_AZURE_GUOGAO};

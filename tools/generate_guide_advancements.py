@@ -11,6 +11,8 @@ MINERALS=('omega','epsilon','gamma','true_omega')
 THEMES=('matrix','power','hydra','absence','weaver','astra','frontier','guogao')
 RAW=('matrix_sheet','arrow_knot','hydra_sprig','laver_gel','cloud_pearl','scg_node','dread_resin','set_membrane',
      'lho_letter_l','lho_letter_h','lho_letter_o','fffz_trace','fos_trace','lho_hydra_psi','lho_hydra_z')
+RETIRED_NODES=('guide/portal_outer','guide/portal_inner','guide/portal_underworld')
+RETIRED_COPY={f'advancement.guogaology.{name.replace("/",".")}.{field}' for name in RETIRED_NODES for field in ('title','description')}
 
 def inventory(*groups):
     return {'collected':{'trigger':'minecraft:inventory_changed','conditions':{'items':[{'items':[NS+n for n in group]} for group in groups]}}}
@@ -36,14 +38,11 @@ def build():
         rows.append((name,zh,description))
     def item(name,parent,icon,zh,en,description,en_description,*groups,frame='task'):
         node('guide/'+name,parent,icon,zh,en,description,en_description,inventory(*groups),frame=frame)
-    node('arrival',None,'ordinal_crystal','展开开始','The Unfolding Begins',
-         '从蛋糕与苹果出发，探索表界、里界和果糕地府。','Begin with cake and an apple, then explore the Outer, Inner and Guogao Underworld.',
+    node('arrival',None,'guide_emblem','果糕逻辑','Guogaology',
+         '从蛋糕门出发，探索表界、里界与果糕地府。','Begin with a cake gate and explore the Outer, Inner and Guogao Underworld.',
          {'begin':{'trigger':'minecraft:tick'}})
-    node('guide/portal_outer','arrival','minecraft:cake','第一道门','The First Gate',
-         '用12个蛋糕在水平面摆出5×5去四角的门框，向内投入一个苹果。','Activate a horizontal 5×5 ring of 12 cakes, without corners, by throwing an apple inside.',
-         {'done':{'trigger':'minecraft:impossible'}})
-    node('guide/enter_outer','guide/portal_outer','minecraft:apple','走进表界','Into the Outer Realm',
-         '穿过蛋糕门；在表界采矿、收集材料，并为下一层作准备。','Enter Outer Guogaology to mine and gather supplies for the next realm.',travel(NS+'outer'))
+    node('guide/enter_outer','arrival','minecraft:apple','初入表界','Into the Outer Realm',
+         '用12个蛋糕摆成水平5×5去四角的门框，向内投入一个苹果激活，再穿门进入表界。','Build a horizontal 5×5 ring of 12 cakes without corners, throw an apple inside to activate it, then enter the Outer realm.',travel(NS+'outer'))
     item('first_ore','guide/enter_outer','omega_material','序矿初采','The First Ordinal Mineral',
          '用铁镐或更好的镐获得任一种序数矿物；四种矿都直接掉落材料。','Obtain an ordinal mineral with an iron or better pickaxe. All four ores drop usable materials directly.',list(n+'_material' for n in MINERALS))
     item('first_tool','guide/first_ore','omega_pickaxe','手中的序数','An Ordinal in Hand',
@@ -53,8 +52,6 @@ def build():
     item('full_set','guide/first_tool','epsilon_chestplate','备齐护甲','Ready to Wear',
          '备齐头盔、胸甲、护腿与靴子，可以混用四种序数材料。','Obtain a helmet, chestplate, leggings and boots; the four ordinal materials may be mixed.',
          *[[n+'_'+kind for n in MINERALS] for kind in ('helmet','chestplate','leggings','boots')])
-    item('number_tools','guide/enter_outer','number_pickaxe','数字也能成器','Tools from Numbers',
-         '用数字刻石制作数字石镐或数字石剑；等级取材料数字的平均值向下取整。','Craft a Number Stone pickaxe or sword. Its digit is the floor of the material digits’ average.',['number_pickaxe','number_sword'])
     item('return_ready','guide/enter_outer','return_token','出发，也要能回来','A Way Back',
          '备好归途签和归途框。12个同种归途框搭门，投入归途签可返回上一层。','Obtain a Return Token and frames. Activate a ring of 12 matching Return Frames with the token to return one realm.',
          ['return_token'],['outer_return_frame','inner_return_frame','guogao_return_frame'])
@@ -65,11 +62,12 @@ def build():
     node('guide/return_up','guide/portal_return','inner_return_frame','返回上一层','One Realm Up',
          '从里界返回表界，或从果糕地府返回里界。','Return from Inner to Outer, or from the Guogao Underworld to Inner.',
          {'inner':travel(NS+'outer',NS+'guogaology')['travelled'],'underworld':travel(NS+'guogaology',NS+'guogao')['travelled']})
-    node('guide/portal_inner','guide/first_ore','true_omega_block','矿物作门','A Mineral Gate',
-         '用12个ω、ε、Γ、Ω结晶块搭水平门框，可混搭；投入一份Ω材料激活。','Activate a horizontal ring of 12 mineral blocks, freely mixing ω, ε, Γ and Ω, with one Ω mineral.',
-         {'done':{'trigger':'minecraft:impossible'}},frame='goal')
-    node('guide/enter_inner','guide/portal_inner','ordinal_stone','走进里界','Into the Inner Realm',
-         '进入里界。晶核来自群系原料合成，序数晶体来自序数晶矿。','Enter Inner Guogaology. Craft cores from biome resources and mine Ordinal Crystal Ore for crystals.',travel(NS+'guogaology'))
+    node('guide/enter_inner','guide/enter_outer','ordinal_stone','走进里界','Into the Inner Realm',
+         '在表界用12个矿物结晶块搭水平5×5去四角的门框，ω、ε、Γ、Ω可混搭；投入一份Ω材料激活，再穿门进入里界。','In Outer, build a horizontal 5×5 ring of 12 mineral blocks without corners, mixing ω, ε, Γ and Ω. Throw one Ω mineral inside, then enter Inner.',travel(NS+'guogaology'))
+    item('number_tools','guide/enter_inner','number_pickaxe','数字也能成器','Tools from Numbers',
+         '在里界采集数字刻石，制作数字石镐或数字石剑；等级取材料数字的平均值向下取整。','Gather Number Stones in Inner to craft a Number Stone pickaxe or sword. Its digit is the floor of the material digits’ average.',['number_pickaxe','number_sword'])
+    item('compute_setup','guide/enter_inner','server_rack','自己的算力','A Computing Setup',
+         '在里界收集算力芯片，制作机柜或终端。','Collect Compute Chips in Inner and craft a server rack or terminal.',['server_rack','office_monitor'])
     item('raw_material','guide/enter_inner','matrix_sheet','寻找群系原料','Biome Ingredients',
          '从自然景物中收集一种本地晶核原料。成品晶核不在野外直接生成。','Collect a core ingredient from a natural landmark. Finished cores do not spawn in the wilderness.',list(RAW))
     item('shards','guide/enter_inner','ordinal_shard','晶矿的碎片','Crystal from the Rock',
@@ -94,13 +92,8 @@ def build():
          '序数晶体与序数晶核逐级九合一，获得三级序数晶核；各级均可拆分。','Fuse crystals and Ordinal Cores nine-to-one until reaching an Ordinal Core Lv3; every step is reversible.',['ordinal_crystal_lv4'],frame='challenge')
     item('lamp_shaper','guide/enter_outer','guogao_lamp_shaper','表情塑形','Shaping Expressions',
          '制作果糕灯塑形台，在两种表情、完整灯与3×3×3分块之间转换。','Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles.',['guogao_lamp_shaper'])
-    item('compute_setup','guide/enter_outer','server_rack','自己的算力','A Computing Setup',
-         '收集算力芯片，制作机柜或终端。','Collect Compute Chips and craft a server rack or terminal.',['server_rack','office_monitor'])
-    node('guide/portal_underworld','guide/enter_inner','amber_guogao','果糕作门','A Guogao Gate',
-         '在里界用12个果糕方块搭水平门框，再投入1个果糕方块激活。','In Inner, activate a horizontal ring of 12 Guogao blocks by throwing one more Guogao block inside.',
-         {'done':{'trigger':'minecraft:impossible'}},frame='goal')
-    node('guide/enter_underworld','guide/portal_underworld','guogao_heart','进入果糕地府','The Guogao Underworld',
-         '进入果糕地府，探索冥林、错层、静沼与降链洞域。','Enter the Guogao Underworld and explore its forest, misaligned strata, silent mire and descending caverns.',travel(NS+'guogao'),frame='goal')
+    node('guide/enter_underworld','guide/enter_inner','guogao_heart','进入果糕地府','The Guogao Underworld',
+         '在里界用12个果糕方块搭水平5×5去四角的门框，可混搭颜色；再投入1个果糕方块激活，穿门进入果糕地府。','In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld.',travel(NS+'guogao'),frame='goal')
     node('guide/landmark_first','guide/enter_inner','minecraft:chest','巨构初探','Into a Megastructure',
          '在任意巨构中开启第一只奖励箱，继续探索楼层和主题陈列。','Open a reward chest in any megastructure, then explore its floors and themed exhibits.',loot(THEMES))
     titles=[(names['zh_cn']['structure.guogaology.'+theme],names['en_us']['structure.guogaology.'+theme]) for theme in THEMES]
@@ -111,6 +104,7 @@ def build():
     node('guide/landmarks_all','guide/landmark_first','ordinal_crystal_lv4','八种巨构','All Eight Megastructures',
          '探索八种巨构，并在每一种中开启至少一只奖励箱。','Explore all eight megastructure types and open at least one reward chest in each.',loot(THEMES),
          [[theme+'_sanctum',theme+'_ruin'] for theme in THEMES],frame='challenge')
+    copy['item.guogaology.guide_emblem']=('果糕逻辑探索指引','Guogaology Exploration Guide')
     return result,copy,rows
 
 def generate(check=False):
@@ -121,17 +115,25 @@ def generate(check=False):
             changed.append(str(path.relative_to(ROOT)))
             if not check:path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf8',newline='\n')
     for name,value in advancements.items():put(RES/f'data/guogaology/advancement/{name}.json',value)
+    for name in RETIRED_NODES:
+        retired=RES/f'data/guogaology/advancement/{name}.json'
+        if retired.exists():
+            changed.append(str(retired.relative_to(ROOT)))
+            if not check:retired.unlink()
+    put(RES/'assets/guogaology/models/item/guide_emblem.json',{'parent':'minecraft:item/generated','textures':{'layer0':'guogaology:item/guide_emblem'}})
     path=ROOT/'tools/copy_catalog.json';catalog=json.loads(path.read_text(encoding='utf8'))
+    catalog['removed']=sorted(set(catalog.get('removed',()))|RETIRED_COPY)
     for locale,index in [('zh_cn',0),('en_us',1)]:
         for key,values in copy.items():catalog['translations'][locale][key]=values[index]
         path_lang=RES/f'assets/guogaology/lang/{locale}.json';lang=json.loads(path_lang.read_text(encoding='utf8'))
         for key,values in copy.items():lang[key]=values[index]
+        for key in RETIRED_COPY:catalog['translations'][locale].pop(key,None);lang.pop(key,None)
         put(path_lang,lang)
     put(path,catalog)
-    text='# 生存引导进度 · 0.5.7\n\n使用原版进度系统，原版各页与配方解锁不替换。首次登录即显示本模组页；门户节点按实际成功的投掷激活归属到投掷者。其他节点按获得材料、跨维度或真正开启巨构奖励箱触发，不要求严格顺序，也不发额外物品。\n\n| ID | 名称 | 引导与完成条件 |\n|---|---|---|\n'
+    text='# 生存引导进度 · 0.5.9\n\n使用原版进度系统，原版各页与配方解锁不替换。“果糕逻辑”是登录自动完成的目录根节点，保证新存档显示引导页；表界、里界和地府分别以首次进入为实际进度，其说明包含对应造门方法，前进门激活本身不另设成就。返程门仍按成功投掷归途签激活归属到投掷者；其他节点按获得材料、跨维度或开启巨构奖励箱触发。不要求严格顺序，也不发额外物品。\n\n| ID | 名称 | 引导与完成条件 |\n|---|---|---|\n'
     for name,title,description in rows:text+=f'| `{name}` | {title} | {description} |\n'
     put(ROOT/'docs/ADVANCEMENTS-057.md',text)
-    text='# Survival guide advancements · 0.5.7\n\nThe Mod tab appears on joining. These milestones use native advancements, keep vanilla progress and recipe unlocks, impose no required order and award no extra items. Gates credit the player who successfully offered the activation item. Megastructures count when their actual main or secondary reward chest generates loot.\n\n| ID | Title | Guidance and condition |\n|---|---|---|\n'
+    text='# Survival guide advancements · 0.5.9\n\nThe Guogaology directory root auto-completes on joining so new players can see the guide. First entering Outer, Inner and the Underworld grants their respective milestones; each description explains its gate. Forward-gate activation itself has no separate milestone. Return gates still credit the player who successfully offered the Return Token. These milestones keep vanilla progress and recipe unlocks, impose no required order and award no extra items. Megastructures count when their actual main or secondary reward chest generates loot.\n\n| ID | Title | Guidance and condition |\n|---|---|---|\n'
     for name in advancements:
         key='advancement.guogaology.'+name.replace('/','.')
         text+=f'| `{name}` | {copy[key+".title"][1]} | {copy[key+".description"][1]} |\n'

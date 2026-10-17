@@ -18,10 +18,7 @@ public final class GuideProgress {
     public static void portalActivated(ServerLevel world,ItemEntity offering,PortalKind kind){
         if(!(offering.getOwner() instanceof ServerPlayer player))return;
         var source=world.dimension();
-        if(source.equals(net.minecraft.world.level.Level.OVERWORLD)&&kind==PortalKind.OUTER)grant(player,"portal_outer");
-        else if(source.equals(GuogaologyMod.OUTER)&&kind==PortalKind.INNER)grant(player,"portal_inner");
-        else if(source.equals(GuogaologyMod.DIMENSION)&&kind==PortalKind.GUOGAO)grant(player,"portal_underworld");
-        else if(source.equals(GuogaologyMod.OUTER)&&kind==PortalKind.OUTER
+        if(source.equals(GuogaologyMod.OUTER)&&kind==PortalKind.OUTER
                 ||source.equals(GuogaologyMod.DIMENSION)&&kind==PortalKind.INNER
                 ||source.equals(GuogaologyMod.GUOGAO)&&kind==PortalKind.GUOGAO)grant(player,"portal_return");
     }
