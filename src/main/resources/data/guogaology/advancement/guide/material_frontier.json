@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:set_membrane"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.material_frontier.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.material_frontier.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:set_membrane",
+              "guogaology:turing_endcap"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/biome_frontier"
+}

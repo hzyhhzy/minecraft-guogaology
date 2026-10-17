@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 public abstract class HiddenWindowMixin {
     @Inject(method="createGlfwWindow",at=@At(value="INVOKE",target="Lorg/lwjgl/glfw/GLFW;glfwCreateWindow(IILjava/lang/CharSequence;JJ)J",remap=false))
     private static void hidden(CallbackInfoReturnable<Long> ci){
+        if(Boolean.getBoolean("guogaology.qa.review"))return; // Explicit human-requested interactive review only.
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE,GLFW.GLFW_FALSE);GLFW.glfwWindowHint(GLFW.GLFW_FOCUSED,GLFW.GLFW_FALSE);GLFW.glfwWindowHint(GLFW.GLFW_FOCUS_ON_SHOW,GLFW.GLFW_FALSE);
     }
 }

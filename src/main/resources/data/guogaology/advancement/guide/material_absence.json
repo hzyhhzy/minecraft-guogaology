@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:ordinal_crystal"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.material_absence.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.material_absence.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:ordinal_crystal"
+            ]
+          },
+          {
+            "items": [
+              "guogaology:fffz_trace",
+              "guogaology:fos_trace",
+              "guogaology:lho_hydra_psi",
+              "guogaology:lho_hydra_z"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/biome_absence"
+}

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:laver_core"
+      "id": "guogaology:landmark_emblem_weaver"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmark_weaver.title"
@@ -9,30 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.guide.landmark_weaver.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "weaver_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/weaver_sanctum"
-      }
-    },
-    "weaver_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/weaver_ruin"
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "weaver_sanctum",
-      "weaver_ruin"
+      "done"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/biome_weaver"
 }

@@ -59,7 +59,7 @@ public final class Advancement057Checks {
         CriteriaTriggers.CHANGED_DIMENSION.trigger(p,Level.OVERWORLD,Level.NETHER);complete(p,"minecraft:nether/root");
         CriteriaTriggers.CHANGED_DIMENSION.trigger(p,Level.NETHER,Level.END);complete(p,"minecraft:end/root");
         CriteriaTriggers.CHANGED_DIMENSION.trigger(p,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION);complete(p,"guogaology:arrival");
-        if(!baseline)guide(p);
+        if(!baseline){if(Boolean.getBoolean("guogaology.qa.advancements510"))Advancement510Checks.run(p);else guide(p);}
         p.getInventory().clearContent();p.getAdvancements().flushDirty(p,true);
         System.out.println("ADVANCEMENT057_SERVER_OK checks="+checks+" vanilla="+vanilla+" baseline="+baseline+"; native inventory/food/kill/travel predicates, all five vanilla roots retained");
     }
@@ -102,7 +102,7 @@ public final class Advancement057Checks {
         portals(p);
         for(var a:manager.getAllAdvancements())if(a.id().getNamespace().equals("guogaology")&&a.value().display().isPresent())check(p.getAdvancements().getOrStartProgress(a).isDone(),"all guide routes exercised "+a.id());
     }
-    private static void portals(ServerPlayer p){
+    static void portals(ServerPlayer p){
         var server=p.level().getServer();
         var sources=List.of(Level.OVERWORLD,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION,GuogaologyMod.OUTER,GuogaologyMod.DIMENSION,GuogaologyMod.GUOGAO);
         String[] goals={null,null,null,"portal_return","portal_return","portal_return"};

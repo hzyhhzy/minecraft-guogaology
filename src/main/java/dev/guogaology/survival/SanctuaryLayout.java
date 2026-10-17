@@ -451,6 +451,12 @@ public final class SanctuaryLayout {
         if(x< -width/2||x>width/2||z< -depth/2||z>depth/2||y<0||y>=height)return KEEP;
         return voxels[(y*depth+z+depth/2)*width+x+width/2];
     }
+    /** Actual authored rooms or a surface one stands on, excluding empty bounding-box padding. */
+    public boolean visitArea(int x,int y,int z) {
+        if(Math.abs(x)>width/2||Math.abs(z)>depth/2||y<0||y>height+1)return false;
+        byte feet=at(x,y,z),head=at(x,y+1,z),floor=at(x,y-1,z);
+        return feet==AIR||head==AIR||floor!=KEEP&&floor!=AIR;
+    }
     void set(int x,int y,int z,byte material) {
         if(x< -width/2||x>width/2||z< -depth/2||z>depth/2||y<0||y>=height)return;
         voxels[(y*depth+z+depth/2)*width+x+width/2]=material;

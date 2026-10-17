@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:laver_gel"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.material_weaver.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.material_weaver.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:laver_gel"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/biome_weaver"
+}

@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:cloud_pearl"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.material_astra.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.material_astra.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:cloud_pearl"
+            ]
+          },
+          {
+            "items": [
+              "guogaology:compute_chip"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/biome_astra"
+}

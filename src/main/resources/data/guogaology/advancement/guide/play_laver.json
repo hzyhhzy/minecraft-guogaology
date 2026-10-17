@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:iblp_marked"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.play_laver.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.play_laver.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "parent": "guogaology:guide/biome_weaver"
+}

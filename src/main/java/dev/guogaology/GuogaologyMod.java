@@ -23,6 +23,7 @@ public final class GuogaologyMod implements ModInitializer {
     @Override
     public void onInitialize() {
         GuogaologyBlocks.initialize();
+        dev.guogaology.advancement.GuideProgress.initialize();
         dev.guogaology.block.OrdinalAnchoring.initialize();
         GuogaologySounds.initialize();
         WorldMaterials.initialize();

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:power_tower_core"
+      "id": "guogaology:landmark_emblem_power"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmark_power.title"
@@ -9,30 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.guide.landmark_power.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "power_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/power_sanctum"
-      }
-    },
-    "power_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/power_ruin"
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "power_sanctum",
-      "power_ruin"
+      "done"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/biome_power"
 }

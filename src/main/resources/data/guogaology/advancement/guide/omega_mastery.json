@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:true_omega_chestplate"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.omega_mastery.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.omega_mastery.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "parent": "guogaology:guide/ultimate_station"
+}

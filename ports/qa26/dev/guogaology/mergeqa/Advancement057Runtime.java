@@ -12,9 +12,30 @@ import net.minecraft.resources.Identifier;
 /** Hidden native UI validation; optional installed pagination mod is QA-only. */
 public final class Advancement057Runtime {
     private static final boolean BASELINE=Boolean.getBoolean("guogaology.qa.advancementsBaseline");
+    private static final boolean BIOMES=Boolean.getBoolean("guogaology.qa.advancements510");
+    private static final String[] TARGETS={"minecraft:story/root","minecraft:adventure/root","minecraft:husbandry/root","minecraft:nether/root","minecraft:end/root","guogaology:arrival",
+        "guogaology:guide/enter_inner","guogaology:guide/landmark_matrix","guogaology:guide/landmark_power","guogaology:guide/landmark_hydra","guogaology:guide/landmark_absence","guogaology:guide/landmark_weaver","guogaology:guide/landmark_astra","guogaology:guide/landmark_frontier","guogaology:guide/landmark_guogao","guogaology:guide/core_frontier_2","guogaology:guide/core_frontier_3","guogaology:guide/material_absence","guogaology:guide/omega_mastery"};
+    private static String prefix(){return BIOMES?"advancements510":"advancements057";}
     private boolean opening,queued,done,shown,initialShown;private volatile boolean ready,captured,initialCaptured;private volatile Throwable failure;
     private int frame,ticks,initialTicks;private final long deadline=System.nanoTime()+900_000_000_000L;
     public static void initialize(){var qa=new Advancement057Runtime();ClientTickEvents.END_CLIENT_TICK.register(qa::tick);}
+    /** User-requested visible review: open the saved test world once, then yield all control. */
+    public static void initializeReview(){
+        boolean[] state={false,false};
+        ClientTickEvents.END_CLIENT_TICK.register(c->{
+            if(state[1])return;
+            try{
+                if(c.level==null){if(!state[0]&&c.isGameLoadFinished()&&c.gui.overlay()==null){state[0]=true;c.createWorldOpenFlows().openWorld("port-qa",()->{});}return;}
+                if(c.player==null||c.getConnection()==null)return;
+                var handler=c.getConnection().getAdvancements();var root=handler.get(Identifier.parse("guogaology:arrival"));
+                if(root==null||handler.getTree().get(Identifier.parse("guogaology:guide/enter_inner"))==null)return;
+                boolean paginated=FabricLoader.getInstance().isModLoaded("paginatedadvancements");c.gui.setScreen(screen(handler,paginated));handler.setSelectedTab(root,true);
+                hover(c,handler,"guogaology:guide/enter_inner",paginated);state[1]=true;
+                Files.writeString(c.gameDirectory.toPath().resolve("review-ready.txt"),"Visible interactive advancement review; no automated actions or exit.\n");
+                System.out.println("ADVANCEMENT510_REVIEW_READY user controls this window; no automatic shutdown");
+            }catch(Throwable e){state[1]=true;e.printStackTrace();}
+        });
+    }
     private void tick(Minecraft c){
         if(done)return;
         try{
@@ -32,11 +53,21 @@ public final class Advancement057Runtime {
                     if(!BASELINE){
                         initialHandler.setSelectedTab(initialHandler.get(Identifier.parse("guogaology:arrival")),true);
                         if(c.getResourceManager().getResource(Identifier.parse("guogaology:textures/item/guide_emblem.png")).isEmpty())throw new AssertionError("Missing cake-and-apple guide icon");
+                        if(BIOMES)for(String theme:List.of("matrix","power","hydra","absence","weaver","astra","frontier","guogao")){
+                            var resource=c.getResourceManager().getResource(Identifier.parse("guogaology:models/item/landmark_emblem_"+theme+".json")).orElseThrow();
+                            try(var reader=resource.openAsReader()){
+                                var model=com.google.gson.JsonParser.parseReader(reader).getAsJsonObject();
+                                for(var value:model.getAsJsonObject("textures").entrySet()){
+                                    var texture=Identifier.parse(value.getValue().getAsString());
+                                    if(c.getResourceManager().getResource(Identifier.fromNamespaceAndPath(texture.getNamespace(),"textures/"+texture.getPath()+".png")).isEmpty())throw new AssertionError("Missing landmark texture "+texture);
+                                }
+                            }
+                        }
                     }
                     System.out.println("ADVANCEMENT057_INITIAL tabs="+count+" baseline="+BASELINE+" before vanilla root conditions; "+screen.getClass().getSimpleName());initialShown=true;
                 }
                 if(initialTicks==80&&!BASELINE)hover(c,c.getConnection().getAdvancements(),"guogaology:guide/enter_outer",FabricLoader.getInstance().isModLoaded("paginatedadvancements"));
-                if(initialTicks==110){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("advancements057-initial.png"));initialCaptured=true;}catch(Throwable e){failure=e;}});}
+                if(initialTicks==110){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve(prefix()+"-initial.png"));initialCaptured=true;}catch(Throwable e){failure=e;}});}
                 if(!initialCaptured)return;c.gui.setScreen(null);
             }
             if(!queued){queued=true;var uuid=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{Advancement057Checks.run(c.getSingleplayerServer().getPlayerList().getPlayer(uuid),BASELINE);ready=true;}catch(Throwable e){failure=e;}});return;}
@@ -59,11 +90,11 @@ public final class Advancement057Runtime {
                 var selected=screen.getClass().getDeclaredField("selectedTab");selected.setAccessible(true);if(selected.get(screen)==null)throw new AssertionError("Selected advancement page was lost");
                 System.out.println("ADVANCEMENT057_PAGE "+screen.getClass().getSimpleName()+" "+root+" tabs="+values.size()+" clientNodes="+handler.getTree().nodes().size());shown=true;ticks=0;
             }
-            if(++ticks==20)hover(c,handler,frame==6?"guogaology:guide/enter_inner":frame==7?"guogaology:guide/enter_underworld":root,paginated);
-            if(ticks==70){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=frame;Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("advancements057-"+picture+".png"));captured=true;}catch(Throwable e){failure=e;}});}
+            if(++ticks==20)hover(c,handler,BIOMES?TARGETS[frame]:frame==6?"guogaology:guide/enter_inner":frame==7?"guogaology:guide/enter_underworld":root,paginated);
+            if(ticks==70){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=frame;Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve(prefix()+"-"+picture+".png"));captured=true;}catch(Throwable e){failure=e;}});}
             if(!captured)return;
-            if(++frame==8){
-                String report="ADVANCEMENT057_RUNTIME_OK baseline="+BASELINE+" vanilla five roots/native criteria and resource paths, guide decoding/actions, client synchronization and "+frame+" inspected-page candidates.\n";Files.writeString(Path.of("port-client-ok.txt"),report);done=true;c.stop();
+            if(++frame==(BIOMES?TARGETS.length:8)){
+                String report=(BIOMES?"ADVANCEMENT510_RUNTIME_OK":"ADVANCEMENT057_RUNTIME_OK")+" baseline="+BASELINE+" vanilla five roots/native criteria and resource paths, guide decoding/actions, client synchronization and "+frame+" inspected-page candidates.\n";Files.writeString(Path.of("port-client-ok.txt"),report);done=true;c.stop();
             }else{c.gui.setScreen(null);shown=false;captured=false;ticks=0;}
         }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
     }

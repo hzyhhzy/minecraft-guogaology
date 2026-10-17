@@ -61,6 +61,7 @@ public final class LaverMusic {
         while(iterator.hasNext()) { var entry=iterator.next();if(entry.getValue().owner.equals(player.getUuid())) { broadcast(world,new TableNotePayload(entry.getKey(),entry.getKey(),0,-1,false));iterator.remove(); } }
         if(performances.size()>=8) return;
         performances.put(key,new Performance(table,world.getTime(),player.getUuid()));
+        if(player instanceof net.minecraft.server.network.ServerPlayerEntity server)dev.guogaology.advancement.GuideProgress.grant(server,"play_laver");
     }
     private static boolean loaded(ServerWorld world,BlockPos pos) { return world.isChunkLoaded(pos.getX()>>4,pos.getZ()>>4); }
     private static void broadcast(ServerWorld world,TableNotePayload payload) {

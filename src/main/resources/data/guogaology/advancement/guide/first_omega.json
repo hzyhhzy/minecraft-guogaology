@@ -1,0 +1,39 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:true_omega_material"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.first_omega.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.first_omega.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:true_omega_material",
+              "guogaology:true_omega_ore",
+              "guogaology:nether_true_omega_ore"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/first_ore"
+}

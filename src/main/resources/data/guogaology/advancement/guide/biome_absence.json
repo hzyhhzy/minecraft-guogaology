@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:ordinal_crystal"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.biome_absence.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.biome_absence.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_inner"
+}

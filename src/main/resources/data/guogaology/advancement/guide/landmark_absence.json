@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:lho_trace"
+      "id": "guogaology:landmark_emblem_absence"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmark_absence.title"
@@ -9,30 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.guide.landmark_absence.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "absence_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/absence_sanctum"
-      }
-    },
-    "absence_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/absence_ruin"
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "absence_sanctum",
-      "absence_ruin"
+      "done"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/biome_absence"
 }

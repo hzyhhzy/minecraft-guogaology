@@ -6,5 +6,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MouseHandler.class)
 public abstract class UnlockedMouseMixin {
     @Inject(method="grabMouse",at=@At("HEAD"),cancellable=true)
-    private void freeMouse(CallbackInfo ci){ci.cancel();}
+    private void freeMouse(CallbackInfo ci){if(!Boolean.getBoolean("guogaology.qa.review"))ci.cancel();}
 }

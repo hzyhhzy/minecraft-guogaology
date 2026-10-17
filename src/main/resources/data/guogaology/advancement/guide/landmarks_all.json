@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:ordinal_crystal_lv4"
+      "id": "guogaology:landmark_emblem_power"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmarks_all.title"
@@ -15,136 +15,56 @@
     "hidden": false
   },
   "criteria": {
-    "matrix_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/matrix_sanctum"
-      }
+    "matrix": {
+      "trigger": "minecraft:impossible"
     },
-    "matrix_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/matrix_ruin"
-      }
+    "power": {
+      "trigger": "minecraft:impossible"
     },
-    "power_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/power_sanctum"
-      }
+    "hydra": {
+      "trigger": "minecraft:impossible"
     },
-    "power_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/power_ruin"
-      }
+    "absence": {
+      "trigger": "minecraft:impossible"
     },
-    "hydra_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/hydra_sanctum"
-      }
+    "weaver": {
+      "trigger": "minecraft:impossible"
     },
-    "hydra_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/hydra_ruin"
-      }
+    "astra": {
+      "trigger": "minecraft:impossible"
     },
-    "absence_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/absence_sanctum"
-      }
+    "frontier": {
+      "trigger": "minecraft:impossible"
     },
-    "absence_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/absence_ruin"
-      }
-    },
-    "weaver_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/weaver_sanctum"
-      }
-    },
-    "weaver_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/weaver_ruin"
-      }
-    },
-    "astra_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/astra_sanctum"
-      }
-    },
-    "astra_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/astra_ruin"
-      }
-    },
-    "frontier_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/frontier_sanctum"
-      }
-    },
-    "frontier_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/frontier_ruin"
-      }
-    },
-    "guogao_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/guogao_sanctum"
-      }
-    },
-    "guogao_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/guogao_ruin"
-      }
+    "guogao": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "matrix_sanctum",
-      "matrix_ruin"
+      "matrix"
     ],
     [
-      "power_sanctum",
-      "power_ruin"
+      "power"
     ],
     [
-      "hydra_sanctum",
-      "hydra_ruin"
+      "hydra"
     ],
     [
-      "absence_sanctum",
-      "absence_ruin"
+      "absence"
     ],
     [
-      "weaver_sanctum",
-      "weaver_ruin"
+      "weaver"
     ],
     [
-      "astra_sanctum",
-      "astra_ruin"
+      "astra"
     ],
     [
-      "frontier_sanctum",
-      "frontier_ruin"
+      "frontier"
     ],
     [
-      "guogao_sanctum",
-      "guogao_ruin"
+      "guogao"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/enter_inner"
 }

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:hydra_bud"
+      "id": "guogaology:landmark_emblem_hydra"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmark_hydra.title"
@@ -9,30 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.guide.landmark_hydra.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "hydra_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/hydra_sanctum"
-      }
-    },
-    "hydra_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/hydra_ruin"
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "hydra_sanctum",
-      "hydra_ruin"
+      "done"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/biome_hydra"
 }

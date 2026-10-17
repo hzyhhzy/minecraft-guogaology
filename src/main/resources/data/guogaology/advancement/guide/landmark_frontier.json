@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:boundary_core"
+      "id": "guogaology:landmark_emblem_frontier"
     },
     "title": {
       "translate": "advancement.guogaology.guide.landmark_frontier.title"
@@ -9,30 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.guide.landmark_frontier.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "frontier_sanctum": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/frontier_sanctum"
-      }
-    },
-    "frontier_ruin": {
-      "trigger": "minecraft:player_generates_container_loot",
-      "conditions": {
-        "loot_table": "guogaology:chests/frontier_ruin"
-      }
+    "done": {
+      "trigger": "minecraft:impossible"
     }
   },
   "requirements": [
     [
-      "frontier_sanctum",
-      "frontier_ruin"
+      "done"
     ]
   ],
-  "parent": "guogaology:guide/landmark_first"
+  "parent": "guogaology:guide/biome_frontier"
 }

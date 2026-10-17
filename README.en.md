@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.9 · Minecraft Java / Fabric · Local version, not yet published**
+**v0.5.10 · Minecraft Java / Fabric · Local version, not yet published**
 
-The guide now has a Guogaology directory root and an actual Into the Outer Realm milestone with cake-gate instructions, plus a cake-and-apple icon. Number tools and computing move to the Inner branch. See [the work record](docs/WORK-059.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+The guide now has eight thematic material/core and megastructure branches, capability-based core copy and actual building-entry milestones. Additional milestones cover the first Ω ore, local interactions and a fully socketed 38-slot Ω loadout. See [the work record](docs/WORK-0510.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -102,13 +102,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.9/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.10/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.5.9's scope and actual validation results are tracked in [the current work record](docs/WORK-059.md); it is not yet published. The published [v0.5.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3) and its [historical validation record](docs/WORK-0503.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.5.10's scope and actual validation results are tracked in [the current work record](docs/WORK-0510.md); it is not yet published. The published [v0.5.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3) and its [historical validation record](docs/WORK-0503.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -118,4 +118,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.5.9 implementation and validation](docs/WORK-059.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)
+[0.5.10 implementation and validation](docs/WORK-0510.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)
