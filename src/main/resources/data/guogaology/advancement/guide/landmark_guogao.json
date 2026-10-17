@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:guogao_heart"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.landmark_guogao.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.landmark_guogao.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "guogao_sanctum": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "guogaology:chests/guogao_sanctum"
+      }
+    },
+    "guogao_ruin": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "guogaology:chests/guogao_ruin"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "guogao_sanctum",
+      "guogao_ruin"
+    ]
+  ],
+  "parent": "guogaology:guide/landmark_first"
+}

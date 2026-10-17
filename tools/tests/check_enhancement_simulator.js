@@ -17,7 +17,7 @@ for (const item of payload.cases) {
   for (const [key, expected] of Object.entries(snapshot.effects)) near(actual[key], expected, item.id + '.' + key);
 }
 // Independent channel and ranged checks accompany the Java golden comparison.
-assert.equal(payload.rules.revision,48,'Latest production rules required');
+assert.equal(payload.rules.revision,49,'Latest production rules required');
 assert.deepStrictEqual(payload.rules.regionalGrades,[1,3,3,3,3],'numeric Lv1, four equipment tiers Lv3');
 assert.deepStrictEqual(payload.rules.bookRegionalGrades,[0,3,3,3,3],'four manuscripts allow regional Lv3');
 assert.deepStrictEqual(payload.rules.bookOrdinalGrades,[0,4,4,4,4],'four manuscripts allow Ordinal raw stage4 / displayed Lv3');
@@ -80,7 +80,7 @@ near(mixedDamage.armorAttribute,18.7,'mixed armor attribute preserves decimals')
 near(mixedDamage.healthDamage,10*(1-(18-10/(2+9.6/4))/25),'native mixed18.7/9.6 golden damage');
 const combinedArmor=engine.damage(10,'player_attack',{armor:18.7+.4,toughness:9.6});near(combinedArmor.effectiveArmor,19,'manual armor sums before flooring');
 near(combinedArmor.healthDamage,10*(1-(19-10/(2+9.6/4))/25),'combined fractional armor golden damage');
-for(let tier=1;tier<=4;tier++){const set=engine.defaults();['helmet','chestplate','leggings','boots'].forEach((key,i)=>set[key]={tier,kind:i+2,cores:[]});const e=engine.calculate(set);near(engine.damage(10,'player_attack',{armor:e.nativeArmor,toughness:e.nativeToughness}).effectiveArmor,[16,18,20,22][tier-1],'whole native set is not rounded down by floating sum');}
+for(let tier=1;tier<=4;tier++){const set=engine.defaults();['helmet','chestplate','leggings','boots'].forEach((key,i)=>set[key]={tier,kind:i+2,cores:[]});const e=engine.calculate(set);near(engine.damage(10,'player_attack',{armor:e.nativeArmor,toughness:e.nativeToughness}).effectiveArmor,[15,20,24,30][tier-1],'whole native set is not rounded down by floating sum');}
 near(engine.damage(4, 'out_of_world', { armor: 20, toughness: 12, resistance: 5, epf: 20, factor: 4 }).healthDamage, 1, 'void ignores vanilla defenses, keeps core defense');
 near(engine.damage(10, 'sonic_boom', { armor: 20, resistance: 1, epf: 20, factor: 4 }).healthDamage, 2, 'sonic ignores armor and EPF');
 near(engine.damage(10, 'fall', { fallFactor: .25, factor: 2 }).healthDamage, 1.25, 'Absence fall factor applies once');
@@ -189,7 +189,7 @@ elements.get('hasteLevel').value='2';elements.get('hasteLevel').oninput();
 near(context.GuogaologySimulator.engine.calculate(context.GuogaologySimulator.getState().snapshot).miningFinal,47.6,'Haste input adds rate');
 elements.get('fatigueLevel').value='1';elements.get('fatigueLevel').oninput();elements.get('otherMiningPenalty').value='.5';elements.get('otherMiningPenalty').oninput();
 near(context.GuogaologySimulator.engine.calculate(context.GuogaologySimulator.getState().snapshot).miningFinal,7.14,'fatigue and penalty inputs apply last');
-//0.5.5 GUI legality is separate from the unchanged pure arithmetic engine.
+//0.5.7 GUI legality is separate from the unchanged pure arithmetic engine.
 elements.get('reset').onclick();
 const legacyConflict=context.GuogaologySimulator.getState();legacyConflict.selected='mainhand';legacyConflict.lang='zh';
 legacyConflict.snapshot.mainhand={tier:0,kind:0,digit:9,cores:[{type:2,level:1}],nativeEfficiency:5,nativeYield:3};

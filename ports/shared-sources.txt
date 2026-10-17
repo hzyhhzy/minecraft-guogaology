@@ -49,3 +49,4 @@ dev/guogaology/mining/OreVeins.java
 dev/guogaology/mining/OreExposure.java
 dev/guogaology/world/UnderworldScenery.java
 dev/guogaology/world/CliffDescentChains.java
+dev/guogaology/block/CoreMiningRules.java

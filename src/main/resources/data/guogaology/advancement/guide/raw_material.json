@@ -1,0 +1,51 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:matrix_sheet"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.raw_material.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.raw_material.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:matrix_sheet",
+              "guogaology:arrow_knot",
+              "guogaology:hydra_sprig",
+              "guogaology:laver_gel",
+              "guogaology:cloud_pearl",
+              "guogaology:scg_node",
+              "guogaology:dread_resin",
+              "guogaology:set_membrane",
+              "guogaology:lho_letter_l",
+              "guogaology:lho_letter_h",
+              "guogaology:lho_letter_o",
+              "guogaology:fffz_trace",
+              "guogaology:fos_trace",
+              "guogaology:lho_hydra_psi",
+              "guogaology:lho_hydra_z"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_inner"
+}

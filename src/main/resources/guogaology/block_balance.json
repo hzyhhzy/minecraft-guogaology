@@ -99,41 +99,44 @@
   "astra_critical_core": {
     "hardness": 25,
     "resistance": 7,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 10,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "astra_critical_core_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 11,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "astra_critical_core_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 12,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "astra_light": {
     "hardness": 0.6,
@@ -259,40 +262,43 @@
   "boundary_core": {
     "hardness": 25,
     "resistance": 8,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 9,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
-    "renewable": "自然采集"
+    "renewable": "自然采集",
+    "fixed_break_ticks": 100
   },
   "boundary_core_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 10,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "boundary_core_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 11,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "conway_link": {
     "hardness": 2.0,
@@ -515,41 +521,44 @@
   "guogao_heart": {
     "hardness": 25,
     "resistance": 7,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 12,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "guogao_heart_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 13,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "guogao_heart_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 14,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "guogao_heart_resin": {
     "hardness": 3.5,
@@ -627,41 +636,44 @@
   "hydra_bud": {
     "hardness": 25,
     "resistance": 7,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 7,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "hydra_bud_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 8,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "hydra_bud_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 9,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "hydra_jade": {
     "hardness": 3.5,
@@ -739,41 +751,44 @@
   "laver_core": {
     "hardness": 25,
     "resistance": 5,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 8,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "laver_core_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 9,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "laver_core_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 10,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "laver_court_blank": {
     "hardness": 3.5,
@@ -912,40 +927,43 @@
   "lho_trace": {
     "hardness": 25,
     "resistance": 0.1,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 5,
     "drop": "anchored",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "无",
-    "renewable": "采集／合成"
+    "renewable": "采集／合成",
+    "fixed_break_ticks": 100
   },
   "lho_trace_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 6,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "lho_trace_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 7,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "lime_guogao": {
     "hardness": 0.5,
@@ -1129,7 +1147,7 @@
     "renewable": "采集／合成"
   },
   "ordinal_crystal": {
-    "hardness": 2,
+    "hardness": 1.5,
     "resistance": 5,
     "tool": "pickaxe",
     "tier": 0,
@@ -1143,41 +1161,44 @@
   "ordinal_crystal_lv2": {
     "hardness": 25,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 15,
     "drop": "self",
-    "use": "Lv1序数晶核；徒手／任意工具完整采集，镐加速；玩家放置后任意工具完整回收",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "ordinal_crystal_lv3": {
     "hardness": 50,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 15,
     "drop": "self",
-    "use": "Lv2序数晶核；徒手／任意工具完整采集，镐加速；玩家放置后任意工具完整回收",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "ordinal_crystal_lv4": {
     "hardness": 100,
     "resistance": 24,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 15,
     "drop": "self",
-    "use": "Lv3序数晶核；徒手／任意工具完整采集，镐加速；玩家放置后任意工具完整回收",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "ordinal_stone": {
     "hardness": 1.5,
@@ -1410,41 +1431,44 @@
   "power_tower_core": {
     "hardness": 25,
     "resistance": 7,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 9,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "power_tower_core_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 10,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "power_tower_core_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 11,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "projection_glass": {
     "hardness": 0.7,
@@ -1643,41 +1667,44 @@
   "sequence_core": {
     "hardness": 25,
     "resistance": 7,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 7,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定5秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "不可合成；少量天然生成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 100
   },
   "sequence_core_lv2": {
     "hardness": 50,
     "resistance": 12,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 8,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定10秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 200
   },
   "sequence_core_lv3": {
     "hardness": 100,
     "resistance": 18,
-    "tool": "pickaxe",
+    "tool": "hand",
     "tier": 0,
     "light": 9,
     "drop": "self",
-    "use": "群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速",
+    "use": "任意工具／徒手固定20秒完整采集；工具、附魔、状态和手稿均不改变进度",
     "friction": 0.6,
     "collision": "完整方块",
     "renewable": "低阶材料合成",
-    "flammable": false
+    "flammable": false,
+    "fixed_break_ticks": 400
   },
   "server_rack": {
     "hardness": 3,

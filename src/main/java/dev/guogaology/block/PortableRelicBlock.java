@@ -13,6 +13,10 @@ import net.minecraft.world.World;
 public class PortableRelicBlock extends Block {
     public static final BooleanProperty PLAYER_PLACED=BooleanProperty.of("player_placed");
     public PortableRelicBlock(Settings settings){super(settings);setDefaultState(getDefaultState().with(PLAYER_PLACED,false));}
+    @Override protected float calcBlockBreakingDelta(BlockState state,PlayerEntity player,net.minecraft.world.BlockView world,BlockPos pos){
+        float progress=CoreMiningRules.progress(net.minecraft.registry.Registries.BLOCK.getId(this).getPath());
+        return progress>0?progress:super.calcBlockBreakingDelta(state,player,world,pos);
+    }
     @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){builder.add(PLAYER_PLACED);}
     public static boolean placed(BlockState state){return state.contains(PLAYER_PLACED)&&state.get(PLAYER_PLACED);}
     @Override public BlockState getPlacementState(ItemPlacementContext context){return getDefaultState().with(PLAYER_PLACED,context.getPlayer()!=null);}

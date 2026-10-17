@@ -9,18 +9,20 @@
     "description": {
       "translate": "advancement.guogaology.arrival.description"
     },
-    "background": "guogaology:textures/block/ordinal_stone.png",
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": false,
-    "hidden": false
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
   },
   "criteria": {
-    "arrival": {
-      "trigger": "minecraft:changed_dimension",
-      "conditions": {
-        "to": "guogaology:guogaology"
-      }
+    "begin": {
+      "trigger": "minecraft:tick"
     }
-  }
+  },
+  "requirements": [
+    [
+      "begin"
+    ]
+  ]
 }

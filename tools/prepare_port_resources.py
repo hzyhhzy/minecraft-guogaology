@@ -259,6 +259,15 @@ def prepare(target, release):
         if "key" in data:
             data["key"] = {k: ingredient(v) for k, v in data["key"].items()}
         write(path, data)
+    for path in (out / 'data/guogaology/advancement').rglob('*.json'):
+        data=read(path)
+        display=data.get('display',{})
+        background=display.get('background')
+        if isinstance(background,str):
+            namespace,name=background.split(':',1)
+            if name.startswith('textures/') and name.endswith('.png'):
+                display['background']=namespace+':'+name[len('textures/'):-len('.png')]
+        write(path,data)
     for path in (out / "data/guogaology/worldgen/biome").glob("*.json"):
         data = read(path)
         convert_biome(data)

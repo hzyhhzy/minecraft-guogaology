@@ -144,6 +144,7 @@ public class EnhancementMenu extends ScreenHandler {
     }
     @Override public void onClosed(PlayerEntity player){
         if(closed)return;synchronizeCores();closed=true;
+        dev.guogaology.advancement.GuideProgress.edited(player,contents.getStack(GEAR));
         for(int i=FIRST_CORE;i<INVENTORY;i++)contents.setStack(i,ItemStack.EMPTY);
         if(manuscript())contents.setStack(GEAR,ItemStack.EMPTY);
         super.onClosed(player);if(world!=null&&!manuscript())dropInventory(player,contents);

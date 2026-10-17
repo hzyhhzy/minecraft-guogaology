@@ -15,6 +15,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class PortableRelicBlock extends Block {
     public static final BooleanProperty PLAYER_PLACED=BooleanProperty.create("player_placed");
     public PortableRelicBlock(Properties settings){super(settings);registerDefaultState(defaultBlockState().setValue(PLAYER_PLACED,false));}
+    @Override protected float getDestroyProgress(BlockState state,net.minecraft.world.entity.player.Player player,net.minecraft.world.level.BlockGetter world,BlockPos pos){
+        float progress=CoreMiningRules.progress(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(this).getPath());
+        return progress>0?progress:super.getDestroyProgress(state,player,world,pos);
+    }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(PLAYER_PLACED);}
     public static boolean placed(BlockState state){return state.hasProperty(PLAYER_PLACED)&&state.getValue(PLAYER_PLACED);}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return defaultBlockState().setValue(PLAYER_PLACED,context.getPlayer()!=null);}

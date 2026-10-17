@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:sequence_core"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.landmark_matrix.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.landmark_matrix.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "matrix_sanctum": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "guogaology:chests/matrix_sanctum"
+      }
+    },
+    "matrix_ruin": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "guogaology:chests/matrix_ruin"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "matrix_sanctum",
+      "matrix_ruin"
+    ]
+  ],
+  "parent": "guogaology:guide/landmark_first"
+}

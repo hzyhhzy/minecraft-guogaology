@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:server_rack"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.compute_setup.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.compute_setup.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:server_rack",
+              "guogaology:office_monitor"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_outer"
+}

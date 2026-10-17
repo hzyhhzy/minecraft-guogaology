@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:outer_return_frame"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.portal_return.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.portal_return.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "parent": "guogaology:guide/return_ready"
+}

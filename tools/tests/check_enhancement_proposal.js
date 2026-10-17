@@ -1,4 +1,4 @@
-/* Independent production revision48 channel requirements; no Minecraft/game execution. */
+/* Independent production revision49 channel requirements; no Minecraft/game execution. */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
 const root=path.resolve(__dirname,'../..');
@@ -18,11 +18,11 @@ function calc(s){const copy=JSON.parse(JSON.stringify(s)),e=E.calculate(s);eq(s,
 function equipArmor(s,cores=[],tier=4){armorKeys.forEach((key,i)=>s[key]=gear(i+2,JSON.parse(JSON.stringify(cores)),tier));return s;}
 function withoutSlot(e){const r={...e};delete r.activeBookSlot;delete r.totalMinedBlocks;return r;}
 
-eq(rules.proposalRevision,48,'Current production revision');
+eq(rules.proposalRevision,49,'Current production revision');
 for(let kind=0;kind<6;kind++)eq(rules.compatibility[kind][8],false,'Ordinal incompatible with gear kind '+kind);
 eq(rules.compatibility[6][8],true,'Ordinal remains manuscript-compatible');
-eq(rules.nativeArmorByTier,[16,18,20,22],'Native armor totals');
-eq(rules.nativeToughnessByTier,[4,8,12,16],'Native toughness totals');
+eq(rules.nativeArmorByTier,[15,20,24,30],'Native armor totals');
+eq(rules.nativeToughnessByTier,[0,8,12,16],'Native toughness totals');
 eq(rules.normalOrdinalAttackGrades,[.5,1,1.5,2.5],'Confirmed normal flat Ordinal HP');
 eq(rules.manuscriptMiningFlatGrades,[4,8,16],'Sequence flat mining values');
 eq(rules.manuscriptMiningRateGrades,[.25,.5,1],'Sequence rate mining values');
@@ -90,16 +90,16 @@ for(const deep of[false,true]){
 // Actual native armor belongs in the vanilla stage, not custom extra protection.
 for(let tier=1;tier<=4;tier++){
  const s=equipArmor(E.defaults(),[],tier),e=calc(s);
- near(e.nativeArmor,[16,18,20,22][tier-1],'Native armor tier '+tier);
- near(e.nativeToughness,[4,8,12,16][tier-1],'Native toughness tier '+tier);
+ near(e.nativeArmor,[15,20,24,30][tier-1],'Native armor tier '+tier);
+ near(e.nativeToughness,[0,8,12,16][tier-1],'Native toughness tier '+tier);
  near(e.protectionFactor,1,'Bare armor has no old custom F0');
  const d=E.damage(10,'player_attack',{armor:e.nativeArmor,toughness:e.nativeToughness,factor:e.protectionFactor});
  const a=e.nativeArmor,t=e.nativeToughness;
  near(d.healthDamage,10*(1-Math.min(20,Math.max(a/5,a-10/(2+t/4)))/25),'Native armor arithmetic remains real');
 }
 const mixed=E.defaults();armorKeys.forEach((k,i)=>mixed[k]=gear(i+2,[],i+1));
-near(calc(mixed).nativeArmor,16*.2+18*.4+20*.25+22*.15,'Mixed native armor weighted values');
-near(calc(mixed).nativeToughness,4*.2+8*.4+12*.25+16*.15,'Mixed native toughness weighted values');
+near(calc(mixed).nativeArmor,2+8+7+5,'Mixed native armor weighted values');
+near(calc(mixed).nativeToughness,0+2+3+4,'Mixed native toughness weighted values');
 
 // Unsupported equipment Ordinal in old shared links is inert, not a hidden loophole.
 for(const deep of[false,true])for(let kind=0;kind<6;kind++){
@@ -253,7 +253,7 @@ const htmlPath=process.argv[3];
 if(htmlPath){
  const html=fs.readFileSync(htmlPath,'utf8');ok(html.startsWith('<!doctype html>'),'Standalone HTML');ok(!/<script\b[^>]*\bsrc=/i.test(html),'No external scripts');
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
- const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision48 mirror'));
+ const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision49 mirror'));
  ok(script,'Production engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
  vm.createContext(context);new vm.Script(script[2]).runInContext(context);context.EnhancementEngine.setRules(rules);
  for(const c of recorded)eq(JSON.parse(JSON.stringify(context.EnhancementEngine.calculate(c.snapshot))),c.effects,'Embedded engine parity');

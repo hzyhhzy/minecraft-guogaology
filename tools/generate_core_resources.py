@@ -267,6 +267,9 @@ def generated_files():
         for grade in (1,2,3):
             name=core+('' if grade==1 else f'_lv{grade}')
             balance[name]['use']='群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速'
+    # Final harvest policy supersedes historical hardness-only descriptions.
+    from generate_core_harvest import profile_updates
+    balance=profile_updates(balance)
     put(RES/'guogaology/block_balance.json',balance)
     new_ids={'guogaology:'+n for n in (*MATERIALS,*ORES,'turing_endcap')}
     for path in (RES/'data/minecraft/tags/block').rglob('*.json'):

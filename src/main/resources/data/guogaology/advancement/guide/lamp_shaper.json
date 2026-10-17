@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:guogao_lamp_shaper"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.lamp_shaper.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.lamp_shaper.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:guogao_lamp_shaper"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_outer"
+}

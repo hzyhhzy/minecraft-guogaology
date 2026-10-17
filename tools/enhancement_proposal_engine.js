@@ -1,4 +1,4 @@
-/* Production revision48 mirror of EquipmentRules, verified against Java golden cases. */
+/* Production revision49 mirror of EquipmentRules, verified against Java golden cases. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -77,8 +77,8 @@
     let armorValue=0,toughness=0;
     for(const g of armor) {
       if(g.tier>0&&g.kind>=2&&g.kind<6){
-        armorValue+=armorShare(g.kind)*((rules.nativeArmorByTier||[16,18,20,22])[g.tier-1]||0);
-        toughness+=armorShare(g.kind)*((rules.nativeToughnessByTier||[4,8,12,16])[g.tier-1]||0);
+        armorValue+=(rules.nativeArmorByPiece||[[2,6,5,2],[3,8,6,3],[4,9,7,4],[5,11,9,5]])[g.tier-1]?.[g.kind-2]||0;
+        toughness+=(rules.nativeToughnessByPiece||[[0,0,0,0],[2,2,2,2],[3,3,3,3],[4,4,4,4]])[g.tier-1]?.[g.kind-2]||0;
       }else if(g.tier<0){
         armorValue+=Math.max(0,Number(g.nativeArmor)||0);
         toughness+=Math.max(0,Number(g.nativeToughness)||0);

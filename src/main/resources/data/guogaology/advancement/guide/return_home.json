@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:compass"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.return_home.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.return_home.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "travelled": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "minecraft:overworld",
+        "from": "guogaology:outer"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "travelled"
+    ]
+  ],
+  "parent": "guogaology:guide/portal_return"
+}

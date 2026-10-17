@@ -83,6 +83,23 @@ def verify_crystal_ore_policy(archive, target):
         assert prefix+f'placed_feature/ore_ordinal_crystal_{batch}.json' not in archive.namelist(),f'Retired height band retained: {target}/{batch}'
 
 
+def verify_guide_policy(archive, target):
+    """Catch advancement overlays and version-sensitive background paths before shipping."""
+    from generate_guide_advancements import build
+    expected,_,_=build()
+    visible={}
+    for name in archive.namelist():
+        assert not (name.startswith('data/minecraft/advancement/') and name.endswith('.json')),f'Vanilla advancement replaced: {target}/{name}'
+        if name.startswith('data/guogaology/advancement/') and name.endswith('.json'):
+            value=json.loads(archive.read(name))
+            if 'display' in value:visible[name.removeprefix('data/guogaology/advancement/').removesuffix('.json')]=value
+    assert visible.keys()==expected.keys(),f'Guide nodes missing or unexpectedly replaced: {target}'
+    for name,value in expected.items():
+        value=json.loads(json.dumps(value))
+        if name=='arrival' and target!='1.21.1':value['display']['background']='minecraft:gui/advancements/backgrounds/stone'
+        assert visible[name]==value,f'Incorrect guide payload: {target}/{name}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -119,6 +136,7 @@ def package(targets, output_dir=None):
             verify_namespace(archive)
             verify_ore_policy(archive, target)
             verify_crystal_ore_policy(archive, target)
+            verify_guide_policy(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
             assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))

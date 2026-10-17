@@ -1,6 +1,6 @@
 {
-  "revision": 48,
-  "proposalRevision": 48,
+  "revision": 49,
+  "proposalRevision": 49,
   "universal": [
     0.05,
     0.1,
@@ -74,16 +74,68 @@
   ],
   "baseArmorFactor": null,
   "nativeArmorByTier": [
-    16,
-    18,
+    15,
     20,
-    22
+    24,
+    30
   ],
   "nativeToughnessByTier": [
-    4,
+    0,
     8,
     12,
     16
+  ],
+  "nativeArmorByPiece": [
+    [
+      2,
+      6,
+      5,
+      2
+    ],
+    [
+      3,
+      8,
+      6,
+      3
+    ],
+    [
+      4,
+      9,
+      7,
+      4
+    ],
+    [
+      5,
+      11,
+      9,
+      5
+    ]
+  ],
+  "nativeToughnessByPiece": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      2,
+      2,
+      2,
+      2
+    ],
+    [
+      3,
+      3,
+      3,
+      3
+    ],
+    [
+      4,
+      4,
+      4,
+      4
+    ]
   ],
   "gearSlots": [
     1,

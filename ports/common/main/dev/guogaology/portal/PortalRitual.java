@@ -79,6 +79,7 @@ public final class PortalRitual {
             BlockPos center=offering.blockPosition().offset(dx,dy,dz);
             if(offering.getY()<center.getY()-.1 || offering.getY()>center.getY()+4 || !isValidRing(world,center,kind)) continue;
             fillPortal(world,center,kind);
+            dev.guogaology.advancement.GuideProgress.portalActivated(world,offering,kind);
             offering.getItem().shrink(1);
             if(offering.getItem().isEmpty()) offering.discard();
             world.sendParticles(kind==PortalKind.OUTER?ParticleTypes.END_ROD:ParticleTypes.SOUL_FIRE_FLAME,center.getX()+.5,center.getY()+.3,center.getZ()+.5,65,1.3,.4,1.3,.03);

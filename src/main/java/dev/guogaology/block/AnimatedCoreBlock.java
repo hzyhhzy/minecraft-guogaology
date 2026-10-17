@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 public final class AnimatedCoreBlock extends BlockWithEntity {
     public static final MapCodec<AnimatedCoreBlock> CODEC=createCodec(AnimatedCoreBlock::new);
     public AnimatedCoreBlock(Settings settings){super(settings);setDefaultState(getDefaultState().with(PortableRelicBlock.PLAYER_PLACED,false));}
+    @Override protected float calcBlockBreakingDelta(BlockState state,net.minecraft.entity.player.PlayerEntity player,net.minecraft.world.BlockView world,BlockPos pos){
+        float progress=CoreMiningRules.progress(net.minecraft.registry.Registries.BLOCK.getId(this).getPath());
+        return progress>0?progress:super.calcBlockBreakingDelta(state,player,world,pos);
+    }
     @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){builder.add(PortableRelicBlock.PLAYER_PLACED);}
     @Override public BlockState getPlacementState(ItemPlacementContext context){return getDefaultState().with(PortableRelicBlock.PLAYER_PLACED,context.getPlayer()!=null);}
     @Override public void onPlaced(World world,BlockPos pos,BlockState state,LivingEntity placer,ItemStack stack){

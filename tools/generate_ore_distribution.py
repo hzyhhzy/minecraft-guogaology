@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-COUNTS = {'omega': 24, 'epsilon': 12, 'gamma': 6, 'true_omega': 2}
+COUNTS = {'omega': 24, 'epsilon': 6, 'gamma': 6, 'true_omega': 4}
 TOPS = {'gamma': 56, 'true_omega': 16}
 
 

@@ -21,7 +21,12 @@ class CoreHarvestChecks(unittest.TestCase):
             for root in harvest.REGIONAL:
                 self.assertEqual(harvest.HARDNESS[root + ('' if grade == 1 else f'_lv{grade}')], hardness)
             self.assertEqual(harvest.HARDNESS[f'ordinal_crystal_lv{grade + 1}'], hardness)
-        self.assertEqual(harvest.HARDNESS['ordinal_crystal'], 2)
+        self.assertEqual(harvest.HARDNESS['ordinal_crystal'], 1.5)
+        self.assertEqual(len(harvest.BREAK_TICKS),27)
+        for grade, ticks in enumerate((100,200,400),1):
+            for root in harvest.REGIONAL:
+                self.assertEqual(harvest.BREAK_TICKS[root+('' if grade==1 else f'_lv{grade}')],ticks)
+            self.assertEqual(harvest.BREAK_TICKS[f'ordinal_crystal_lv{grade+1}'],ticks)
         original = harvest.read(harvest.RES / 'guogaology/block_balance.json')
         original['unrelated'] = {'hardness': 734, 'tier': 2, 'custom': ['preserve']}
         snapshot = copy.deepcopy(original)
@@ -32,6 +37,9 @@ class CoreHarvestChecks(unittest.TestCase):
         for name in harvest.HARDNESS:
             for key in ('resistance', 'light', 'drop', 'friction', 'collision', 'renewable'):
                 self.assertEqual(generated[name][key], original[name][key], (name, key))
+            if name in harvest.BREAK_TICKS:
+                self.assertEqual(generated[name]['fixed_break_ticks'],harvest.BREAK_TICKS[name])
+                self.assertEqual(generated[name]['tool'],'hand')
 
     def test_ordinal_crystal_complete_drop_contract(self):
         loot = harvest.read(harvest.RES / 'data/guogaology/loot_table/blocks/ordinal_crystal.json')

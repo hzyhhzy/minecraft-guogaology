@@ -20,7 +20,10 @@ HARDNESS = {root + ('' if grade == 1 else f'_lv{grade}'): 25 * 2 ** (grade - 1)
             for root in REGIONAL for grade in range(1, 4)}
 HARDNESS.update({f'ordinal_crystal_lv{stage}': 25 * 2 ** (stage - 2) for stage in range(2, 5)})
 HARDNESS.update({name: 1.5 if name.startswith('tree_node_') else 25 for name in AUXILIARIES})
-HARDNESS['ordinal_crystal'] = 2
+HARDNESS['ordinal_crystal'] = 1.5
+BREAK_TICKS = {root + ('' if grade == 1 else f'_lv{grade}'): 100 * 2 ** (grade - 1)
+               for root in REGIONAL for grade in range(1, 4)}
+BREAK_TICKS.update({f'ordinal_crystal_lv{stage}': 100 * 2 ** (stage - 2) for stage in range(2, 5)})
 IDS = frozenset('guogaology:' + name for name in HARDNESS)
 
 
@@ -33,14 +36,15 @@ def profile_updates(profiles):
     for name, hardness in HARDNESS.items():
         p = result[name]
         p.update(hardness=hardness, tool='pickaxe', tier=0)
-        if name in ANCHORED:
+        if name in BREAK_TICKS:
+            p.update(tool='hand', fixed_break_ticks=BREAK_TICKS[name])
+            p['use'] = f'任意工具／徒手固定{BREAK_TICKS[name]//20}秒完整采集；工具、附魔、状态和手稿均不改变进度'
+        elif name in ANCHORED:
             p['use'] = '序数晶体锚定或已稳定后，徒手／任意工具完整采集；镐加速；放置后永久稳定'
         elif name == 'ordinal_crystal':
             p['use'] = '徒手／任意工具完整采集，镐加速；4晶屑可合成或反向拆解；稳定周围两圈LHO材料'
         elif name.startswith('tree_node_'):
             p['use'] = 'TREE三色普通节点原料；任意工具完整采集，镐加速'
-        elif any(name==root or name.startswith(root+'_lv') for root in REGIONAL):
-            p['use'] = '群系材料合成；巨构仅有少量一阶陈列，任意工具完整采集，镐加速'
         else:
             p['use'] = re.sub(r'自然方块铁镐采集|铁镐采集完整方块|铁镐采集',
                               '徒手／任意工具完整采集，镐加速', p['use'])
@@ -50,7 +54,9 @@ def profile_updates(profiles):
 def tag_updates(data, name):
     result = copy.deepcopy(data)
     if name == 'mineable/pickaxe':
-        result['values'] += sorted(IDS - set(result['values']))
+        fixed = {'guogaology:' + name for name in BREAK_TICKS}
+        result['values'] = [v for v in result['values'] if (v if isinstance(v,str) else v.get('id')) not in fixed]
+        result['values'] += sorted(IDS - fixed - set(v if isinstance(v,str) else v.get('id') for v in result['values']))
     else:
         result['values'] = [v for v in result['values'] if (v if isinstance(v, str) else v.get('id')) not in IDS]
     return result
@@ -68,9 +74,11 @@ def reference_updates(source, profiles, english):
         if name not in HARDNESS:
             continue
         columns[2] = str(profiles[name]['hardness'])
-        columns[4] = 'Pickaxe' if english else '镐 / 无'
+        columns[4] = ('Any / fixed time' if english else '任意 / 固定时间') if name in BREAK_TICKS else ('Pickaxe' if english else '镐 / 无')
         if english:
             columns[5] = 'None'
+            if name in BREAK_TICKS:
+                columns[8] = f'Fixed {BREAK_TICKS[name]//20}s with any tool or hands; unaffected by tool speed, enchantments, effects or manuscripts'
         else:
             columns[8] = profiles[name]['use']
         lines[i] = '| ' + ' | '.join(columns) + ' |'

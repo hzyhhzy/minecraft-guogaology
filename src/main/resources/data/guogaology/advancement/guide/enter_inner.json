@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:ordinal_stone"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.enter_inner.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.enter_inner.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "travelled": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "guogaology:guogaology"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "travelled"
+    ]
+  ],
+  "parent": "guogaology:guide/portal_inner"
+}

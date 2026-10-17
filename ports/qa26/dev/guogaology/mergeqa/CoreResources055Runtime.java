@@ -16,6 +16,7 @@ import net.minecraft.world.level.GameType;
 /** One fresh-world native run for resource, lamp and enchantment ownership policies. */
 public final class CoreResources055Runtime {
     private static final boolean ORE056=Boolean.getBoolean("guogaology.qa.ore056");
+    private static final boolean BALANCE057=Boolean.getBoolean("guogaology.qa.balance057");
     private boolean opening,queued,done;
     private volatile boolean ready,captured;
     private volatile Throwable failure;
@@ -40,7 +41,8 @@ public final class CoreResources055Runtime {
                 client.getSingleplayerServer().execute(()->{try{
                     var player=client.getSingleplayerServer().getPlayerList().getPlayer(uuid);
                     if(frame==0){
-                        if(ORE056)CrystalOre056Checks.run(player);
+                        if(BALANCE057)Balance057Checks.run(player);
+                        else if(ORE056)CrystalOre056Checks.run(player);
                         else {CoreResources055Checks.run(player);LampShaping055Checks.run(player);Core055EnchantChecks.run(player);}
                     }
                     if(ORE056&&frame==1)CrystalOre056Checks.display(player);
@@ -54,11 +56,11 @@ public final class CoreResources055Runtime {
                 if(frame==2&&!(client.player.containerMenu instanceof LampShapingMenu))throw new AssertionError("Shaper must open the actual registered menu");
                 if(frame==2)checkLampLayout(client);
                 var folder=client.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=frame;
-                Screenshot.takeScreenshot(client.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve((ORE056?"ore056-":"core-resources055-")+picture+".png"));captured=true;}catch(Throwable error){failure=error;}});
+                Screenshot.takeScreenshot(client.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve((BALANCE057?"balance057-":ORE056?"ore056-":"core-resources055-")+picture+".png"));captured=true;}catch(Throwable error){failure=error;}});
             }
             if(!captured)return;
-            if(++frame==(ORE056?2:3)){
-                String report=ORE056?"ORE056_RUNTIME_OK\nActual vanilla iron and all seven Inner biomes/Underworld ore samples; two native material/transparency screenshots.\n":"CORE_RESOURCES_055_RUNTIME_OK\nNative26.2 fresh-world resource generation, ores, LHO stabilization, recipes, default/Silk lamp drops, all54 shapes and six colors, real menu ownership/close/death, enchant/socket mutual exclusion, and three native screenshots. See launch-output.log for assertion counts.\n";
+            if(++frame==(BALANCE057?1:ORE056?2:3)){
+                String report=BALANCE057?"BALANCE057_RUNTIME_OK\nNative ore counts, armor attributes and27fixed-time cores under tools/effects/book/water/air; ordinary crystal exception. Wood static-only.\n":ORE056?"ORE056_RUNTIME_OK\nActual vanilla iron and all seven Inner biomes/Underworld ore samples; two native material/transparency screenshots.\n":"CORE_RESOURCES_055_RUNTIME_OK\nNative26.2 fresh-world resource generation, ores, LHO stabilization, recipes, default/Silk lamp drops, all54 shapes and six colors, real menu ownership/close/death, enchant/socket mutual exclusion, and three native screenshots. See launch-output.log for assertion counts.\n";
                 Files.writeString(Path.of("core-resources055-report.txt"),report);Files.writeString(Path.of("port-client-ok.txt"),report);done=true;client.stop();
             }else{ticks=0;queued=false;ready=false;captured=false;}
         }catch(Throwable error){done=true;error.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),error.toString());}catch(Exception ignored){}client.stop();}

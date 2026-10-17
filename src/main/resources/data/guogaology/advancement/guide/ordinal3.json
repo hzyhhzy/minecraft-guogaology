@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:ordinal_crystal_lv4"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.ordinal3.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.ordinal3.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:ordinal_crystal_lv4"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/crystal"
+}

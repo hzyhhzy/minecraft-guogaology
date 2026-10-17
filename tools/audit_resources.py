@@ -58,6 +58,14 @@ def audit(root, prune=False):
         for path in (assets / folder).rglob('*.json'):
             if path.stem not in LEGACY_ENTRIES:
                 add(path)
+    # Advancement backgrounds are UI resources, not block-model references.
+    # Legacy source stores a full texture path; modern ports convert the codec.
+    for path in (root/'src/main/resources/data/guogaology/advancement').rglob('*.json'):
+        display=json.loads(path.read_text(encoding='utf8')).get('display',{})
+        background=display.get('background','')
+        if background.startswith('guogaology:'):
+            name=background.split(':',1)[1]
+            add(assets/(name if name.startswith('textures/') else 'textures/'+name+'.png'))
     # These are addressed by Java / vanilla equipment rendering, not block JSON.
     add(assets / 'textures/gui/enhancement.png')
     for mineral in MINERALS:

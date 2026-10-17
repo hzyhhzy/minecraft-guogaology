@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:omega_manuscript"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.first_book.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.first_book.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:omega_manuscript",
+              "guogaology:epsilon_manuscript",
+              "guogaology:gamma_manuscript",
+              "guogaology:true_omega_manuscript"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/first_tool"
+}

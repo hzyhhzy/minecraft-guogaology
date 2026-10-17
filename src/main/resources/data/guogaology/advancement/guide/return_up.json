@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:inner_return_frame"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.return_up.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.return_up.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "inner": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "guogaology:outer",
+        "from": "guogaology:guogaology"
+      }
+    },
+    "underworld": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "guogaology:guogaology",
+        "from": "guogaology:guogao"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "inner",
+      "underworld"
+    ]
+  ],
+  "parent": "guogaology:guide/portal_return"
+}

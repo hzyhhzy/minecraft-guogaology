@@ -143,6 +143,7 @@ public class EnhancementMenu extends AbstractContainerMenu {
     }
     @Override public void removed(Player player){
         if(closed)return;synchronizeCores();closed=true;
+        dev.guogaology.advancement.GuideProgress.edited(player,contents.getItem(GEAR));
         for(int i=FIRST_CORE;i<INVENTORY;i++)contents.setItem(i,ItemStack.EMPTY);
         if(manuscript())contents.setItem(GEAR,ItemStack.EMPTY);
         super.removed(player);if(world!=null&&!manuscript())clearContainer(player,contents);

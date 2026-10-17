@@ -18,6 +18,10 @@ import net.minecraft.world.level.Level;
 public final class AnimatedCoreBlock extends BaseEntityBlock {
     public static final MapCodec<AnimatedCoreBlock> CODEC=simpleCodec(AnimatedCoreBlock::new);
     public AnimatedCoreBlock(Properties settings){super(settings);registerDefaultState(defaultBlockState().setValue(PortableRelicBlock.PLAYER_PLACED,false));}
+    @Override protected float getDestroyProgress(BlockState state,net.minecraft.world.entity.player.Player player,net.minecraft.world.level.BlockGetter world,BlockPos pos){
+        float progress=CoreMiningRules.progress(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(this).getPath());
+        return progress>0?progress:super.getDestroyProgress(state,player,world,pos);
+    }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block,BlockState> builder){builder.add(PortableRelicBlock.PLAYER_PLACED);}
     @Override public BlockState getStateForPlacement(BlockPlaceContext context){return defaultBlockState().setValue(PortableRelicBlock.PLAYER_PLACED,context.getPlayer()!=null);}
     @Override public void setPlacedBy(Level world,BlockPos pos,BlockState state,LivingEntity placer,ItemStack stack){

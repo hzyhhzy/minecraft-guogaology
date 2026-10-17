@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:number_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.number_tools.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.number_tools.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:number_pickaxe",
+              "guogaology:number_sword"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_outer"
+}

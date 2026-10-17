@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:true_omega_block"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.portal_inner.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.portal_inner.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ],
+  "parent": "guogaology:guide/first_ore"
+}

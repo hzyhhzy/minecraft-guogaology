@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:enhancement_table"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.station.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.station.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:enhancement_table"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/first_core"
+}

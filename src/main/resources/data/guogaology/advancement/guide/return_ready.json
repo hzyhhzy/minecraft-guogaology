@@ -1,0 +1,44 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:return_token"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.return_ready.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.return_ready.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:return_token"
+            ]
+          },
+          {
+            "items": [
+              "guogaology:outer_return_frame",
+              "guogaology:inner_return_frame",
+              "guogaology:guogao_return_frame"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/enter_outer"
+}

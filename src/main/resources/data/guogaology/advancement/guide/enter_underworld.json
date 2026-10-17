@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:guogao_heart"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.enter_underworld.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.enter_underworld.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "travelled": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "guogaology:guogao"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "travelled"
+    ]
+  ],
+  "parent": "guogaology:guide/portal_underworld"
+}

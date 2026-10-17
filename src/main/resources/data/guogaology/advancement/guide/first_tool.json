@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": {
+      "id": "guogaology:omega_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.guogaology.guide.first_tool.title"
+    },
+    "description": {
+      "translate": "advancement.guogaology.guide.first_tool.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "collected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "guogaology:omega_pickaxe",
+              "guogaology:omega_sword",
+              "guogaology:omega_bow",
+              "guogaology:epsilon_pickaxe",
+              "guogaology:epsilon_sword",
+              "guogaology:epsilon_bow",
+              "guogaology:gamma_pickaxe",
+              "guogaology:gamma_sword",
+              "guogaology:gamma_bow",
+              "guogaology:true_omega_pickaxe",
+              "guogaology:true_omega_sword",
+              "guogaology:true_omega_bow"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "collected"
+    ]
+  ],
+  "parent": "guogaology:guide/first_ore"
+}

@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.5.5
+# Three-world survival guide · 0.5.7
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -36,7 +36,7 @@ Everyone can use `/guogaology` or `/guogaology help`. The following commands req
 
 ## Four mineral tiers
 
-From 0.4.1, vein attempts per chunk are 24/12/6/2 for ω/ε/Γ/Ω, and exposed ore candidates have a 50% air-discard chance. Γ and Ω favor the bottom: Γ height candidates span approximately Y=−64…55, with very few at Y≥50; Ω spans approximately −64…15. Veins can extend around their starting point and still require suitable host stone and biomes. These changes affect newly generated chunks only.
+From 0.5.7, vein attempts per chunk are 24/6/6/4 for ω/ε/Γ/Ω, and exposed ore candidates have a 50% air-discard chance. Γ and Ω favor the bottom: Γ height candidates span approximately Y=−64…55, with very few at Y≥50; Ω spans approximately −64…15. Veins can extend around their starting point and still require suitable host stone and biomes. These changes affect newly generated chunks only.
 
 Only Outer naturally generates ω, ε, Γ and Ω ores, including understone variants in its underground biome. The deeper dimensions do not generate these four equipment ores; they generate separate Ordinal Crystal Ore for the core economy. All four drop usable minerals directly, support Fortune and Silk Touch, and can be mined with an ordinary iron pickaxe. There is no core-dependent processing or exponential ore-mining gate.
 
@@ -51,7 +51,7 @@ Each tier crafts a pickaxe, sword, bow, four armor pieces, a Manuscript, and a r
 
 Numeric pickaxe harvesting tiers are stone for digits 0–4, iron for 5–7, diamond for 8, and netherite for 9. Ordinary mining speed and attack still progress with the digit; mining stone does not bypass an ore's harvesting requirement.
 
-Native full-set armor is 16/18/20/22 and toughness 4/8/12/16. Bare armor has no extra custom damage multiplier. Each slot uses its weighted share of the full values.
+Native full-set armor/toughness totals are15/0,20/8,24/12,30/16. ω matches iron and ε matches diamond. Head/chest/legs/feet armor is2/6/5/2,3/8/6/3,4/9/7/4,5/11/9/5; each piece has0/2/3/4 toughness by tier. All values are integers. Bare armor has no extra custom factor; core protection keeps its independent20/40/25/15% slot weights.
 
 ## Enhancement and Manuscripts
 
@@ -156,7 +156,7 @@ Each first-grade regional core costs the eight biome ingredients below, plus one
 | Ordinal Core Lv1 | Nine base Ordinal Crystals |
 | Ordinal Core Lv2/3 | Nine preceding-grade Ordinal Cores |
 
-Base crystals and Ordinal Cores unpack reversibly; regional cores have no unpacking recipe. Power/LHO mixed materials now belong to first-grade crafting, so their second-grade recipes have no exceptions. Cores drop intact with any tool, including hands; pickaxes accelerate their 25/50/100 grade hardness.
+Base crystals and Ordinal Cores unpack reversibly; regional cores have no unpacking recipe. Power/LHO mixed materials now belong to first-grade crafting, so their second-grade recipes have no exceptions. Cores drop intact with any tool or hands. Displayed Lv1/2/3 takes100/200/400 game ticks (5/10/20seconds at20TPS), unaffected by tools, enchantments, effects or manuscripts. The ungraded Ordinal Crystal is exempt: hardness1.5 like stone, normal pickaxe acceleration, and intact drops with any tool.
 
 LHO retains its special rules. A base crystal stabilizes the two neighboring rings, a full 5×5×5 cube including corners. Natural ψ, Z, fffZ and FOS visibly change color within that field and are re-evaluated after an anchor is removed. A nearby player's held crystal also counts. Player-placed materials are permanently stable. Absence Cores no longer spawn as wild fragments; the former Empty Set fragment chance is shared equally between fffZ and FOS.
 
@@ -191,3 +191,7 @@ Core inventory icons remain simplified; held, dropped and framed cores use their
 ## High-cliff giant descent chains
 
 Underworld cliffs carry giant diagonal chains from actual rims at Y250 or higher down to the valley floor. Misaligned Escarpments have higher natural terraces; existing lake and giant-tree site rules remain. Alternating hollow links interlock, with pointed ends suggesting a descending sequence of greater-than signs. Both ends anchor into rock; the first link may be partly embedded in the rim while the remaining body stays exposed. Neighboring chains, large trees, vines and paired tier structures keep clear of each complete chain. Underground Descending Chain Caverns remain. This scenery applies only to newly generated chunks; existing chains are not rebuilt.
+
+## Survival guide advancements
+
+The Unfolding Begins tab is available upon joining. It guides cake gates, Outer ores and gear, return supplies, Inner/Underworld travel, raw-material fusion, enhancement, lamp shaping and all eight megastructures. Gate milestones require the player’s successful offering; megastructure milestones require opening an actual reward chest. These do not gate gameplay, demand a strict order, or replace vanilla advancements. Full list: [Survival guide advancements](ADVANCEMENTS-057.en.md).

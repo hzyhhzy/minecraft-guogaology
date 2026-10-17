@@ -14,7 +14,7 @@ public final class EquipmentRules047Checks {
     private static List<Gear> armor(int tier,List<Core> cores){return List.of(new Gear(tier,2,0,cores),new Gear(tier,3,0,cores),new Gear(tier,4,0,cores),new Gear(tier,5,0,cores));}
     private static Snapshot state(Gear main,Gear off,boolean deep){return new Snapshot(main,off,Gear.empty(2),Gear.empty(3),Gear.empty(4),Gear.empty(5),deep);}
     public static void main(String[] args){
-        check(EquipmentRules.REVISION==48,"production revision");
+        check(EquipmentRules.REVISION==49,"production revision");
         for(int kind=0;kind<=7;kind++)check(EquipmentRules.compatible(kind,8)==(kind==6),"Ordinal manuscript only "+kind);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(6,type)==(type!=5),"Criticality forbidden in manuscripts "+type);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(7,type)==EquipmentRules.compatible(1,type),"bow compatibility follows sword "+type);
@@ -25,8 +25,8 @@ public final class EquipmentRules047Checks {
             check(EquipmentRules.durability(tier,7)==new int[]{768,1152,1536,2304}[tier-1],"bow durability "+tier);
             near(EquipmentRules.arrowSpeedMultiplier(tier),new double[]{1.1,1.2,1.3,1.5}[tier-1],"bow launch speed "+tier);
             double a=0,t=0;for(int kind=2;kind<=5;kind++){a+=EquipmentRules.nativeArmor(tier,kind);t+=EquipmentRules.nativeToughness(tier,kind);}
-            near(a,new double[]{16,18,20,22}[tier-1],"full native armor "+tier);
-            near(t,new double[]{4,8,12,16}[tier-1],"full native toughness "+tier);
+            near(a,new double[]{15,20,24,30}[tier-1],"full native armor "+tier);
+            near(t,new double[]{0,8,12,16}[tier-1],"full native toughness "+tier);
             near(EquipmentRules.protectionFactor(armor(tier,NONE),NONE,false),1,"bare armor has no custom multiplier "+tier);
         }
         for(boolean deep:new boolean[]{false,true}){
