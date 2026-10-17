@@ -1,6 +1,7 @@
 dev/guogaology/ambience/AmbientPatterns.java
 dev/guogaology/ambience/BandRhythm.java
 dev/guogaology/ambience/LaverScore.java
+dev/guogaology/world/LaverTableShape.java
 dev/guogaology/block/TapeProgram.java
 dev/guogaology/survival/AstraCrown.java
 dev/guogaology/survival/CourtLaverPatterns.java

@@ -184,14 +184,7 @@ public final class Advancement510Checks {
         check(GearData.cores(draft).size()==6,"actual menu ownership stores all six draft cores");check(!GuideProgress.omegaMastery(p),"uncommitted draft not eligible");GuideProgress.checkPlayer(p);check(!done(p,"omega_mastery"),"tick does not award draft");p.closeContainer();GuideProgress.checkPlayer(p);complete(p,"omega_mastery");
         p.getInventory().clearContent();for(var slot:PLAYER_SLOTS)p.setItemSlot(slot,ItemStack.EMPTY);
     }
-    private static void table(ServerPlayer p){
-        var world=p.level();var base=new BlockPos(8,250,8);for(int x=-3;x<=5;x++)for(int z=-3;z<=5;z++)world.setBlock(base.offset(x,0,z),Blocks.AIR.defaultBlockState(),2);
-        p.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.setShiftKeyDown(false);reset(p,"play_laver");
-        var hit=new BlockHitResult(Vec3.atCenterOf(base),Direction.UP,base,false);world.setBlock(base,GuogaologyBlocks.IBLP_NODE.defaultBlockState(),2);
-        UseBlockCallback.EVENT.invoker().interact(p,world,InteractionHand.MAIN_HAND,hit);check(!done(p,"play_laver"),"unreadable isolated cell gives no progress");
-        world.setBlock(base,GuogaologyBlocks.LAVER_CORE.defaultBlockState(),2);for(int row=1;row<=3;row++)for(int col=0;col<=row;col++)world.setBlock(base.offset(col,0,row),(col==0?GuogaologyBlocks.IBLP_MARKED:GuogaologyBlocks.IBLP_NODE).defaultBlockState(),2);
-        check(LiveLaverTable.read(world,base)!=null,"actual triangular table readable");
-        p.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.APPLE));UseBlockCallback.EVENT.invoker().interact(p,world,InteractionHand.MAIN_HAND,hit);check(!done(p,"play_laver"),"occupied hand gives no performance");p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);
-        UseBlockCallback.EVENT.invoker().interact(p,world,InteractionHand.MAIN_HAND,hit);complete(p,"play_laver");check(LaverMusic.activeCount(world)>0,"real performance started");
+    private static void table(ServerPlayer p)throws Exception{
+        reset(p,"play_laver");Laver511Checks.run(p);complete(p,"play_laver");
     }
 }

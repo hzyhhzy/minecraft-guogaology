@@ -13,12 +13,14 @@ import net.minecraft.resources.Identifier;
 public final class Advancement057Runtime {
     private static final boolean BASELINE=Boolean.getBoolean("guogaology.qa.advancementsBaseline");
     private static final boolean BIOMES=Boolean.getBoolean("guogaology.qa.advancements510");
+    private static final boolean SCENES=Boolean.getBoolean("guogaology.qa.laverScenes");
     private static final String[] TARGETS={"minecraft:story/root","minecraft:adventure/root","minecraft:husbandry/root","minecraft:nether/root","minecraft:end/root","guogaology:arrival",
         "guogaology:guide/enter_inner","guogaology:guide/landmark_matrix","guogaology:guide/landmark_power","guogaology:guide/landmark_hydra","guogaology:guide/landmark_absence","guogaology:guide/landmark_weaver","guogaology:guide/landmark_astra","guogaology:guide/landmark_frontier","guogaology:guide/landmark_guogao","guogaology:guide/core_frontier_2","guogaology:guide/core_frontier_3","guogaology:guide/material_absence","guogaology:guide/omega_mastery",
         "guogaology:guide/enter_outer","guogaology:guide/biome_matrix","guogaology:guide/biome_power","guogaology:guide/biome_hydra","guogaology:guide/biome_absence","guogaology:guide/biome_weaver","guogaology:guide/biome_astra","guogaology:guide/biome_frontier","guogaology:guide/enter_underworld"};
     private static String prefix(){return BIOMES?"advancements510":"advancements057";}
     private boolean opening,queued,done,shown,initialShown;private volatile boolean ready,captured,initialCaptured;private volatile Throwable failure;
     private int frame,ticks,initialTicks;private final long deadline=System.nanoTime()+900_000_000_000L;
+    private boolean sceneMode,sceneQueued;private volatile boolean sceneReady,sceneCaptured;private int scene,sceneTicks;private long notesBefore;
     public static void initialize(){var qa=new Advancement057Runtime();ClientTickEvents.END_CLIENT_TICK.register(qa::tick);}
     /** User-requested visible review: open the saved test world once, then yield all control. */
     public static void initializeReview(){
@@ -45,6 +47,11 @@ public final class Advancement057Runtime {
             c.options.pauseOnLostFocus=false;c.options.renderDistance().set(3);c.options.framerateLimit().set(60);c.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);c.gui.toastManager().clear();
             if(c.level==null){if(!opening&&c.isGameLoadFinished()&&c.gui.overlay()==null){opening=true;c.createWorldOpenFlows().openWorld("port-qa",c::stop);}return;}
             if(c.player==null||c.getSingleplayerServer()==null||c.getConnection()==null)return;
+            if(SCENES){
+                if(++initialTicks<60||c.gui.overlay()!=null)return;
+                if(!sceneMode){sceneMode=true;notesBefore=dev.guogaology.client.GuogaologyAtmosphere.notesHeard();}
+                scene(c);return;
+            }
             if(!queued){
                 if(++initialTicks<60)return;
                 if(!initialShown){
@@ -73,6 +80,7 @@ public final class Advancement057Runtime {
             }
             if(!queued){queued=true;var uuid=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{Advancement057Checks.run(c.getSingleplayerServer().getPlayerList().getPlayer(uuid),BASELINE);ready=true;}catch(Throwable e){failure=e;}});return;}
             if(!ready||c.gui.overlay()!=null)return;
+            if(sceneMode){scene(c);return;}
             var handler=c.getConnection().getAdvancements();
             for(String root:Advancement057Checks.ROOTS)if(handler.get(Identifier.parse(root))==null)return;
             if(BIOMES)for(var node:handler.getTree().nodes())if(node.holder().id().getNamespace().equals("guogaology")&&node.advancement().display().isPresent()){
@@ -99,9 +107,30 @@ public final class Advancement057Runtime {
             if(ticks==70){var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=frame;Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve(prefix()+"-"+picture+".png"));captured=true;}catch(Throwable e){failure=e;}});}
             if(!captured)return;
             if(++frame==(BIOMES?TARGETS.length:8)){
+                if(BIOMES){c.gui.setScreen(null);sceneMode=true;notesBefore=dev.guogaology.client.GuogaologyAtmosphere.notesHeard();return;}
                 String report=(BIOMES?"ADVANCEMENT510_RUNTIME_OK":"ADVANCEMENT057_RUNTIME_OK")+" baseline="+BASELINE+" vanilla five roots/native criteria and resource paths, guide decoding/actions, client synchronization and "+frame+" inspected-page candidates.\n";Files.writeString(Path.of("port-client-ok.txt"),report);done=true;c.stop();
             }else{c.gui.setScreen(null);shown=false;captured=false;ticks=0;}
         }catch(Throwable e){done=true;e.printStackTrace();try{Files.writeString(Path.of("port-client-failed.txt"),e.toString());}catch(Exception ignored){}c.stop();}
+    }
+    private void scene(Minecraft c)throws Exception{
+        c.gui.setScreen(null);if(!c.gui.hud.isHidden())c.gui.hud.toggle();
+        if(!sceneQueued){
+            sceneQueued=true;var uuid=c.player.getUUID();int picture=scene;
+            c.getSingleplayerServer().execute(()->{try{Laver511Checks.display(c.getSingleplayerServer().getPlayerList().getPlayer(uuid),picture);sceneReady=true;}catch(Throwable e){failure=e;}});return;
+        }
+        if(!sceneReady)return;
+        if(++sceneTicks==120){
+            long heard=dev.guogaology.client.GuogaologyAtmosphere.notesHeard();
+            if(scene<2&&heard<=notesBefore)throw new AssertionError("Actual nearby table did not deliver audible S2C notes to the client, scene="+scene);
+            System.out.println("LAVER511_CLIENT_AUDIO scene="+scene+" audibleNotes="+(heard-notesBefore));
+            var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);int picture=scene;
+            Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve("laver511-"+picture+".png"));sceneCaptured=true;}catch(Throwable e){failure=e;}});
+        }
+        if(!sceneCaptured)return;
+        if(++scene==3){
+            String report=SCENES?"LAVER511_ART_RUNTIME_OK\nThree native scenes with final material mesh and actual table S2C notes; no repeated advancement sweep in this focused art run.\n":"ADVANCEMENT511_RUNTIME_OK\nFive vanilla tabs and all76guide nodes, production table/painter/server interactions, hollow3x3lamp, actual S2C audible notes and three native material/table scenes.\n";
+            Files.writeString(Path.of("port-client-ok.txt"),report);done=true;c.stop();
+        }else{sceneQueued=false;sceneReady=false;sceneCaptured=false;sceneTicks=0;notesBefore=dev.guogaology.client.GuogaologyAtmosphere.notesHeard();}
     }
     private static AdvancementsScreen screen(ClientAdvancements handler,boolean paginated)throws Exception{
         return paginated?(AdvancementsScreen)Class.forName("de.dafuqs.paginatedadvancements.client.PaginatedAdvancementScreen").getConstructor(ClientAdvancements.class).newInstance(handler):new AdvancementsScreen(handler);

@@ -168,7 +168,7 @@ Ordinary mining of any emoji lamp returns its same-color whole open-mouth form. 
 | SCG Junction | `scg_node` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
 | Hydra Sprig | `hydra_sprig` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
 | Laver Gel | `laver_gel` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
-| Condensed Cloud Pearl | `cloud_pearl` | 0.8 | 1.5 | Pickaxe | None | 1 | Material shape | Block itself |
+| Nuclear Blast Pearl | `cloud_pearl` | 0.8 | 1.5 | Pickaxe | None | 1 | Material shape | Block itself |
 | Set Membrane | `set_membrane` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
 | Dread Fir Resin | `dread_resin` | 0.8 | 1.5 | Pickaxe | None | 1 | Material shape | Block itself |
 | Ordinal Crystal Ore | `ordinal_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |

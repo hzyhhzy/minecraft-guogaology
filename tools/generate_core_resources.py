@@ -21,7 +21,7 @@ MATERIALS = {
     'scg_node': ('SCG结点', 'SCG Junction', ('#243956','#47617c','#81abc6','#d7edf0')),
     'hydra_sprig': ('Hydra芽穗', 'Hydra Sprig', ('#164d40','#31886e','#6fd49d','#d9f5b2')),
     'laver_gel': ('紫菜胶质', 'Laver Gel', ('#1d665c','#4e9f89','#91d9b0','#e9f8d7')),
-    'cloud_pearl': ('凝云珠', 'Condensed Cloud Pearl', ('#2a7b93','#6bc0cb','#bfebe6','#f4fffa')),
+    'cloud_pearl': ('核爆凝珠', 'Nuclear Blast Pearl', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
     'set_membrane': ('集合膜', 'Set Membrane', ('#277c77','#60bbb0','#abebd3','#efffe5')),
     'dread_resin': ('冥杉树脂', 'Dread Fir Resin', ('#452340','#78465b','#b77866','#eed0a1')),
 }
@@ -29,11 +29,17 @@ ORES = ('ordinal_crystal_ore', 'empty_crystal_ore', 'dread_crystal_ore')
 REGIONAL = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart')
 # Raw materials are ordinary Minecraft blocks, not a second set of jewels.
-CUBES = frozenset(('arrow_knot','scg_node','laver_gel','cloud_pearl','dread_resin'))
+CUBES = frozenset(('arrow_knot','scg_node','laver_gel','dread_resin'))
 BOXES = {
     'matrix_sheet': [((1,0,1),(15,2,15)),((2,3,2),(14,5,14))],
     'hydra_sprig': [((6,0,6),(10,9,10)),((2,7,5),(7,12,10)),((10,6,6),(14,10,11))],
     'set_membrane': [((1,0,1),(15,2,15)),((1,2,13),(15,9,15))],
+    'cloud_pearl': [((6,1,6),(10,10,10)),((4,0,5),(12,2,11)),((5,0,3),(11,2,13)),
+                    ((4,8,4),(12,14,12)),((5,13,5),(11,15,11)),
+                    ((1,8,5),(6,12,11)),((10,8,5),(15,12,11)),
+                    ((5,8,1),(11,12,6)),((5,8,10),(11,12,15)),
+                    ((3,9,3),(6,13,6)),((10,9,3),(13,13,6)),
+                    ((3,9,10),(6,13,13)),((10,9,10),(13,13,13))],
     **{name:[((0,0,0),(16,16,16))] for name in CUBES},
 }
 TAG_VALUES = {
@@ -124,6 +130,48 @@ def element(bounds, texture='body'):
                                              for f in ('down','up','north','south','west','east')}}
 
 
+def pearl_elements():
+    """Only the union's visible surfaces; no overlapping or hidden puff faces."""
+    occupied={(x,y,z) for a,b in BOXES['cloud_pearl']
+              for x in range(a[0],b[0]) for y in range(a[1],b[1]) for z in range(a[2],b[2])}
+    faces={}
+    directions=(('west',0,-1,2,1),('east',0,1,2,1),('down',1,-1,0,2),
+                ('up',1,1,0,2),('north',2,-1,0,1),('south',2,1,0,1))
+    for p in sorted(occupied):
+        for name,axis,sign,u,v in directions:
+            neighbor=list(p);neighbor[axis]+=sign
+            if tuple(neighbor) in occupied:continue
+            texture='body' if axis!=1 else 'cloud' if sign>0 and p[1]>=8 else 'root'
+            key=(name,axis,p[axis]+(sign>0),u,v,texture)
+            faces.setdefault(key,set()).add((p[u],p[v]))
+    out=[]
+    for (name,axis,plane,u,v,texture),cells in sorted(faces.items()):
+        while cells:
+            x,y=min(cells,key=lambda q:(q[1],q[0]));width=1;height=1
+            while (x+width,y) in cells:width+=1
+            while all((xx,y+height) in cells for xx in range(x,x+width)):height+=1
+            cells.difference_update((xx,yy) for xx in range(x,x+width) for yy in range(y,y+height))
+            a=[0,0,0];b=[0,0,0];a[axis]=b[axis]=plane
+            a[u]=x;b[u]=x+width;a[v]=y;b[v]=y+height
+            uv=[x,16-y-height,x+width,16-y] if axis!=1 else [x,y,x+width,y+height]
+            out.append({'from':a,'to':b,'faces':{name:{'uv':uv,'texture':'#'+texture}}})
+    return out
+
+
+def pearl_cloud_texture():
+    im=Image.new('RGBA',(32,32),'#e8f8fc');d=ImageDraw.Draw(im)
+    for box in ((2,5,9,10),(19,3,28,7),(24,19,30,26),(4,24,12,29)):
+        d.rectangle(box,fill='#d3edf5')
+    d.rectangle((10,9,21,19),fill='#f8fdff')
+    return im
+
+
+def pearl_root_texture():
+    im=Image.new('RGBA',(32,32),'#82bdcf');d=ImageDraw.Draw(im)
+    d.rectangle((6,5,25,25),fill='#add9e4');d.rectangle((11,10,20,20),fill='#d9eff4')
+    return im
+
+
 def material_texture(name, palette):
     rng=random.Random(name)
     im=Image.new('RGBA',(32,32),palette[1]);d=ImageDraw.Draw(im)
@@ -147,8 +195,12 @@ def material_texture(name, palette):
     elif name=='laver_gel':
         for y in (8,17,25):d.line((0,y,9,y+2,19,y-1,31,y+1),fill=palette[0],width=2)
     elif name=='cloud_pearl':
-        d.rectangle((0,0,31,31),fill=palette[2])
-        for y in (4,15,25):d.line((0,y,10,y+3,21,y+1,31,y+3),fill=palette[1],width=3)
+        # Quiet, broad color bands follow model height; the silhouette carries the theme.
+        for y in range(32):
+            color='#f4fcff' if y<5 else '#d0edf5' if y<10 else '#92c9dc' if y<16 else '#6aa5bf' if y<28 else '#9ccfdf'
+            d.line((0,y,31,y),fill=color)
+        d.rectangle((12,17,19,27),fill='#ffe0a3');d.rectangle((14,18,17,25),fill='#fff8df')
+        d.rectangle((4,7,10,9),fill='#e6f7fc');d.rectangle((23,11,28,13),fill='#b8e0ec')
     elif name=='set_membrane':
         d.line((3,28,12,21,21,21,29,7),fill=palette[0],width=2)
         d.line((0,8,16,12,31,9),fill=palette[2],width=2)
@@ -203,6 +255,11 @@ def generated_files():
                if name in CUBES else {'parent':'minecraft:block/block',
                    'textures':{'body':'guogaology:block/'+name,'particle':'guogaology:block/'+name},
                    'elements':[element(b) for b in BOXES[name]]})
+        if name=='cloud_pearl':
+            model['textures'].update({'cloud':'guogaology:block/cloud_pearl_cloud','root':'guogaology:block/cloud_pearl_root'})
+            model['elements']=pearl_elements()
+            put(A/'textures/block/cloud_pearl_cloud.png',pearl_cloud_texture())
+            put(A/'textures/block/cloud_pearl_root.png',pearl_root_texture())
         put(A/f'models/block/{name}.json',model)
         put(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
         put(D/f'loot_table/blocks/{name}.json',self_loot(name))

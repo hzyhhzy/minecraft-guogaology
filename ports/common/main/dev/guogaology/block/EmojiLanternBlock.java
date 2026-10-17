@@ -12,7 +12,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.core.registries.Registries;
 import java.util.List;
 
-/** Each of 26 exterior tiles stores its exact part and emotion; the center is a crystal. */
+/** Each of 26 exterior tiles stores its exact part and emotion; the center stays hollow. */
 public final class EmojiLanternBlock extends StatefulDecorBlock {
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 27);
     public static final IntegerProperty EMOTION = IntegerProperty.create("emotion",0,1);
@@ -37,7 +37,7 @@ public final class EmojiLanternBlock extends StatefulDecorBlock {
         return tile(lamp,x,y,z,0);
     }
     public static BlockState tile(Block lamp,int x,int y,int z,int emotion){
-        if(x==1&&y==1&&z==1)return net.minecraft.world.level.block.Blocks.GLOWSTONE.defaultBlockState();
+        if(x==1&&y==1&&z==1)return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
         return lamp.defaultBlockState().setValue(PART,x+3*y+9*z).setValue(EMOTION,emotion);
     }
 }

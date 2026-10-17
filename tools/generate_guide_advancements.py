@@ -96,8 +96,8 @@ def build():
          {theme:{'trigger':'minecraft:impossible'} for theme in THEMES},[[theme] for theme in THEMES],frame='challenge')
     node('guide/eat_guogao','guide/enter_outer','guogao_slice','尝一口果糕','A Taste of Guogao',
          '吃下一片果糕切片。','Eat a Guogao Slice.',{'eaten':{'trigger':'minecraft:consume_item','conditions':{'item':{'items':['guogaology:guogao_slice']}}}})
-    node('guide/play_laver','guide/biome_weaver','iblp_marked','桌边的一声','A Note at the Table',
-         '双手空着、不潜行，右键一张合法紫菜桌的图案格，实际开始演奏。','With both hands empty and without sneaking, right-click a valid Laver table pattern to begin playing.',{'done':{'trigger':'minecraft:impossible'}})
+    node('guide/play_laver','guide/biome_weaver','laver_inlay','桌边的一声','A Note at the Table',
+         '双手空着、不潜行，右键镶边石，弹奏通向矩阵数字砖的最长一行桌格，每格四分之一秒。','With both hands empty and without sneaking, right-click an inlay to play its longest row ending in a Matrix Number Brick, one cell per quarter-second.',{'done':{'trigger':'minecraft:impossible'}})
     node('guide/omega_mastery','guide/ultimate_station','true_omega_chestplate','Ω，全部展开','Omega, Fully Unfolded',
          '穿戴四件Ω护甲并手持Ω手稿；五件共38槽均镶入兼容的满级晶核。图腾、空槽与未生效的编辑不计。','Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count.',{'done':{'trigger':'minecraft:impossible'}},frame='challenge')
     copy['item.guogaology.guide_emblem']=('果糕逻辑探索指引','Guogaology Exploration Guide')
@@ -157,10 +157,10 @@ def generate(check=False):
         for key in RETIRED_COPY:catalog['translations'][locale].pop(key,None);lang.pop(key,None)
         put(path_lang,lang)
     put(path,catalog)
-    text='# 生存引导进度 · 0.5.10\n\n使用原版进度系统，保留原版各页与配方解锁。“果糕逻辑”是自动完成的目录根，首次进入三层世界的说明包含造门方法；返程门仍记录亲手激活。首次Ω矿物是里界的引导前置，不锁定传送。\n\n八条主题分枝分别从七个里界群系和地府维度开始；每枝为代表材料→一级→二级→三级晶核，以及独立的进入巨构路线。晶核名称侧重能力，获得后仍须镶嵌才产生效果。巨构按进入实际建筑空间判定，无需开箱。另有吃果糕、弹奏紫菜桌与38槽Ω满配进度。父子关系用于引导，不强制完成顺序，不发额外物品。\n\n| ID | 名称 | 引导与完成条件 |\n|---|---|---|\n'
+    text='# 生存引导进度 · 0.5.11\n\n使用原版进度系统，保留原版各页与配方解锁。“果糕逻辑”是自动完成的目录根，首次进入三层世界的说明包含造门方法；返程门仍记录亲手激活。首次Ω矿物是里界的引导前置，不锁定传送。\n\n八条主题分枝分别从七个里界群系和地府维度开始；每枝为代表材料→一级→二级→三级晶核，以及独立的进入巨构路线。晶核名称侧重能力，获得后仍须镶嵌才产生效果。巨构按进入实际建筑空间判定，无需开箱。另有吃果糕、弹奏紫菜桌与38槽Ω满配进度。父子关系用于引导，不强制完成顺序，不发额外物品。\n\n| ID | 名称 | 引导与完成条件 |\n|---|---|---|\n'
     for name,title,description in rows:text+=f'| `{name}` | {title} | {description} |\n'
     put(ROOT/'docs/ADVANCEMENTS-057.md',text)
-    text='# Survival guide advancements · 0.5.10\n\nThe directory root completes automatically. First entering each realm explains its gate; return gates credit their activator. First Ω ore/mineral precedes Inner in the guide without locking travel. Vanilla progress and recipe unlocks remain.\n\nEight branches start with the seven Inner biomes and the Underworld dimension. Each has representative materials → core Lv1 → Lv2 → Lv3, plus a separate megastructure visit. Core titles reflect their capabilities; possession alone does not activate them. Entering the actual built space counts without opening a chest. Eating Guogao, playing a Laver table and a fully socketed 38-slot Ω loadout are additional milestones. Parents guide rather than enforce order; no extra items are awarded.\n\n| ID | Title | Guidance and condition |\n|---|---|---|\n'
+    text='# Survival guide advancements · 0.5.11\n\nThe directory root completes automatically. First entering each realm explains its gate; return gates credit their activator. First Ω ore/mineral precedes Inner in the guide without locking travel. Vanilla progress and recipe unlocks remain.\n\nEight branches start with the seven Inner biomes and the Underworld dimension. Each has representative materials → core Lv1 → Lv2 → Lv3, plus a separate megastructure visit. Core titles reflect their capabilities; possession alone does not activate them. Entering the actual built space counts without opening a chest. Eating Guogao, playing a Laver table and a fully socketed 38-slot Ω loadout are additional milestones. Parents guide rather than enforce order; no extra items are awarded.\n\n| ID | Title | Guidance and condition |\n|---|---|---|\n'
     for name in advancements:
         key='advancement.guogaology.'+name.replace('/','.')
         text+=f'| `{name}` | {copy[key+".title"][1]} | {copy[key+".description"][1]} |\n'

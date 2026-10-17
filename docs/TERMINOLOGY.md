@@ -40,7 +40,7 @@
 | SCG结点 | SCG Junction | `scg_node` |
 | Hydra芽穗 | Hydra Sprig | `hydra_sprig` |
 | 紫菜胶质 | Laver Gel | `laver_gel` |
-| 凝云珠 | Condensed Cloud Pearl | `cloud_pearl` |
+| 核爆凝珠 | Nuclear Blast Pearl | `cloud_pearl` |
 | 集合膜 | Set Membrane | `set_membrane` |
 | 冥杉树脂 | Dread Fir Resin | `dread_resin` |
 

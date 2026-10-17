@@ -1,4 +1,4 @@
-# Survival guide advancements · 0.5.10
+# Survival guide advancements · 0.5.11
 
 The directory root completes automatically. First entering each realm explains its gate; return gates credit their activator. First Ω ore/mineral precedes Inner in the guide without locking travel. Vanilla progress and recipe unlocks remain.
 
@@ -50,14 +50,14 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_absence_3` | A Silent Reply | Obtain Absence Core Lv3. A manuscript also prevents ordinary retaliation targeting; equipment gains stronger wear protection. |
 | `guide/landmark_absence` | Explore Missing-Page Galleries | Enter the built space of Missing-Page Galleries and explore its paths and exhibits. |
 | `guide/biome_weaver` | Visit Laver Tablelands | Enter Laver Tablelands in Inner to discover its materials and megastructure. |
-| `guide/material_weaver` | Between Laver and Gummy | Collect Laver Gel from table scenery and look for playable iBLP patterns. |
+| `guide/material_weaver` | Between Laver and Gummy | Collect Laver Gel from Laver plants. An inlay can play a diagram row ending in a number brick. |
 | `guide/core_weaver_1` | Tides and Echoes | Obtain Laver Condensation Core Lv1. Helmets reduce oxygen use and grant Aqua Affinity, boots improve underwater movement, manuscripts heal every four seconds. |
 | `guide/core_weaver_2` | At Ease Underwater | Obtain Laver Condensation Core Lv2. Lv2 strengthens aquatic benefits; manuscripts combine healing with a minimum food level. |
 | `guide/core_weaver_3` | Breathless Depths | Obtain Laver Condensation Core Lv3. A Lv3 helmet stops oxygen consumption, boots improve swimming further, and manuscripts improve healing and food protection. |
 | `guide/landmark_weaver` | Explore Laver Triangle Palace | Enter the built space of Laver Triangle Palace and explore its paths and exhibits. |
-| `guide/play_laver` | A Note at the Table | With both hands empty and without sneaking, right-click a valid Laver table pattern to begin playing. |
+| `guide/play_laver` | A Note at the Table | With both hands empty and without sneaking, right-click an inlay to play its longest row ending in a Matrix Number Brick, one cell per quarter-second. |
 | `guide/biome_astra` | Visit Astra Inference Plains | Enter Astra Inference Plains in Inner to discover its materials and megastructure. |
-| `guide/material_astra` | Computing in the Clouds | Collect a Cloud Pearl and Compute Chip, linking cloud knots with ground-level server racks. |
+| `guide/material_astra` | Computing in the Clouds | Collect a Nuclear Blast Pearl and Compute Chip, linking the hot nuclei of cloud knots with ground-level server racks. |
 | `guide/core_astra_1` | An Astonishing Hit | Obtain Heart of Nuclear Awe Lv1. In a sword or bow, hits burst against the target and nearby creatures without damaging terrain. |
 | `guide/core_astra_2` | Spreading Shockwaves | Obtain Heart of Nuclear Awe Lv2. Lv2 strengthens the on-hit burst. Heart of Nuclear Awe cannot be socketed into manuscripts. |
 | `guide/core_astra_3` | The Critical Point | Obtain Heart of Nuclear Awe Lv3. Lv3 bursts are stronger; matching burst contributions combine by root-sum-squares. |

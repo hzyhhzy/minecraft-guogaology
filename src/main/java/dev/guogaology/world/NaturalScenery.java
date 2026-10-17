@@ -400,7 +400,7 @@ public final class NaturalScenery {
         var provisional=new Table(s,pattern,y,turn,vertical,mirror);int roof=317;
         int n=pattern.size();
         // Reject biome-edge cliffs instead of raising a whole diagram onto the cavern roof.
-        for(int row:new int[]{0,n/2,n}) for(int col:new int[]{-1,row/2,row+1}) {
+        for(int row:new int[]{1,n/2,n}) for(int col:new int[]{-1,row/2,row+1}) {
             var p=tableCell(provisional,vertical?n:row,col);
             var column=ProceduralTerrain.column(s.seed,p.getX(),p.getZ(),false);
             int ground=column.surface(false,s.floor),ceiling=column.surface(true,s.ceiling==Integer.MIN_VALUE?245:s.ceiling);
@@ -411,7 +411,7 @@ public final class NaturalScenery {
         if(y!=Integer.MIN_VALUE && y<64) {
             var fitted=new Table(s,pattern,y,turn,vertical,mirror);
             // Reject the entire diagram if even one cell or step would be skipped by water protection.
-            for(int row=0;row<=n;row++) for(int col=-1;col<=row+1;col++) {
+            for(int row=1;row<=n;row++) for(int col=-1;col<=row+1;col++) {
                 var p=tableCell(fitted,row,col);if(p.getY()>=64) continue;
                 var water=WaterField.sample(s.seed,p.getX(),p.getZ(),false,BiomeRegions.weights(s.seed,p.getX(),p.getZ()));
                 if(water.submerged(p.getY())) return new Table(s,pattern,Integer.MIN_VALUE,turn,vertical,mirror);
@@ -429,20 +429,20 @@ public final class NaturalScenery {
     }
     private static void table(SceneryBrush b,Table t) {
         int n=t.pattern.size();
-        for(int row=0;row<=n;row++) {
+        for(int row=1;row<=n;row++) {
             for(int col=0;col<=row;col++) {
-                int kind=t.pattern.cell(row,col);var state=(row==0?CoreResources.LAVER_GEL:kind==0?GuogaologyBlocks.IBLP_BLANK:kind==1?GuogaologyBlocks.IBLP_NODE:GuogaologyBlocks.IBLP_MARKED).getDefaultState();
+                int kind=t.pattern.cell(row,col);var state=(kind==0?GuogaologyBlocks.IBLP_BLANK:kind==1?GuogaologyBlocks.IBLP_NODE:GuogaologyBlocks.IBLP_MARKED).getDefaultState();
                 var p=tableCell(t,row,col);b.set(p.getX(),p.getY(),p.getZ(),state);
                 if(!t.vertical) b.set(p.getX(),p.getY()-1,p.getZ(),GuogaologyBlocks.LAVER_PLANKS.getDefaultState());
             }
             if(row>0) { var p=tableCell(t,row,row+1);b.set(p.getX(),p.getY(),p.getZ(),GuogaologyBlocks.ordinalBrick(t.pattern.steps()[row-1])); }
             for(int col:new int[]{-1,row+1}) {
                 var p=tableCell(t,row,col);
-                if(col==-1||row==0)b.set(p.getX(),p.getY(),p.getZ(),GuogaologyBlocks.LAVER_INLAY.getDefaultState());
+                if(col==-1)b.set(p.getX(),p.getY(),p.getZ(),GuogaologyBlocks.LAVER_INLAY.getDefaultState());
                 if(!t.vertical)b.set(p.getX(),p.getY()-1,p.getZ(),GuogaologyBlocks.LAVER_PLANKS.getDefaultState());
             }
         }
-        if(!t.vertical) for(int[] corner:new int[][]{{0,0},{n,0},{n,n}}) {
+        if(!t.vertical) for(int[] corner:LaverTableShape.legs(n)) {
             var p=tableCell(t,corner[0],corner[1]);int ground=ProceduralTerrain.column(t.site.seed,p.getX(),p.getZ(),false).surface(false,t.site.floor);
             if(ground!=Integer.MIN_VALUE) b.box(p.getX(),ground-1,p.getZ(),p.getX(),t.base-1,p.getZ(),GuogaologyBlocks.LAVER_PLANKS.getDefaultState());
         }

@@ -127,14 +127,14 @@ Inner and Underworld wilderness no longer places finished cores or base crystal 
 | Arrowgrain Knot | Small power towers and Graham trees |
 | SCG Junction | SCG graph vertices; TREE centers consistently contain their matching ordinary colored node |
 | Hydra Sprig | Branching plants, Hydras and crowns in the Ordinal Garden |
-| Laver Gel | Laver veins and table scenery |
-| Condensed Cloud Pearl | Astra mushroom clouds and woven knots |
+| Laver Gel | Laver veins and aquatic Laver scenery |
+| Nuclear Blast Pearl | Astra mushroom clouds and woven knots |
 | Set Membrane | Set shells and egg scenery in Boundary Highlands |
 | Dread Fir Resin | Underworld conifer and Dread Fir scenery |
 
 Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Version0.5.6 replaces the iron-specific altitude bands with small veins distributed uniformly throughout the rock, calibrated against the average iron-to-host-rock ratio in a typical vanilla sample. LHO receives one fifth as many vein attempts, with more transparent glass and crystal markings. Both cave walls and exterior rock can expose ore; no extra air-exposure discard applies. Only newly generated chunks change. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
 
-The eight new ingredients look like simple natural materials. Arrowgrain Knots, SCG Junctions, Laver Gel, Condensed Cloud Pearls and Dread Fir Resin use full cubes; Matrix Sheets, Hydra Sprigs and Set Membranes retain plain slab, sprig and folded-membrane shapes without jewel frames.
+The eight new ingredients look like simple natural materials. Arrowgrain Knots, SCG Junctions, Laver Gel and Dread Fir Resin use full cubes; Matrix Sheets, Hydra Sprigs and Set Membranes retain plain slab, sprig and folded-membrane shapes. Nuclear Blast Pearls resemble a condensed mushroom cloud, with a blue-white crown, narrow stem, spreading base and a little warm light inside the stem, without jewel frames.
 
 Four shards and one base crystal convert both ways. Mining a base crystal returns the block itself, including by hand. It still provides light, LHO stabilization and basic manuscript enhancement.
 
@@ -147,7 +147,7 @@ Each first-grade regional core costs the eight biome ingredients below, plus one
 | Hydra Bud | 2 Hydra Sprigs, 2 Veblen Petals, one ψ Branchstone, one Ω Branchstone, 2ordinal flowers/plants |
 | Absence Core | One each L/H/O Glass, fffZ, FOS, ψ branch, Z branch and Void Glass |
 | Laver Condensation Core | 2 Laver Gel, 2 iBLP Ordinary Points, one Marked Point, one Empty Cell, one Guogao block and one Tianyi Cyan Fiber |
-| Heart of Nuclear Awe | 2 Condensed Cloud Pearls, 2 Compute Chips, 2 Astra Condensed Clouds, one Astra Marble and one Pale-Green Jade |
+| Heart of Nuclear Awe | 2 Nuclear Blast Pearls, 2 Compute Chips, 2 Astra Condensed Clouds, one Astra Marble and one Pale-Green Jade |
 | Boundary Core | 2 Set Membranes, 2 Turing Tapes, 2 Proof Strata Stone, one Formula Stone and one Rayo Roseglass |
 | Heart of Guogao | 2 Dread Fir Resin, 2 Dread Fir Leaves, one Guogao block, one Starlight Glass, one numbered lamp and one emoji lamp |
 
@@ -170,7 +170,11 @@ One input lamp converts into one of 54 same-color shapes: two expressions, each 
 
 ## Shared scenery and building materials
 
-Ordinary Outer tables keep their original Alice patterns; Inner iBLP tables use the Laver Condensation Core for playback. Laver wood, Guogao sweets, lamps and numerical bricks use shared items. The Shock-Slump Chair remains available. Turing tapes run #14263231 with right-angle or vertical turns; an ordinary Turing Endcap provides an inactive endpoint without needing a natural Boundary Core.
+Ordinary Outer tables keep their original Alice patterns. Wild Inner iBLP tables omit the gel apex row: the first row is an inlay, two actual cells and a Matrix Number Brick, with inset legs. Palace layouts, cores and diagram tables stay unchanged.
+
+With both hands empty and without sneaking, right-click an inlay to play one row; clicking cells does nothing. The six cardinal directions are scanned for continuous cells ending at a Matrix Number Brick, choosing only the longest valid row. Cells and the digit determine the tune, with blank cells as rests and five ticks per cell (a quarter-second at20TPS). No core or gel is required; player-built matching rows work too. Any unloaded chunk encountered cancels the attempt without loading or waiting. Editing, breaking or unloading a playing row stops it.
+
+Laver wood, Guogao sweets, lamps and numerical bricks use shared items. Three-block Guogao lamps have an air center and26unchanged exterior tiles. The Shock-Slump Chair remains available. Turing tapes run #14263231 with right-angle or vertical turns; an ordinary Turing Endcap provides an inactive endpoint without needing a natural Boundary Core.
 
 Right-click Matrix Number Bricks to cycle 0–15, or colored number lamps to cycle 0–32. Blank lamps are separate blocks and remain blank when clicked. Number Stones do not cycle. Mined items preserve their edited number and color. The three portal designs follow their actual destination, including return trips.
 
@@ -196,6 +200,6 @@ Underworld cliffs carry giant diagonal chains from actual rims at Y250 or higher
 
 ## Survival guide advancements
 
-The Guogaology directory root auto-completes on joining; its icon combines cake and an apple. The actual journey begins with Into the Outer Realm. First entering each realm explains its gate; return gates still credit their activator. First Ω ore/mineral precedes Inner in the guide. Number tools, computing and Ordinal Crystal progression belong under Inner.
+The Guogaology directory root auto-completes on joining and uses the Mod logo. Into the Outer Realm uses the cake-and-apple emblem. The actual journey begins with Into the Outer Realm. First entering each realm explains its gate; return gates still credit their activator. First Ω ore/mineral precedes Inner in the guide. Number tools, computing and Ordinal Crystal progression belong under Inner.
 
 Eight thematic branches start with the seven Inner biomes and the Underworld dimension. Each divides into representative materials → core Lv1 → Lv2 → Lv3, and a separate megastructure visit. Titles reflect core capabilities, such as Boundary's A Gentle Landing → Above the Ground → Beyond the Boundary. Acquisition completes the milestone; socketing into the proper carrier activates the effects. LHO explains the base crystal's 5×5×5 stabilization and material color changes. Enter the actual built space to complete each megastructure; no chest is required, and each has its own architectural icon. Extra milestones cover eating Guogao, playing a Laver table, and filling all 38 sockets of four worn Ω armor pieces plus an Ω Manuscript with compatible maximum-grade cores. These do not gate gameplay, enforce order, or replace vanilla advancements. Full list: [Survival guide advancements](ADVANCEMENTS-057.en.md).
