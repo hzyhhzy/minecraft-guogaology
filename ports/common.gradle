@@ -60,6 +60,10 @@ tasks.register('preparePortResources', Exec) {
     inputs.file(repositoryRoot.toPath().resolve('tools/import_outer_content.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/outer_content_ids.json'))
     inputs.file(repositoryRoot.toPath().resolve('tools/outer_generated_resources.json'))
+    if (config.minecraft == '26.3') {
+        inputs.file(repositoryRoot.toPath().resolve('tools/prepare_263_motion_tags.py'))
+        inputs.file(repositoryRoot.toPath().resolve('tools/reference/block-motion263.json'))
+    }
     inputs.dir(repositoryRoot.toPath().resolve('content/outer-1.0.0'))
     inputs.file(rootProject.file('targets.json'))
     inputs.property('release', project.version)
@@ -108,5 +112,30 @@ if (project.name == '26.2' && project.hasProperty('mergeQa')) {
         from sourceSets.mergeQa.output
         archiveBaseName='guogaology-merge-qa'
         destinationDirectory=layout.buildDirectory.dir('qa')
+    }
+}
+
+// This helper is a separate, opt-in JAR. It never contributes to release source sets.
+if (project.name == '26.3' && project.hasProperty('releaseQa263')) {
+    sourceSets {
+        releaseQa263 {
+            java.srcDir rootProject.file('qa263')
+            resources.srcDir rootProject.file('qa263-resources')
+            compileClasspath += sourceSets.main.output + sourceSets.client.output + sourceSets.client.compileClasspath
+            runtimeClasspath += output + compileClasspath + sourceSets.client.runtimeClasspath
+        }
+    }
+    tasks.register('releaseQa263Jar', Jar) {
+        dependsOn tasks.named('releaseQa263Classes')
+        from sourceSets.releaseQa263.output
+        archiveBaseName = 'guogaology-release-263-qa'
+        destinationDirectory = layout.buildDirectory.dir('qa')
+    }
+    tasks.named('processReleaseQa263Resources') {
+        inputs.property('release', project.version)
+        filesMatching('fabric.mod.json') { expand(version: project.version) }
+        from(repositoryRoot.toPath().resolve('tools/reference/block-motion263.json')) {
+            into 'guogaology-qa263'
+        }
     }
 }

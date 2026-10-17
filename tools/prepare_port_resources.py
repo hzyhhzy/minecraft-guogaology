@@ -153,8 +153,9 @@ def convert_263_value(value, cell_xz=4, cell_y=8):
         return value
     if 'Name' in value:
         properties = value.get('Properties', {})
-        suffix = '[' + ','.join(k+'='+v for k,v in properties.items()) + ']' if properties else ''
-        return value['Name'] + suffix
+        # 26.3 BlockState.CODEC accepts a default-state block ID, or the
+        # FULL_CODEC object with lowercase id/properties for a nondefault state.
+        return {'id': value['Name'], 'properties': properties} if properties else value['Name']
     converted = {k: convert_263_value(v, cell_xz, cell_y) for k,v in value.items()}
     if converted.get('type') == 'minecraft:interpolated':
         converted['input'] = converted.pop('argument')
@@ -214,7 +215,7 @@ def convert_263_misc(out):
     for path in (out / 'data/guogaology/worldgen/configured_feature').glob('*.json'):
         data = read(path)
         data.update(data.pop('config', {}))
-        write(out / 'data/guogaology/worldgen/feature' / path.name, data)
+        write(out / 'data/guogaology/worldgen/feature' / path.name, convert_263_value(data))
         path.unlink()
     for name, chance in [('plant',65),('leaf',50)]:
         write(out / f'data/guogaology/context_int_provider/compostable/{name}.json', {
@@ -298,6 +299,11 @@ def prepare(target, release):
     portable = convert_items(out)
     from prepare_outer_resources import prepare as prepare_outer
     prepare_outer(target, out)
+    if target == '26.3':
+        # All three other native motion/heightmap tags inherit this base tag.
+        # Append last so imported world resources cannot erase our current solids.
+        from prepare_263_motion_tags import prepare as prepare_motion_tags
+        prepare_motion_tags(out)
     print(f"Prepared {target} resources: {portable} portable decoration variants")
     return out
 

@@ -37,18 +37,22 @@
 - **兼容审计的明确目标是Minecraft26.3的Alice 0.5.4.1存档。** 已核对该原始包的注册ID、维度、结构、装备组件及持久化格式；后续删除的三种原料并非其内容。静态审计预计可直接升级，但没有用真实26.3旧档完成加载、保存和重进验证，不能视为已确认的旧档迁移。升级前保留完整备份；不支持把26.3世界降到26.2打开。详见[兼容审计](https://github.com/hzyhhzy/minecraft-guogaology/blob/v0.6.0/docs/SAVE-COMPAT-0541-0510.md)及[后续补充](https://github.com/hzyhhzy/minecraft-guogaology/blob/v0.6.0/docs/SAVE-COMPAT-0541-0512.md)。
 - 旧区域不会自动补矿、换原料、重建景观或清理灯芯；新生成内容采用新规则。已经保存的箱内物品保留，尚未生成内容的战利品箱使用当前奖励。现有装备属性、合成、采集和新材质会按当前规则更新，部分新进度需要再次触发。中间开发版被移除的三种原料不提供自动转换。
 - 0.5.0以前的旧命名空间不提供迁移；若要回退版本，请恢复升级前的整份世界备份，而非只换回旧JAR。
-- 本开发周期的实际游戏与画面检查限于隔离的**Minecraft26.2原生Fabric**，包括Sodium/Voxy及原版/分页进度界面。其他三版以编译和资源检查为范围。没有为0.6.0重新进行1.21.1 Connector运行测试，历史0.5.3测试不代表本版已重新验证。
+- 本开发周期已完成隔离的**Minecraft26.2和26.3原生Fabric**定向游戏与画面检查。26.2包含Sodium/Voxy及原版/分页进度界面；26.3分别测试Sodium0.9.2与不装Sodium两种配置，没有测试26.3 Voxy。1.21.1和1.21.11以编译和资源检查为范围。没有为0.6.0重新进行1.21.1 Connector运行测试，历史0.5.3测试不代表本版已重新验证。
 - 0.5.5曾完成26.2本机回环专用服务器、真实客户端连接、保存重启与Voxy WorldGen功能检查；这些是当时的有限场景记录，不是0.6.0新完成的专服认证，也不代表多人容量、外网或Linux性能保证。
 
 ### 0.6.0最终验证 / Final release validation
 
-四个版本均通过构建与打包检查，74项Python测试通过；2,378项资产无缺失或孤立引用，每种语言的642个键无翻译或参数错误。逐项递归比较发行JAR（包括1.21.1嵌套桥接包），确认相对0.5.16仅版本元数据和桥接包文件名/引用变化，所有class、assets、data内容一致。
+四个版本均通过构建与打包检查，最终80项Python测试通过；2,378项资产无缺失或孤立引用，每种语言的642个键无翻译或参数错误。逐项递归比较发行JAR（包括1.21.1嵌套桥接包）：相对0.5.16，1.21.1、1.21.11和26.2仅版本元数据和桥接包文件名/引用变化；26.3另有下述两处JSON语义修复和51项JSON换行格式变化。class及游戏资产内容保留。
 
-最终0.6.0 JAR在隐藏独立fo262中搭配Sodium/Voxy通过Astra、紫菜演奏、景观及原生碰撞/光照定向检查，记录`ASTRA516_RUNTIME_OK`与`PRODUCTION_PORT_OK 26.2`；SCG、直立树和倒挂树三张原生截图均已检查。这不是全量生存流程或新的专服、Connector验证。
+26.3实际测试发现并修复两处适配问题：序数晶矿的旧式`{Name: ...}`目标状态不符合新版BlockState Codec，导致新世界注册表加载失败；193种实体方块还需通过原版父标签链补齐`blocks_motion_no_leaves`归属，避免运动阻挡高度图漏算。修复后的同一正式JAR分别在Sodium0.9.2和不装Sodium两种配置中各通过356项原生检查，各保存7张原生截图。检查覆盖28款模型及GUI/落地/固定外观、18款动画实际提交、226项原生碰撞标签检查、三维度新生成区块与逐列高度图对照，以及返回主世界；表面高度与实际体素零不一致，运动阻挡高度图已正确填充。
 
-All four targets pass build/package validation, alongside 74 Python tests. The 2,378 assets have no missing/orphan references, and all 642 keys per locale pass translation/parameter checks. Recursive release-JAR comparison, including the nested 1.21.1 bridge, confirms that only version metadata and bridge filenames/references differ from 0.5.16; all class, asset and data contents are identical.
+最终0.6.0 JAR在隐藏独立fo262中搭配Sodium/Voxy通过Astra、紫菜演奏、景观及原生碰撞/光照定向检查，记录`ASTRA516_RUNTIME_OK`与`PRODUCTION_PORT_OK 26.2`；SCG、直立树和倒挂树三张原生截图均已检查。本轮使用独立新世界，不代表真实旧档迁移、完整传送门仪式、全量生存流程或新的专服、Connector验证。
 
-The final 0.6.0 JAR passes focused Astra, Laver playback, scenery and native collision/light checks in an isolated hidden Fabric 26.2 client with Sodium/Voxy, recording `ASTRA516_RUNTIME_OK` and `PRODUCTION_PORT_OK 26.2`. All three native screenshots of SCG, upright and hanging firs were inspected. This is not a complete survival playthrough or a new dedicated-server/Connector validation.
+All four targets pass build/package validation, alongside the final 80 Python tests. The 2,378 assets have no missing/orphan references, and all 642 keys per locale pass translation/parameter checks. Recursive release-JAR comparison, including the nested 1.21.1 bridge, confirms that 1.21.1, 1.21.11 and 26.2 differ from 0.5.16 only in version metadata and bridge filenames/references. The 26.3 build additionally has the two semantic JSON fixes below and 51 JSON entries differing only in line endings. Class and game-asset contents are preserved.
+
+Actual 26.3 testing found and fixed two compatibility issues: the new BlockState codec rejects the old `{Name: ...}` Ordinal Ore target, preventing new-world registry loading; 193 solid blocks also need `blocks_motion_no_leaves` membership through vanilla parent tags so motion-blocking heightmaps include them. The same fixed production JAR passes 356 native checks with Sodium 0.9.2 and another 356 without Sodium, with seven native screenshots per configuration. Coverage includes 28 models and GUI/ground/fixed appearances, actual animation submission for 18 models, 226 native collision-tag checks, fresh chunks and heightmap-column comparisons in all three added dimensions, and return to the Overworld. Surface heights match actual voxels without mismatches, and motion-blocking heightmaps are populated correctly.
+
+The final 0.6.0 JAR passes focused Astra, Laver playback, scenery and native collision/light checks in an isolated hidden Fabric 26.2 client with Sodium/Voxy, recording `ASTRA516_RUNTIME_OK` and `PRODUCTION_PORT_OK 26.2`. All three native screenshots of SCG, upright and hanging firs were inspected. These checks use isolated fresh worlds; they do not establish real old-save migration, a complete portal ritual or survival playthrough, or new dedicated-server/Connector validation.
 
 许可为`GPL-3.0-only WITH GPL-3.0-linking-exception`；Alice及其他第三方内容保留各自版权和许可声明。
 
@@ -80,6 +84,6 @@ Use exactly one matching **Fabric JAR for 1.21.1, 1.21.11, 26.2 or 26.3**, with 
 
 The explicit compatibility target is **Alice's Minecraft 26.3 / 0.5.4.1 save format**. Static audits preserve its IDs, dimensions, structures and persistent equipment data, but no real 26.3 old save has been loaded, saved and reopened in this development cycle. Back up the whole world first; do not downgrade a 26.3 world to 26.2. Existing chunks are not regenerated or automatically converted. Generated chest contents remain, while unopened loot tables use current rewards; equipment, crafting, mining and appearances follow current rules. New advancements may require another trigger. Removed intermediate-development materials have no automatic conversion. Pre-0.5.0 namespaces have no migration, and rollback requires restoring the complete pre-upgrade backup.
 
-Actual gameplay and visual checks in this development cycle are limited to isolated **native Fabric 26.2**, including Sodium/Voxy and native/paginated advancement interfaces. The other targets are limited to build/resource checks. **No new 1.21.1 Connector runtime test is claimed for 0.6.0.** Local 26.2 dedicated-server, real-client, restart and Voxy WorldGen checks were performed with 0.5.5; they are historical functional evidence, not a fresh 0.6.0 certification or a multiplayer, Internet or Linux performance guarantee.
+Focused gameplay and visual checks have passed on isolated **native Fabric 26.2 and 26.3**. The 26.2 checks include Sodium/Voxy and native/paginated advancement interfaces. The 26.3 checks cover both Sodium 0.9.2 and no-Sodium configurations; Voxy was not tested on 26.3. The 1.21.1 and 1.21.11 targets are limited to build/resource checks. **No new 1.21.1 Connector runtime test is claimed for 0.6.0.** Local 26.2 dedicated-server, real-client, restart and Voxy WorldGen checks were performed with 0.5.5; they are historical functional evidence, not a fresh 0.6.0 certification or a multiplayer, Internet or Linux performance guarantee.
 
 License: `GPL-3.0-only WITH GPL-3.0-linking-exception`. Alice's attribution and all applicable third-party notices remain in force.

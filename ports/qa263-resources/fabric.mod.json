@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "guogaology-release-263-qa",
+  "version": "${version}",
+  "name": "Guogaology isolated 26.3 release checks",
+  "environment": "client",
+  "entrypoints": {"client": ["dev.guogaology.releaseqa263.Release263Checks"]},
+  "depends": {"guogaology": "*", "minecraft": "26.3", "java": ">=25", "fabric-api": "*"},
+  "mixins": ["release-263-qa.mixins.json"]
+}

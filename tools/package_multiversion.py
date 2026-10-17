@@ -62,7 +62,19 @@ def verify_crystal_ore_policy(archive, target):
     prefix='data/guogaology/worldgen/'
     folder='feature' if target=='26.3' else 'configured_feature'
     actual=json.loads(archive.read(prefix+folder+'/ore_ordinal_crystal.json'))
-    assert actual.get('config', {k:v for k,v in actual.items() if k!='type'})==ore_config(9)['config'],f'Stale crystal vein targets: {target}'
+    expected=ore_config(9)['config']
+    if target=='26.3':
+        from prepare_port_resources import convert_263_value
+        expected=convert_263_value(expected)
+        def verify_state_keys(value):
+            if isinstance(value,dict):
+                assert not ({'Name','Properties'} & value.keys()), 'Legacy block-state codec in26.3 crystal feature'
+                for child in value.values():verify_state_keys(child)
+            elif isinstance(value,list):
+                for child in value:verify_state_keys(child)
+        verify_state_keys(actual)
+    assert actual['type']=='minecraft:ore',f'Wrong crystal vein feature type: {target}'
+    assert actual.get('config', {k:v for k,v in actual.items() if k!='type'})==expected,f'Stale crystal vein targets: {target}'
     for batch in BATCHES:
         actual=json.loads(archive.read(prefix+f'placed_feature/ore_ordinal_crystal_{batch}.json'))
         assert actual==placed_config(batch),f'Stale uniform/LHO crystal distribution: {target}/{batch}'
@@ -81,6 +93,20 @@ def verify_crystal_ore_policy(archive, target):
             assert strings.count(feature)==int(feature==expected),f'Duplicate/stale crystal biome feature: {target}/{name}/{feature}'
     for batch in ('upper','middle','small'):
         assert prefix+f'placed_feature/ore_ordinal_crystal_{batch}.json' not in archive.namelist(),f'Retired height band retained: {target}/{batch}'
+
+
+def verify_motion_tags263(archive, target):
+    """Inspect the final archive, after imported-content overlays have run."""
+    if target!='26.3':
+        return
+    from prepare_263_motion_tags import classification
+    path='data/minecraft/tags/block/blocks_motion_no_leaves.json'
+    actual=json.loads(archive.read(path))
+    source=json.loads((ROOT/'src/main/resources'/path).read_text(encoding='utf-8'))
+    catalog=classification()
+    expected=list(dict.fromkeys(source['values']+['guogaology:'+name for name in catalog['motion_no_leaves']]))
+    assert actual.get('replace',False) is False,'26.3 motion tags must extend vanilla'
+    assert actual['values']==expected,'Stale/overwritten26.3 custom-solid motion tags'
 
 
 def verify_guide_policy(archive, target):
@@ -145,6 +171,7 @@ def package(targets, output_dir=None):
             verify_namespace(archive)
             verify_ore_policy(archive, target)
             verify_crystal_ore_policy(archive, target)
+            verify_motion_tags263(archive, target)
             verify_guide_policy(archive, target)
             verify_mineral_block_tools(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
@@ -152,7 +179,7 @@ def package(targets, output_dir=None):
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))
             assert not loot.get('pools'),f'Activated frame must never drop: {target}'
             assert not any('PortalGroundChecks' in name for name in entries),'Ground-placement QA leaked into release'
-            assert not any('/qa/' in n or '/mergeqa/' in n or '/connectorqa/' in n or 'connector-qa' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
+            assert not any('/qa/' in n or '/qa263/' in n or '/releaseqa263/' in n or '/mergeqa/' in n or '/connectorqa/' in n or 'connector-qa' in n or 'port-qa' in n or 'visualqa' in n for n in entries),'QA code leaked into release'
             assert not any('/Fusion' in n or '/SurvivalEntities' in n or '/OrdinalWand' in n for n in entries),'Retired systems returned'
             templates=[n for n in entries if n.startswith('data/guogaology/structure/') and n.endswith('.nbt')]
             assert len(templates)==61,(target,len(templates))

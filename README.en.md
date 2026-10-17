@@ -18,6 +18,8 @@ Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mine
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
 
+Version0.6.0 passes focused isolated26.2 checks withSodium/Voxy and26.3 checks with both the native renderer andSodium. The26.3 Ordinal Ore encoding and terrain-heightmap tags are repaired. The two other targets pass build/resource checks; see the [exact validation scope](docs/WORK-060.md).
+
 Version 0.5.5 passed a local 26.2 dedicated Fabric server check with a separate client: manuscript/station interactions, dimension travel, flight and saved-world restart. The test bound only to 127.0.0.1 and was not exposed to the LAN or Internet. See [the test record and scope](docs/DEDICATED-SERVER-055.md); this was not a multiplayer capacity benchmark.
 
 A separate local test with Voxy World Gen V2 2.4.3 on the server and Voxy 0.2.19-beta on the client passed distant-data reception, return trips and fresh-client reception after restart in all three additional dimensions. The server does not need the Voxy renderer. Tested at 32-chunk radius/2 active tasks; cold generation causes substantial load. See [the LOD multiplayer test](docs/DEDICATED-VOXY-055.md).
