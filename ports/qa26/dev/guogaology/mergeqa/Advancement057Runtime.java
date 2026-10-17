@@ -14,7 +14,8 @@ public final class Advancement057Runtime {
     private static final boolean BASELINE=Boolean.getBoolean("guogaology.qa.advancementsBaseline");
     private static final boolean BIOMES=Boolean.getBoolean("guogaology.qa.advancements510");
     private static final String[] TARGETS={"minecraft:story/root","minecraft:adventure/root","minecraft:husbandry/root","minecraft:nether/root","minecraft:end/root","guogaology:arrival",
-        "guogaology:guide/enter_inner","guogaology:guide/landmark_matrix","guogaology:guide/landmark_power","guogaology:guide/landmark_hydra","guogaology:guide/landmark_absence","guogaology:guide/landmark_weaver","guogaology:guide/landmark_astra","guogaology:guide/landmark_frontier","guogaology:guide/landmark_guogao","guogaology:guide/core_frontier_2","guogaology:guide/core_frontier_3","guogaology:guide/material_absence","guogaology:guide/omega_mastery"};
+        "guogaology:guide/enter_inner","guogaology:guide/landmark_matrix","guogaology:guide/landmark_power","guogaology:guide/landmark_hydra","guogaology:guide/landmark_absence","guogaology:guide/landmark_weaver","guogaology:guide/landmark_astra","guogaology:guide/landmark_frontier","guogaology:guide/landmark_guogao","guogaology:guide/core_frontier_2","guogaology:guide/core_frontier_3","guogaology:guide/material_absence","guogaology:guide/omega_mastery",
+        "guogaology:guide/enter_outer","guogaology:guide/biome_matrix","guogaology:guide/biome_power","guogaology:guide/biome_hydra","guogaology:guide/biome_absence","guogaology:guide/biome_weaver","guogaology:guide/biome_astra","guogaology:guide/biome_frontier","guogaology:guide/enter_underworld"};
     private static String prefix(){return BIOMES?"advancements510":"advancements057";}
     private boolean opening,queued,done,shown,initialShown;private volatile boolean ready,captured,initialCaptured;private volatile Throwable failure;
     private int frame,ticks,initialTicks;private final long deadline=System.nanoTime()+900_000_000_000L;
@@ -74,6 +75,10 @@ public final class Advancement057Runtime {
             if(!ready||c.gui.overlay()!=null)return;
             var handler=c.getConnection().getAdvancements();
             for(String root:Advancement057Checks.ROOTS)if(handler.get(Identifier.parse(root))==null)return;
+            if(BIOMES)for(var node:handler.getTree().nodes())if(node.holder().id().getNamespace().equals("guogaology")&&node.advancement().display().isPresent()){
+                var expected=dev.guogaology.advancement.GuideLayout.position(node.holder().id().toString());var actual=node.advancement().display().orElseThrow();
+                if(expected==null||Math.abs(expected.x()-actual.getX())>.001||Math.abs(expected.y()-actual.getY())>.001)throw new AssertionError("Client received shuffled layout "+node.holder().id());
+            }
             boolean paginated=FabricLoader.getInstance().isModLoaded("paginatedadvancements");
             String root=Advancement057Checks.ROOTS[Math.min(frame,5)];
             if(!shown){

@@ -676,7 +676,7 @@
       "advancement.guogaology.guide.lamp_shaper.title": "表情塑形",
       "advancement.guogaology.guide.lamp_shaper.description": "制作果糕灯塑形台，在两种表情、完整灯与3×3×3分块之间转换。",
       "advancement.guogaology.guide.compute_setup.title": "自己的算力",
-      "advancement.guogaology.guide.compute_setup.description": "在里界收集算力芯片，制作机柜或终端。",
+      "advancement.guogaology.guide.compute_setup.description": "在Astra推演原收集算力芯片，制作机柜或终端。",
       "advancement.guogaology.guide.enter_underworld.title": "进入果糕地府",
       "advancement.guogaology.guide.enter_underworld.description": "在里界用12个果糕方块搭水平5×5去四角的门框，可混搭颜色；再投入1个果糕方块激活，穿门进入果糕地府。",
       "advancement.guogaology.guide.landmark_matrix.title": "探索矩阵折峰堡",
@@ -795,7 +795,8 @@
       "item.guogaology.landmark_emblem_weaver": "紫菜三角宫探索标志",
       "item.guogaology.landmark_emblem_astra": "Astra 推演中枢探索标志",
       "item.guogaology.landmark_emblem_frontier": "界限演算庭探索标志",
-      "item.guogaology.landmark_emblem_guogao": "果糕终境巨树探索标志"
+      "item.guogaology.landmark_emblem_guogao": "果糕终境巨树探索标志",
+      "item.guogaology.brand_emblem": "果糕逻辑标志"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1320,7 +1321,7 @@
       "advancement.guogaology.guide.lamp_shaper.title": "Shaping Expressions",
       "advancement.guogaology.guide.lamp_shaper.description": "Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles.",
       "advancement.guogaology.guide.compute_setup.title": "A Computing Setup",
-      "advancement.guogaology.guide.compute_setup.description": "Collect Compute Chips in Inner and craft a server rack or terminal.",
+      "advancement.guogaology.guide.compute_setup.description": "Collect Compute Chips in Astra and craft a server rack or terminal.",
       "advancement.guogaology.guide.enter_underworld.title": "The Guogao Underworld",
       "advancement.guogaology.guide.enter_underworld.description": "In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld.",
       "advancement.guogaology.guide.landmark_matrix.title": "Explore Matrix Folded Keep",
@@ -1439,7 +1440,8 @@
       "item.guogaology.landmark_emblem_weaver": "Laver Triangle Palace Exploration Emblem",
       "item.guogaology.landmark_emblem_astra": "Astra Inference Nexus Exploration Emblem",
       "item.guogaology.landmark_emblem_frontier": "Boundary Calculus Court Exploration Emblem",
-      "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem"
+      "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem",
+      "item.guogaology.brand_emblem": "Guogaology Emblem"
     }
   }
 }

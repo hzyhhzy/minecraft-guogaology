@@ -1,0 +1,306 @@
+{
+  "guogaology:arrival": [
+    0.0,
+    24.4562
+  ],
+  "guogaology:guide/biome_absence": [
+    7.25,
+    17.5
+  ],
+  "guogaology:guide/biome_astra": [
+    7.25,
+    25.55
+  ],
+  "guogaology:guide/biome_frontier": [
+    7.25,
+    28.7
+  ],
+  "guogaology:guide/biome_hydra": [
+    7.25,
+    14.7
+  ],
+  "guogaology:guide/biome_matrix": [
+    7.25,
+    9.1
+  ],
+  "guogaology:guide/biome_power": [
+    7.25,
+    11.9
+  ],
+  "guogaology:guide/biome_weaver": [
+    7.25,
+    21.0
+  ],
+  "guogaology:guide/compute_setup": [
+    10.15,
+    25.2
+  ],
+  "guogaology:guide/core_absence_1": [
+    10.15,
+    16.8
+  ],
+  "guogaology:guide/core_absence_2": [
+    11.6,
+    16.8
+  ],
+  "guogaology:guide/core_absence_3": [
+    13.05,
+    16.8
+  ],
+  "guogaology:guide/core_astra_1": [
+    10.15,
+    23.8
+  ],
+  "guogaology:guide/core_astra_2": [
+    11.6,
+    23.8
+  ],
+  "guogaology:guide/core_astra_3": [
+    13.05,
+    23.8
+  ],
+  "guogaology:guide/core_frontier_1": [
+    10.15,
+    28.0
+  ],
+  "guogaology:guide/core_frontier_2": [
+    11.6,
+    28.0
+  ],
+  "guogaology:guide/core_frontier_3": [
+    13.05,
+    28.0
+  ],
+  "guogaology:guide/core_guogao_1": [
+    10.15,
+    30.8
+  ],
+  "guogaology:guide/core_guogao_2": [
+    11.6,
+    30.8
+  ],
+  "guogaology:guide/core_guogao_3": [
+    13.05,
+    30.8
+  ],
+  "guogaology:guide/core_hydra_1": [
+    10.15,
+    14.0
+  ],
+  "guogaology:guide/core_hydra_2": [
+    11.6,
+    14.0
+  ],
+  "guogaology:guide/core_hydra_3": [
+    13.05,
+    14.0
+  ],
+  "guogaology:guide/core_matrix_1": [
+    10.15,
+    8.4
+  ],
+  "guogaology:guide/core_matrix_2": [
+    11.6,
+    8.4
+  ],
+  "guogaology:guide/core_matrix_3": [
+    13.05,
+    8.4
+  ],
+  "guogaology:guide/core_power_1": [
+    10.15,
+    11.2
+  ],
+  "guogaology:guide/core_power_2": [
+    11.6,
+    11.2
+  ],
+  "guogaology:guide/core_power_3": [
+    13.05,
+    11.2
+  ],
+  "guogaology:guide/core_weaver_1": [
+    10.15,
+    19.6
+  ],
+  "guogaology:guide/core_weaver_2": [
+    11.6,
+    19.6
+  ],
+  "guogaology:guide/core_weaver_3": [
+    13.05,
+    19.6
+  ],
+  "guogaology:guide/crystal": [
+    8.7,
+    3.85
+  ],
+  "guogaology:guide/eat_guogao": [
+    2.9,
+    39.2
+  ],
+  "guogaology:guide/enter_inner": [
+    5.8,
+    18.725
+  ],
+  "guogaology:guide/enter_outer": [
+    1.45,
+    24.4562
+  ],
+  "guogaology:guide/enter_underworld": [
+    7.25,
+    31.5
+  ],
+  "guogaology:guide/first_book": [
+    5.8,
+    0
+  ],
+  "guogaology:guide/first_omega": [
+    4.35,
+    18.725
+  ],
+  "guogaology:guide/first_ore": [
+    2.9,
+    9.7125
+  ],
+  "guogaology:guide/first_tool": [
+    4.35,
+    0.7
+  ],
+  "guogaology:guide/full_set": [
+    5.8,
+    1.4
+  ],
+  "guogaology:guide/higher_station": [
+    11.6,
+    5.6
+  ],
+  "guogaology:guide/lamp_shaper": [
+    2.9,
+    37.8
+  ],
+  "guogaology:guide/landmark_absence": [
+    8.7,
+    18.2
+  ],
+  "guogaology:guide/landmark_astra": [
+    8.7,
+    26.6
+  ],
+  "guogaology:guide/landmark_frontier": [
+    8.7,
+    29.4
+  ],
+  "guogaology:guide/landmark_guogao": [
+    8.7,
+    32.2
+  ],
+  "guogaology:guide/landmark_hydra": [
+    8.7,
+    15.4
+  ],
+  "guogaology:guide/landmark_matrix": [
+    8.7,
+    9.8
+  ],
+  "guogaology:guide/landmark_power": [
+    8.7,
+    12.6
+  ],
+  "guogaology:guide/landmark_weaver": [
+    8.7,
+    21.0
+  ],
+  "guogaology:guide/landmarks_all": [
+    7.25,
+    33.6
+  ],
+  "guogaology:guide/material_absence": [
+    8.7,
+    16.8
+  ],
+  "guogaology:guide/material_astra": [
+    8.7,
+    24.5
+  ],
+  "guogaology:guide/material_frontier": [
+    8.7,
+    28.0
+  ],
+  "guogaology:guide/material_guogao": [
+    8.7,
+    30.8
+  ],
+  "guogaology:guide/material_hydra": [
+    8.7,
+    14.0
+  ],
+  "guogaology:guide/material_matrix": [
+    8.7,
+    8.4
+  ],
+  "guogaology:guide/material_power": [
+    8.7,
+    11.2
+  ],
+  "guogaology:guide/material_weaver": [
+    8.7,
+    19.6
+  ],
+  "guogaology:guide/number_tools": [
+    7.25,
+    7.0
+  ],
+  "guogaology:guide/omega_mastery": [
+    14.5,
+    5.6
+  ],
+  "guogaology:guide/ordinal1": [
+    10.15,
+    2.8
+  ],
+  "guogaology:guide/ordinal2": [
+    11.6,
+    2.8
+  ],
+  "guogaology:guide/ordinal3": [
+    13.05,
+    2.8
+  ],
+  "guogaology:guide/play_laver": [
+    8.7,
+    22.4
+  ],
+  "guogaology:guide/portal_return": [
+    4.35,
+    35.7
+  ],
+  "guogaology:guide/return_home": [
+    5.8,
+    35.0
+  ],
+  "guogaology:guide/return_ready": [
+    2.9,
+    35.7
+  ],
+  "guogaology:guide/return_up": [
+    5.8,
+    36.4
+  ],
+  "guogaology:guide/shards": [
+    7.25,
+    3.85
+  ],
+  "guogaology:guide/socketed": [
+    11.6,
+    4.2
+  ],
+  "guogaology:guide/station": [
+    10.15,
+    4.9
+  ],
+  "guogaology:guide/ultimate_station": [
+    13.05,
+    5.6
+  ]
+}

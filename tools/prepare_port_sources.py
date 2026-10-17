@@ -51,6 +51,10 @@ def adapt(text, target, name):
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
+    if target == '26.3' and name == 'GuideLayoutMixin.java':
+        #26.3 moved the mutable display coordinates onto AdvancementNode.
+        text=text.replace('node.advancement().display().ifPresent(display->display.setLocation(pos.x(),pos.y()))',
+                          'node.setLocation(pos.x(),pos.y())')
     if name == 'BowVolleyLedger.java':
         text = text.replace('new SavedDataType<>("guogaology_bow_volleys",', 'new SavedDataType<>(dev.guogaology.GuogaologyMod.id("bow_volleys"),')
     if name == 'BlockYieldMixin.java':

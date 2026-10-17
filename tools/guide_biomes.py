@@ -1,5 +1,10 @@
 """Authored biome progression and capability-based core copy, not recipe dumps."""
 
+# Actual existing scenery items, deliberately excluding all core families.
+BIOME_ICONS={'matrix':'y_sequence_stone','power':'power_bricks','hydra':'epsilon_bloom',
+             'absence':'lho_hydra_psi','weaver':'iblp_marked','astra':'nuke_chair',
+             'frontier':'turing_tape','guogao':'guogao_lantern'}
+
 # theme, biome, representative raw icon, material groups, material title/description,
 # three (title, capability) pairs in Chinese and English.
 THEME_GUIDES = {
@@ -61,7 +66,7 @@ def append_biome_guides(node,item,names,inventory,travel,ns):
         biome,icon,groups,title,description,levels=THEME_GUIDES[theme]
         root='guide/enter_underworld' if theme=='guogao' else 'guide/biome_'+theme
         if theme!='guogao':
-            node(root,'guide/enter_inner',icon,'走进'+names['zh_cn']['biome.guogaology.'+biome],
+            node(root,'guide/enter_inner',BIOME_ICONS[theme],'走进'+names['zh_cn']['biome.guogaology.'+biome],
                  'Visit '+names['en_us']['biome.guogaology.'+biome],
                  '进入里界的'+names['zh_cn']['biome.guogaology.'+biome]+'，寻找本地材料与巨构。',
                  'Enter '+names['en_us']['biome.guogaology.'+biome]+' in Inner to discover its materials and megastructure.',manual)

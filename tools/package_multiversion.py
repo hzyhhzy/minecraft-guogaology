@@ -85,7 +85,7 @@ def verify_crystal_ore_policy(archive, target):
 
 def verify_guide_policy(archive, target):
     """Catch advancement overlays and version-sensitive background paths before shipping."""
-    from generate_guide_advancements import build
+    from generate_guide_advancements import build, positions
     expected,_,_=build()
     visible={}
     for name in archive.namelist():
@@ -98,6 +98,8 @@ def verify_guide_policy(archive, target):
         value=json.loads(json.dumps(value))
         if name=='arrival' and target!='1.21.1':value['display']['background']='minecraft:gui/advancements/backgrounds/stone'
         assert visible[name]==value,f'Incorrect guide payload: {target}/{name}'
+    assert json.loads(archive.read('guogaology/guide_layout.json'))==positions(expected),f'Stale guide order: {target}'
+    assert archive.read('assets/guogaology/textures/item/brand_emblem.png')==archive.read('assets/guogaology/icon.png'),f'Wrong directory logo: {target}'
 
 
 def verify_mineral_block_tools(archive, target):

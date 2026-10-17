@@ -10,7 +10,8 @@
     "green": "minecraft:block/green_concrete",
     "mint": "minecraft:block/cyan_concrete",
     "glass": "minecraft:block/light_blue_stained_glass",
-    "gold": "minecraft:block/gold_block"
+    "gold": "minecraft:block/gold_block",
+    "particle": "minecraft:block/smooth_stone"
   },
   "elements": [
     {

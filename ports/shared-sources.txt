@@ -44,6 +44,7 @@ dev/guogaology/world/VoxelBrush.java
 dev/guogaology/world/WaterField.java
 dev/guogaology/world/WorldNoise.java
 dev/guogaology/mining/EquipmentRules.java
+dev/guogaology/advancement/GuideLayout.java
 dev/guogaology/mining/ManuscriptFlightRules.java
 dev/guogaology/mining/OreVeins.java
 dev/guogaology/mining/OreExposure.java

@@ -2,6 +2,7 @@ package dev.guogaology.mergeqa;
 
 import dev.guogaology.*;
 import dev.guogaology.advancement.GuideProgress;
+import dev.guogaology.advancement.GuideLayout;
 import dev.guogaology.ambience.*;
 import dev.guogaology.mining.*;
 import dev.guogaology.survival.*;
@@ -27,6 +28,7 @@ import java.util.*;
 public final class Advancement510Checks {
     private static final String[] THEMES={"matrix","power","hydra","absence","weaver","astra","frontier","guogao"};
     private static final String[] CORES={"sequence_core","power_tower_core","hydra_bud","lho_trace","laver_core","astra_critical_core","boundary_core","guogao_heart"};
+    private static final String[] BIOME_ICONS={"y_sequence_stone","power_bricks","epsilon_bloom","lho_hydra_psi","iblp_marked","nuke_chair","turing_tape","guogao_lantern"};
     private static final List<EquipmentSlot> PLAYER_SLOTS=List.of(EquipmentSlot.MAINHAND,EquipmentSlot.OFFHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET);
     private static int checks;
     private static void check(boolean b,String why){checks++;if(!b)throw new AssertionError(why);}
@@ -40,6 +42,17 @@ public final class Advancement510Checks {
     public static void run(ServerPlayer p)throws Exception{
         checks=0;var server=p.level().getServer();var original=p.level();var start=p.blockPosition();p.setGameMode(GameType.CREATIVE);
         check(server.getAdvancements().getAllAdvancements().stream().filter(a->a.id().getNamespace().equals("guogaology")&&a.value().display().isPresent()).count()==76,"all 76 guide definitions decoded");
+        for(var advancement:server.getAdvancements().getAllAdvancements())if(advancement.id().getNamespace().equals("guogaology")&&advancement.value().display().isPresent()){
+            var expected=GuideLayout.position(advancement.id().toString());var actual=advancement.value().display().orElseThrow();
+            check(expected!=null&&Math.abs(expected.x()-actual.getX())<.001&&Math.abs(expected.y()-actual.getY())<.001,"native layout uses stable guide positions "+advancement.id());
+        }
+        float previous=-1;for(int index=0;index<THEMES.length;index++){String theme=THEMES[index];
+            String id=theme.equals("guogao")?"enter_underworld":"biome_"+theme;var display=holder(p,id).value().display().orElseThrow();
+            check(display.getY()>previous,"fixed biome sequence "+theme);previous=display.getY();
+            var representative=item(BIOME_ICONS[index]);check(!representative.isEmpty()&&display.getIcon().is(representative.getItem()),"existing scenery item for biome "+theme);
+            check(!CoreGrades.ROOTS.contains(BIOME_ICONS[index]),"biome icon is not a core "+theme);
+        }
+        check(holder(p,"compute_setup").value().parent().orElseThrow().equals(GuogaologyMod.id("guide/material_astra")),"computing is under Astra materials");
         for(String retired:List.of("raw_material","first_core","core2","core3","landmark_first","portal_outer","portal_inner","portal_underworld"))check(server.getAdvancements().get(GuogaologyMod.id("guide/"+retired))==null,"retired duplicate "+retired);
         inventory(p,"omega_material");complete(p,"first_ore");check(!done(p,"first_omega"),"omega is distinct from capital Omega");
         inventory(p,"true_omega_ore");complete(p,"first_omega");

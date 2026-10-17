@@ -2,8 +2,9 @@
 import argparse
 import json
 from pathlib import Path
-from guide_biomes import append_biome_guides
+from guide_biomes import append_biome_guides, BIOME_ICONS
 from generate_landmark_icons import models as landmark_models
+from guide_layout import positions, reading_order
 
 ROOT=Path(__file__).resolve().parents[1]
 RES=ROOT/'src/main/resources'
@@ -34,10 +35,10 @@ def build():
         rows.append((name,zh,description))
     def item(name,parent,icon,zh,en,description,en_description,*groups,frame='task'):
         node('guide/'+name,parent,icon,zh,en,description,en_description,inventory(*groups),frame=frame)
-    node('arrival',None,'guide_emblem','果糕逻辑','Guogaology',
+    node('arrival',None,'brand_emblem','果糕逻辑','Guogaology',
          '从蛋糕门出发，探索表界、里界与果糕地府。','Begin with a cake gate and explore the Outer, Inner and Guogao Underworld.',
          {'begin':{'trigger':'minecraft:tick'}})
-    node('guide/enter_outer','arrival','minecraft:apple','初入表界','Into the Outer Realm',
+    node('guide/enter_outer','arrival','guide_emblem','初入表界','Into the Outer Realm',
          '用12个蛋糕摆成水平5×5去四角的门框，向内投入一个苹果激活，再穿门进入表界。','Build a horizontal 5×5 ring of 12 cakes without corners, throw an apple inside to activate it, then enter the Outer realm.',travel(NS+'outer'))
     item('first_ore','guide/enter_outer','omega_material','序矿初采','The First Ordinal Mineral',
          '用铁镐或更好的镐获得任一种序数矿物；四种矿都直接掉落材料。','Obtain an ordinal mineral with an iron or better pickaxe. All four ores drop usable materials directly.',list(n+'_material' for n in MINERALS))
@@ -65,8 +66,8 @@ def build():
          '在表界用12个矿物结晶块搭水平5×5去四角的门框，ω、ε、Γ、Ω可混搭；投入一份Ω材料激活，再穿门进入里界。','In Outer, build a horizontal 5×5 ring of 12 mineral blocks without corners, mixing ω, ε, Γ and Ω. Throw one Ω mineral inside, then enter Inner.',travel(NS+'guogaology'))
     item('number_tools','guide/enter_inner','number_pickaxe','数字也能成器','Tools from Numbers',
          '在里界采集数字刻石，制作数字石镐或数字石剑；等级取材料数字的平均值向下取整。','Gather Number Stones in Inner to craft a Number Stone pickaxe or sword. Its digit is the floor of the material digits’ average.',['number_pickaxe','number_sword'])
-    item('compute_setup','guide/enter_inner','server_rack','自己的算力','A Computing Setup',
-         '在里界收集算力芯片，制作机柜或终端。','Collect Compute Chips in Inner and craft a server rack or terminal.',['server_rack','office_monitor'])
+    item('compute_setup','guide/material_astra','server_rack','自己的算力','A Computing Setup',
+         '在Astra推演原收集算力芯片，制作机柜或终端。','Collect Compute Chips in Astra and craft a server rack or terminal.',['server_rack','office_monitor'])
     item('shards','guide/enter_inner','ordinal_shard','晶矿的碎片','Crystal from the Rock',
          '开采序数晶矿，获得序数晶屑；徒手也能采集，镐更快。','Mine Ordinal Crystal Ore for shards. Hands work; pickaxes are faster.',['ordinal_shard'])
     item('crystal','guide/shards','ordinal_crystal','稳定的一块','A Stable Crystal',
@@ -87,7 +88,7 @@ def build():
          '序数晶体与序数晶核逐级九合一，获得三级序数晶核；各级均可拆分。','Fuse crystals and Ordinal Cores nine-to-one until reaching an Ordinal Core Lv3; every step is reversible.',['ordinal_crystal_lv4'],frame='challenge')
     item('lamp_shaper','guide/enter_outer','guogao_lamp_shaper','表情塑形','Shaping Expressions',
          '制作果糕灯塑形台，在两种表情、完整灯与3×3×3分块之间转换。','Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles.',['guogao_lamp_shaper'])
-    node('guide/enter_underworld','guide/enter_inner','guogao_heart','进入果糕地府','The Guogao Underworld',
+    node('guide/enter_underworld','guide/enter_inner',BIOME_ICONS['guogao'],'进入果糕地府','The Guogao Underworld',
          '在里界用12个果糕方块搭水平5×5去四角的门框，可混搭颜色；再投入1个果糕方块激活，穿门进入果糕地府。','In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld.',travel(NS+'guogao'),frame='goal')
     append_biome_guides(node,item,names,inventory,travel,NS)
     node('guide/landmarks_all','guide/enter_inner','landmark_emblem_power','八种巨构','All Eight Megastructures',
@@ -100,8 +101,11 @@ def build():
     node('guide/omega_mastery','guide/ultimate_station','true_omega_chestplate','Ω，全部展开','Omega, Fully Unfolded',
          '穿戴四件Ω护甲并手持Ω手稿；五件共38槽均镶入兼容的满级晶核。图腾、空槽与未生效的编辑不计。','Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count.',{'done':{'trigger':'minecraft:impossible'}},frame='challenge')
     copy['item.guogaology.guide_emblem']=('果糕逻辑探索指引','Guogaology Exploration Guide')
-    for theme in THEMES:copy['item.guogaology.landmark_emblem_'+theme]=(names['zh_cn']['structure.guogaology.'+theme]+'探索标志',names['en_us']['structure.guogaology.'+theme]+' Exploration Emblem')
-    return result,copy,rows
+    copy['item.guogaology.brand_emblem']=('果糕逻辑标志','Guogaology Emblem')
+    for theme in THEMES:
+        copy['item.guogaology.landmark_emblem_'+theme]=(names['zh_cn']['structure.guogaology.'+theme]+'探索标志',names['en_us']['structure.guogaology.'+theme]+' Exploration Emblem')
+    order=reading_order(result);lookup={row[0]:row for row in rows}
+    return {name:result[name] for name in order},copy,[lookup[name] for name in order]
 
 def generate(check=False):
     advancements,copy,rows=build();changed=[]
@@ -111,12 +115,18 @@ def generate(check=False):
             changed.append(str(path.relative_to(ROOT)))
             if not check:path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf8',newline='\n')
     for name,value in advancements.items():put(RES/f'data/guogaology/advancement/{name}.json',value)
+    put(RES/'guogaology/guide_layout.json',positions(advancements))
     for name in RETIRED_NODES:
         retired=RES/f'data/guogaology/advancement/{name}.json'
         if retired.exists():
             changed.append(str(retired.relative_to(ROOT)))
             if not check:retired.unlink()
     put(RES/'assets/guogaology/models/item/guide_emblem.json',{'parent':'minecraft:item/generated','textures':{'layer0':'guogaology:item/guide_emblem'}})
+    put(RES/'assets/guogaology/models/item/brand_emblem.json',{'parent':'minecraft:item/generated','textures':{'layer0':'guogaology:item/brand_emblem'}})
+    source_icon=RES/'assets/guogaology/icon.png';item_icon=RES/'assets/guogaology/textures/item/brand_emblem.png'
+    if not item_icon.exists() or item_icon.read_bytes()!=source_icon.read_bytes():
+        changed.append(str(item_icon.relative_to(ROOT)))
+        if not check:item_icon.write_bytes(source_icon.read_bytes())
     for name,value in landmark_models().items():put(RES/f'assets/guogaology/models/item/{name}.json',value)
     path=ROOT/'tools/copy_catalog.json';catalog=json.loads(path.read_text(encoding='utf8'))
     catalog['removed']=sorted(set(catalog.get('removed',()))|RETIRED_COPY)

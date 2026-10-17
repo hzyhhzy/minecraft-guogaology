@@ -50,6 +50,7 @@ def models():
             b([7,0,7],[9,13,9],'wood')
             for y,r in [(1,7),(4,6),(7,4),(10,2)]:b([8-r,y,8-r],[8+r,y+2,8+r],'green')
             b([6,13,6],[10,16,10],'gold');b([2,3,7],[4,5,9],'roof');b([11,6,7],[13,8,9],'roof')
+        textures['particle']=textures['base']
         result['landmark_emblem_'+theme]={'parent':'minecraft:block/block','textures':textures,'elements':boxes,'gui_light':'front',
             'display':{'gui':{'rotation':[30,225,0],'translation':[0,0,0],'scale':[.75,.75,.75]}}}
     return result

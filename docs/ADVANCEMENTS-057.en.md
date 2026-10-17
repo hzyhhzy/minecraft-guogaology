@@ -9,28 +9,22 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `arrival` | Guogaology | Begin with a cake gate and explore the Outer, Inner and Guogao Underworld. |
 | `guide/enter_outer` | Into the Outer Realm | Build a horizontal 5×5 ring of 12 cakes without corners, throw an apple inside to activate it, then enter the Outer realm. |
 | `guide/first_ore` | The First Ordinal Mineral | Obtain an ordinal mineral with an iron or better pickaxe. All four ores drop usable materials directly. |
-| `guide/first_omega` | Omega Opens the Way | Obtain your first Ω mineral or ore. The mineral gate to Inner requires one Ω mineral as its offering. |
 | `guide/first_tool` | An Ordinal in Hand | Craft or obtain an ordinal pickaxe, sword or bow. |
 | `guide/first_book` | A Manuscript to Carry | Craft a Denxi Manuscript. While it is in your offhand, use the Book button in your inventory to edit it. |
 | `guide/full_set` | Ready to Wear | Obtain a helmet, chestplate, leggings and boots; the four ordinal materials may be mixed. |
-| `guide/return_ready` | A Way Back | Obtain a Return Token and frames. Activate a ring of 12 matching Return Frames with the token to return one realm. |
-| `guide/portal_return` | A Return Gate | Throw a Return Token to activate a return gate. |
-| `guide/return_home` | Home Again | Return from the Outer realm to the Overworld. |
-| `guide/return_up` | One Realm Up | Return from Inner to Outer, or from the Guogao Underworld to Inner. |
+| `guide/first_omega` | Omega Opens the Way | Obtain your first Ω mineral or ore. The mineral gate to Inner requires one Ω mineral as its offering. |
 | `guide/enter_inner` | Into the Inner Realm | In Outer, build a horizontal 5×5 ring of 12 mineral blocks without corners, mixing ω, ε, Γ and Ω. Throw one Ω mineral inside, then enter Inner. |
-| `guide/number_tools` | Tools from Numbers | Gather Number Stones in Inner to craft a Number Stone pickaxe or sword. Its digit is the floor of the material digits’ average. |
-| `guide/compute_setup` | A Computing Setup | Collect Compute Chips in Inner and craft a server rack or terminal. |
 | `guide/shards` | Crystal from the Rock | Mine Ordinal Crystal Ore for shards. Hands work; pickaxes are faster. |
 | `guide/crystal` | A Stable Crystal | Craft an Ordinal Crystal from four shards, or unpack it again. A placed crystal stabilizes nearby LHO materials. |
+| `guide/ordinal1` | Structure within Crystal | Fuse nine base crystals into an Ordinal Core Lv1. In a manuscript it improves attack, protection, existing healing and Guogao effect duration. |
+| `guide/ordinal2` | Layers within Structure | Fuse nine-to-one for an Ordinal Core Lv2 and stronger combined manuscript bonuses. |
+| `guide/ordinal3` | Condensed Ordinals | Fuse crystals and Ordinal Cores nine-to-one until reaching an Ordinal Core Lv3; every step is reversible. |
 | `guide/station` | The Enhancement Table | Craft an Enhancement Table to insert or recover cores. Enchantments and sockets are mutually exclusive. |
 | `guide/socketed` | A Core Installed | Close an equipment or manuscript editor with a core installed. |
 | `guide/higher_station` | Advanced Enhancement | Craft an Advanced Enhancement Table for second-grade cores. |
 | `guide/ultimate_station` | Ultimate Enhancement | Craft an Ultimate Enhancement Table for third-grade cores. |
-| `guide/ordinal1` | Structure within Crystal | Fuse nine base crystals into an Ordinal Core Lv1. In a manuscript it improves attack, protection, existing healing and Guogao effect duration. |
-| `guide/ordinal2` | Layers within Structure | Fuse nine-to-one for an Ordinal Core Lv2 and stronger combined manuscript bonuses. |
-| `guide/ordinal3` | Condensed Ordinals | Fuse crystals and Ordinal Cores nine-to-one until reaching an Ordinal Core Lv3; every step is reversible. |
-| `guide/lamp_shaper` | Shaping Expressions | Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles. |
-| `guide/enter_underworld` | The Guogao Underworld | In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld. |
+| `guide/omega_mastery` | Omega, Fully Unfolded | Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count. |
+| `guide/number_tools` | Tools from Numbers | Gather Number Stones in Inner to craft a Number Stone pickaxe or sword. Its digit is the floor of the material digits’ average. |
 | `guide/biome_matrix` | Visit Matrix Mountains | Enter Matrix Mountains in Inner to discover its materials and megastructure. |
 | `guide/material_matrix` | A Page between Peaks | Gather a Matrix Sheet from a mountain page. A flat matrix can unfold into a mountain. |
 | `guide/core_matrix_1` | One More Block | Obtain Matrix Core Lv1. Socket into a pick for extra excavation, or a manuscript for flat and multiplicative mining speed. |
@@ -61,11 +55,13 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_weaver_2` | At Ease Underwater | Obtain Laver Condensation Core Lv2. Lv2 strengthens aquatic benefits; manuscripts combine healing with a minimum food level. |
 | `guide/core_weaver_3` | Breathless Depths | Obtain Laver Condensation Core Lv3. A Lv3 helmet stops oxygen consumption, boots improve swimming further, and manuscripts improve healing and food protection. |
 | `guide/landmark_weaver` | Explore Laver Triangle Palace | Enter the built space of Laver Triangle Palace and explore its paths and exhibits. |
+| `guide/play_laver` | A Note at the Table | With both hands empty and without sneaking, right-click a valid Laver table pattern to begin playing. |
 | `guide/biome_astra` | Visit Astra Inference Plains | Enter Astra Inference Plains in Inner to discover its materials and megastructure. |
 | `guide/material_astra` | Computing in the Clouds | Collect a Cloud Pearl and Compute Chip, linking cloud knots with ground-level server racks. |
 | `guide/core_astra_1` | An Astonishing Hit | Obtain Heart of Nuclear Awe Lv1. In a sword or bow, hits burst against the target and nearby creatures without damaging terrain. |
 | `guide/core_astra_2` | Spreading Shockwaves | Obtain Heart of Nuclear Awe Lv2. Lv2 strengthens the on-hit burst. Heart of Nuclear Awe cannot be socketed into manuscripts. |
 | `guide/core_astra_3` | The Critical Point | Obtain Heart of Nuclear Awe Lv3. Lv3 bursts are stronger; matching burst contributions combine by root-sum-squares. |
+| `guide/compute_setup` | A Computing Setup | Collect Compute Chips in Astra and craft a server rack or terminal. |
 | `guide/landmark_astra` | Explore Astra Inference Nexus | Enter the built space of Astra Inference Nexus and explore its paths and exhibits. |
 | `guide/biome_frontier` | Visit Boundary Highlands | Enter Boundary Highlands in Inner to discover its materials and megastructure. |
 | `guide/material_frontier` | Between Sets and Tape | Collect a Set Membrane or Tape Endcap and examine set shells and long Turing tapes. |
@@ -73,12 +69,16 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_frontier_2` | Above the Ground | Obtain Boundary Core Lv2. In a manuscript, enable slow flight and fire protection; on armor, retain defensive protection. |
 | `guide/core_frontier_3` | Beyond the Boundary | Obtain Boundary Core Lv3. In a manuscript, gain free flight and sprint; deep-realm sprint flight is faster. |
 | `guide/landmark_frontier` | Explore Boundary Calculus Court | Enter the built space of Boundary Calculus Court and explore its paths and exhibits. |
+| `guide/enter_underworld` | The Guogao Underworld | In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld. |
 | `guide/material_guogao` | A Drop of Dread Resin | Gather resin from Underworld Dread Fir scenery; explore forests, misaligned strata and descending chains. |
 | `guide/core_guogao_1` | Breaking into a Sweat | Obtain Heart of Guogao Lv1. Swords and bows apply Slowness and Poison; manuscripts add health, while armor itself adds none. |
 | `guide/core_guogao_2` | The Unease Spreads | Obtain Heart of Guogao Lv2. Weapons apply stronger debuffs; manuscripts add health, resist selected effects, and prioritize real inventory Totems. |
 | `guide/core_guogao_3` | Hard to Behold | Obtain Heart of Guogao Lv3. Lv3 weapons inflict Wither, Weakness and Nausea with a chance of Blindness; manuscripts improve health and immunities. |
 | `guide/landmark_guogao` | Explore Guogao Finality Tree | Enter the built space of Guogao Finality Tree and explore its paths and exhibits. |
 | `guide/landmarks_all` | All Eight Megastructures | Enter the built space of all eight megastructure types; opening chests is not required. |
+| `guide/return_ready` | A Way Back | Obtain a Return Token and frames. Activate a ring of 12 matching Return Frames with the token to return one realm. |
+| `guide/portal_return` | A Return Gate | Throw a Return Token to activate a return gate. |
+| `guide/return_home` | Home Again | Return from the Outer realm to the Overworld. |
+| `guide/return_up` | One Realm Up | Return from Inner to Outer, or from the Guogao Underworld to Inner. |
+| `guide/lamp_shaper` | Shaping Expressions | Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles. |
 | `guide/eat_guogao` | A Taste of Guogao | Eat a Guogao Slice. |
-| `guide/play_laver` | A Note at the Table | With both hands empty and without sneaking, right-click a valid Laver table pattern to begin playing. |
-| `guide/omega_mastery` | Omega, Fully Unfolded | Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count. |

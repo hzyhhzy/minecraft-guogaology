@@ -45,7 +45,8 @@ public final class Advancement057Checks {
             check(!done(p,"guogaology:guide/enter_outer"),"entering Inner does not count as entering Outer");
             check(manager.get(Identifier.parse("guogaology:guide/portal_outer"))==null,"duplicate first-gate node retired");
             var icon=holder(p,"guogaology:arrival").value().display().orElseThrow().getIcon();
-            check(icon.is(dev.guogaology.GuogaologyBlocks.GUIDE_EMBLEM),"directory uses the cake-and-apple icon");
+            check(icon.is(BuiltInRegistries.ITEM.getValue(GuogaologyMod.id("brand_emblem"))),"directory uses the exact Mod logo");
+            check(holder(p,"guogaology:guide/enter_outer").value().display().orElseThrow().getIcon().is(dev.guogaology.GuogaologyBlocks.GUIDE_EMBLEM),"first Outer entry uses cake and apple");
             for(String tab:dev.guogaology.CreativeCatalog.TABS)check(dev.guogaology.CreativeCatalog.entries(tab).stream().noneMatch(s->s.is(dev.guogaology.GuogaologyBlocks.GUIDE_EMBLEM)),"guide icon is not a creative item");
         }
         // The actual registered vanilla predicates, not manual awards.

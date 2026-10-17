@@ -31,14 +31,16 @@ class GuideChecks(unittest.TestCase):
             for group in node['requirements']:
                 self.assertTrue(group);self.assertTrue(set(group)<=node['criteria'].keys())
         self.assertEqual(nodes['arrival']['criteria'],{'begin':{'trigger':'minecraft:tick'}})
-        self.assertEqual(nodes['arrival']['display']['icon']['id'],'guogaology:guide_emblem')
+        self.assertEqual(nodes['arrival']['display']['icon']['id'],'guogaology:brand_emblem')
+        self.assertEqual(nodes['guide/enter_outer']['display']['icon']['id'],'guogaology:guide_emblem')
+        self.assertEqual((guide.RES/'assets/guogaology/textures/item/brand_emblem.png').read_bytes(),(guide.RES/'assets/guogaology/icon.png').read_bytes())
         for realm,dimension in [('outer','outer'),('inner','guogaology'),('underworld','guogao')]:
             self.assertEqual(nodes['guide/enter_'+realm]['criteria'],guide.travel('guogaology:'+dimension))
         self.assertEqual(nodes['guide/enter_outer']['parent'],'guogaology:arrival')
         for retired in guide.RETIRED_NODES:self.assertNotIn(retired,nodes)
         self.assertEqual(nodes['guide/portal_return']['criteria'],{'done':{'trigger':'minecraft:impossible'}})
-        for child in ('number_tools','compute_setup'):
-            self.assertEqual(nodes['guide/'+child]['parent'],'guogaology:guide/enter_inner')
+        self.assertEqual(nodes['guide/number_tools']['parent'],'guogaology:guide/enter_inner')
+        self.assertEqual(nodes['guide/compute_setup']['parent'],'guogaology:guide/material_astra')
         self.assertEqual(len(nodes['guide/landmarks_all']['requirements']),8)
         self.assertTrue(all(len(group)==1 for group in nodes['guide/landmarks_all']['requirements']))
         self.assertEqual(nodes['guide/enter_inner']['parent'],'guogaology:guide/first_omega')
@@ -80,6 +82,26 @@ class GuideChecks(unittest.TestCase):
             for texture in model['textures'].values():
                 ns,path=texture.split(':');self.assertIn(ns,('guogaology','minecraft'))
                 if ns=='guogaology':self.assertTrue((guide.RES/f'assets/{ns}/textures/{path}.png').is_file(),texture)
+
+    def test_scenery_icons_and_order_do_not_depend_on_resource_iteration(self):
+        from collections import OrderedDict
+        nodes,_,_=guide.build();locations=guide.positions(nodes)
+        self.assertEqual(locations,guide.positions(OrderedDict(reversed(list(nodes.items())))))
+        self.assertEqual(len(locations),76)
+        # Distinct siblings must have room for a26-pixel native advancement frame.
+        values=list(locations.values())
+        for i,(x,y) in enumerate(values):
+            for xx,yy in values[i+1:]:self.assertTrue(abs(x-xx)>=1 or abs(y-yy)>=1)
+        previous=-1
+        for theme in guide.THEMES:
+            root='guogaology:guide/'+('enter_underworld' if theme=='guogao' else 'biome_'+theme)
+            self.assertGreater(locations[root][1],previous);previous=locations[root][1]
+            icon=nodes[root.removeprefix('guogaology:')]['display']['icon']['id']
+            self.assertEqual(icon,'guogaology:'+guide.BIOME_ICONS[theme])
+            self.assertNotIn(icon.removeprefix('guogaology:'),guide.REGIONAL+('ordinal_crystal',))
+            self.assertTrue((guide.RES/f'assets/guogaology/models/item/{guide.BIOME_ICONS[theme]}.json').is_file())
+        for id,node in nodes.items():
+            if 'parent' in node:self.assertGreater(locations['guogaology:'+id][0],locations[node['parent']][0])
 
     def test_no_vanilla_progress_or_recipe_unlock_overlay(self):
         self.assertFalse((guide.RES/'data/minecraft/advancement').exists())

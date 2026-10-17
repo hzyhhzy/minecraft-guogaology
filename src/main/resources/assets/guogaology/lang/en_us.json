@@ -521,7 +521,7 @@
   "advancement.guogaology.guide.lamp_shaper.title": "Shaping Expressions",
   "advancement.guogaology.guide.lamp_shaper.description": "Craft a Guogao Lamp Shaper to choose expressions, whole lamps and 3×3×3 exterior tiles.",
   "advancement.guogaology.guide.compute_setup.title": "A Computing Setup",
-  "advancement.guogaology.guide.compute_setup.description": "Collect Compute Chips in Inner and craft a server rack or terminal.",
+  "advancement.guogaology.guide.compute_setup.description": "Collect Compute Chips in Astra and craft a server rack or terminal.",
   "advancement.guogaology.guide.enter_underworld.title": "The Guogao Underworld",
   "advancement.guogaology.guide.enter_underworld.description": "In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld.",
   "advancement.guogaology.guide.landmark_matrix.title": "Explore Matrix Folded Keep",
@@ -640,5 +640,6 @@
   "item.guogaology.landmark_emblem_weaver": "Laver Triangle Palace Exploration Emblem",
   "item.guogaology.landmark_emblem_astra": "Astra Inference Nexus Exploration Emblem",
   "item.guogaology.landmark_emblem_frontier": "Boundary Calculus Court Exploration Emblem",
-  "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem"
+  "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem",
+  "item.guogaology.brand_emblem": "Guogaology Emblem"
 }

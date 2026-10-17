@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:set_membrane"
+      "id": "guogaology:turing_tape"
     },
     "title": {
       "translate": "advancement.guogaology.guide.biome_frontier.title"
