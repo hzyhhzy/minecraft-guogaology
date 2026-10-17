@@ -40,6 +40,10 @@ public final class CoreResources055Checks {
         return found.isEmpty()?ItemStack.EMPTY:found.orElseThrow().value().assemble(grid);
     }
     private static void crafts(ServerLevel world,String output,int count,String... input){var value=craft(world,input);check(value.is(item(output).getItem())&&value.getCount()==count,"loaded native recipe "+output+" ×"+count+" got "+value);}
+    private static ItemStack craftGrid(ServerLevel world,List<ItemStack> input){
+        var grid=CraftingInput.of(3,3,input);var found=world.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING,grid,world);
+        return found.isEmpty()?ItemStack.EMPTY:found.orElseThrow().value().assemble(grid);
+    }
     private static String[] centered(String center,String... ring){
         if(ring.length!=8)throw new IllegalArgumentException("Eight surrounding ingredients required");
         var grid=new String[9];System.arraycopy(ring,0,grid,0,4);grid[4]=center;System.arraycopy(ring,4,grid,5,4);return grid;
@@ -80,22 +84,37 @@ public final class CoreResources055Checks {
             var state=value.defaultBlockState();if(state.hasProperty(PortableRelicBlock.PLAYER_PLACED))state=state.setValue(PortableRelicBlock.PLAYER_PLACED,true);
             for(var tool:tools)intact(Block.getDrops(state,world,at,null,player,tool),value,"placed core any-tool intact "+root+grade);
         }
-        intact(Block.getDrops(GuogaologyBlocks.GIANT_LAVER.defaultBlockState(),world,at,null,player,new ItemStack(Items.SHEARS)),GuogaologyBlocks.GIANT_LAVER,"ordinary shears collect first Laver ingredient");
         for(var tree:GuogaologyBlocks.TREE_NODES)for(var tool:tools)intact(Block.getDrops(tree.defaultBlockState(),world,at,null,player,tool),tree,"TREE node is ordinary any-tool material");
     }
+    public static void runLaverSource(ServerPlayer player)throws Exception{
+        int before=checks;var world=player.level();var blocks=new HashMap<BlockPos,BlockState>();
+        var painter=NaturalScenery.class.getDeclaredMethod("drawObject",SceneryBrush.class,NaturalScenery.Site.class,SceneryDistribution.Form.class);painter.setAccessible(true);
+        painter.invoke(null,new SceneryBrush(-96,96,-96,96,(x,y,z,state)->blocks.put(new BlockPos(x,y,z),state)),
+                new NaturalScenery.Site(515,1234,0,0,4,90,Integer.MIN_VALUE,false),SceneryDistribution.Form.LAVER);
+        for(int y=92;y<=94;y++)check(blocks.get(new BlockPos(1,y,0)).is(GuogaologyBlocks.LAVER_VEIN),"actual natural Laver root/vein junction remains ordinary material");
+        var leaf=blocks.entrySet().stream().filter(e->e.getValue().is(GuogaologyBlocks.GIANT_LAVER)).findFirst().orElseThrow();
+        intact(Block.getDrops(leaf.getValue(),world,leaf.getKey(),null,player,new ItemStack(Items.SHEARS)),GuogaologyBlocks.GIANT_LAVER,"ordinary shears collect the existing Laver leaf");
+        intact(Block.getDrops(GuogaologyBlocks.LAVER_VEIN.defaultBlockState(),world,leaf.getKey(),null,player,ItemStack.EMPTY),GuogaologyBlocks.LAVER_VEIN,"ordinary root/vein material remains collectible");
+        boolean ribbon=false;
+        for(int sample=0;sample<256;sample++)for(var drop:Block.getDrops(leaf.getValue(),world,leaf.getKey(),null,player,ItemStack.EMPTY)){
+            check(drop.is(item("laver_ribbon").getItem()),"natural leaf ordinary-drop path yields the existing Laver Sheet");ribbon=true;
+        }
+        check(ribbon,"native natural leaves still supply Laver Sheet without Silk Touch or a core");
+        System.out.println("LAVER_SOURCE_0515_OK checks="+(checks-before)+" actualPlant/ordinaryVein/nativeLeafDrops/sheets");
+    }
     public static void runRecipes(ServerLevel world){
-        int before=checks;recipes(world);System.out.println("CORE_RESOURCES_RECIPES_OK checks="+(checks-before)+" regionalLv1/centralEpsilonGamma/alternatives/ordinalNinefold");
+        int before=checks;recipes(world);System.out.println("CORE_RESOURCES_RECIPES_OK checks="+(checks-before)+" regionalLv1/centralEpsilonGamma/LHO16/Branch1296IndependentChoices/ordinalNinefold");
     }
     private static void recipes(ServerLevel world){
         String[][] inputs={
-            {"matrix_sheet","ridge_lamina","projection_glass","y_leaves","ordinal_bricks","ordinal_bricks","ordinal_bricks","ordinal_bricks"},
-            {"arrow_knot","arrow_knot","scg_node","scg_node","tree_node_red","tree_node_green","tree_node_blue","graham"},
-            {"hydra_sprig","hydra_sprig","veblen_petal","veblen_petal","psi_symbol","great_omega_symbol","epsilon_bloom","omega_bloom"},
-            {"lho_letter_l","lho_letter_h","lho_letter_o","fffz_trace","fos_trace","lho_hydra_psi","lho_hydra_z","stellar_stone"},
-            {"laver_gel","laver_ribbon","iblp_node","iblp_node","iblp_marked","iblp_blank","gummy","tianyi_fiber"},
-            {"cloud_pearl","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","nuke_mushroom","guogao_lantern"},
-            {"set_membrane","set_membrane","turing_tape","turing_tape","proof_stone","turing_endcap","formula_stone","rayo_rose"},
-            {"dread_resin","guogao_drop","dread_leaves","emoji_flower","loquat","star_gold","fruit_cake_gel","guogao_lantern"}};
+            {"matrix_sheet","ordinal_bricks","matrix_sheet","ridge_lamina","ridge_lamina","matrix_sheet","ordinal_bricks","matrix_sheet"},
+            {"power_bricks","scg_node","power_bricks","tree_node_red","tree_node_green","power_bricks","tree_node_blue","power_bricks"},
+            {"hydra_sprig","epsilon_symbol","hydra_sprig","omega_symbol","great_omega_symbol","hydra_sprig","psi_symbol","hydra_sprig"},
+            {"fffz_trace","stellar_stone","fffz_trace","stellar_stone","stellar_stone","fffz_trace","stellar_stone","fffz_trace"},
+            {"iblp_node","gummy","laver_ribbon","iblp_marked","iblp_marked","laver_ribbon","gummy","iblp_node"},
+            {"compute_chip","cloud_pearl","compute_chip","cloud_pearl","cloud_pearl","compute_chip","cloud_pearl","compute_chip"},
+            {"set_membrane","turing_endcap","set_membrane","turing_endcap","turing_endcap","set_membrane","turing_endcap","set_membrane"},
+            {"guogao_drop","fruit_cake_gel","guogao_drop","fruit_cake_gel","fruit_cake_gel","guogao_drop","fruit_cake_gel","guogao_drop"}};
         for(int i=0;i<REGIONAL.length;i++){
             var first=centered("ordinal_crystal",inputs[i]);crafts(world,REGIONAL[i],1,first);
             var misplaced=first.clone();var edge=misplaced[0];misplaced[0]=misplaced[4];misplaced[4]=edge;
@@ -105,7 +124,36 @@ public final class CoreResources055Checks {
             Arrays.fill(second,REGIONAL[i]+"_lv2");second[4]="gamma_block";crafts(world,REGIONAL[i]+"_lv3",1,second);
             second[4]="epsilon_block";check(craft(world,second).isEmpty(),"regional Lv3 requires Gamma rather than Epsilon "+REGIONAL[i]);
         }
-        var alternative=inputs[1].clone();alternative[7]="graham_flower";crafts(world,"power_tower_core",1,centered("ordinal_crystal",alternative));
+        for(int choices=0;choices<16;choices++){
+            var fragments=inputs[3].clone();int[] corners={0,2,5,7};
+            for(int i=0;i<4;i++)fragments[corners[i]]=(choices&(1<<i))==0?"fffz_trace":"fos_trace";
+            var grid=centered("ordinal_crystal",fragments);crafts(world,"lho_trace",1,grid);
+            var misplaced=grid.clone();var corner=misplaced[0];misplaced[0]=misplaced[4];misplaced[4]=corner;
+            check(craft(world,misplaced).isEmpty(),"each independent LHO fragment combination keeps the crystal central "+choices);
+        }
+        for(String invalid:new String[]{"lho_hydra_psi","lho_hydra_z"})for(int corner:new int[]{0,2,5,7}){
+            var fragments=inputs[3].clone();fragments[corner]=invalid;
+            check(craft(world,centered("ordinal_crystal",fragments)).isEmpty(),"LHO recipe excludes Psi/Z in every fragment corner "+invalid+corner);
+        }
+        String[] branchStones={"epsilon_symbol","omega_symbol","great_omega_symbol","zeta_symbol","psi_symbol","phi_symbol"};
+        int[] branchSlots={1,3,4,6};
+        for(int choices=0;choices<1296;choices++){
+            var branches=inputs[2].clone();int remaining=choices;
+            for(int slot:branchSlots){branches[slot]=branchStones[remaining%6];remaining/=6;}
+            crafts(world,"hydra_bud",1,centered("ordinal_crystal",branches));
+        }
+        for(int slot:branchSlots){
+            var branches=inputs[2].clone();branches[slot]="epsilon_bloom";
+            check(craft(world,centered("ordinal_crystal",branches)).isEmpty(),"Branch accepts stones rather than flowers in each independent slot "+slot);
+        }
+        for(int digit=0;digit<16;digit++){
+            var grid=new ArrayList<>(Arrays.stream(centered("ordinal_crystal",inputs[0])).map(CoreResources055Checks::item).toList());
+            grid.set(1,StatefulDecorBlock.copyAppearance(item("ordinal_bricks"),GuogaologyBlocks.ordinalBrick(digit)));
+            grid.set(7,StatefulDecorBlock.copyAppearance(item("ordinal_bricks"),GuogaologyBlocks.ordinalBrick((digit+7)%16)));
+            check(craftGrid(world,grid).is(GuogaologyBlocks.SEQUENCE_CORE.asItem()),"Matrix accepts actual mixed digit components "+digit);
+        }
+        for(String removed:new String[]{"arrow_knot","laver_gel","dread_resin"})
+            check(block(removed)==Blocks.AIR&&BuiltInRegistries.ITEM.getValue(id(removed))==Items.AIR,"removed raw material has no block/item registry entry "+removed);
         crafts(world,"ordinal_crystal",1,"ordinal_shard","ordinal_shard","ordinal_shard","ordinal_shard");crafts(world,"ordinal_shard",4,"ordinal_crystal");
         for(int stage=2;stage<=4;stage++){
             String lower=stage==2?"ordinal_crystal":"ordinal_crystal_lv"+(stage-1),higher="ordinal_crystal_lv"+stage;
@@ -194,9 +242,10 @@ public final class CoreResources055Checks {
         var brush=new SceneryBrush(-96,96,-96,96,sink);
         var forms=List.of(SceneryDistribution.Form.RIDGE_CROWN,SceneryDistribution.Form.GRAHAM_TREE,SceneryDistribution.Form.SCG,SceneryDistribution.Form.VEBLEN,SceneryDistribution.Form.KNOT,SceneryDistribution.Form.SET_SHELL);
         for(var form:forms)draw.invoke(null,brush,new NaturalScenery.Site(seed,1234,0,0,form==SceneryDistribution.Form.SET_SHELL?7:0,90,Integer.MIN_VALUE,false),form);
-        for(int attempt=0;attempt<4&&!counts.containsKey(CoreResources.LAVER_GEL);attempt++)draw.invoke(null,brush,new NaturalScenery.Site(seed,1234+attempt,0,0,4,90,Integer.MIN_VALUE,false),SceneryDistribution.Form.LAVER);
+        for(int attempt=0;attempt<4&&!counts.containsKey(GuogaologyBlocks.LAVER_VEIN);attempt++)draw.invoke(null,brush,new NaturalScenery.Site(seed,1234+attempt,0,0,4,90,Integer.MIN_VALUE,false),SceneryDistribution.Form.LAVER);
+        check(counts.containsKey(GuogaologyBlocks.LAVER_VEIN),"natural Laver retains the native root/vein material");
         NaturalScenery.treeAt(brush,new NaturalScenery.Site(underSeed,1234,0,0,6,90,Integer.MIN_VALUE,true),true,false,90,1,40);
-        check(counts.keySet().containsAll(CoreResources.MATERIALS),"each of eight new raw materials occurs in its production scenery painter");
+        check(counts.keySet().containsAll(CoreResources.MATERIALS),"each retained raw material occurs in its production scenery painter");
         System.out.println("CORE055_WILD_TOTAL writes="+writes[0]+" rawKinds="+counts.keySet().stream().filter(CoreResources.MATERIALS::contains).count());
     }
     private static void freshOres(ServerPlayer player){

@@ -147,12 +147,12 @@ final class FrontierScenery {
             int y=Math.min(62,Math.max(s.floor()+layer*2,floor)+((u+v)/5%2));
             b.set(x,y,z,u==v||v==0||v==u/2?vein:leaf);
         }
-        // A single conventional original core, anchored on the first-row tip of the top blade.
+        // The top blade ends in an ordinary vein, anchored on its first-row tip.
         int x=s.x()-(size/2),z=s.z()-(size/2)+4;
         if(turn){int t=x-s.x();x=s.x()+z-s.z();z=s.z()+t;}
         int bed=NotationLandscapes.ground(s,x,z);
         int coreY=Math.min(63,Math.max(s.floor()+5,bed==Integer.MIN_VALUE?s.floor()+5:bed+1));
-        root(b,s,x,coreY-1,z,vein);b.set(x,coreY,z,CoreResources.LAVER_GEL.getDefaultState());
+        root(b,s,x,coreY-1,z,vein);b.set(x,coreY,z,vein);
     }
     private static void waterFronds(SceneryBrush b,NaturalScenery.Site s){
         int height=Math.min(13,63-s.floor());if(height<3)return;

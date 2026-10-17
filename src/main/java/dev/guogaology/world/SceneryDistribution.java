@@ -5,6 +5,9 @@ import java.util.List;
 /** Shared placement rules; usable without Minecraft, including at negative coordinates. */
 public final class SceneryDistribution {
     private SceneryDistribution() {}
+    // Calibrated against the former58-grid/one-third selector with the same49-block tree arbitration.
+    public static final int LHO_TREE_CELL=48,LHO_TREE_SEPARATION=49;
+    public static final int LHO_TREE_NEIGHBOR_RADIUS=(LHO_TREE_SEPARATION+LHO_TREE_CELL-1)/LHO_TREE_CELL;
     public enum Form { FIR, FIR_LIGHTS, HYDRA, CLOUD, CLOUD_LIGHTS, KNOT, BMS, SMALL_PLANTS, TABLE, JELLY, LAVER, DESERT_ROCK, ABSENCE, LHO_HYDRA, Y_TREE, YARN, UNDERGROWTH, POWER_TOWER, GRAHAM_TREE, TREE, SCG, GREAT_VINE, GREAT_VINE_LIGHTS, OMEGA_TREE, OMEGA_MUSHROOM, RIDGE_CROWN, RIDGE_SPROUT, REFLECTION_RIDGE, PROJECTION_WALL, WATER_RIDGE, VEBLEN, CONWAY_CHAIN, BEAF_REEF, BIRD_NEST, SET_SHELL, TURING_STRIP, RAYO_CROWN, PROOF_STRATA, DROWNED_PTO, RANK_SHELLS, PROOF_ESCARPMENT, FOLDED_TAPE, FORMULA_GEODE, LAVER_REEF, LAVER_WATER_FRONDS, ASTRA_COOLANT_REEF, ASTRA_BUBBLE }
     public static boolean aquatic(Form form){return switch(form){case WATER_RIDGE,CONWAY_CHAIN,BEAF_REEF,BIRD_NEST,DROWNED_PTO,LAVER_REEF,LAVER_WATER_FRONDS,ASTRA_COOLANT_REEF,ASTRA_BUBBLE,RAYO_CROWN,FORMULA_GEODE->true;default->false;};}
     public static boolean deepRoot(Form form){return form==Form.GREAT_VINE||form==Form.GREAT_VINE_LIGHTS||aquatic(form);}
@@ -62,7 +65,7 @@ public final class SceneryDistribution {
             new Pass(Form.FIR_LIGHTS,64,72,5,13,false),
             new Pass(Form.CLOUD_LIGHTS,128,128,5,3,false),
             // Keep every twig connected; tiny remnants cannot replace a psi/Z branch afterwards.
-            new Pass(Form.LHO_HYDRA,58,24,3,3,false),
+            new Pass(Form.LHO_HYDRA,LHO_TREE_CELL,24,3,1,false),
             // Protect legal iBLP cells from foliage, sweets and small ornaments.
             new Pass(Form.TABLE,38,60,4,1,false));
     private static final List<Pass> UNDERWORLD=List.of(

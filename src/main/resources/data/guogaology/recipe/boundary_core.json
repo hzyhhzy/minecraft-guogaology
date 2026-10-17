@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "AAB",
-    "BSC",
-    "DEF"
+    "ABA",
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
@@ -14,19 +14,7 @@
       "item": "guogaology:set_membrane"
     },
     "B": {
-      "item": "guogaology:turing_tape"
-    },
-    "C": {
-      "item": "guogaology:proof_stone"
-    },
-    "D": {
       "item": "guogaology:turing_endcap"
-    },
-    "E": {
-      "item": "guogaology:formula_stone"
-    },
-    "F": {
-      "item": "guogaology:rayo_rose"
     }
   },
   "result": {

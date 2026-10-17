@@ -3,6 +3,8 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+from collections import Counter
+from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('core_resources',ROOT/'tools/generate_core_resources.py')
@@ -90,39 +92,42 @@ class CoreResourcesChecks(unittest.TestCase):
             for ingredient in cells(recipe):
                 self.assertIn(set(ingredient),({'tag'},{'item'}))
 
-    def test_astra_and_boundary_sources(self):
-        recipe=cells(resources.read(resources.D/'recipe/astra_critical_core.json'))
-        self.assertEqual(recipe.count({'item':'guogaology:compute_chip'}),5)
-        self.assertEqual(recipe.count({'item':'guogaology:cloud_pearl'}),1)
-        self.assertEqual(recipe.count({'item':'guogaology:nuke_mushroom'}),1)
-        self.assertIn({'tag':'guogaology:guogao_lamps'},recipe)
-        heart=cells(resources.read(resources.D/'recipe/guogao_heart.json'))
-        for name in ('dread_resin','guogao_drop','dread_leaves','emoji_flower','loquat','star_gold','fruit_cake_gel'):
-            self.assertEqual(heart.count({'item':'guogaology:'+name}),1)
-        boundary=cells(resources.read(resources.D/'recipe/boundary_core.json'))
-        self.assertEqual(boundary.count({'item':'guogaology:proof_stone'}),1)
-        self.assertEqual(boundary.count({'item':'guogaology:turing_endcap'}),1)
+    def test_symmetric_rings_keep_exact_current_materials(self):
+        rings={
+            'sequence_core':['matrix_sheet','ordinal_bricks','matrix_sheet','ridge_lamina','ridge_lamina','matrix_sheet','ordinal_bricks','matrix_sheet'],
+            'power_tower_core':['power_bricks','scg_node','power_bricks','tree_node_red','tree_node_green','power_bricks','tree_node_blue','power_bricks'],
+            'hydra_bud':['hydra_sprig','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','hydra_sprig'],
+            'lho_trace':['#absence_fragments','stellar_stone','#absence_fragments','stellar_stone','stellar_stone','#absence_fragments','stellar_stone','#absence_fragments'],
+            'laver_core':['iblp_node','gummy','laver_ribbon','iblp_marked','iblp_marked','laver_ribbon','gummy','iblp_node'],
+            'astra_critical_core':['compute_chip','cloud_pearl','compute_chip','cloud_pearl','cloud_pearl','compute_chip','cloud_pearl','compute_chip'],
+            'boundary_core':['set_membrane','turing_endcap','set_membrane','turing_endcap','turing_endcap','set_membrane','turing_endcap','set_membrane'],
+            'guogao_heart':['guogao_drop','fruit_cake_gel','guogao_drop','fruit_cake_gel','fruit_cake_gel','guogao_drop','fruit_cake_gel','guogao_drop'],
+        }
+        for root,ring in rings.items():
+            actual=cells(resources.read(resources.D/f'recipe/{root}.json'))
+            expected=[{'tag':'guogaology:'+name[1:]} if name.startswith('#') else {'item':'guogaology:'+name} for name in ring]
+            expected.insert(4,{'item':'guogaology:ordinal_crystal'})
+            self.assertEqual(actual,expected,root)
+        fragments=resources.read(resources.D/'tags/item/absence_fragments.json')['values']
+        self.assertEqual(set(fragments),{'guogaology:fffz_trace','guogaology:fos_trace'})
+        branches=resources.read(resources.D/'tags/item/ordinal_branch_stones.json')['values']
+        self.assertEqual(set(branches),{'guogaology:'+name for name in ('epsilon_symbol','omega_symbol','great_omega_symbol','zeta_symbol','psi_symbol','phi_symbol')})
 
-    def test_outer_materials_keep_inner_recipe_roles(self):
-        laver=cells(resources.read(resources.D/'recipe/laver_core.json'))
-        self.assertEqual(laver.count({'item':'guogaology:iblp_node'}),2)
-        for name in ('laver_gel','laver_ribbon','iblp_marked','iblp_blank','gummy','tianyi_fiber'):
-            self.assertEqual(laver.count({'item':'guogaology:'+name}),1)
-        absence=cells(resources.read(resources.D/'recipe/lho_trace.json'))
-        self.assertIn({'item':'guogaology:stellar_stone'},absence)
-        self.assertNotIn({'item':'guogaology:absence_glass'},absence)
-        power=cells(resources.read(resources.D/'recipe/power_tower_core.json'))
-        self.assertEqual(power.count({'item':'guogaology:arrow_knot'}),2)
-        self.assertEqual(power.count({'item':'guogaology:scg_node'}),2)
-        alternatives=[entry['tag'] for entry in power if 'tag' in entry]
-        self.assertEqual(len(alternatives),1)
-        values=resources.read(resources.D/f"tags/item/{alternatives[0].split(':')[1]}.json")['values']
-        self.assertEqual(set(values),{'guogaology:graham','guogaology:graham_flower'})
+    def test_removed_materials_have_no_live_inventory_or_recipe_entrypoints(self):
+        balance=resources.read(resources.RES/'guogaology/block_balance.json')
+        for name in ('arrow_knot','laver_gel','dread_resin'):
+            self.assertNotIn(name,balance)
+            self.assertFalse((resources.A/f'models/item/{name}.json').exists())
+            self.assertFalse((resources.A/f'blockstates/{name}.json').exists())
+            for recipe in (resources.D/'recipe').glob('*.json'):
+                self.assertNotIn('guogaology:'+name+'"',recipe.read_text('utf8'),recipe.name)
 
     def test_secondary_material_bundles_count_repeated_shaped_cells(self):
-        self.assertEqual(loot.raw_recipe('astra')['compute_chip'],5)
+        self.assertEqual(loot.raw_recipe('astra')['compute_chip'],4)
+        self.assertEqual(loot.raw_recipe('astra')['cloud_pearl'],4)
         self.assertEqual(loot.raw_recipe('weaver')['iblp_node'],2)
-        self.assertEqual(loot.raw_recipe('matrix')['ordinal_bricks'],4)
+        self.assertEqual(loot.raw_recipe('matrix')['ordinal_bricks'],2)
+        self.assertEqual(loot.raw_recipe('matrix')['matrix_sheet'],4)
         for theme in loot.THEMES:
             raw=loot.raw_recipe(theme)
             self.assertEqual(sum(raw.values()),8,theme)
@@ -130,13 +135,72 @@ class CoreResourcesChecks(unittest.TestCase):
 
     def test_matrix_recipe_and_union_materials(self):
         recipe=cells(resources.read(resources.D/'recipe/sequence_core.json'))
-        self.assertEqual(recipe.count({'item':'guogaology:ordinal_bricks'}),4)
-        for name in ('matrix_sheet','ridge_lamina','projection_glass','y_leaves','ordinal_crystal'):
-            self.assertEqual(recipe.count({'item':'guogaology:'+name}),1)
+        self.assertEqual(recipe.count({'item':'guogaology:ordinal_bricks'}),2)
+        self.assertEqual(recipe.count({'item':'guogaology:matrix_sheet'}),4)
+        self.assertEqual(recipe.count({'item':'guogaology:ridge_lamina'}),2)
         pearl=resources.read(resources.A/'models/block/cloud_pearl.json')
-        self.assertEqual({f['texture'] for e in pearl['elements'] for f in e['faces'].values()}, {'#body','#cloud','#root'})
+        self.assertEqual(pearl,{'parent':'minecraft:block/cube_all','textures':{'all':'guogaology:block/cloud_pearl'}})
         membrane=resources.read(resources.A/'models/block/set_membrane.json')
         self.assertEqual({f['texture'] for e in membrane['elements'] for f in e['faces'].values()}, {'#body'})
+
+    def test_guogao_has_native32_expression_on_six_lightly_rounded_faces(self):
+        from guogao_block_art import guogao_face_texture,guogao_cube_model
+        model=resources.read(resources.A/'models/block/guogao_drop.json')
+        self.assertEqual(model,guogao_cube_model())
+        self.assertEqual(model['parent'],'minecraft:block/block')
+        self.assertEqual(model['textures']['body'],'guogaology:block/guogao_drop')
+        self.assertEqual(len(model['elements']),30)
+        broad={}
+        for element in model['elements']:
+            self.assertEqual(len(element['faces']),1)
+            direction,face=next(iter(element['faces'].items()))
+            self.assertEqual(face['texture'],'#body')
+            for coordinate in element['from']+element['to']:
+                self.assertGreaterEqual(coordinate,0)
+                self.assertLessEqual(coordinate,16)
+                self.assertEqual(coordinate,int(coordinate),'one model-unit step, without half-unit tiers')
+            if 'cullface' in face:
+                broad[direction]=face
+                self.assertEqual(face['uv'],[1,1,15,15])
+        self.assertEqual(set(broad),{'up','down','north','south','west','east'})
+        actual=Image.open(resources.A/'textures/block/guogao_drop.png').convert('RGBA')
+        self.assertEqual(actual.size,(32,32))
+        self.assertEqual(actual.tobytes(),guogao_face_texture().tobytes())
+        self.assertEqual(actual.getchannel('A').getextrema(),(255,255))
+        features={(48,57,50),(99,66,13),(96,57,12),(15,132,192),(86,210,244),(229,253,255)}
+        for y in range(32):
+            for x in range(32):
+                if actual.getpixel((x,y))[:3] in features:
+                    self.assertTrue(2<=x<=29 and 2<=y<=29,'complete features stay outside the corner steps')
+        for cap in ('top','bottom'):
+            self.assertFalse((resources.A/f'textures/block/guogao_drop_{cap}.png').exists())
+
+    def test_membrane_emits_exact_union_exterior_without_duplicate_faces(self):
+        from set_membrane_art import BOXES,membrane_model,membrane_texture
+        model=resources.read(resources.A/'models/block/set_membrane.json')
+        self.assertEqual(model,membrane_model())
+        texture=membrane_texture()
+        self.assertEqual(texture.tobytes(),texture.transpose(Image.Transpose.FLIP_LEFT_RIGHT).tobytes())
+        self.assertEqual(texture.tobytes(),texture.transpose(Image.Transpose.FLIP_TOP_BOTTOM).tobytes())
+        occupied={(x,y,z) for a,b in BOXES for x in range(a[0],b[0]) for y in range(a[1],b[1]) for z in range(a[2],b[2])}
+        expected=set()
+        directions={'west':(0,-1),'east':(0,1),'down':(1,-1),'up':(1,1),'north':(2,-1),'south':(2,1)}
+        for p in occupied:
+            for direction,(axis,sign) in directions.items():
+                neighbor=list(p);neighbor[axis]+=sign
+                if tuple(neighbor) not in occupied:
+                    other=[k for k in range(3) if k!=axis]
+                    expected.add((direction,p[axis]+(sign>0),p[other[0]],p[other[1]]))
+        actual=Counter()
+        for element in model['elements']:
+            for direction,face in element['faces'].items():
+                axis,_=directions[direction];other=[k for k in range(3) if k!=axis]
+                self.assertTrue(all(0<=value<=16 for value in face['uv']))
+                for u in range(element['from'][other[0]],element['to'][other[0]]):
+                    for v in range(element['from'][other[1]],element['to'][other[1]]):
+                        actual[(direction,element['from'][axis],u,v)]+=1
+        self.assertEqual(set(actual),expected)
+        self.assertEqual(set(actual.values()),{1})
 
     def test_lamp_shaper_recipe_has_one_output(self):
         recipe=resources.read(resources.D/'recipe/guogao_lamp_shaper.json')

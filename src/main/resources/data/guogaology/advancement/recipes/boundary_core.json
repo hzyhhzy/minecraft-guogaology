@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:formula_stone"
+            "items": "guogaology:ordinal_crystal"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal"
+            "items": "guogaology:set_membrane"
           }
         ]
       }
@@ -26,47 +26,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:proof_stone"
-          }
-        ]
-      }
-    },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:rayo_rose"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:set_membrane"
-          }
-        ]
-      }
-    },
-    "ingredient_5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:turing_endcap"
-          }
-        ]
-      }
-    },
-    "ingredient_6": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:turing_tape"
           }
         ]
       }
@@ -83,10 +43,6 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
-      "ingredient_3",
-      "ingredient_4",
-      "ingredient_5",
-      "ingredient_6",
       "has_recipe"
     ]
   ],

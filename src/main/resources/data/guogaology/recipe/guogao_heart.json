@@ -2,37 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ABC",
-    "DSE",
-    "FGH"
+    "ABA",
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:dread_resin"
-    },
-    "B": {
       "item": "guogaology:guogao_drop"
     },
-    "C": {
-      "item": "guogaology:dread_leaves"
-    },
-    "D": {
-      "item": "guogaology:emoji_flower"
-    },
-    "E": {
-      "item": "guogaology:loquat"
-    },
-    "F": {
-      "item": "guogaology:star_gold"
-    },
-    "G": {
+    "B": {
       "item": "guogaology:fruit_cake_gel"
-    },
-    "H": {
-      "tag": "guogaology:guogao_lamps"
     }
   },
   "result": {

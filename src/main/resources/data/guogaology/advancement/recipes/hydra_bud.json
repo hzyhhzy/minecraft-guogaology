@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:ordinal_flowers"
+            "items": "#guogaology:ordinal_branch_stones"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:great_omega_symbol"
+            "items": "guogaology:hydra_sprig"
           }
         ]
       }
@@ -26,37 +26,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:hydra_sprig"
-          }
-        ]
-      }
-    },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:ordinal_crystal"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:psi_symbol"
-          }
-        ]
-      }
-    },
-    "ingredient_5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:veblen_petal"
           }
         ]
       }
@@ -73,9 +43,6 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
-      "ingredient_3",
-      "ingredient_4",
-      "ingredient_5",
       "has_recipe"
     ]
   ],

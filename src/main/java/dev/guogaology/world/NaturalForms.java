@@ -8,8 +8,8 @@ public final class NaturalForms {
             FIR_WOOD=17,FIR_LEAF=18,FRUIT=20,EMOJI=24,ABSENCE_GLASS=49,LHO_LETTER=50,LHO_PSI=60,LHO_Z=61,GOLD_STAR=66,
             SCG_SHELL=68,TREE_SHELL=69,SEQUENCE_CORE=72,HYDRA_BUD=73,ASTRA_CRITICAL_CORE=74,GUOGAO_HEART=75,POWER_TOWER_CORE=76,
             BIRCH_WOOD=77,OMEGA_GLYPH=78,GREAT_OMEGA_GLYPH=79,MUSHROOM_STEM=80,SCG_EDGE=81,
-            MATRIX_SHEET=84,ARROW_KNOT=85,SCG_NODE=86,HYDRA_SPRIG=87,LAVER_GEL=88,
-            CLOUD_PEARL=89,SET_MEMBRANE=90,DREAD_RESIN=91,TURING_ENDCAP=92,GUOGAO_DROP=93;
+            MATRIX_SHEET=84,SCG_NODE=86,HYDRA_SPRIG=87,
+            CLOUD_PEARL=89,SET_MEMBRANE=90,TURING_ENDCAP=92,GUOGAO_DROP=93;
     private static double random(long salt,int i) { return WorldNoise.unit(WorldNoise.mix(salt+i*733L)); }
     public static int cloudWidth(long salt) { return 2*(40+(int)Math.floorMod(salt>>>13,31L)); }
     public static int cloudHeight(long salt) {
@@ -163,7 +163,8 @@ public final class NaturalForms {
     public static int absenceFragmentMaterial(long salt,int index){return (WorldNoise.mix(salt+index*731L)&1)==0?FFFZ:FOS;}
 
     public static boolean absenceWordPresent(long salt,int group){return Math.floorMod(WorldNoise.mix(salt+811+group*131L),6L)==0;}
-    public static boolean absenceFragmentPresent(long salt,int x,int y,int z){return Math.floorMod(WorldNoise.hash(salt^0x464f5312L,x,y,z),8L)==0;}
+    /** Wild FOS/fffZ candidates retain one quarter, twice the previous one eighth. */
+    public static boolean absenceFragmentPresent(long salt,int x,int y,int z){return Math.floorMod(WorldNoise.hash(salt^0x464f5312L,x,y,z),4L)==0;}
 
     public static int yTreeHeight(long salt) { return 7+(int)(Math.pow(random(salt,42),1.7)*34); }
     public static void absenceHydra(VoxelBrush b,int x,int y,int z,long salt) {

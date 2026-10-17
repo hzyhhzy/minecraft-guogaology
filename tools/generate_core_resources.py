@@ -17,45 +17,42 @@ A = RES / 'assets/guogaology'
 D = RES / 'data/guogaology'
 MATERIALS = {
     'matrix_sheet': ('矩阵薄片', 'Matrix Sheet', ('#4b4775','#a8a1c2','#d7d2e6','#fff4d8')),
-    'arrow_knot': ('箭纹木节', 'Arrowgrain Knot', ('#593626','#9e6135','#d49a4b','#f9db98')),
     'scg_node': ('SCG结点', 'SCG Junction', ('#243956','#47617c','#81abc6','#d7edf0')),
     'hydra_sprig': ('Hydra芽穗', 'Hydra Sprig', ('#164d40','#31886e','#6fd49d','#d9f5b2')),
-    'laver_gel': ('紫菜胶质', 'Laver Gel', ('#1d665c','#4e9f89','#91d9b0','#e9f8d7')),
-    'cloud_pearl': ('核爆凝珠', 'Nuclear Blast Pearl', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
+    'cloud_pearl': ('核爆晶块', 'Nuclear Blast Block', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
     'set_membrane': ('集合膜', 'Set Membrane', ('#584578','#a39acb','#ded8ef','#fff6dd')),
     'guogao_drop': ('馃槹', 'Guogao', ('#5d3c0d','#ffcd2d','#43a7f3','#cce7fb')),
-    'dread_resin': ('冥杉树脂', 'Dread Fir Resin', ('#452340','#78465b','#b77866','#eed0a1')),
 }
+REMOVED_MATERIALS = ('arrow_knot','laver_gel','dread_resin')
 ORES = ('ordinal_crystal_ore', 'empty_crystal_ore', 'dread_crystal_ore')
 REGIONAL = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart')
 # Raw materials are ordinary Minecraft blocks, not a second set of jewels.
-CUBES = frozenset(('arrow_knot','scg_node','laver_gel','dread_resin','guogao_drop'))
+CUBES = frozenset(('scg_node','cloud_pearl','guogao_drop'))
 BOXES = {
     'matrix_sheet': [((1,0,1),(15,2,15)),((2,3,2),(14,5,14))],
     'hydra_sprig': [((6,0,6),(10,9,10)),((2,7,5),(7,12,10)),((10,6,6),(14,10,11))],
     'set_membrane': [((2,4,7),(14,12,9)),((4,2,7),(12,14,9)),
                      ((7,2,4),(9,14,12)),((7,4,2),(9,12,14)),
                      ((2,7,4),(14,9,12)),((4,7,2),(12,9,14))],
-    'cloud_pearl': [((2,2,3),(14,14,13)),((3,1,4),(13,15,12)),((3,3,2),(13,13,14))],
     **{name:[((0,0,0),(16,16,16))] for name in CUBES},
 }
 TAG_VALUES = {
-    'ancient_notation_materials': ['beaf_marble', 'bird_shale', 'conway_link'],
-    'ordinal_flowers': ['epsilon_bloom','emoji_flower','omega_bloom','great_omega_bloom','zeta_vine','psi_fern','phi_bloom','graham_flower'],
-    'numbered_lamps': [f'{c}_sequence_light' for c in ('amber','cyan','rose','lime','violet','scarlet')],
     'guogao_lamps': ['guogao_lantern'] + [f'{c}_guogao_lantern' for c in ('cyan','rose','lime','violet','scarlet')],
-    'graham_materials': ['graham','graham_flower'],
+    'absence_fragments': ['fffz_trace','fos_trace'],
+    'ordinal_branch_stones': ['epsilon_symbol','omega_symbol','great_omega_symbol','zeta_symbol','psi_symbol','phi_symbol'],
 }
+# Ring order: NW,N,NE,W,E,SW,S,SE. Opposite slots carry matching
+# ingredients where their counts permit it; all four-of-a-kind occupy corners.
 FIRST = {
-    'sequence_core': ['matrix_sheet','ridge_lamina','projection_glass','y_leaves'] + ['ordinal_bricks']*4,
-    'power_tower_core': ['arrow_knot']*2 + ['scg_node']*2 + ['tree_node_red','tree_node_green','tree_node_blue','#graham_materials'],
-    'hydra_bud': ['hydra_sprig']*2 + ['veblen_petal']*2 + ['psi_symbol','great_omega_symbol'] + ['#ordinal_flowers']*2,
-    'lho_trace': ['lho_letter_l','lho_letter_h','lho_letter_o','fffz_trace','fos_trace','lho_hydra_psi','lho_hydra_z','stellar_stone'],
-    'laver_core': ['laver_gel','laver_ribbon'] + ['iblp_node']*2 + ['iblp_marked','iblp_blank','gummy','tianyi_fiber'],
-    'astra_critical_core': ['cloud_pearl'] + ['compute_chip']*5 + ['nuke_mushroom','#guogao_lamps'],
-    'boundary_core': ['set_membrane']*2 + ['turing_tape']*2 + ['proof_stone','turing_endcap','formula_stone','rayo_rose'],
-    'guogao_heart': ['dread_resin','guogao_drop','dread_leaves','emoji_flower','loquat','star_gold','fruit_cake_gel','#guogao_lamps'],
+    'sequence_core': ['matrix_sheet','ordinal_bricks','matrix_sheet','ridge_lamina','ridge_lamina','matrix_sheet','ordinal_bricks','matrix_sheet'],
+    'power_tower_core': ['power_bricks','scg_node','power_bricks','tree_node_red','tree_node_green','power_bricks','tree_node_blue','power_bricks'],
+    'hydra_bud': ['hydra_sprig','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','hydra_sprig'],
+    'lho_trace': ['#absence_fragments','stellar_stone','#absence_fragments','stellar_stone','stellar_stone','#absence_fragments','stellar_stone','#absence_fragments'],
+    'laver_core': ['iblp_node','gummy','laver_ribbon','iblp_marked','iblp_marked','laver_ribbon','gummy','iblp_node'],
+    'astra_critical_core': ['compute_chip','cloud_pearl','compute_chip','cloud_pearl','cloud_pearl','compute_chip','cloud_pearl','compute_chip'],
+    'boundary_core': ['set_membrane','turing_endcap','set_membrane','turing_endcap','turing_endcap','set_membrane','turing_endcap','set_membrane'],
+    'guogao_heart': ['guogao_drop','fruit_cake_gel','guogao_drop','fruit_cake_gel','fruit_cake_gel','guogao_drop','fruit_cake_gel','guogao_drop'],
 }
 NEW_COPY = {
     'block.guogaology.ordinal_crystal_ore': ('序数晶矿', 'Ordinal Crystal Ore'),
@@ -129,51 +126,10 @@ def element(bounds, texture='body'):
                                              for f in ('down','up','north','south','west','east')}}
 
 
-def pearl_elements(resource="cloud_pearl"):
-    """Only the union's visible surfaces; no overlapping or hidden puff faces."""
-    occupied={(x,y,z) for a,b in BOXES[resource]
-              for x in range(a[0],b[0]) for y in range(a[1],b[1]) for z in range(a[2],b[2])}
-    faces={}
-    directions=(('west',0,-1,2,1),('east',0,1,2,1),('down',1,-1,0,2),
-                ('up',1,1,0,2),('north',2,-1,0,1),('south',2,1,0,1))
-    for p in sorted(occupied):
-        for name,axis,sign,u,v in directions:
-            neighbor=list(p);neighbor[axis]+=sign
-            if tuple(neighbor) in occupied:continue
-            texture='body' if resource!='cloud_pearl' or axis!=1 else 'cloud' if sign>0 and p[1]>=8 else 'root'
-            key=(name,axis,p[axis]+(sign>0),u,v,texture)
-            faces.setdefault(key,set()).add((p[u],p[v]))
-    out=[]
-    for (name,axis,plane,u,v,texture),cells in sorted(faces.items()):
-        while cells:
-            x,y=min(cells,key=lambda q:(q[1],q[0]));width=1;height=1
-            while (x+width,y) in cells:width+=1
-            while all((xx,y+height) in cells for xx in range(x,x+width)):height+=1
-            cells.difference_update((xx,yy) for xx in range(x,x+width) for yy in range(y,y+height))
-            a=[0,0,0];b=[0,0,0];a[axis]=b[axis]=plane
-            a[u]=x;b[u]=x+width;a[v]=y;b[v]=y+height
-            uv=[x,16-y-height,x+width,16-y] if axis!=1 else [x,y,x+width,y+height]
-            out.append({'from':a,'to':b,'faces':{name:{'uv':uv,'texture':'#'+texture}}})
-    return out
-
-
-def pearl_cloud_texture():
-    # The chamfered model projects only the middle of this texture onto its
-    # broad faces. Keep the entire old emblem within that common safe region.
-    im=Image.new('RGBA',(32,32),'#477b82');d=ImageDraw.Draw(im)
-    d.polygon(((0,0),(31,0),(25,6),(6,6),(6,25),(0,31)),fill='#63969a')
-    d.polygon(((31,0),(31,31),(0,31),(6,25),(25,25),(25,6)),fill='#315a65')
-    emblem=Image.open(A/'textures/block/core_d/astra_critical_core.png').convert('RGBA')
-    im.alpha_composite(emblem.resize((16,16),Image.Resampling.NEAREST),(8,8))
-    return im
-
-
-def pearl_root_texture():
-    return pearl_cloud_texture()
-
-
 def material_texture(name, palette):
-    if name == "cloud_pearl": return pearl_cloud_texture()
+    if name == "cloud_pearl":
+        from nuclear_block_art import nuclear_texture
+        return nuclear_texture()
     if name == "guogao_drop":
         from guogao_block_art import guogao_face_texture
         return guogao_face_texture()
@@ -194,14 +150,24 @@ def material_texture(name, palette):
                 d.line((x+2,y+2,x+5,y+2),fill='#fff4d8',width=1)
         return im
     if name == "set_membrane":
-        im=Image.new('RGBA',(32,32),'#ded8ef');d=ImageDraw.Draw(im)
-        d.rectangle((0,0,31,31),outline='#63527f',width=2)
-        d.ellipse((4,7,20,24),fill='#b0a0cf',outline='#fff6dd',width=2)
-        d.ellipse((12,7,28,24),fill='#b0a0cf',outline='#fff6dd',width=2)
-        for y in range(8,24):
-            for x in range(12,21):
-                if ((x-12)/8)**2+((y-15.5)/8.5)**2<.64 and ((x-20)/8)**2+((y-15.5)/8.5)**2<.64:
-                    d.point((x,y),fill='#736097')
+        from set_membrane_art import membrane_texture
+        return membrane_texture()
+    if name == "scg_node":
+        # A clean degree-three graph junction, inset into one ordinary cube.
+        im=Image.new('RGBA',(32,32),'#294a5f');d=ImageDraw.Draw(im)
+        d.rectangle((0,0,31,31),outline='#163345',width=2)
+        d.line((2,29,2,2,29,2),fill='#739bab',width=1)
+        d.line((3,29,29,29,29,3),fill='#1c3b50',width=1)
+        d.rectangle((4,4,27,27),fill='#25465a')
+        paths=(((15,5),(15,13)),((6,24),(12,18)),((24,24),(18,18)))
+        for path in paths:
+            d.line(path,fill='#102e42',width=5)
+            d.line(path,fill='#95c5d0',width=3)
+            d.line(path,fill='#d9eff1',width=1)
+        d.polygon(((12,11),(18,11),(21,16),(18,21),(12,21),(9,16)),fill='#142f42')
+        d.polygon(((13,13),(17,13),(19,16),(17,19),(13,19),(11,16)),fill='#72b9c6')
+        d.polygon(((13,13),(17,13),(19,16),(15,16)),fill='#c2e6e8')
+        d.line((13,19,17,19,19,16),fill='#46899f',width=1)
         return im
     rng=random.Random(name)
     im=Image.new('RGBA',(32,32),palette[1]);d=ImageDraw.Draw(im)
@@ -211,9 +177,6 @@ def material_texture(name, palette):
     if name=='matrix_sheet':
         for x in (8,20):
             for y in (8,20): d.rectangle((x,y,x+4,y+4),fill=palette[0])
-    elif name=='arrow_knot':
-        for x in range(1,32,5):d.line((x,0,x+2,31),fill=palette[0],width=2)
-        for y in (9,20):d.line((7,y+5,15,y-3,23,y+5),fill=palette[2],width=3)
     elif name=='scg_node':
         d.rectangle((11,11,20,20),fill=palette[0])
         for line in ((0,15,11,15),(20,15,31,15),(15,0,15,11)):
@@ -222,25 +185,6 @@ def material_texture(name, palette):
         d.line((15,31,15,15,5,4),fill=palette[0],width=3)
         d.line((15,18,26,5),fill=palette[0],width=3)
         d.line((15,20,23,27),fill=palette[2],width=3)
-    elif name=='laver_gel':
-        for y in (8,17,25):d.line((0,y,9,y+2,19,y-1,31,y+1),fill=palette[0],width=2)
-    elif name=='cloud_pearl':
-        # Quiet, broad color bands follow model height; the silhouette carries the theme.
-        for y in range(32):
-            color='#f4fcff' if y<5 else '#d0edf5' if y<10 else '#92c9dc' if y<16 else '#6aa5bf' if y<28 else '#9ccfdf'
-            d.line((0,y,31,y),fill=color)
-        d.rectangle((12,17,19,27),fill='#ffe0a3');d.rectangle((14,18,17,25),fill='#fff8df')
-        d.rectangle((4,7,10,9),fill='#e6f7fc');d.rectangle((23,11,28,13),fill='#b8e0ec')
-    elif name=='set_membrane':
-        d.line((3,28,12,21,21,21,29,7),fill=palette[0],width=2)
-        d.line((0,8,16,12,31,9),fill=palette[2],width=2)
-    else:
-        d.line((16,31,16,15,7,5),fill=palette[0],width=3)
-        d.line((16,16,25,4),fill=palette[0],width=3)
-        d.line((16,23,26,17),fill=palette[2],width=2)
-    if name in ('laver_gel','set_membrane','dread_resin'):
-        alpha=220 if name!='set_membrane' else 170
-        im.putalpha(Image.eval(im.getchannel('A'),lambda a:alpha))
     return im
 
 
@@ -303,16 +247,14 @@ def generated_files():
                    'textures':{'body':'guogaology:block/'+name,'particle':'guogaology:block/'+name},
                    'elements':[element(b) for b in BOXES[name]]})
         if name=='cloud_pearl':
-            model['textures'].update({'cloud':'guogaology:block/cloud_pearl_cloud','root':'guogaology:block/cloud_pearl_root'})
-            model['elements']=pearl_elements()
-            put(A/'textures/block/cloud_pearl_cloud.png',pearl_cloud_texture())
-            put(A/'textures/block/cloud_pearl_root.png',pearl_root_texture())
-        if name=='set_membrane':model['elements']=pearl_elements(name)
+            from nuclear_block_art import nuclear_cube_model
+            model=nuclear_cube_model()
+        if name=='set_membrane':
+            from set_membrane_art import membrane_model
+            model=membrane_model()
         if name=='guogao_drop':
-            from guogao_block_art import guogao_cap_texture,guogao_cube_model
+            from guogao_block_art import guogao_cube_model
             model=guogao_cube_model()
-            put(A/'textures/block/guogao_drop_top.png',guogao_cap_texture(True))
-            put(A/'textures/block/guogao_drop_bottom.png',guogao_cap_texture(False))
         put(A/f'models/block/{name}.json',model)
         put(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
         put(D/f'loot_table/blocks/{name}.json',self_loot(name))
@@ -363,9 +305,10 @@ def generated_files():
         put(D/f'advancement/recipes/{name}.json',{'parent':'minecraft:recipes/root','criteria':criteria,
              'requirements':[list(criteria)],'rewards':{'recipes':['guogaology:'+name]}})
     balance=read(RES/'guogaology/block_balance.json')
+    for name in REMOVED_MATERIALS:balance.pop(name,None)
     for name in (*MATERIALS,*ORES,'turing_endcap'):
         balance[name]={'hardness':3 if name in ORES else 0.8,'resistance':3 if name in ORES else 1.5,
-            'tool':'pickaxe','tier':0,'light':15 if name=='guogao_drop' else 1 if name in ('cloud_pearl','dread_resin') else 0,
+            'tool':'pickaxe','tier':0,'light':15 if name=='guogao_drop' else 1 if name=='cloud_pearl' else 0,
             'drop':'4～6晶屑；时运增产；精准采集矿石' if name in ORES else 'self',
             'use':'序数晶体的采矿来源；徒手可采集，镐加速' if name in ORES else '本群系晶核的自然原料；徒手／任意工具完整采集，镐加速',
             'friction':0.6,'collision':'完整方块' if name in ORES or name in CUBES or name=='turing_endcap' else '自然材料形状',
@@ -386,17 +329,20 @@ def generated_files():
         name=path.relative_to(RES/'data/minecraft/tags/block').with_suffix('').as_posix()
         if not name.startswith(('mineable/','needs_','incorrect_for_')):continue
         data=read(path)
+        data['values']=[v for v in data['values'] if (v if isinstance(v,str) else v.get('id')) not in {'guogaology:'+n for n in REMOVED_MATERIALS}]
         if name=='mineable/pickaxe':data['values']=list(dict.fromkeys(data['values']+sorted(new_ids)))
         else:data['values']=[v for v in data['values'] if (v if isinstance(v,str) else v.get('id')) not in new_ids]
         put(path,data)
     catalog=read(ROOT/'tools/copy_catalog.json')
     for locale,index in (('zh_cn',0),('en_us',1)):
         values=catalog['translations'][locale]
+        for name in REMOVED_MATERIALS:values.pop('block.guogaology.'+name,None)
         for name,pair in MATERIALS.items():values['block.guogaology.'+name]=pair[index]
         for key,pair in NEW_COPY.items():values[key]=pair[index]
         for root,pair in {'sequence_core':('矩阵晶核','Matrix Core'),'lho_trace':('空无晶核','Absence Core'),'astra_critical_core':('核爆之心','Heart of Nuclear Awe')}.items():
             for grade in (1,2,3):values['block.guogaology.'+root+('' if grade==1 else f'_lv{grade}')]=pair[index]+f' · Lv{grade}'
         data=read(A/f'lang/{locale}.json');data.update(values)
+        for name in REMOVED_MATERIALS:data.pop('block.guogaology.'+name,None)
         put(A/f'lang/{locale}.json',data)
     put(ROOT/'tools/copy_catalog.json',catalog)
     return out
@@ -404,6 +350,15 @@ def generated_files():
 
 def generate(check=False):
     changed=[]
+    obsolete=[path for name in REMOVED_MATERIALS for path in (
+        A/f'blockstates/{name}.json',A/f'models/block/{name}.json',A/f'models/item/{name}.json',
+        A/f'textures/block/{name}.png',D/f'loot_table/blocks/{name}.json')]
+    obsolete += [A/f'textures/block/{name}.png' for name in ('cloud_pearl_cloud','cloud_pearl_root','guogao_drop_top','guogao_drop_bottom')]
+    obsolete += [D/f'tags/item/{name}.json' for name in ('ancient_notation_materials','ordinal_flowers','numbered_lamps','graham_materials')]
+    for path in obsolete:
+        if path.exists():
+            changed.append('remove '+str(path.relative_to(ROOT)))
+            if not check:path.unlink()
     for path,value in generated_files().items():
         if isinstance(value,Image.Image):
             buffer=io.BytesIO();value.save(buffer,format='PNG');expected=buffer.getvalue()

@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ABC",
-    "DSE",
-    "EEE"
+    "ABA",
+    "CSC",
+    "ABA"
   ],
   "key": {
     "S": {
@@ -14,16 +14,10 @@
       "item": "guogaology:matrix_sheet"
     },
     "B": {
-      "item": "guogaology:ridge_lamina"
+      "item": "guogaology:ordinal_bricks"
     },
     "C": {
-      "item": "guogaology:projection_glass"
-    },
-    "D": {
-      "item": "guogaology:y_leaves"
-    },
-    "E": {
-      "item": "guogaology:ordinal_bricks"
+      "item": "guogaology:ridge_lamina"
     }
   },
   "result": {

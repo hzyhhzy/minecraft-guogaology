@@ -80,9 +80,9 @@ def pool(name, minimum, maximum):
             'functions': [{'function': 'minecraft:set_count', 'count': count}]}]}
 
 
-PRIMARY = {'matrix':'matrix_sheet','power':'arrow_knot','hydra':'hydra_sprig',
-           'absence':'absence_glass','weaver':'laver_gel','astra':'cloud_pearl',
-           'guogao':'dread_resin','frontier':'set_membrane'}
+PRIMARY = {'matrix':'matrix_sheet','power':'power_bricks','hydra':'hydra_sprig',
+           'absence':'absence_glass','weaver':'laver_ribbon','astra':'cloud_pearl',
+           'guogao':'guogao_drop','frontier':'set_membrane'}
 
 
 def raw_recipe(theme):

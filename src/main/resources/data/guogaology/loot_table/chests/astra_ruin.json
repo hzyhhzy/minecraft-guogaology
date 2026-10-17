@@ -6,33 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:cloud_pearl",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 6,
-                "max": 12
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "guogaology:compute_chip",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 32,
-                "max": 64
+                "min": 26,
+                "max": 54
               }
             }
           ]
@@ -44,33 +25,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:nuke_mushroom",
+          "name": "guogaology:cloud_pearl",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 6,
-                "max": 12
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:guogao_lantern",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 6,
-                "max": 12
+                "min": 24,
+                "max": 48
               }
             }
           ]

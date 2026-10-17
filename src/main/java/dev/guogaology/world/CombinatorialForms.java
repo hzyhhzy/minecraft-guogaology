@@ -27,7 +27,7 @@ public final class CombinatorialForms {
         }
         int tip=base+t.height+antennaHeight(salt)-1;
         b.box(x,base+t.height,z,x,tip-1,z,NaturalForms.POWER_BRICK);
-        b.set(x,tip,z,NaturalForms.ARROW_KNOT);
+        b.set(x,tip,z,NaturalForms.POWER_BRICK);
         for(int[] face:new int[][]{{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}})
             b.set(x+face[0],tip+face[1],z+face[2],NaturalForms.POWER_BRICK);
     }
@@ -126,9 +126,9 @@ public final class CombinatorialForms {
         b.line(x,base-1,z,x,base+height*.24,z,0,NaturalForms.POWER_BRICK);
         double angle=WorldNoise.unit(salt)*Math.PI*2;
         for(int i=0;i<4;i++) grahamBranch(b,x,base+height*.24,z,(height-1)*.375,angle+i*Math.PI/2,0,WorldNoise.mix(salt+i));
-        // One exposed jewel in the central cup directly above the four-way trunk fork.
+        // The central cup above the four-way fork retains ordinary Power Bricks.
         b.set(x,base+(int)Math.round(height*.24)+2,z,
-                NaturalForms.ARROW_KNOT);
+                NaturalForms.POWER_BRICK);
     }
     private static void grahamBranch(VoxelBrush b,double x,double y,double z,double length,double angle,int level,long salt) {
         double xx=x+Math.cos(angle)*length*.62,zz=z+Math.sin(angle)*length*.62,yy=y+length;

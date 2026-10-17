@@ -32,7 +32,7 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_matrix_3` | The Matrix Unfolds | Obtain Matrix Core Lv3. Reach third-grade excavation. Extra mining never targets blocks below the selected block. |
 | `guide/landmark_matrix` | Explore Matrix Folded Keep | Enter the built space of Matrix Folded Keep and explore its paths and exhibits. |
 | `guide/biome_power` | Visit Power Tower Desert | Enter Power Tower Desert in Inner to discover its materials and megastructure. |
-| `guide/material_power` | Arrows and Colored Tips | Collect an Arrow Knot and any colored TREE node: traces of arrows, trees and graphs in the desert. |
+| `guide/material_power` | Arrows and Colored Tips | Collect Power Tower Wood and any colored TREE node: traces of arrows, trees and graphs in the desert. |
 | `guide/core_power_1` | The Edge of an Arrow | Obtain Power Tower Core Lv1. Socket into a sword, bow or manuscript for attack; weapon and manuscript contributions are separate. |
 | `guide/core_power_2` | Iterating Power | Obtain Power Tower Core Lv2. Advance the attack core to Lv2; matching copies in one carrier use root-sum-squares. |
 | `guide/core_power_3` | A Taller Power Tower | Obtain Power Tower Core Lv3. Third-grade Tower strengthens attack further, with an independent multiplier in the deep realms. |
@@ -50,14 +50,14 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_absence_3` | A Silent Reply | Obtain Absence Core Lv3. A manuscript also prevents ordinary retaliation targeting; equipment gains stronger wear protection. |
 | `guide/landmark_absence` | Explore Missing-Page Galleries | Enter the built space of Missing-Page Galleries and explore its paths and exhibits. |
 | `guide/biome_weaver` | Visit Laver Tablelands | Enter Laver Tablelands in Inner to discover its materials and megastructure. |
-| `guide/material_weaver` | Between Laver and Gummy | Collect Laver Gel from Laver plants. An inlay can play a diagram row ending in a number brick. |
+| `guide/material_weaver` | Between Laver and Gummy | Collect Laver Sheets from Laver plants. An inlay can play a diagram row ending in a number brick. |
 | `guide/core_weaver_1` | Tides and Echoes | Obtain Laver Condensation Core Lv1. Helmets reduce oxygen use and grant Aqua Affinity, boots improve underwater movement, manuscripts heal every four seconds. |
 | `guide/core_weaver_2` | At Ease Underwater | Obtain Laver Condensation Core Lv2. Lv2 strengthens aquatic benefits; manuscripts combine healing with a minimum food level. |
 | `guide/core_weaver_3` | Breathless Depths | Obtain Laver Condensation Core Lv3. A Lv3 helmet stops oxygen consumption, boots improve swimming further, and manuscripts improve healing and food protection. |
 | `guide/landmark_weaver` | Explore Laver Triangle Palace | Enter the built space of Laver Triangle Palace and explore its paths and exhibits. |
 | `guide/play_laver` | A Note at the Table | Without sneaking, right-click an inlay (held items are allowed) to play its longest row ending in a Matrix Number Brick, one cell per quarter-second. |
 | `guide/biome_astra` | Visit Astra Inference Plains | Enter Astra Inference Plains in Inner to discover its materials and megastructure. |
-| `guide/material_astra` | Computing in the Clouds | Find Nuclear Blast Pearls buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips. Lv1 crafting also uses an Outer-world Nuke Mushroom. |
+| `guide/material_astra` | Computing in the Clouds | Find Nuclear Blast Blocks buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips. |
 | `guide/core_astra_1` | An Astonishing Hit | Obtain Heart of Nuclear Awe Lv1. In a sword or bow, hits burst against the target and nearby creatures without damaging terrain. |
 | `guide/core_astra_2` | Spreading Shockwaves | Obtain Heart of Nuclear Awe Lv2. Lv2 strengthens the on-hit burst. Heart of Nuclear Awe cannot be socketed into manuscripts. |
 | `guide/core_astra_3` | The Critical Point | Obtain Heart of Nuclear Awe Lv3. Lv3 bursts are stronger; matching burst contributions combine by root-sum-squares. |
@@ -70,7 +70,7 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_frontier_3` | Beyond the Boundary | Obtain Boundary Core Lv3. In a manuscript, gain free flight and sprint; deep-realm sprint flight is faster. |
 | `guide/landmark_frontier` | Explore Boundary Calculus Court | Enter the built space of Boundary Calculus Court and explore its paths and exhibits. |
 | `guide/enter_underworld` | The Guogao Underworld | In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld. |
-| `guide/material_guogao` | Guogao Behind the Expression | Gather Dread Fir Resin; seek Guogao inside Christmas-tree stars and at the centers of giant hanging emoji globes. It is a luminous full cube with an anxious face. |
+| `guide/material_guogao` | Guogao Behind the Expression | Find Guogao inside Christmas-tree stars and giant hanging emoji-globe centers, and gather Fruit Cake Gel. Guogao has slightly rounded edges, a native 32×32 texture with an approximately 28×28 anxious, sweating expression on each face, and light level 15. |
 | `guide/core_guogao_1` | Breaking into a Sweat | Obtain Heart of Guogao Lv1. Swords and bows apply Slowness and Poison; manuscripts add health, while armor itself adds none. |
 | `guide/core_guogao_2` | The Unease Spreads | Obtain Heart of Guogao Lv2. Weapons apply stronger debuffs; manuscripts add health, resist selected effects, and prioritize real inventory Totems. |
 | `guide/core_guogao_3` | Hard to Behold | Obtain Heart of Guogao Lv3. Lv3 weapons inflict Wither, Weakness and Nausea with a chance of Blindness; manuscripts improve health and immunities. |

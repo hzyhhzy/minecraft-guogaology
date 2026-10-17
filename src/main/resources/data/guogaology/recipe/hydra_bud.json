@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "AAB",
-    "BSC",
-    "DEE"
+    "ABA",
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
@@ -14,16 +14,7 @@
       "item": "guogaology:hydra_sprig"
     },
     "B": {
-      "item": "guogaology:veblen_petal"
-    },
-    "C": {
-      "item": "guogaology:psi_symbol"
-    },
-    "D": {
-      "item": "guogaology:great_omega_symbol"
-    },
-    "E": {
-      "tag": "guogaology:ordinal_flowers"
+      "tag": "guogaology:ordinal_branch_stones"
     }
   },
   "result": {

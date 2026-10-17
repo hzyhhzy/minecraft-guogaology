@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "AAB",
-    "BSC",
-    "DEF"
+    "ABA",
+    "CSD",
+    "AEA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:arrow_knot"
+      "item": "guogaology:power_bricks"
     },
     "B": {
       "item": "guogaology:scg_node"
@@ -24,9 +24,6 @@
     },
     "E": {
       "item": "guogaology:tree_node_blue"
-    },
-    "F": {
-      "tag": "guogaology:graham_materials"
     }
   },
   "result": {

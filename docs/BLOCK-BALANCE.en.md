@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.5.14
+# Block harvesting reference · 0.5.15
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
@@ -164,16 +164,13 @@ Ordinary mining of any emoji lamp returns its whole form with the same color and
 | Inner Return Frame | `inner_return_frame` | 0.8 | 3 | Hand | None | 0 | Low pedestal and corner posts | Block itself |
 | Dread Forest Return Frame | `guogao_return_frame` | 0.8 | 3 | Hand | None | 0 | Low pedestal and corner posts | Block itself |
 | Matrix Sheet | `matrix_sheet` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
-| Arrowgrain Knot | `arrow_knot` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
 | SCG Junction | `scg_node` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
 | Hydra Sprig | `hydra_sprig` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
-| Laver Gel | `laver_gel` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
-| Nuclear Blast Pearl | `cloud_pearl` | 0.8 | 1.5 | Pickaxe | None | 1 | Material shape | Block itself |
+| Nuclear Blast Block | `cloud_pearl` | 0.8 | 1.5 | Pickaxe | None | 1 | Full block | Block itself |
 | Set Membrane | `set_membrane` | 0.8 | 1.5 | Pickaxe | None | 0 | Material shape | Block itself |
-| Dread Fir Resin | `dread_resin` | 0.8 | 1.5 | Pickaxe | None | 1 | Material shape | Block itself |
 | Ordinal Crystal Ore | `ordinal_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Voidglass Ordinal Crystal Ore | `empty_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Understone Ordinal Crystal Ore | `dread_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Turing Terminus | `turing_endcap` | 0.8 | 1.5 | Pickaxe | None | 0 | Full block | Block itself |
-| Guogao | `guogao_drop` | 0.8 | 1.5 | Pickaxe | None | 15 | Full block | Block itself with any tool; four complete 😰 faces; concealed in Guogao stars and giant emoji-globe centers |
+| Guogao | `guogao_drop` | 0.8 | 1.5 | Pickaxe | None | 15 | Full block | Block itself with any tool; slightly rounded appearance, native 32×32 texture with an approximately 28×28 complete 😰 expression on each face; concealed in Guogao stars and giant emoji-globe centers |
 | Guogao Lamp Shaper | `guogao_lamp_shaper` | 3.5 | 6 | Pickaxe | None | 0 | Full block | Block itself |

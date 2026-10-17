@@ -21,7 +21,7 @@ public final class NaturalScenery {
     private static final Map<Key,Site> SITES=new ConcurrentHashMap<>();
     private static final Map<Site,Table> TABLES=new ConcurrentHashMap<>();
     private static final Map<Site,Integer> BOARD_BASES=new ConcurrentHashMap<>();
-    private record VineKey(Site site,boolean great) {}
+    private record VineKey(Site site,boolean great,int root,int dir,int height) {}
     private static final Map<VineKey,HauntedVines.Plan> VINES=new ConcurrentHashMap<>();
     private static final BlockState WOOD=GuogaologyBlocks.DREAD_LOG.getDefaultState();
     private static final BlockState LEAF=GuogaologyBlocks.DREAD_LEAVES.getDefaultState().with(LeavesBlock.PERSISTENT,true).with(LeavesBlock.DISTANCE,1);
@@ -48,9 +48,9 @@ public final class NaturalScenery {
             Blocks.AIR.getDefaultState(),GuogaologyBlocks.STAR_GOLD.getDefaultState(),
             Blocks.AIR.getDefaultState(),net.minecraft.block.Blocks.LIGHT_BLUE_STAINED_GLASS.getDefaultState(),
             Blocks.RED_STAINED_GLASS.getDefaultState(),Blocks.GREEN_STAINED_GLASS.getDefaultState(),Blocks.BLUE_STAINED_GLASS.getDefaultState(),
-            CoreResources.MATRIX_SHEET.getDefaultState(),CoreResources.HYDRA_SPRIG.getDefaultState(),CoreResources.CLOUD_PEARL.getDefaultState(),CoreResources.DREAD_RESIN.getDefaultState(),CoreResources.ARROW_KNOT.getDefaultState(),
+            CoreResources.MATRIX_SHEET.getDefaultState(),CoreResources.HYDRA_SPRIG.getDefaultState(),CoreResources.CLOUD_PEARL.getDefaultState(),CoreResources.GUOGAO_DROP.getDefaultState(),GuogaologyBlocks.POWER_BRICKS.getDefaultState(),
             Blocks.BIRCH_LOG.getDefaultState(),GuogaologyBlocks.OMEGA_SYMBOL.getDefaultState(),GuogaologyBlocks.GREAT_OMEGA_SYMBOL.getDefaultState(),Blocks.MUSHROOM_STEM.getDefaultState(),Blocks.POLISHED_ANDESITE.getDefaultState(),
-            Blocks.POLISHED_BLACKSTONE.getDefaultState(),Blocks.GRAY_STAINED_GLASS.getDefaultState(),CoreResources.MATRIX_SHEET.getDefaultState(),CoreResources.ARROW_KNOT.getDefaultState(),CoreResources.SCG_NODE.getDefaultState(),CoreResources.HYDRA_SPRIG.getDefaultState(),CoreResources.LAVER_GEL.getDefaultState(),CoreResources.CLOUD_PEARL.getDefaultState(),CoreResources.SET_MEMBRANE.getDefaultState(),CoreResources.DREAD_RESIN.getDefaultState(),CoreResources.TURING_ENDCAP.getDefaultState(),CoreResources.GUOGAO_DROP.getDefaultState()};
+            Blocks.POLISHED_BLACKSTONE.getDefaultState(),Blocks.GRAY_STAINED_GLASS.getDefaultState(),CoreResources.MATRIX_SHEET.getDefaultState(),GuogaologyBlocks.POWER_BRICKS.getDefaultState(),CoreResources.SCG_NODE.getDefaultState(),CoreResources.HYDRA_SPRIG.getDefaultState(),GuogaologyBlocks.IBLP_NODE.getDefaultState(),CoreResources.CLOUD_PEARL.getDefaultState(),CoreResources.SET_MEMBRANE.getDefaultState(),CoreResources.GUOGAO_DROP.getDefaultState(),CoreResources.TURING_ENDCAP.getDefaultState(),CoreResources.GUOGAO_DROP.getDefaultState()};
     private static final class CityChair {
         private static final BlockState STATE=net.minecraft.registry.Registries.BLOCK.get(dev.guogaology.GuogaologyMod.id("nuke_chair")).getDefaultState().with(net.minecraft.state.property.Properties.HORIZONTAL_FACING,net.minecraft.util.math.Direction.SOUTH);
     }
@@ -105,8 +105,8 @@ public final class NaturalScenery {
     static void drawObject(SceneryBrush b,Site s,SceneryDistribution.Form form) {
                 switch(form) {
                     case RIDGE_CROWN,RIDGE_SPROUT,REFLECTION_RIDGE,PROJECTION_WALL,WATER_RIDGE,VEBLEN,CONWAY_CHAIN,BEAF_REEF,BIRD_NEST,SET_SHELL,TURING_STRIP,RAYO_CROWN,PROOF_STRATA,DROWNED_PTO,RANK_SHELLS,PROOF_ESCARPMENT,FOLDED_TAPE,FORMULA_GEODE,LAVER_REEF,LAVER_WATER_FRONDS,ASTRA_COOLANT_REEF,ASTRA_BUBBLE -> NotationLandscapes.draw(b,s,form);
-                    case FIR -> tree(b,s,s.underworld,false);
-                    case FIR_LIGHTS -> tree(b,s,s.underworld,true);
+                    case FIR -> tree(b,s,false);
+                    case FIR_LIGHTS -> tree(b,s,true);
                     case HYDRA -> hydra(b,s);
                     case CLOUD -> cloudPatch(b,s);
                     case CLOUD_LIGHTS -> { cloudTree(b,s,true);if(s.floor!=Integer.MIN_VALUE&&s.floor+cloudHeight(s)<=313)cloudCores(b,s); }
@@ -136,7 +136,7 @@ public final class NaturalScenery {
         return new VoxelBrush(b.minX,b.maxX,-62,317,b.minZ,b.maxZ,(x,y,z,m)->b.set(x,y,z,formMaterial(m)));
     }
     public static int treeHeight(Site s,boolean haunted) {
-        int desired=haunted?20+(int)(Math.pow(WorldNoise.unit(WorldNoise.mix(s.salt+9)),1.55)*116):30+(int)Math.floorMod(s.salt>>>14,41L);
+        int desired=haunted?20+(int)(Math.pow(WorldNoise.unit(WorldNoise.mix(s.salt+9)),1.55)*116):FirDecorations.normalHeight(s.salt);
         return fitTreeHeight(s,desired);
     }
     public static int greatVineHeight(Site s) {
@@ -154,7 +154,7 @@ public final class NaturalScenery {
         return desired;
     }
     public static boolean inverted(Site s) { return s.underworld && s.ceiling!=Integer.MIN_VALUE && Math.floorMod(s.salt,3L)==0; }
-    public static boolean vineForm(Site s) { return s.underworld && Math.floorMod(s.salt>>>5,3L)!=0; }
+    public static boolean vineForm(Site s) { return (s.underworld||s.kind==5)&&FirDecorations.branched(s.salt); }
     private static double treeX(Site s,double t,int height,boolean haunted) {
         if(!haunted) return s.x+Math.sin(t*2)*1.5;
         double tilt=(WorldNoise.unit(WorldNoise.mix(s.salt+29))-.5)*height*.72;
@@ -165,12 +165,17 @@ public final class NaturalScenery {
         double tilt=(WorldNoise.unit(WorldNoise.mix(s.salt+43))-.5)*height*.62;
         return s.z+tilt*t*t+Math.cos(t*5)*height*.05*t;
     }
-    private static void tree(SceneryBrush b,Site s,boolean haunted,boolean ornamentsOnly) {
-        if(vineForm(s)) { vine(b,s,ornamentsOnly);return; }
-        if(haunted && (s.salt&1)==0) haunted=false;
+    private static void tree(SceneryBrush b,Site s,boolean ornamentsOnly) {
+        boolean branched=vineForm(s),haunted=FirDecorations.crooked(s.salt);
         boolean inverted=inverted(s);int dir=inverted?-1:1,root=inverted?s.ceiling-1:s.floor;
-        int height=treeHeight(s,haunted);if(root==Integer.MIN_VALUE || height<20) return;
-        treeAt(b,s,haunted,ornamentsOnly,root,dir,height);
+        // Astra retains its original size and placement while sharing all Underworld crown variants.
+        int height=treeHeight(s,s.underworld&&(branched||haunted));
+        if(root==Integer.MIN_VALUE || height<(s.underworld&&branched?25:20)) return;
+        firAt(b,s,ornamentsOnly,root,dir,height);
+    }
+    public static void firAt(SceneryBrush b,Site s,boolean ornamentsOnly,int root,int dir,int height){
+        if(vineForm(s))vineAt(b,s,ornamentsOnly,false,root,dir,height);
+        else treeAt(b,s,FirDecorations.crooked(s.salt),ornamentsOnly,root,dir,height);
     }
     public static void treeAt(SceneryBrush b,Site s,boolean haunted,boolean ornamentsOnly,int root,int dir,int height) {
         int radius=Math.max(7,(int)(height*(haunted?.30:.29))),tiers=Math.max(5,height/12);
@@ -195,13 +200,13 @@ public final class NaturalScenery {
             }
         }
         int topX=(int)Math.round(treeX(s,1,height,haunted)),topZ=(int)Math.round(treeZ(s,1,height,haunted));
-        FirDecorations.star(forms(b),topX,root+dir*height,topZ,height,dir,haunted);
-        // Resin stays near the root; Guogao stars enclose a single crystal drop.
+        FirDecorations.star(forms(b),topX,root+dir*height,topZ,height,dir,haunted||s.kind==5);
+        // Root nodules stay wooden; Guogao stars enclose a single Guogao block.
         if(haunted)for(int i=0;i<4;i++){
             double t=.035+i*.027;int dy=Math.max(1,(int)(t*height));
             int x=(int)Math.round(treeX(s,t,height,true)),z=(int)Math.round(treeZ(s,t,height,true));
             int r=Math.max(0,(int)((1-t)*height/28));
-            b.set(x+(i%2==0?r+1:0),root+dir*dy,z+(i%2==0?0:r+1),CoreResources.DREAD_RESIN.getDefaultState());
+            b.set(x+(i%2==0?r+1:0),root+dir*dy,z+(i%2==0?0:r+1),WOOD);
         }
     }
     private static void treeOrnaments(SceneryBrush b,Site s,boolean haunted,int root,int dir,int height,int radius,int tiers) {
@@ -226,18 +231,18 @@ public final class NaturalScenery {
             }
         }
     }
-    private static void vine(SceneryBrush b,Site s,boolean ornamentsOnly) {
-        vine(b,s,ornamentsOnly,false);
-    }
     private static void vine(SceneryBrush b,Site s,boolean ornamentsOnly,boolean great) {
         int height=great?greatVineHeight(s):treeHeight(s,true);if(height<(great?200:25)) return;
         boolean upsideDown=inverted(s);int dir=upsideDown?-1:1,root=upsideDown?s.ceiling-1:s.floor;
         if(root==Integer.MIN_VALUE) return;
-        var plan=VINES.computeIfAbsent(new VineKey(s,great),key->great?HauntedVines.plan(s.x,root,s.z,height,dir,s.salt):HauntedVines.treePlan(s.x,root,s.z,height,dir,s.salt));
+        vineAt(b,s,ornamentsOnly,great,root,dir,height);
+    }
+    private static void vineAt(SceneryBrush b,Site s,boolean ornamentsOnly,boolean great,int root,int dir,int height){
+        var plan=VINES.computeIfAbsent(new VineKey(s,great,root,dir,height),key->great?HauntedVines.plan(s.x,root,s.z,height,dir,s.salt):HauntedVines.treePlan(s.x,root,s.z,height,dir,s.salt));
         if(!ornamentsOnly) {
             plan.draw(forms(b));
-            // Giant twisted stems expose several small resin pockets near the accessible root.
-            for(int i=0;i<(great?8:4);i++)b.set(s.x+(i%2==0?2:-2),root+dir*(3+i*2),s.z+(i%2==0?0:1),CoreResources.DREAD_RESIN.getDefaultState());
+            // Giant twisted stems retain their small wooden root nodules.
+            for(int i=0;i<(great?8:4);i++)b.set(s.x+(i%2==0?2:-2),root+dir*(3+i*2),s.z+(i%2==0?0:1),WOOD);
             return;
         }
         var protectedLights=new java.util.HashSet<HauntedVines.LampPosition>();
@@ -478,7 +483,7 @@ public final class NaturalScenery {
         if((s.salt&3)==0) b.set(s.x+1,s.floor,s.z,GuogaologyBlocks.JELLIES[(int)Math.floorMod(s.salt>>>17,4L)].getDefaultState());
     }
     public static boolean lhoTreePresent(Site s) {
-        if(s.kind!=3||s.floor==Integer.MIN_VALUE||s.floor>276||Math.floorMod(s.salt,3L)!=0) return false;
+        if(s.kind!=3||s.floor==Integer.MIN_VALUE||s.floor>276) return false;
         // The final table pass must not sever a tree reaching across a biome boundary.
         for(int tx=Math.floorDiv(s.x-86,38);tx<=Math.floorDiv(s.x+86,38);tx++)
             for(int tz=Math.floorDiv(s.z-86,38);tz<=Math.floorDiv(s.z+86,38);tz++) {
@@ -487,10 +492,11 @@ public final class NaturalScenery {
                 int reach=NotationCatalog.table(neighbor.salt).size()/2+28;
                 if(Math.abs(s.x-neighbor.x)<=reach&&Math.abs(s.z-neighbor.z)<=reach) return false;
             }
-        int cx=Math.floorDiv(s.x,58),cz=Math.floorDiv(s.z,58);
-        for(int dx=-1;dx<=1;dx++) for(int dz=-1;dz<=1;dz++) {
-            if(dx==0&&dz==0) continue;var other=site(s.seed,58,cx+dx,cz+dz,false);
-            if(other.kind==3&&other.floor!=Integer.MIN_VALUE&&other.floor<=276&&Math.floorMod(other.salt,3L)==0&&Long.compareUnsigned(other.salt,s.salt)<0&&Math.hypot(s.x-other.x,s.z-other.z)<49) return false;
+        int cell=SceneryDistribution.LHO_TREE_CELL,span=SceneryDistribution.LHO_TREE_NEIGHBOR_RADIUS;
+        int cx=Math.floorDiv(s.x,cell),cz=Math.floorDiv(s.z,cell);
+        for(int dx=-span;dx<=span;dx++) for(int dz=-span;dz<=span;dz++) {
+            if(dx==0&&dz==0) continue;var other=site(s.seed,cell,cx+dx,cz+dz,false);
+            if(other.kind==3&&other.floor!=Integer.MIN_VALUE&&other.floor<=276&&Long.compareUnsigned(other.salt,s.salt)<0&&Math.hypot(s.x-other.x,s.z-other.z)<SceneryDistribution.LHO_TREE_SEPARATION) return false;
         }
         return true;
     }
@@ -522,8 +528,8 @@ public final class NaturalScenery {
     private static void laver(SceneryBrush b,Site s) {
         int height=laverHeight(s);if(height<8) return;
         NaturalForms.laver(forms(b),s.x,s.floor,s.z,height,s.salt);
-        // Collectible gel sits at the exposed root/vein junction, outside the ordinary leaf blade.
-        for(int i=0;i<3;i++)b.set(s.x+1,s.floor+2+i,s.z,CoreResources.LAVER_GEL.getDefaultState());
+        // The exposed root/vein junction keeps the ordinary Laver vein material.
+        for(int i=0;i<3;i++)b.set(s.x+1,s.floor+2+i,s.z,GuogaologyBlocks.LAVER_VEIN.getDefaultState());
     }
     public static int laverHeight(Site s) {
         if(s.floor==Integer.MIN_VALUE) return 0;
@@ -596,14 +602,14 @@ public final class NaturalScenery {
         NaturalForms.cloud(probe,s.x,s.floor,s.z,s.salt);
         if(root[0]==Integer.MAX_VALUE) return null;
         int ground=ProceduralTerrain.column(s.seed,x,z,false).surface(false,s.floor);
-        int height=30+(int)Math.floorMod(s.salt>>>17,31L);
+        int height=FirDecorations.hangingHeight(s.salt);
         height=Math.min(height,root[0]-Math.max(-55,ground==Integer.MIN_VALUE?-55:ground)-14);
         return height<20?null:new CloudFir(x,root[0],z,height);
     }
     private static void cloudTree(SceneryBrush b,Site s,boolean ornamentsOnly) {
         var fir=cloudFir(s);if(fir==null) return;
         var shifted=new Site(s.seed,WorldNoise.mix(s.salt+8191),fir.x,fir.z,5,s.floor,fir.root,false);
-        treeAt(b,shifted,false,ornamentsOnly,fir.root,-1,fir.height);
+        firAt(b,shifted,ornamentsOnly,fir.root,-1,fir.height);
     }
     static void knot(SceneryBrush b,int cx,int ground,int cz,double scale,long salt) {
         double yaw=WorldNoise.unit(salt)*Math.PI*2,pitch=WorldNoise.unit(WorldNoise.mix(salt))*Math.PI,roll=WorldNoise.unit(WorldNoise.mix(salt+11))*Math.PI*2;

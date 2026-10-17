@@ -94,7 +94,7 @@ public final class Laver511Checks {
     private static void generatedTables(ServerLevel w)throws Exception{
         for(int turn=0;turn<4;turn++)for(boolean mirror:new boolean[]{false,true})for(boolean vertical:new boolean[]{false,true}){
             var t=example(turn,mirror,vertical);var blocks=paint(t);int n=t.pattern().size();var saved=new LinkedHashMap<BlockPos,BlockState>();
-            check(blocks.values().stream().noneMatch(s->s.is(CoreResources.LAVER_GEL)||s.is(GuogaologyBlocks.LAVER_CORE)),"new natural tables contain no gel or core");
+            check(blocks.values().stream().noneMatch(s->s.is(GuogaologyBlocks.LAVER_CORE)),"new natural tables contain no finished core");
             for(int col=-1;col<=1;col++)check(!blocks.containsKey(NaturalScenery.tableCell(t,0,col)),"old apex row really removed");
             for(int[] leg:LaverTableShape.legs(n))check(leg[0]>=1&&leg[0]<n&&leg[1]>=0&&leg[1]<=leg[0],"three supports are inset within real diagram");
             try{

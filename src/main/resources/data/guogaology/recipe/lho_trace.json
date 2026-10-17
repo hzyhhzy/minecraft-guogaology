@@ -2,36 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ABC",
-    "DSE",
-    "FGH"
+    "ABA",
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:lho_letter_l"
+      "tag": "guogaology:absence_fragments"
     },
     "B": {
-      "item": "guogaology:lho_letter_h"
-    },
-    "C": {
-      "item": "guogaology:lho_letter_o"
-    },
-    "D": {
-      "item": "guogaology:fffz_trace"
-    },
-    "E": {
-      "item": "guogaology:fos_trace"
-    },
-    "F": {
-      "item": "guogaology:lho_hydra_psi"
-    },
-    "G": {
-      "item": "guogaology:lho_hydra_z"
-    },
-    "H": {
       "item": "guogaology:stellar_stone"
     }
   },

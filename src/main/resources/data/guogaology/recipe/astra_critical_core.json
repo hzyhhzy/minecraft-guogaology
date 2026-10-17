@@ -2,25 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ABB",
+    "ABA",
     "BSB",
-    "BCD"
+    "ABA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:cloud_pearl"
-    },
-    "B": {
       "item": "guogaology:compute_chip"
     },
-    "C": {
-      "item": "guogaology:nuke_mushroom"
-    },
-    "D": {
-      "tag": "guogaology:guogao_lamps"
+    "B": {
+      "item": "guogaology:cloud_pearl"
     }
   },
   "result": {

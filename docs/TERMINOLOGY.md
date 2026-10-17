@@ -1,4 +1,4 @@
-# 正式名称与词根 · 0.5.14
+# 正式名称与词根 · 0.5.15
 
 | 中文 | 英文 | 约定 |
 |---|---|---|
@@ -36,14 +36,11 @@
 | 自然原料 | 英文 | ID |
 |---|---|---|
 | 矩阵薄片 | Matrix Sheet | `matrix_sheet` |
-| 箭纹木节 | Arrowgrain Knot | `arrow_knot` |
 | SCG结点 | SCG Junction | `scg_node` |
 | Hydra芽穗 | Hydra Sprig | `hydra_sprig` |
-| 紫菜胶质 | Laver Gel | `laver_gel` |
-| 核爆凝珠 | Nuclear Blast Pearl | `cloud_pearl` |
+| 核爆晶块 | Nuclear Blast Block | `cloud_pearl`；完整方块 |
 | 集合膜 | Set Membrane | `set_membrane` |
-| 冥杉树脂 | Dread Fir Resin | `dread_resin` |
-| 馃槹 | Guogao | `guogao_drop`；完整发光表情方块 |
+| 馃槹 | Guogao | `guogao_drop`；亮度15、轻圆角，六面原生32×32纹理、约28×28表情区 |
 | 图灵终符 | Turing Terminus | `turing_endcap` |
 
 | 群系 | 代表建筑 |

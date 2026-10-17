@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:guogao_lamps"
+            "items": "guogaology:cloud_pearl"
           }
         ]
       }
@@ -16,32 +16,12 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:cloud_pearl"
-          }
-        ]
-      }
-    },
-    "ingredient_2": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:compute_chip"
           }
         ]
       }
     },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:nuke_mushroom"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
+    "ingredient_2": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -63,8 +43,6 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
-      "ingredient_3",
-      "ingredient_4",
       "has_recipe"
     ]
   ],

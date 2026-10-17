@@ -64,7 +64,7 @@ public final class Advancement510Checks {
         inventory(p,"omega_helmet","epsilon_chestplate","gamma_leggings");check(!done(p,"full_set"),"three parts are not a set");inventory(p,"omega_helmet","epsilon_chestplate","gamma_leggings","true_omega_boots");complete(p,"full_set");
         inventory(p,"return_token");check(!done(p,"return_ready"),"return token alone insufficient");inventory(p,"return_token","inner_return_frame");complete(p,"return_ready");
         var book=item("omega_manuscript");GuideProgress.edited(p,book);check(!done(p,"socketed"),"blank editor insufficient");GearData.setCores(book,List.of(item("sequence_core")));GuideProgress.edited(p,book);complete(p,"socketed");
-        String[][] materials={{"matrix_sheet"},{"arrow_knot","tree_node_green"},{"hydra_sprig"},{"ordinal_crystal","fos_trace"},{"laver_gel"},{"cloud_pearl","compute_chip"},{"turing_endcap"},{"dread_resin","guogao_drop"}};
+        String[][] materials={{"matrix_sheet"},{"power_bricks","tree_node_green"},{"hydra_sprig"},{"ordinal_crystal","fos_trace"},{"laver_ribbon"},{"cloud_pearl","compute_chip"},{"turing_endcap"},{"guogao_drop","fruit_cake_gel"}};
         for(int i=0;i<THEMES.length;i++){
             String id="material_"+THEMES[i];reset(p,id);inventory(p,"minecraft:dirt");check(!done(p,id),"unrelated material does not count "+id);
             if(materials[i].length>1){inventory(p,materials[i][0]);check(!done(p,id),"all material groups required "+id);}

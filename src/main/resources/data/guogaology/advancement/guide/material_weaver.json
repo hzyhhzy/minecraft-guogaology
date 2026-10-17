@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "guogaology:laver_gel"
+      "id": "guogaology:laver_ribbon"
     },
     "title": {
       "translate": "advancement.guogaology.guide.material_weaver.title"
@@ -21,7 +21,7 @@
         "items": [
           {
             "items": [
-              "guogaology:laver_gel"
+              "guogaology:laver_ribbon"
             ]
           }
         ]

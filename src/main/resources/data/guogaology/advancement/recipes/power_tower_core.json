@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:graham_materials"
+            "items": "guogaology:ordinal_crystal"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:arrow_knot"
+            "items": "guogaology:power_bricks"
           }
         ]
       }
@@ -26,7 +26,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal"
+            "items": "guogaology:scg_node"
           }
         ]
       }
@@ -36,7 +36,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:scg_node"
+            "items": "guogaology:tree_node_blue"
           }
         ]
       }
@@ -46,22 +46,12 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:tree_node_blue"
-          }
-        ]
-      }
-    },
-    "ingredient_5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:tree_node_green"
           }
         ]
       }
     },
-    "ingredient_6": {
+    "ingredient_5": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -86,7 +76,6 @@
       "ingredient_3",
       "ingredient_4",
       "ingredient_5",
-      "ingredient_6",
       "has_recipe"
     ]
   ],

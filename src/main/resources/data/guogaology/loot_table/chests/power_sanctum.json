@@ -36,14 +36,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:arrow_knot",
+          "name": "guogaology:power_bricks",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
+                "min": 48,
+                "max": 64
               }
             }
           ]
@@ -82,25 +82,6 @@
                 "type": "minecraft:uniform",
                 "min": 8,
                 "max": 16
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:power_bricks",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 32,
-                "max": 64
               }
             }
           ]

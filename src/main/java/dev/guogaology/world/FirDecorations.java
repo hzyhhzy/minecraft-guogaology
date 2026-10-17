@@ -5,6 +5,13 @@ import java.util.List;
 /** Decorations scale with available crown surface, including the narrow upper tiers. */
 public final class FirDecorations {
     private FirDecorations() {}
+    /** Both Astra fir paths use the same straight/crooked choice as the Underworld. */
+    public static boolean crooked(long salt){return (salt&1)!=0;}
+    public static boolean branched(long salt){return Math.floorMod(salt>>>5,3L)!=0;}
+    public static int normalHeight(long salt){return 30+(int)Math.floorMod(salt>>>14,41L);}
+    public static int hangingHeight(long salt){return 30+(int)Math.floorMod(salt>>>17,31L);}
+    /** Includes trunk drift, the widest skirt and endpoint rounding; never clips a curved crown to a city lot. */
+    public static int horizontalReach(int height,boolean crooked){return (int)Math.ceil(height*(crooked?.70:.29)+3);}
     public static List<OrdinalLightBand.Pattern> patterns(long salt,int tier,double radius){
         if(radius<3.5)return List.of();
         var quartet=OrdinalLightBand.quartet(salt,tier);

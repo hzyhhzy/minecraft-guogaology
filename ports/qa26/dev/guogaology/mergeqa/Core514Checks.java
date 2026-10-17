@@ -48,7 +48,8 @@ public final class Core514Checks {
     }
     private static void exactTree(ServerLevel world,BlockPos at,BlockState soil){
         var expected=painter(world,at);
-        check(expected.values().stream().filter(s->s.is(CoreResources.ARROW_KNOT)).count()==1,"one existing Arrow Knot in the production tree");
+        check(expected.values().stream().anyMatch(s->s.is(GuogaologyBlocks.POWER_BRICKS)),"Graham trunk and branches use existing Power Wood");
+        check(expected.values().stream().allMatch(s->s.is(GuogaologyBlocks.POWER_BRICKS)||s.equals(GuogaologyBlocks.ordinalBrick(3))),"complete Graham painter adds only Power Wood and original number3 tips");
         check(expected.values().stream().filter(s->s.equals(GuogaologyBlocks.ordinalBrick(3))).count()>=4,"many existing number3 tips");
         check(world.getBlockState(at.below()).equals(soil),"growth preserves its exact support state");
         for(var q:BlockPos.betweenClosed(at.offset(-7,0,-7),at.offset(7,16,7)))

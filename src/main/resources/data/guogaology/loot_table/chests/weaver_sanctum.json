@@ -36,7 +36,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:laver_gel",
+          "name": "guogaology:laver_ribbon",
           "functions": [
             {
               "function": "minecraft:set_count",

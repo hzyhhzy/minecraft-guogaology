@@ -230,10 +230,10 @@ public final class SurvivalStructures {
             p[SanctuaryLayout.SPAR]=GuogaologyBlocks.LIMIT_LAMINA.getDefaultState();
         }
         p[SanctuaryLayout.PRIMARY_RAW]=(switch(theme){
-            case MATRIX->CoreResources.MATRIX_SHEET;case POWER->CoreResources.ARROW_KNOT;
+            case MATRIX->CoreResources.MATRIX_SHEET;case POWER->GuogaologyBlocks.POWER_BRICKS;
             case HYDRA->CoreResources.HYDRA_SPRIG;case ABSENCE->GuogaologyBlocks.ABSENCE_GLASS;
-            case WEAVER->CoreResources.LAVER_GEL;case ASTRA->CoreResources.CLOUD_PEARL;
-            case GUOGAO->CoreResources.DREAD_RESIN;case FRONTIER->CoreResources.SET_MEMBRANE;
+            case WEAVER->GuogaologyBlocks.IBLP_NODE;case ASTRA->CoreResources.CLOUD_PEARL;
+            case GUOGAO->CoreResources.GUOGAO_DROP;case FRONTIER->CoreResources.SET_MEMBRANE;
         }).getDefaultState();
         p[SanctuaryLayout.SECONDARY_RAW]=(theme==SurvivalTheme.POWER?CoreResources.SCG_NODE:
                 theme==SurvivalTheme.FRONTIER?CoreResources.TURING_ENDCAP:

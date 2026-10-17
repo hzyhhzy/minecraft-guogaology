@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:fffz_trace"
+            "items": "#guogaology:absence_fragments"
           }
         ]
       }
@@ -16,72 +16,12 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:fos_trace"
-          }
-        ]
-      }
-    },
-    "ingredient_2": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:lho_hydra_psi"
-          }
-        ]
-      }
-    },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:lho_hydra_z"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:lho_letter_h"
-          }
-        ]
-      }
-    },
-    "ingredient_5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:lho_letter_l"
-          }
-        ]
-      }
-    },
-    "ingredient_6": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:lho_letter_o"
-          }
-        ]
-      }
-    },
-    "ingredient_7": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:ordinal_crystal"
           }
         ]
       }
     },
-    "ingredient_8": {
+    "ingredient_2": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -103,12 +43,6 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
-      "ingredient_3",
-      "ingredient_4",
-      "ingredient_5",
-      "ingredient_6",
-      "ingredient_7",
-      "ingredient_8",
       "has_recipe"
     ]
   ],

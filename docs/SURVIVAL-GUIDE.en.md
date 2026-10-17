@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.5.14
+# Three-world survival guide · 0.5.15
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -119,40 +119,39 @@ Compared with 0.5.4.1, main chests drop one grade and side chests provide ingred
 
 The nine core families display Lv1–3; the base Ordinal Crystal is ungraded. The internal Ordinal Crystal stages 2–4 correspond to displayed Ordinal Core Lv1–3. Matrix Core, Absence Core and Heart of Nuclear Awe retain the established Sequence, Empty Set and Criticality effects.
 
-Inner and Underworld wilderness no longer places finished cores or base crystal blocks. Eight visible material components are collected with ordinary tools, without needing a pre-existing core or Silk Touch:
+Inner and Underworld wilderness no longer places finished cores or base crystal blocks. Gather theme ingredients from the corresponding scenery and combine them with ordinary materials; no pre-existing core or Silk Touch is required:
 
 | Material | Where to look |
 |---|---|
 | Matrix Sheet | BMS boards and mountain scenery in Matrix Mountains |
-| Arrowgrain Knot | Small power towers and Graham trees |
+| Power Tower Wood | Small power towers and Graham trees |
 | SCG Junction | SCG graph vertices; TREE centers consistently contain their matching ordinary colored node |
 | Hydra Sprig | Branching plants, Hydras and crowns in the Ordinal Garden |
-| Laver Gel | Laver veins and aquatic Laver scenery |
-| Nuclear Blast Pearl | Buried mushroom-cloud voxels (1% of fully enclosed cloud), and woven-knot centers |
+| Laver Sheet | Laver plants; shears can also collect sheets from Laver leaves |
+| Nuclear Blast Block | Buried mushroom-cloud voxels (1% of fully enclosed cloud), and woven-knot centers |
 | Set Membrane | Set shells and egg scenery in Boundary Highlands |
 | Guogao | Inside Guogao Christmas-tree stars and giant hanging emoji-globe centers; local secondary-chest ingredient bundles |
-| Dread Fir Resin | Underworld conifer and Dread Fir scenery |
 
 Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Version0.5.6 replaces the iron-specific altitude bands with small veins distributed uniformly throughout the rock, calibrated against the average iron-to-host-rock ratio in a typical vanilla sample. LHO receives one fifth as many vein attempts, with more transparent glass and crystal markings. Both cave walls and exterior rock can expose ore; no extra air-exposure discard applies. Only newly generated chunks change. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
 
-The ingredients retain clear material shapes: Arrowgrain Knots, SCG Junctions, Laver Gel and Dread Fir Resin are full cubes; Matrix Sheets use pale-lavender slabs with broad indigo cells. Hydra Sprigs use clean leaf textures: upright with support below, otherwise hanging with support above, never naturally unsupported. Nuclear Blast Pearls borrow the old Lv1 Heart's teal radiation-marked nucleus in a chamfered solid. The revised Lv1 Heart combines that nucleus with a continuous knot conductor and six computing modules. Set Membranes use three orthogonal violet-and-ivory planes and darker intersections, distinct from the surrounding green shell. Guogao is a full cube with light level 15; its four walls retain the original 😰 blue forehead, golden lower face, worried brows and eyes, open mouth and sweat drop. Ordinary Astra offices use Shock-Slump Chairs; streetlamp tops use Starlight Glass.
+The ingredients retain clear material shapes: SCG Junctions and Nuclear Blast Blocks are full cubes, with a crisp ivory nuclear emblem on the latter's teal surface. Matrix Sheets use pale-lavender slabs with broad indigo cells. Hydra Sprigs use clean leaf textures: upright with support below, otherwise hanging with support above, never naturally unsupported. Lv1 Heart of Nuclear Awe restores the original nucleus design from before the 0.5.12 redesign. All three inventory grades restore that Lv1 silhouette; Lv2 and Lv3 world models remain unchanged. Set Membranes use three orthogonal violet-and-ivory planes, with purple borders and symmetric member dots kept clear of the crossing strips. Guogao has slightly rounded edges and light level 15. Each face uses a native 32×32 texture, an approximately 28×28 expression area and a two-pixel safe margin, preserving the 😰 blue forehead, golden lower face, worried brows and eyes, open mouth and sweat drop. Ordinary Astra offices use Shock-Slump Chairs; streetlamp tops use Starlight Glass.
 
-Power Tower Lv1 uses Graham or Graham Flower from Outer; Heart of Nuclear Awe Lv1 uses an Outer Nuke Mushroom. Plant Graham in Inner or Underworld on suitable ground and leave enough clear space for a whole tree. It can grow randomly or with bone meal into the existing Graham-tree scenery, with an Arrowgrain Knot at its center. Suitable ground includes dirt, farmland, Symbol Turf, Guogao Dreadsoil, Power Sand, Number Stone and Guogao Dreadstone. Existing planting and growth behavior in Outer and Overworld is unchanged.
+Bring a Graham plant from Outer and plant it in Inner or Underworld on suitable ground, leaving enough clear space for a whole tree. It can grow randomly or with bone meal into the existing Graham-tree scenery, with ordinary Power Tower Wood at its center and in its branches. Suitable ground includes dirt, farmland, Symbol Turf, Guogao Dreadsoil, Power Sand, Number Stone and Guogao Dreadstone. Existing planting and growth behavior in Outer and Overworld is unchanged.
 
 Four shards and one base crystal convert both ways. Mining a base crystal returns the block itself, including by hand. It still provides light, LHO stabilization and basic manuscript enhancement.
 
-Regional Lv1 cores use fixed-center 3×3 shaped recipes. Put one base Ordinal Crystal in the center, then fill the other eight slots with the ingredients below in the listed order: three across the top, the left and right middle slots, then three across the bottom. Numerals, colors, expressions and tape ink states are not recipe requirements.
+Regional Lv1 cores use fixed-center 3×3 shaped recipes. Put one base Ordinal Crystal in the center, then fill the other eight slots as shown below. Top/bottom/left/right mean the slots beside the center; corners mean the four corner slots. Numerals, colors, expressions and tape ink states are not recipe requirements.
 
-| Lv1 core | Eight biome ingredients |
+| Lv1 core | Outer eight ingredients and positions |
 |---|---|
-| Matrix Core | one Matrix Sheet, one Mountain Lamina, one Projectible Glass, one Y-branch Frost Leaf and 4 Matrix Digit Bricks (any digits) |
-| Power Tower Core | 2 Arrowgrain Knots, 2 SCG Junctions, one TREE node of each color (red, green, blue), one Graham or Graham Flower |
-| Hydra Bud | 2 Hydra Sprigs, 2 Veblen Petals, one ψ Branchstone, one Ω Branchstone, 2ordinal flowers/plants |
-| Absence Core | One each L/H/O Glass, fffZ, FOS, ψ branch, Z branch and Stellar Stone |
-| Laver Condensation Core | one Laver Gel, one Laver Sheet, 2 iBLP Ordinary Points, one Marked Point, one Empty Cell, one Gummy and one Tianyi Cyan Fiber |
-| Heart of Nuclear Awe | one Nuclear Blast Pearl, 5 Compute Chips, one Nuke Mushroom and any Guogao lamp |
-| Boundary Core | 2 Set Membranes, 2 Turing Tapes, one Proof Strata Stone, one Turing Terminus, one Formula Stone and one Rayo Roseglass |
-| Heart of Guogao | one Dread Fir Resin, one Guogao, one Dread Fir Leaves, one Anxious Emoji Flower, one Loquat, one Starlight Glass, one Fruit Cake Gel and any Guogao lamp |
+| Matrix Core | Corners: 4 Matrix Sheets; top/bottom: 2 Matrix Number Bricks, any digits; left/right: 2 Mountain Laminae |
+| Power Tower Core | Corners: 4 Power Tower Wood; top: one SCG Junction; left/right/bottom: red/green/blue TREE nodes, one each |
+| Hydra Bud | Corners: 4 Hydra Sprigs; each cardinal slot accepts any ε/ω/Ω/ζ/ψ/φ Branch Stone, including repeats |
+| Absence Core | Corners: 4 fffZ/FOS fragments, freely mixed; top/bottom/left/right: 4 Stellar Stones |
+| Laver Condensation Core | Top-left/bottom-right: 2 iBLP Ordinary Points; top-right/bottom-left: 2 Laver Sheets; top/bottom: 2 Gummies; left/right: 2 Marked Points |
+| Heart of Nuclear Awe | Corners: 4 Compute Chips; top/bottom/left/right: 4 Nuclear Blast Blocks |
+| Boundary Core | Corners: 4 Set Membranes; top/bottom/left/right: 4 Turing Termini |
+| Heart of Guogao | Corners: 4 Guogao; top/bottom/left/right: 4 Fruit Cake Gels |
 
 | Higher-grade result | Ingredients |
 |---|---|
@@ -163,7 +162,7 @@ Regional Lv1 cores use fixed-center 3×3 shaped recipes. Put one base Ordinal Cr
 
 Regional Lv2 and Lv3 also use fixed-center 8+1 shaped recipes. Ordinal Cores keep ninefold fusion. Base crystals and Ordinal Cores unpack reversibly; regional cores have no unpacking recipe. Cores drop intact with any tool or hands. Displayed Lv1/2/3 takes100/200/400 game ticks (5/10/20seconds at20TPS), unaffected by tools, enchantments, effects or manuscripts. The ungraded Ordinal Crystal is exempt: hardness1.5 like stone, normal pickaxe acceleration, and intact drops with any tool.
 
-LHO retains its special rules. A base crystal stabilizes the two neighboring rings, a full 5×5×5 cube including corners. Natural ψ, Z, fffZ and FOS visibly change color within that field and are re-evaluated after an anchor is removed. A nearby player's held crystal also counts. Player-placed materials are permanently stable. Absence Cores no longer spawn as wild fragments; the former Empty Set fragment chance is shared equally between fffZ and FOS.
+LHO retains its special rules. A base crystal stabilizes the two neighboring rings, a full 5×5×5 cube including corners. Natural ψ, Z, fffZ and FOS visibly change color within that field and are re-evaluated after an anchor is removed. A nearby player's held crystal also counts. Player-placed materials are permanently stable. Absence Cores no longer spawn as wild fragments; the former Empty Set fragment chance is shared equally between fffZ and FOS. Version0.5.15 doubles wild ψ/Z tree and fffZ/FOS fragment generation density in newly generated chunks; other LHO scenery and mechanics remain unchanged.
 
 ## Shaping Guogao lamps
 

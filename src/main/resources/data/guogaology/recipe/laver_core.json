@@ -3,33 +3,24 @@
   "category": "misc",
   "pattern": [
     "ABC",
-    "CSD",
-    "EFG"
+    "DSD",
+    "CBA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:laver_gel"
+      "item": "guogaology:iblp_node"
     },
     "B": {
-      "item": "guogaology:laver_ribbon"
+      "item": "guogaology:gummy"
     },
     "C": {
-      "item": "guogaology:iblp_node"
+      "item": "guogaology:laver_ribbon"
     },
     "D": {
       "item": "guogaology:iblp_marked"
-    },
-    "E": {
-      "item": "guogaology:iblp_blank"
-    },
-    "F": {
-      "item": "guogaology:gummy"
-    },
-    "G": {
-      "item": "guogaology:tianyi_fiber"
     }
   },
   "result": {

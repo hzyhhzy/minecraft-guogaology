@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "guogaology:epsilon_symbol",
+    "guogaology:omega_symbol",
+    "guogaology:great_omega_symbol",
+    "guogaology:zeta_symbol",
+    "guogaology:psi_symbol",
+    "guogaology:phi_symbol"
+  ]
+}

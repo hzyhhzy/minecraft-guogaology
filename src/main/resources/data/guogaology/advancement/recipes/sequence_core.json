@@ -36,27 +36,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:projection_glass"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:ridge_lamina"
-          }
-        ]
-      }
-    },
-    "ingredient_5": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:y_leaves"
           }
         ]
       }
@@ -74,8 +54,6 @@
       "ingredient_1",
       "ingredient_2",
       "ingredient_3",
-      "ingredient_4",
-      "ingredient_5",
       "has_recipe"
     ]
   ],

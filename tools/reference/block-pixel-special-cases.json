@@ -1,0 +1,3228 @@
+{
+  "schema": "guogaology.special_block_pixel_audit.v1",
+  "generated_at": "2026-10-17T16:19:11.575214+00:00",
+  "repository": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology",
+  "branch": "codex/0.5.15-core-material-simplification",
+  "head": "48a98822e41813a5ba2649010adcad964f89468d",
+  "scope": "Read-only current source/resource audit. No production edits, builds or game launches. Supplements the complete PNG/block-model inventory.",
+  "summary": {
+    "custom_mesh_blocks": 28,
+    "smooth_vertex_normal_blocks": 4,
+    "vertex_color_gradient_blocks": 20,
+    "tinted_lod_atlas_blocks": 20,
+    "effective_bilinear_lod_blocks": 13,
+    "live_portal_block_ids": 3,
+    "verified_lod_tiles": 369,
+    "lod_tile_mismatches": 0
+  },
+  "interpretation_rules": [
+    "Texture resolution alone is never a non-pixel verdict.",
+    "Non-axis polygons, UV atlas remapping and rigid animation are geometry/rendering traits, not proof of smoothed raster pixels.",
+    "Per-vertex normal/color interpolation is reported separately from raster texture style.",
+    "The 512px LOD atlas is a padded packing sheet, not one512px block face. Its16px cells are independent source tiles.",
+    "Historical workspace tools outside Guogaology are provenance clues, not current formal-repository generation entry points.",
+    "Counts refer to block registry IDs; JSON level suffixes preserve internal material stages and are not renamed display grades."
+  ],
+  "rendering_evidence": [
+    {
+      "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/java/dev/guogaology/CoreGrades.java",
+      "line": 15,
+      "end_line": 37
+    },
+    {
+      "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+      "line": 35,
+      "end_line": 65
+    },
+    {
+      "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+      "line": 29,
+      "end_line": 54
+    },
+    {
+      "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreAnimationRenderer.java",
+      "line": 26,
+      "end_line": 38
+    },
+    {
+      "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreAnimationRenderer.java",
+      "line": 74,
+      "end_line": 114
+    }
+  ],
+  "meshes": [
+    {
+      "block_id": "guogaology:astra_critical_core",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/astra_critical_core.json",
+      "mesh_sha256": "2112b3c7976b340e518f10ce5c46aad02ecd29ee7fe4df37065fd6244096f2ea",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 78
+      },
+      "quads": 78,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:astra_critical_core_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_normals",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/astra_critical_core_lv2.json",
+      "mesh_sha256": "e98effaa299d91ab3b766a242fa712a57be7bb1cd84850f35351a07a9bbfd9cf",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 316,
+        "2": 96
+      },
+      "quads": 650,
+      "quads_with_varying_vertex_normals": 224,
+      "quads_with_varying_vertex_color": 494,
+      "quads_with_nonaxis_normal": 444,
+      "quads_not_axis_aligned_rectangles": 524,
+      "quads_with_lod_t": 584,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/optical_clean_200",
+        "guogaology:block/core_d/optical_clean_210",
+        "guogaology:block/core_d/optical_clean_218",
+        "guogaology:block/core_d/optical_clean_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [
+          120,
+          121,
+          122
+        ],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ],
+      "normal_example": {
+        "v": [
+          [
+            13.76372,
+            8.70783,
+            8.70783
+          ],
+          [
+            13.5773,
+            9.5821,
+            8.78306
+          ],
+          [
+            13.29795,
+            9.75417,
+            9.75417
+          ],
+          [
+            13.5773,
+            8.78306,
+            9.5821
+          ]
+        ],
+        "n": [
+          [
+            0.98525,
+            0.121,
+            0.121
+          ],
+          [
+            0.95338,
+            0.27044,
+            0.13386
+          ],
+          [
+            0.90563,
+            0.29986,
+            0.29986
+          ],
+          [
+            0.95338,
+            0.13386,
+            0.27044
+          ]
+        ],
+        "c": [
+          4289369663,
+          4289435455,
+          4289500991,
+          4289369663
+        ],
+        "t": "selected_optical_clean_255",
+        "part": 1
+      }
+    },
+    {
+      "block_id": "guogaology:astra_critical_core_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_normals",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/astra_critical_core_lv3.json",
+      "mesh_sha256": "3a6deb67cc8c4bb53666a86d49988d0ed92cce9ebf35fec646fe9f0ac9e8d655",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 262,
+        "1": 441,
+        "10": 288
+      },
+      "quads": 991,
+      "quads_with_varying_vertex_normals": 288,
+      "quads_with_varying_vertex_color": 747,
+      "quads_with_nonaxis_normal": 564,
+      "quads_not_axis_aligned_rectangles": 779,
+      "quads_with_lod_t": 703,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [
+          491,
+          492,
+          493
+        ],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ],
+      "normal_example": {
+        "v": [
+          [
+            23.76402,
+            9.93593,
+            9.93593
+          ],
+          [
+            23.52428,
+            11.28116,
+            10.05685
+          ],
+          [
+            21.83095,
+            14.06304,
+            13.28624
+          ],
+          [
+            22.24312,
+            13.15429,
+            13.15429
+          ]
+        ],
+        "n": [
+          [
+            0.98525,
+            0.121,
+            0.121
+          ],
+          [
+            0.97027,
+            0.20507,
+            0.12855
+          ],
+          [
+            0.86443,
+            0.37894,
+            0.33039
+          ],
+          [
+            0.8902,
+            0.32214,
+            0.32214
+          ]
+        ],
+        "c": [
+          4289831506,
+          4289963091,
+          4290489431,
+          4290226261
+        ],
+        "t": "selected_optical_clean_210",
+        "part": 10
+      }
+    },
+    {
+      "block_id": "guogaology:boundary_core",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/boundary_core.json",
+      "mesh_sha256": "baf07a884ebd7fbdb029e2ffaf51aad0d38d11d687dca1135801458fc325888d",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 234
+      },
+      "quads": 234,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:boundary_core_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/boundary_core_lv2.json",
+      "mesh_sha256": "0dde3fd7ae24f0cc025f738b6424a9e98160ad9c6b1ec99ed963c065aedbde45",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 178,
+        "1": 250
+      },
+      "quads": 428,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 274,
+      "quads_with_nonaxis_normal": 136,
+      "quads_not_axis_aligned_rectangles": 184,
+      "quads_with_lod_t": 422,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_frame_100_205_0",
+        "guogaology:block/core_d/d_frame_55_210_0",
+        "guogaology:block/core_d/d_tape_blank",
+        "guogaology:block/core_d/d_tape_mark"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_frame_100_205_0",
+        "guogaology:block/core_d/d_frame_55_210_0",
+        "guogaology:block/core_d/d_tape_blank",
+        "guogaology:block/core_d/d_tape_mark",
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:boundary_core_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/boundary_core_lv3.json",
+      "mesh_sha256": "db2debbd0da29d8806d976101631eedca81dd79658bcb06d86089d2d4c65859e",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 178,
+        "1": 370,
+        "10": 144
+      },
+      "quads": 692,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 418,
+      "quads_with_nonaxis_normal": 136,
+      "quads_not_axis_aligned_rectangles": 184,
+      "quads_with_lod_t": 542,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_frame_100_205_0",
+        "guogaology:block/core_d/d_frame_55_210_0",
+        "guogaology:block/core_d/d_tape_blank",
+        "guogaology:block/core_d/d_tape_mark"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_frame_100_205_0",
+        "guogaology:block/core_d/d_frame_55_210_0",
+        "guogaology:block/core_d/d_tape_blank",
+        "guogaology:block/core_d/d_tape_mark",
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:guogao_heart",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "mixed_pixel_face_features_and_dense_gradient_texture"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/guogao_heart.json",
+      "mesh_sha256": "2481ced744422cb3216cad0efea34ce5665ba2c8bb722cc950adf1ba874b0750",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 850
+      },
+      "quads": 850,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 129,
+      "quads_with_nonaxis_normal": 64,
+      "quads_not_axis_aligned_rectangles": 112,
+      "quads_with_lod_t": 178,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/polished_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255",
+        "guogaology:block/core_d/polished_glass"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:guogao_heart_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_normals",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation",
+        "mixed_pixel_face_features_and_dense_gradient_texture"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/guogao_heart_lv2.json",
+      "mesh_sha256": "af00eea6cee28adf5ada6d9c55c4ac7bf5c15d05c4ab81b68b1dbc886fa7f794",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 412,
+        "1": 506
+      },
+      "quads": 918,
+      "quads_with_varying_vertex_normals": 288,
+      "quads_with_varying_vertex_color": 508,
+      "quads_with_nonaxis_normal": 566,
+      "quads_not_axis_aligned_rectangles": 614,
+      "quads_with_lod_t": 659,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_guogao_color_digit_0_1_1",
+        "guogaology:block/core_d/d_guogao_color_digit_1_1_1",
+        "guogaology:block/core_d/d_guogao_color_digit_2_2_1",
+        "guogaology:block/core_d/d_guogao_color_digit_3_4_1",
+        "guogaology:block/core_d/d_guogao_color_digit_4_2_1",
+        "guogaology:block/core_d/guogao_lantern",
+        "guogaology:block/core_d/guogao_lantern_enamel"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_guogao_color_digit_0_1_1",
+        "guogaology:block/core_d/d_guogao_color_digit_1_1_1",
+        "guogaology:block/core_d/d_guogao_color_digit_2_2_1",
+        "guogaology:block/core_d/d_guogao_color_digit_3_4_1",
+        "guogaology:block/core_d/d_guogao_color_digit_4_2_1",
+        "guogaology:block/core_d/guogao_lantern",
+        "guogaology:block/core_d/guogao_lantern_enamel",
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [
+          112,
+          113,
+          114
+        ],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ],
+      "normal_example": {
+        "v": [
+          [
+            8.0,
+            11.65,
+            8.0
+          ],
+          [
+            8.9125,
+            11.52563,
+            8.2445
+          ],
+          [
+            8.94469,
+            11.52563,
+            8.0
+          ],
+          [
+            8.94469,
+            11.52563,
+            8.0
+          ]
+        ],
+        "n": [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.25,
+            0.96593,
+            0.06699
+          ],
+          [
+            0.25882,
+            0.96593,
+            0.0
+          ],
+          [
+            0.25882,
+            0.96593,
+            0.0
+          ]
+        ],
+        "c": [
+          4294638330,
+          4294243572,
+          4294046193,
+          4294046193
+        ],
+        "t": "d_emoji_body",
+        "part": 1
+      }
+    },
+    {
+      "block_id": "guogaology:guogao_heart_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_normals",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation",
+        "mixed_pixel_face_features_and_dense_gradient_texture"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/guogao_heart_lv3.json",
+      "mesh_sha256": "5c1dd2cf61e128a9f28e9f42042db8548281d21534d7418b1068977561e70410",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 604,
+        "1": 554,
+        "2": 40,
+        "10": 120,
+        "20": 24
+      },
+      "quads": 1342,
+      "quads_with_varying_vertex_normals": 288,
+      "quads_with_varying_vertex_color": 818,
+      "quads_with_nonaxis_normal": 760,
+      "quads_not_axis_aligned_rectangles": 832,
+      "quads_with_lod_t": 939,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_guogao_color_digit_0_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_3_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_7_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_11_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_13_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_3_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_10_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_10_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_4_0",
+        "guogaology:block/core_d/d_guogao_expansion_scroll",
+        "guogaology:block/core_d/guogao_lantern",
+        "guogaology:block/core_d/guogao_lantern_enamel"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_guogao_color_digit_0_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_3_0",
+        "guogaology:block/core_d/d_guogao_color_digit_0_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_1_7_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_11_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_13_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_2_3_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_10_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_2_0",
+        "guogaology:block/core_d/d_guogao_color_digit_3_4_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_0_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_10_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_1_0",
+        "guogaology:block/core_d/d_guogao_color_digit_4_4_0",
+        "guogaology:block/core_d/d_guogao_expansion_scroll",
+        "guogaology:block/core_d/guogao_lantern",
+        "guogaology:block/core_d/guogao_lantern_enamel",
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_205",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [
+          112,
+          113,
+          114
+        ],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ],
+      "normal_example": {
+        "v": [
+          [
+            8.0,
+            11.65,
+            8.0
+          ],
+          [
+            8.9125,
+            11.52563,
+            8.2445
+          ],
+          [
+            8.94469,
+            11.52563,
+            8.0
+          ],
+          [
+            8.94469,
+            11.52563,
+            8.0
+          ]
+        ],
+        "n": [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.25,
+            0.96593,
+            0.06699
+          ],
+          [
+            0.25882,
+            0.96593,
+            0.0
+          ],
+          [
+            0.25882,
+            0.96593,
+            0.0
+          ]
+        ],
+        "c": [
+          4294638330,
+          4294243572,
+          4294046193,
+          4294046193
+        ],
+        "t": "d_emoji_body",
+        "part": 1
+      }
+    },
+    {
+      "block_id": "guogaology:hydra_bud",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/hydra_bud.json",
+      "mesh_sha256": "45b2cee8e47acdb28751f549d7592a8adf2978ddc0278361ff1fcf853fa858b8",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 778
+      },
+      "quads": 778,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 84,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": [
+          208,
+          209,
+          210
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:hydra_bud_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/hydra_bud_lv2.json",
+      "mesh_sha256": "fe5614fae39eba26cefc18f3037b9b998de7656a13d1935a68dd7a11898014d8",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 216
+      },
+      "quads": 454,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 320,
+      "quads_with_nonaxis_normal": 224,
+      "quads_not_axis_aligned_rectangles": 318,
+      "quads_with_lod_t": 388,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:hydra_bud_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/hydra_bud_lv3.json",
+      "mesh_sha256": "2e28a682e5d53ae9c6254bb10860fee55184fb0381f53560d03ecccefba185a0",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 216,
+        "10": 360
+      },
+      "quads": 814,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 608,
+      "quads_with_nonaxis_normal": 544,
+      "quads_not_axis_aligned_rectangles": 678,
+      "quads_with_lod_t": 388,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:laver_core",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/laver_core.json",
+      "mesh_sha256": "65bce9ca88d0620509bb40c3f7c0e8aa328c33f5571ef539a8d657fdbf6d6c9b",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 72
+      },
+      "quads": 72,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 4,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 6,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_laver_circle_marker"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_laver_circle_marker"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          66,
+          67,
+          70
+        ],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:laver_core_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/laver_core_lv2.json",
+      "mesh_sha256": "742287c68cee8e96cb977049e733320f4bba468669f783b7a7f5f7e3af4b0fa9",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 68
+      },
+      "quads": 306,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 125,
+      "quads_with_nonaxis_normal": 64,
+      "quads_not_axis_aligned_rectangles": 112,
+      "quads_with_lod_t": 172,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:laver_core_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/laver_core_lv3.json",
+      "mesh_sha256": "cc98bd4c713d683fc59e0ce6898d530929522ed8707a137ab9fdfbee2fe2d0cb",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 504,
+        "10": 72
+      },
+      "quads": 814,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 481,
+      "quads_with_nonaxis_normal": 160,
+      "quads_not_axis_aligned_rectangles": 544,
+      "quads_with_lod_t": 676,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_iblp_page_47_152_1141"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_iblp_page_47_152_1141",
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_220",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:lho_trace",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/lho_trace.json",
+      "mesh_sha256": "640d8968ae5783c66b7b1ec7a36dd34a8e255d9c21e1af642697c18a062b9184",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 445
+      },
+      "quads": 445,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_absence_core.py",
+          "line": 134,
+          "end_line": 192
+        }
+      ],
+      "family_note": "C1 interior uses real unioned pixel cuboids; Lv2 moves those rigid components. Lv3 adds 10-segment curved ribbons, with flat normals and white per-vertex colors."
+    },
+    {
+      "block_id": "guogaology:lho_trace_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/lho_trace_lv2.json",
+      "mesh_sha256": "62fa7fef3beab03ad44ed77ac3cc1497c9d697c8c6c50ae58aac2cc7c6ab6b06",
+      "json_line": 1,
+      "motion": "absence_orbits",
+      "parts": {
+        "0": 120,
+        "1": 150,
+        "2": 150,
+        "3": 152
+      },
+      "quads": 572,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_absence_core.py",
+          "line": 134,
+          "end_line": 192
+        }
+      ],
+      "family_note": "C1 interior uses real unioned pixel cuboids; Lv2 moves those rigid components. Lv3 adds 10-segment curved ribbons, with flat normals and white per-vertex colors."
+    },
+    {
+      "block_id": "guogaology:lho_trace_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "non_axis_aligned_polygon_faces",
+        "rigid_part_animation",
+        "mixed_pixel_cuboids_and_polygonal_outer_arcs"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/lho_trace_lv3.json",
+      "mesh_sha256": "2bf940f82b44d9e3b79fd0c1984c2bcc68f000d53531c0de9842cd7cab1e5e0c",
+      "json_line": 1,
+      "motion": "absence_orbits",
+      "parts": {
+        "0": 120,
+        "1": 150,
+        "2": 150,
+        "3": 152,
+        "4": 150,
+        "5": 150,
+        "6": 152,
+        "10": 642
+      },
+      "quads": 1666,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 304,
+      "quads_not_axis_aligned_rectangles": 522,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": [
+          1024,
+          1025,
+          1026
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_absence_core.py",
+          "line": 134,
+          "end_line": 192
+        }
+      ],
+      "family_note": "C1 interior uses real unioned pixel cuboids; Lv2 moves those rigid components. Lv3 adds 10-segment curved ribbons, with flat normals and white per-vertex colors."
+    },
+    {
+      "block_id": "guogaology:ordinal_crystal",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/ordinal_crystal.json",
+      "mesh_sha256": "569e01ea5c595d051764a2dae82dfcf712202d63ea4eef493dceeb0893315313",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 12
+      },
+      "quads": 12,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:ordinal_crystal_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/ordinal_crystal_lv2.json",
+      "mesh_sha256": "19ff44df9f8bfce49177037b56c536ebcd365ca7c6d1306ee5944ce1b3af8ad1",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 80
+      },
+      "quads": 80,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 60,
+      "quads_with_nonaxis_normal": 52,
+      "quads_not_axis_aligned_rectangles": 68,
+      "quads_with_lod_t": 80,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_180",
+        "guogaology:block/core_d/optical_clean_185",
+        "guogaology:block/core_d/optical_clean_190"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:ordinal_crystal_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/ordinal_crystal_lv3.json",
+      "mesh_sha256": "c368a8fbc906e3c28e81718b67d3b680bd0d4d2a4e24d5de3779cc679c5d6493",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 6,
+        "1": 234
+      },
+      "quads": 240,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 218,
+      "quads_with_nonaxis_normal": 180,
+      "quads_not_axis_aligned_rectangles": 228,
+      "quads_with_lod_t": 240,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_180",
+        "guogaology:block/core_d/optical_clean_185",
+        "guogaology:block/core_d/optical_clean_190",
+        "guogaology:block/core_d/optical_clean_220"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:ordinal_crystal_lv4",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/ordinal_crystal_lv4.json",
+      "mesh_sha256": "236d617701cd3c8947f9bfa4f676261bb27b79be7bbce7251e62561cbceb3f70",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 6,
+        "1": 234,
+        "10": 336
+      },
+      "quads": 576,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 547,
+      "quads_with_nonaxis_normal": 516,
+      "quads_not_axis_aligned_rectangles": 564,
+      "quads_with_lod_t": 240,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_180",
+        "guogaology:block/core_d/optical_clean_185",
+        "guogaology:block/core_d/optical_clean_190",
+        "guogaology:block/core_d/optical_clean_220"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:power_tower_core",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "orthogonal_flat_shading_at_rest"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/power_tower_core.json",
+      "mesh_sha256": "3028bb192fa29a465836849d19e90345fdb0b535a262678d133af9c4f342369e",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 210
+      },
+      "quads": 210,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 0,
+      "quads_with_nonaxis_normal": 0,
+      "quads_not_axis_aligned_rectangles": 0,
+      "quads_with_lod_t": 0,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [],
+        "non_axis_rectangles": []
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:power_tower_core_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/power_tower_core_lv2.json",
+      "mesh_sha256": "a77f6068fe1fefe5aaafb36276365ddb2458b7695efe20b526065c5aacd4e842",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 250
+      },
+      "quads": 488,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 235,
+      "quads_with_nonaxis_normal": 232,
+      "quads_not_axis_aligned_rectangles": 334,
+      "quads_with_lod_t": 350,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:power_tower_core_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/power_tower_core_lv3.json",
+      "mesh_sha256": "404678e6b9ba44437068604672d5f2b8e5ee099e0bc6d6bdbb02450d35c1c4be",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 238,
+        "1": 250,
+        "10": 290
+      },
+      "quads": 778,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 464,
+      "quads_with_nonaxis_normal": 438,
+      "quads_not_axis_aligned_rectangles": 616,
+      "quads_with_lod_t": 350,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/polished_200",
+        "guogaology:block/core_d/polished_218",
+        "guogaology:block/core_d/polished_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:sequence_core",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/sequence_core.json",
+      "mesh_sha256": "9ecb400b5b589c1064b3e47285758b59b21470314df359036740fd405a4959e1",
+      "json_line": 1,
+      "motion": "still",
+      "parts": {
+        "0": 250
+      },
+      "quads": 250,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 184,
+      "quads_with_nonaxis_normal": 96,
+      "quads_not_axis_aligned_rectangles": 144,
+      "quads_with_lod_t": 250,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_218",
+        "guogaology:block/core_d/optical_clean_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:sequence_core_lv2",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "effective_bilinear_lod_downsample",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/sequence_core_lv2.json",
+      "mesh_sha256": "a1ebd295fcf5e50b106d973cc96a1fe858517bb71f21f06c82c5fa11eb5ee55a",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 178,
+        "1": 162
+      },
+      "quads": 340,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 261,
+      "quads_with_nonaxis_normal": 150,
+      "quads_not_axis_aligned_rectangles": 232,
+      "quads_with_lod_t": 340,
+      "effective_filtered_lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass"
+      ],
+      "lod_source_textures": [
+        "guogaology:block/core_d/d_optical_clear_glass",
+        "guogaology:block/core_d/optical_clean_218",
+        "guogaology:block/core_d/optical_clean_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:sequence_core_lv3",
+      "labels": [
+        "custom_cached_quad_mesh",
+        "interpolated_vertex_color",
+        "non_axis_aligned_polygon_faces",
+        "tinted_lod_atlas",
+        "rigid_part_animation"
+      ],
+      "texture_style_verdict": "Custom geometry/normal/color data alone does not establish whether its raster art is pixel art. See the separate full PNG audit.",
+      "mesh_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/core_meshes/sequence_core_lv3.json",
+      "mesh_sha256": "7ac84bf5a36209375eb0a98ac26f495301fc1298d6d04bae5d649afe4e28e160",
+      "json_line": 1,
+      "motion": "rotate",
+      "parts": {
+        "0": 180,
+        "1": 520,
+        "10": 48
+      },
+      "quads": 748,
+      "quads_with_varying_vertex_normals": 0,
+      "quads_with_varying_vertex_color": 556,
+      "quads_with_nonaxis_normal": 184,
+      "quads_not_axis_aligned_rectangles": 580,
+      "quads_with_lod_t": 700,
+      "effective_filtered_lod_source_textures": [],
+      "lod_source_textures": [
+        "guogaology:block/core_d/optical_clean_218",
+        "guogaology:block/core_d/optical_clean_255"
+      ],
+      "examples_zero_based_quad_index": {
+        "varying_normals": [],
+        "varying_color": [
+          0,
+          1,
+          2
+        ],
+        "non_axis_rectangles": [
+          0,
+          1,
+          2
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+          "line": 138,
+          "end_line": 167
+        }
+      ]
+    }
+  ],
+  "lod_atlas": {
+    "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_lod_tints.png",
+    "sha256": "0ca5e4ca1d7e2e6f3a1e1f2fba601c93b796798bb8528e2d07ac075062bbb096",
+    "size": [
+      512,
+      512
+    ],
+    "tile_size": [
+      16,
+      16
+    ],
+    "padding_pixels": 1,
+    "tiles_verified": 369,
+    "mismatches": [],
+    "method": "For each unique used texture/tint/UV tile, recomputed16x16 BILINEAR resize, rounded32-step average face tint, channel multiplication, and compared every RGBA byte with the actual atlas tile.",
+    "evidence": [
+      {
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_lod.py",
+        "line": 18,
+        "end_line": 42
+      },
+      {
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/client/java/dev/guogaology/client/CoreMeshModels.java",
+        "line": 128,
+        "end_line": 137
+      },
+      {
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/CoreMeshModels.java",
+        "line": 110,
+        "end_line": 119
+      }
+    ],
+    "sources": [
+      {
+        "texture": "guogaology:block/core_d/optical_clean_200",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_200.png",
+        "sha256": "ee613714be165c6faaeafcfcc2ea4e0a67fa4206ce2ec30ba52f622227d16807",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_210",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_210.png",
+        "sha256": "997b368cb6371e4fe682a8588a1175e3ac276fe12bd26b7d1573e54d706c1ec3",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_218",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_218.png",
+        "sha256": "45e91883c22d234c2a2dc909e0eea6217d5a0a1a378cc5f6c2cc8b852076a5c7",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_255",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_255.png",
+        "sha256": "b1053f89bb82a79f8d33fe961fb79364943688d6fa733b1de98be88f04359cbb",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/d_optical_clear_glass",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_optical_clear_glass.png",
+        "sha256": "679f48216542d48843ddfe69e711121f81f927eafba41c1d58ff60f2e65189a1",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 66,
+        "bilinear_vs_nearest_different_pixels_at_16": 89
+      },
+      {
+        "texture": "guogaology:block/core_d/d_frame_100_205_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_frame_100_205_0.png",
+        "sha256": "f5dcc35bcb5f59e94d232d3ac403f3ea59f2f610e7d70235d50f0da75392fd76",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 52
+      },
+      {
+        "texture": "guogaology:block/core_d/d_frame_55_210_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_frame_55_210_0.png",
+        "sha256": "cd3b785975e53c9f54184d8d8c9b2eafa4719b16742a5599618e60dbbf1e006d",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 112
+      },
+      {
+        "texture": "guogaology:block/core_d/d_tape_blank",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_tape_blank.png",
+        "sha256": "e80c973e6fc12b6208b6065e899f9422bc5f6510d5199da5de3ef177a2f2ac98",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 112
+      },
+      {
+        "texture": "guogaology:block/core_d/d_tape_mark",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_tape_mark.png",
+        "sha256": "d9a8d2e1943fbbc6fa23ab61143030e6cbbf7598d3a473139558b8d2742480be",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 140
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_200",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_200.png",
+        "sha256": "8013fb726b3158aca903983b98d3395c66213a4f2bc7f2d6de18b4b271e86d84",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_218",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_218.png",
+        "sha256": "72b6c977a83c9666f423dc41292b60dec7a31904e1ad0714a5b29b3da872fa02",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_255",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_255.png",
+        "sha256": "7dde11d9e1e0114bdc2bd2e14dc47a2d9e45ff15187aa42d2b4657ebdccd8d7b",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_glass",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_glass.png",
+        "sha256": "645eb9a982031235da5dadc04fcbcfd5a3145d87e0b44dc3fe7bc74ec4979f7e",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 6,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_1_1",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_1_1.png",
+        "sha256": "cc690806ce1db7f2fd3c292e8bc6bb5a0dda59110cfeeb93d11a9316ee46dc79",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 48
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_1_1",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_1_1.png",
+        "sha256": "de6d2d55af29ae9ddcbcdff203f36abe95583c4ecc8930848e2a5b2995b5504e",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 48
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_2_1",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_2_1.png",
+        "sha256": "f02404d56576a35b8ed6d9cee268284e069ee81b20a554d7472c6a251fe39143",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 96
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_3_4_1",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_3_4_1.png",
+        "sha256": "ab20e1e6ae5a1c618d2793bd691dae6ec019cd8c0302fcd65b1125e1fee6e05d",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 80
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_4_2_1",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_4_2_1.png",
+        "sha256": "9949f3a624237f96646d67d6be64f8d6636b74dbb76b2841100c055a96d4f571",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 2,
+        "bilinear_vs_nearest_different_pixels_at_16": 96
+      },
+      {
+        "texture": "guogaology:block/core_d/guogao_lantern",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/guogao_lantern.png",
+        "sha256": "50bbccaeabd43b216c9c6a1782f61908b24941d35b0a80d81d4cc56f77650c71",
+        "size": [
+          128,
+          128
+        ],
+        "rgba_colors": 3100,
+        "bilinear_vs_nearest_different_pixels_at_16": 204
+      },
+      {
+        "texture": "guogaology:block/core_d/guogao_lantern_enamel",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/guogao_lantern_enamel.png",
+        "sha256": "45a5a30c64b21a6dabc8a2bf8234947ff9d469ed7652a8fa01ccd73691cbf35c",
+        "size": [
+          128,
+          128
+        ],
+        "rgba_colors": 3266,
+        "bilinear_vs_nearest_different_pixels_at_16": 171
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_0_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_0_0.png",
+        "sha256": "4ae63a10b51b2ab931fc4249b2e000390179975360e5fba5d890b5a95387bd07",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_1_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_1_0.png",
+        "sha256": "3117555a86831a803e3856391098b7da93c22953aa1955c2e626611e32956b98",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_2_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_2_0.png",
+        "sha256": "441a46dd60c42fd8f0beda4795cee0f6c1a57ac109c4d50d76409974929fd98b",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_3_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_3_0.png",
+        "sha256": "237f455c72c509381abd990d88070e0ddf1cc42ae0a8cbc93614a67860a4b97e",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_0_4_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_0_4_0.png",
+        "sha256": "d094cf1d55dd320cee6eb241b56e16c0e7fa2fbf19411ad485e7335ceb51a528",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_0_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_0_0.png",
+        "sha256": "8a07b71b0066fdd5cbdf0a5fd253e456527003ac99e0632dcd797711e0d9c80c",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_1_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_1_0.png",
+        "sha256": "80dcc35862ca6e82f046bcbe16937fd164a116ead3cc5d39ae0fef18be96d126",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_2_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_2_0.png",
+        "sha256": "0750db69b5478ef3226800c5cb914cff39ff516584b711ec3b55e38921dec74d",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_4_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_4_0.png",
+        "sha256": "6875f95429b27b51e1a3ccf9bd73d1983475daebd5879b5e08c231ae2937f161",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_1_7_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_1_7_0.png",
+        "sha256": "d4cdcc02151dd93705f59809c0e839985ecb021a864c1820dd688897f5d4a1d4",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_0_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_0_0.png",
+        "sha256": "d0abf904ad00be46b61aa7f538b631acd1100f95410cdfb7d1dfdb1d30d8829b",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_11_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_11_0.png",
+        "sha256": "c9fac0ef14d923a62258ba2961545a7223c3e2590b05b03681f949c3a35e98f1",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_13_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_13_0.png",
+        "sha256": "0fa4d338c68c0e93348a28ca9a04b07d51568801626681f0d81db86a706e5a38",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_1_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_1_0.png",
+        "sha256": "a1e1f1985693e238d6550b97b6d4782f5f45bfd1fb1ed2669ec9d87743960389",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_2_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_2_0.png",
+        "sha256": "767cb1462aa1d6628400cbe8552ec31470502e5ec72613be348545647ed8a4c7",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_2_3_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_2_3_0.png",
+        "sha256": "03bad110ac600e78c25e53c39ce8214e93c47d8bf9609dde21aa08e15ca459b1",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_3_0_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_3_0_0.png",
+        "sha256": "846ec40b93c2d7e04274e7efad4d341ab41271bfa9a425ebf3f6070e3abc4b00",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_3_10_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_3_10_0.png",
+        "sha256": "5c554613e9dee93c1d8f112f3b5c5afc3881d1df723e290b2028df7964feeb65",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_3_2_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_3_2_0.png",
+        "sha256": "e3a470b23e02962814b679b0f6b795bd0cd0ca2fa1cc3da51fcb633e2bf4543a",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_3_4_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_3_4_0.png",
+        "sha256": "c755be40a27614531dacb4638c0239bab62b2f9d3203ab49e0c04e5efc93f42f",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_4_0_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_4_0_0.png",
+        "sha256": "70ba2b7e31d6b593ed65fa0b86096be185067b561c8fed150c8d543aad7f0996",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_4_10_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_4_10_0.png",
+        "sha256": "53af84eb6a404e47ec0fd3c8f3801479de5256fcca47598c8b893d7711477fcd",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_4_1_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_4_1_0.png",
+        "sha256": "cf4495a8a670406ac4772742e147be385361058d04dbdd58c380cd5c3efa3ecb",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_color_digit_4_4_0",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_color_digit_4_4_0.png",
+        "sha256": "a6c0867a9c28789393d0c35a1ac5a8c45d64744dc477130c0c752c642b3797ee",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 3,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_guogao_expansion_scroll",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_guogao_expansion_scroll.png",
+        "sha256": "0e9baf1a98e986326e6b36fb9cd183f31d51dc688b7909120a5f4da3e6e64af8",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 252
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_205",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_205.png",
+        "sha256": "bbaa13dc855b394fc8c7a5ba9ef6b3ee91cae8857525de0af88a64441e1e87e0",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/d_laver_circle_marker",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_laver_circle_marker.png",
+        "sha256": "cf601478c806f7cf4e81889c23bbbe515d1d581d07f6555ea9e28e5335a4263e",
+        "size": [
+          64,
+          64
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 256
+      },
+      {
+        "texture": "guogaology:block/core_d/d_iblp_page_47_152_1141",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/d_iblp_page_47_152_1141.png",
+        "sha256": "399c965f919347d2472b3145199c49c0d189191ca8a6b60780ad29f8ed1699e4",
+        "size": [
+          128,
+          128
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 151
+      },
+      {
+        "texture": "guogaology:block/core_d/polished_220",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/polished_220.png",
+        "sha256": "9ac92bbb2b50a350236e9566bbc6b793d32439639e6759dae6ae4bd88e1d59cb",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 4,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_180",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_180.png",
+        "sha256": "ffe5ee33ff61363adf2a50215932d5bab46a5f75ea666cbbf4122799629eef38",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_185",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_185.png",
+        "sha256": "755c39e3f6f323d809bd917870ece84632c26a53cbb531bfaa3f341aee7dbb0e",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_190",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_190.png",
+        "sha256": "523539c54fe73dac79b22c961b36094032e8218de9f311a7356e17d0753e2a05",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      },
+      {
+        "texture": "guogaology:block/core_d/optical_clean_220",
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/core_d/optical_clean_220.png",
+        "sha256": "241a5ad862c1ff924944ba07a905f17cd39fb4c25f1108d3ee4dfdd4fccfdd3d",
+        "size": [
+          16,
+          16
+        ],
+        "rgba_colors": 1,
+        "bilinear_vs_nearest_different_pixels_at_16": 0
+      }
+    ]
+  },
+  "animated_portals": [
+    {
+      "block_id": "guogaology:fruit_portal",
+      "labels": [
+        "native_32_pixel_animated_raster",
+        "temporal_frame_color_interpolation",
+        "offline_per_pixel_wave_shading",
+        "vanilla_translucent_chunk_layer"
+      ],
+      "active_models": [
+        "guogaology:block/gate_field_0",
+        "guogaology:block/gate_field_1",
+        "guogaology:block/gate_field_2"
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "frames": 16,
+      "frametime": 3,
+      "interpolate": true,
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/blockstates/fruit_portal.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/refresh_common_art.py",
+          "line": 105,
+          "end_line": 133
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/gate_field_0.png.mcmeta",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyClient.java",
+          "line": 25
+        }
+      ],
+      "note": "Interpolation blends adjacent animation frames in time; it is not spatial bilinear filtering. Legacy fruit_portal/guogao_portal model and texture files remain, but the active blockstates select gate_field_0/1/2.",
+      "alpha_note": "Current sheet includes per-pixel alpha; vanilla translucent layer performs ordinary alpha blending. This changes composited colors, not the authored pixel grid."
+    },
+    {
+      "block_id": "guogaology:guogao_portal",
+      "labels": [
+        "native_32_pixel_animated_raster",
+        "temporal_frame_color_interpolation",
+        "offline_per_pixel_wave_shading",
+        "vanilla_translucent_chunk_layer"
+      ],
+      "active_models": [
+        "guogaology:block/gate_field_0",
+        "guogaology:block/gate_field_1",
+        "guogaology:block/gate_field_2"
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "frames": 16,
+      "frametime": 3,
+      "interpolate": true,
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/blockstates/guogao_portal.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/refresh_common_art.py",
+          "line": 105,
+          "end_line": 133
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/gate_field_0.png.mcmeta",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyClient.java",
+          "line": 25
+        }
+      ],
+      "note": "Interpolation blends adjacent animation frames in time; it is not spatial bilinear filtering. Legacy fruit_portal/guogao_portal model and texture files remain, but the active blockstates select gate_field_0/1/2.",
+      "alpha_note": "Current sheet includes per-pixel alpha; vanilla translucent layer performs ordinary alpha blending. This changes composited colors, not the authored pixel grid."
+    },
+    {
+      "block_id": "guogaology:inner_portal",
+      "labels": [
+        "native_32_pixel_animated_raster",
+        "temporal_frame_color_interpolation",
+        "offline_per_pixel_wave_shading",
+        "vanilla_translucent_chunk_layer"
+      ],
+      "active_models": [
+        "guogaology:block/gate_field_0",
+        "guogaology:block/gate_field_1",
+        "guogaology:block/gate_field_2"
+      ],
+      "frame_size": [
+        32,
+        32
+      ],
+      "frames": 16,
+      "frametime": 3,
+      "interpolate": true,
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/blockstates/inner_portal.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/refresh_common_art.py",
+          "line": 105,
+          "end_line": 133
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/gate_field_0.png.mcmeta",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyClient.java",
+          "line": 25
+        }
+      ],
+      "note": "Interpolation blends adjacent animation frames in time; it is not spatial bilinear filtering. Legacy fruit_portal/guogao_portal model and texture files remain, but the active blockstates select gate_field_0/1/2.",
+      "alpha_note": "Current sheet includes per-pixel alpha; vanilla translucent layer performs ordinary alpha blending. This changes composited colors, not the authored pixel grid."
+    }
+  ],
+  "native_pixel_exemptions": [
+    {
+      "block_id": "guogaology:guogao_drop",
+      "labels": [
+        "pixel_authored_special_case_exempt_from_nonpixel_flag"
+      ],
+      "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/guogao_drop.png",
+      "texture_sha256": "3a68c2792938ef9f59295ec409cf3272f8281693baa2407a650f715c60c254c3",
+      "size": [
+        32,
+        32
+      ],
+      "rgba_colors": 63,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "model_parent": "minecraft:block/block",
+      "model_elements": 30,
+      "comment": "Native32 pixel curves and quantized two-pixel skin bands; final single1/16-block corner step with30 axis-aligned exterior rectangles and integer model coordinates. This is not a smooth sphere/custom renderer.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/guogao_block_art.py",
+          "line": 38
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 129,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 245,
+          "end_line": 257
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/guogao_drop.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/guogao_block_art.py",
+          "line": 127,
+          "end_line": 174
+        }
+      ],
+      "model_sha256": "59051288a682a4b4319320abd4e61f748818beec7c1522257ad11fee47a26a57"
+    },
+    {
+      "block_id": "guogaology:cloud_pearl",
+      "labels": [
+        "pixel_authored_special_case_exempt_from_nonpixel_flag"
+      ],
+      "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/cloud_pearl.png",
+      "texture_sha256": "cb8f98f5f3561cc9041e5e81f427471bb2952b248c58591bf325d0139a07efeb",
+      "size": [
+        32,
+        32
+      ],
+      "rgba_colors": 7,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "model_parent": "minecraft:block/cube_all",
+      "model_elements": 0,
+      "comment": "Native32 per-pixel trefoil, seven opaque colors, ordinary cube_all. Trigonometric glyph masks are rasterized directly on the pixel grid without supersampling.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/nuclear_block_art.py",
+          "line": 18
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 129,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 245,
+          "end_line": 257
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/cloud_pearl.json",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "block_id": "guogaology:set_membrane",
+      "labels": [
+        "pixel_authored_special_case_exempt_from_nonpixel_flag"
+      ],
+      "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/set_membrane.png",
+      "texture_sha256": "490ed30f8b38e395ffaf07850fcc393b956b874e0c6e5f915a974cf87d3d4708",
+      "size": [
+        32,
+        32
+      ],
+      "rgba_colors": 4,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "model_parent": "minecraft:block/block",
+      "model_elements": 90,
+      "comment": "Native32 four-color pattern; exterior of six original crossing cuboids,90 orthogonal rectangles. Continuous coordinate UV clipping prevents whole-glyph stretching; it does not interpolate pixel colors.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/set_membrane_art.py",
+          "line": 18
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 129,
+          "end_line": 135
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/tools/generate_core_resources.py",
+          "line": 245,
+          "end_line": 257
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/set_membrane.json",
+          "line": 1
+        }
+      ]
+    }
+  ],
+  "contextual_overlays": [
+    {
+      "block_ids": [
+        "guogaology:amber_light",
+        "guogaology:cyan_light",
+        "guogaology:rose_light",
+        "guogaology:lime_light",
+        "guogaology:violet_light",
+        "guogaology:scarlet_light",
+        "guogaology:amber_sequence_light",
+        "guogaology:cyan_sequence_light",
+        "guogaology:rose_sequence_light",
+        "guogaology:lime_sequence_light",
+        "guogaology:violet_sequence_light",
+        "guogaology:scarlet_sequence_light"
+      ],
+      "labels": [
+        "untextured_time_varying_color_overlay"
+      ],
+      "condition": "Underworld, tracked nearby connected lamp beat, within84blocks.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/java/dev/guogaology/GuogaologyBlocks.java",
+          "line": 161,
+          "end_line": 168
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 184,
+          "end_line": 190
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 207,
+          "end_line": 223
+        }
+      ],
+      "note": "The registered lamp raster remains unchanged. Renderer draws a floating-color film over visible faces."
+    },
+    {
+      "block_ids": [
+        "guogaology:iblp_blank",
+        "guogaology:iblp_node",
+        "guogaology:iblp_marked",
+        "guogaology:laver_court_blank",
+        "guogaology:laver_court_node",
+        "guogaology:laver_core"
+      ],
+      "labels": [
+        "untextured_fading_table_note_overlay"
+      ],
+      "condition": "While a valid Laver table is played; note coordinate pulse lasts12ticks, including silent cells.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/ambience/LaverMusic.java",
+          "line": 38,
+          "end_line": 41
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 73,
+          "end_line": 77
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 192,
+          "end_line": 195
+        }
+      ],
+      "note": "This is contextual runtime geometry/color, not generated or uploaded replacement texture pixels."
+    }
+  ],
+  "not_registered_block_effects": [
+    {
+      "name": "LHO mirages",
+      "block_ids": [],
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 144,
+          "end_line": 164
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/client/dev/guogaology/client/GuogaologyAtmosphere.java",
+          "line": 196,
+          "end_line": 202
+        }
+      ],
+      "note": "Procedural translucent quads are staged in air and drift; do not tag every L/H/O/fffZ/FOS block as dynamic-textured."
+    }
+  ],
+  "runtime_bitmap_generation_search": {
+    "terms": [
+      "NativeImage",
+      "DynamicTexture",
+      "NativeImageBackedTexture",
+      "ImageIO",
+      "BufferedImage",
+      "registerTexture"
+    ],
+    "roots": [
+      "src/client",
+      "ports/common/client",
+      "ports/outer-1.21.1/src/client",
+      "ports/26.3/src/client/java"
+    ],
+    "matches": 0,
+    "conclusion": "No project runtime bitmap-generation/upload path found in these client source roots. Core renderer transforms cached mesh parts; portals use vanilla sprite-sheet animation."
+  },
+  "dense_gradient_texture_case": {
+    "block_ids": [
+      "guogaology:guogao_heart",
+      "guogaology:guogao_heart_lv2",
+      "guogaology:guogao_heart_lv3"
+    ],
+    "textures": [
+      "guogaology:block/core_d/guogao_lantern",
+      "guogaology:block/core_d/guogao_lantern_enamel"
+    ],
+    "style": "Mixed: hard pixel feature outlines over dense continuous cool-blue to gold shading. Direct native PNG visual inspection confirms the gradient; not inferred merely from128px size.",
+    "historical_provenance": [
+      {
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/tools/generate_resources.py",
+        "line": 341,
+        "end_line": 356
+      },
+      {
+        "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/tools/core_lowpoly.py",
+        "line": 212,
+        "end_line": 226
+      }
+    ],
+    "provenance_caution": "These two historical tools live outside formal Guogaology, still target googology, and were not executed. Current mesh/PNG hashes and mappings are the authoritative evidence."
+  },
+  "vanilla_block_entity_rendering": {
+    "target": "Minecraft26.2 verified from local cached client jar; do not assume legacy sign rendering is identical.",
+    "minecraft_client_jar": "C:/Users/sigmoid/.gradle/caches/fabric-loom/26.2/minecraft-client.jar",
+    "signs": [
+      {
+        "block_id": "guogaology:laver_sign",
+        "wood_type": "guogaology:laver",
+        "labels": [
+          "vanilla_sign_text_block_entity",
+          "ordinary_json_board_body_on_mc26_2",
+          "native_32_pixel_board_texture"
+        ],
+        "version_verified": "26.2",
+        "world_body_texture": "guogaology:block/laver_sign",
+        "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/laver_sign.png",
+        "texture_sha256": "3c86052f14bfec8d4113a28e64daf93c5142abf87221cf66ca805f3a82f6ccd7",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 8,
+        "model_parent": "minecraft:block/template_sign_rot_0",
+        "model_evidence": {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/laver_sign_rot_0.json",
+          "line": 1
+        },
+        "renderer_conclusion": "StandingSignRenderer only extracts attachment/text transformations. Its AbstractSignRenderer.submit emits front/back text through submitSignText/submitText; no board model or wood sign material is submitted. Body is rendered from vanilla template JSON, not an entity/signs atlas.",
+        "text_note": "Player text is separate native font glyph rendering, so its appearance cannot be summarized by the mod wood PNG resolution. This is not a smooth-raster defect by itself.",
+        "evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModBlocks.java",
+            "line": 39
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodDecorBlocks.java",
+            "line": 53,
+            "end_line": 63
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodTypes.java",
+            "line": 45,
+            "end_line": 51
+          }
+        ],
+        "renderer_bytecode_evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 2,
+            "text": "public class net.minecraft.client.renderer.blockentity.StandingSignRenderer extends net.minecraft.client.renderer.blockentity.AbstractSignRenderer<net.minecraft.client.renderer.blockentity.state.StandingSignRenderState> {"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 209,
+            "text": "public void submit(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.client.renderer.state.level.CameraRenderState);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 251,
+            "text": "private void submitSignText(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.world.level.block.entity.SignText);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 338,
+            "text": "166: invokeinterface #115,  11         // InterfaceMethod net/minecraft/client/renderer/SubmitNodeCollector.submitText:(Lcom/mojang/blaze3d/vertex/PoseStack;FFLnet/minecraft/util/FormattedCharSequence;ZLnet/minecraft/client/gui/Font$DisplayMode;IIII)V"
+          }
+        ]
+      },
+      {
+        "block_id": "guogaology:laver_wall_sign",
+        "wood_type": "guogaology:laver",
+        "labels": [
+          "vanilla_sign_text_block_entity",
+          "ordinary_json_board_body_on_mc26_2",
+          "native_32_pixel_board_texture"
+        ],
+        "version_verified": "26.2",
+        "world_body_texture": "guogaology:block/laver_sign",
+        "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/laver_sign.png",
+        "texture_sha256": "3c86052f14bfec8d4113a28e64daf93c5142abf87221cf66ca805f3a82f6ccd7",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 8,
+        "model_parent": "minecraft:block/template_wall_sign",
+        "model_evidence": {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/laver_wall_sign.json",
+          "line": 1
+        },
+        "renderer_conclusion": "StandingSignRenderer only extracts attachment/text transformations. Its AbstractSignRenderer.submit emits front/back text through submitSignText/submitText; no board model or wood sign material is submitted. Body is rendered from vanilla template JSON, not an entity/signs atlas.",
+        "text_note": "Player text is separate native font glyph rendering, so its appearance cannot be summarized by the mod wood PNG resolution. This is not a smooth-raster defect by itself.",
+        "evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModBlocks.java",
+            "line": 39
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodDecorBlocks.java",
+            "line": 53,
+            "end_line": 63
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodTypes.java",
+            "line": 45,
+            "end_line": 51
+          }
+        ],
+        "renderer_bytecode_evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 2,
+            "text": "public class net.minecraft.client.renderer.blockentity.StandingSignRenderer extends net.minecraft.client.renderer.blockentity.AbstractSignRenderer<net.minecraft.client.renderer.blockentity.state.StandingSignRenderState> {"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 209,
+            "text": "public void submit(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.client.renderer.state.level.CameraRenderState);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 251,
+            "text": "private void submitSignText(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.world.level.block.entity.SignText);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 338,
+            "text": "166: invokeinterface #115,  11         // InterfaceMethod net/minecraft/client/renderer/SubmitNodeCollector.submitText:(Lcom/mojang/blaze3d/vertex/PoseStack;FFLnet/minecraft/util/FormattedCharSequence;ZLnet/minecraft/client/gui/Font$DisplayMode;IIII)V"
+          }
+        ]
+      },
+      {
+        "block_id": "guogaology:dread_sign",
+        "wood_type": "guogaology:dread",
+        "labels": [
+          "vanilla_sign_text_block_entity",
+          "ordinary_json_board_body_on_mc26_2",
+          "native_32_pixel_board_texture"
+        ],
+        "version_verified": "26.2",
+        "world_body_texture": "guogaology:block/dread_sign",
+        "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/dread_sign.png",
+        "texture_sha256": "0ac6f0ae362823bc3cfd8cf80e353f1e40fcbe8c8c71aed75e640db3e748f1ce",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 8,
+        "model_parent": "minecraft:block/template_sign_rot_0",
+        "model_evidence": {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/dread_sign_rot_0.json",
+          "line": 1
+        },
+        "renderer_conclusion": "StandingSignRenderer only extracts attachment/text transformations. Its AbstractSignRenderer.submit emits front/back text through submitSignText/submitText; no board model or wood sign material is submitted. Body is rendered from vanilla template JSON, not an entity/signs atlas.",
+        "text_note": "Player text is separate native font glyph rendering, so its appearance cannot be summarized by the mod wood PNG resolution. This is not a smooth-raster defect by itself.",
+        "evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModBlocks.java",
+            "line": 39
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodDecorBlocks.java",
+            "line": 53,
+            "end_line": 63
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodTypes.java",
+            "line": 45,
+            "end_line": 51
+          }
+        ],
+        "renderer_bytecode_evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 2,
+            "text": "public class net.minecraft.client.renderer.blockentity.StandingSignRenderer extends net.minecraft.client.renderer.blockentity.AbstractSignRenderer<net.minecraft.client.renderer.blockentity.state.StandingSignRenderState> {"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 209,
+            "text": "public void submit(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.client.renderer.state.level.CameraRenderState);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 251,
+            "text": "private void submitSignText(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.world.level.block.entity.SignText);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 338,
+            "text": "166: invokeinterface #115,  11         // InterfaceMethod net/minecraft/client/renderer/SubmitNodeCollector.submitText:(Lcom/mojang/blaze3d/vertex/PoseStack;FFLnet/minecraft/util/FormattedCharSequence;ZLnet/minecraft/client/gui/Font$DisplayMode;IIII)V"
+          }
+        ]
+      },
+      {
+        "block_id": "guogaology:dread_wall_sign",
+        "wood_type": "guogaology:dread",
+        "labels": [
+          "vanilla_sign_text_block_entity",
+          "ordinary_json_board_body_on_mc26_2",
+          "native_32_pixel_board_texture"
+        ],
+        "version_verified": "26.2",
+        "world_body_texture": "guogaology:block/dread_sign",
+        "texture_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/textures/block/dread_sign.png",
+        "texture_sha256": "0ac6f0ae362823bc3cfd8cf80e353f1e40fcbe8c8c71aed75e640db3e748f1ce",
+        "size": [
+          32,
+          32
+        ],
+        "rgba_colors": 8,
+        "model_parent": "minecraft:block/template_wall_sign",
+        "model_evidence": {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/src/main/resources/assets/guogaology/models/block/dread_wall_sign.json",
+          "line": 1
+        },
+        "renderer_conclusion": "StandingSignRenderer only extracts attachment/text transformations. Its AbstractSignRenderer.submit emits front/back text through submitSignText/submitText; no board model or wood sign material is submitted. Body is rendered from vanilla template JSON, not an entity/signs atlas.",
+        "text_note": "Player text is separate native font glyph rendering, so its appearance cannot be summarized by the mod wood PNG resolution. This is not a smooth-raster defect by itself.",
+        "evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModBlocks.java",
+            "line": 39
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodDecorBlocks.java",
+            "line": 53,
+            "end_line": 63
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodTypes.java",
+            "line": 45,
+            "end_line": 51
+          }
+        ],
+        "renderer_bytecode_evidence": [
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 2,
+            "text": "public class net.minecraft.client.renderer.blockentity.StandingSignRenderer extends net.minecraft.client.renderer.blockentity.AbstractSignRenderer<net.minecraft.client.renderer.blockentity.state.StandingSignRenderState> {"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 209,
+            "text": "public void submit(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.client.renderer.state.level.CameraRenderState);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 251,
+            "text": "private void submitSignText(S, com.mojang.blaze3d.vertex.PoseStack, net.minecraft.client.renderer.SubmitNodeCollector, net.minecraft.world.level.block.entity.SignText);"
+          },
+          {
+            "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/vanilla26-sign-renderers.javap.txt",
+            "line": 338,
+            "text": "166: invokeinterface #115,  11         // InterfaceMethod net/minecraft/client/renderer/SubmitNodeCollector.submitText:(Lcom/mojang/blaze3d/vertex/PoseStack;FFLnet/minecraft/util/FormattedCharSequence;ZLnet/minecraft/client/gui/Font$DisplayMode;IIII)V"
+          }
+        ]
+      }
+    ],
+    "vanilla_body_templates": [
+      {
+        "jar": "C:/Users/sigmoid/.gradle/caches/fabric-loom/26.2/minecraft-client.jar",
+        "entry": "assets/minecraft/models/block/template_sign_rot_0.json",
+        "extracted_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/template_sign_rot_0.json",
+        "sha256": "d1ac7e9595ab91cffb39071133786cf9b1fe72fce60ae7498e01852b053815a2",
+        "elements": 2
+      },
+      {
+        "jar": "C:/Users/sigmoid/.gradle/caches/fabric-loom/26.2/minecraft-client.jar",
+        "entry": "assets/minecraft/models/block/template_wall_sign.json",
+        "extracted_path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/outputs/20261018-block-pixels/template_wall_sign.json",
+        "sha256": "6a2e829a04b36906bfc120fdc0d9387d21790dd70404ab1362941a2733c6824a",
+        "elements": 1
+      }
+    ],
+    "minecraft_entity_sign_texture_directory_present": false,
+    "hanging_signs": {
+      "registered_mod_block_ids": [],
+      "conclusion": "No Guogaology hanging-sign/wall-hanging-sign registrations or assets. Current ModWoodDecorBlocks registers only StandingSignBlock and WallSignBlock for the twoWOOD_IDS. Retired Christmas/Loquat sign aliases redirect to vanilla blocks and are not additional Guogaology IDs.",
+      "evidence": [
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModWoodDecorBlocks.java",
+          "line": 41,
+          "end_line": 63
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/registry/ModBlocks.java",
+          "line": 39
+        },
+        {
+          "path": "C:/Users/sigmoid/Documents/ChatGPT/mc_dimension_mod/Guogaology/ports/common/main/dev/guogaology/outer/GuogaologyMod.java",
+          "line": 41,
+          "end_line": 86
+        }
+      ]
+    },
+    "other_model_chain_exceptions": {
+      "animated_core_block_ids": [
+        "guogaology:astra_critical_core_lv2",
+        "guogaology:astra_critical_core_lv3",
+        "guogaology:boundary_core_lv2",
+        "guogaology:boundary_core_lv3",
+        "guogaology:guogao_heart_lv2",
+        "guogaology:guogao_heart_lv3",
+        "guogaology:hydra_bud_lv2",
+        "guogaology:hydra_bud_lv3",
+        "guogaology:laver_core_lv2",
+        "guogaology:laver_core_lv3",
+        "guogaology:lho_trace_lv2",
+        "guogaology:lho_trace_lv3",
+        "guogaology:ordinal_crystal_lv3",
+        "guogaology:ordinal_crystal_lv4",
+        "guogaology:power_tower_core_lv2",
+        "guogaology:power_tower_core_lv3",
+        "guogaology:sequence_core_lv2",
+        "guogaology:sequence_core_lv3"
+      ],
+      "core_note": "Upper cores use custom block entity rendering as detailed per ID. Base cores still use custom mesh-loader replacement even where there is noBE.",
+      "contextual_overlay_note": "Lamp rhythm/Laver note films and LHO mirages are separate frame render events, already listed above.",
+      "excluded": [
+        "Enhancement-table GUI (screen/UI, not world block art)",
+        "Ordinary chair seat entities (renderer has no visible chair mesh; the chair block model remains authoritative)",
+        "Vanilla/chest/etc blocks placed in landscapes are not new Guogaology registry IDs."
+      ]
+    },
+    "legacy_caution": "Formal1.21.1 bridge generates the same StandingSign/WallSign registrations; the present read-only supplement did not inspect a cached1.21.1 client jar, so no claim is made about its sign body material. Primary pixel inventory and verified board conclusion here target26.2."
+  },
+  "updated_at": "2026-10-17T16:22:27.347312+00:00"
+}

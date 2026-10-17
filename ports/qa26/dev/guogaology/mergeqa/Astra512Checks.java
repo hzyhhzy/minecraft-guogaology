@@ -28,32 +28,16 @@ public final class Astra512Checks {
         var input=CraftingInput.of(3,3,items);var found=w.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING,input,w);
         return found.isPresent()?found.orElseThrow().value().assemble(input):ItemStack.EMPTY;
     }
-    private static List<ItemStack> astra(ItemStack lamp){
-        var ring=new ArrayList<ItemStack>();ring.add(item("cloud_pearl"));for(int i=0;i<5;i++)ring.add(item("compute_chip"));ring.add(item("nuke_mushroom"));ring.add(lamp);return centered(ring);
-    }
-    private static List<ItemStack> centered(List<ItemStack> ring){
-        var inputs=new ArrayList<>(ring);inputs.add(4,item("ordinal_crystal"));return inputs;
-    }
-    private static List<ItemStack> centered(String... ring){
-        return centered(Arrays.stream(ring).map(Astra512Checks::item).toList());
-    }
     public static void run(ServerPlayer p)throws Exception{
-        for(var lamp:GuogaologyBlocks.LANTERNS)for(int emotion=0;emotion<2;emotion++)for(int part=0;part<28;part++)if(part!=13){
-            var stack=StatefulDecorBlock.copyAppearance(new ItemStack(lamp),lamp.defaultBlockState().setValue(EmojiLanternBlock.EMOTION,emotion).setValue(EmojiLanternBlock.PART,part));
-            var inputs=astra(stack);var result=craft(p.level(),inputs);
-            check(result.is(GuogaologyBlocks.ASTRA_CRITICAL_CORE.asItem())&&result.getCount()==1,"native Astra recipe accepts every lamp color/expression/form");
-        }
-        for(int digit=0;digit<16;digit++){
-            var matrix=new ArrayList<ItemStack>();for(String name:List.of("matrix_sheet","ridge_lamina","projection_glass","y_leaves"))matrix.add(item(name));
-            for(int k=0;k<4;k++)matrix.add(StatefulDecorBlock.copyAppearance(item("ordinal_bricks"),GuogaologyBlocks.ordinalBrick((digit+k*3)%16)));
-            check(craft(p.level(),centered(matrix)).is(GuogaologyBlocks.SEQUENCE_CORE.asItem()),"Matrix recipe accepts mixed digit bricks");
-        }
-        var missing=astra(item("guogao_lantern"));missing.set(5,ItemStack.EMPTY);check(craft(p.level(),missing).isEmpty(),"five separate chips are required");
-        var misplaced=astra(item("guogao_lantern"));Collections.swap(misplaced,0,4);check(craft(p.level(),misplaced).isEmpty(),"ordinary crystal is required at the center");
+        checks=0;occupied=eligible=pearls=0;CoreResources055Checks.runRecipes(p.level());CoreResources055Checks.runLaverSource(p);
         var old=List.of("cloud_pearl","cloud_pearl","compute_chip","compute_chip","astra_cloud","astra_cloud","astra_marble","astra_mint","ordinal_crystal").stream().map(Astra512Checks::item).toList();
         check(craft(p.level(),old).isEmpty(),"old stone-and-cloud recipe removed");
-        var boundary=centered("set_membrane","set_membrane","turing_tape","turing_tape","proof_stone","turing_endcap","formula_stone","rayo_rose");
-        check(craft(p.level(),boundary).is(GuogaologyBlocks.BOUNDARY_CORE.asItem()),"Turing Terminus replaces exactly one Proof Stone");
+        var nuclear=CoreResources.CLOUD_PEARL.defaultBlockState();
+        for(var shape:List.of(nuclear.getShape(p.level(),p.blockPosition()),nuclear.getCollisionShape(p.level(),p.blockPosition()))){
+            var boxes=shape.toAabbs();check(boxes.size()==1,"Nuclear Blast Block has one complete native cube");var box=boxes.getFirst();
+            check(box.minX==0&&box.minY==0&&box.minZ==0&&box.maxX==1&&box.maxY==1&&box.maxZ==1,"nuclear material outline/collision fills0..1");
+        }
+        check(!nuclear.hasBlockEntity()&&nuclear.isCollisionShapeFullBlock(p.level(),p.blockPosition()),"nuclear cube needs no block entity or overlay");
         for(long salt:new long[]{1,93811,451321,512512})cloud(salt,salt==1);
         double rate=pearls/(double)eligible;check(rate>.009&&rate<.011,"buried pearl frequency is1%: "+rate);
         city();
@@ -62,7 +46,7 @@ public final class Astra512Checks {
         Laver511Checks.run(p);
         var shape=CoreResources.SET_MEMBRANE.defaultBlockState().getShape(p.level(),p.blockPosition());
         for(var box:shape.toAabbs())check(box.minX>=.125&&box.maxX<=.875&&box.minY>=.125&&box.maxY<=.875,"membrane shape stays symmetric about center");
-        System.out.println("ASTRA512_SERVER_OK checks="+checks+" clouds="+occupied+" eligible="+eligible+" pearls="+pearls+" rate="+rate+" 324lampRecipes/fiveChips+mushroom/centralCrystal/removedOldRecipe/terminus/chairs/starlamps/haloDeterminism");
+        System.out.println("ASTRA512_SERVER_OK checks="+checks+" clouds="+occupied+" eligible="+eligible+" pearls="+pearls+" rate="+rate+" currentSymmetricRecipes/LHO16IndependentChoices/Branch1296IndependentChoices/mixedMatrixDigits/fullNuclearCube/restoredLv1/chairs/starlamps/haloDeterminism");
     }
     private static void cloud(long salt,boolean compareChunks)throws Exception{
         int cx=-7,cz=9,base=50,r=NaturalForms.cloudWidth(salt)/2+3,h=NaturalForms.cloudHeight(salt),sx=2*r+1,sy=h+24;
@@ -92,8 +76,6 @@ public final class Astra512Checks {
         System.out.println("ASTRA512_CLOUD salt="+salt+" cloud="+full.cardinality()+" interior="+count+" pearls="+points.size());
     }
     private static void guogao(ServerPlayer p)throws Exception{
-        var recipe=centered("dread_resin","guogao_drop","dread_leaves","emoji_flower","loquat","star_gold","fruit_cake_gel","guogao_lantern");
-        check(craft(p.level(),recipe).is(GuogaologyBlocks.GUOGAO_HEART.asItem()),"Heart recipe keeps Drop/Emoji Flower and adds Loquat/Fruit Cake Gel");
         for(int height:new int[]{30,90,250})for(int dir:new int[]{-1,1}){
             var map=new HashMap<BlockPos,Integer>();FirDecorations.star(new VoxelBrush(-15,15,-62,317,-15,15,(x,y,z,m)->map.put(new BlockPos(x,y,z),m)),0,150,0,height,dir,true);
             var drops=map.entrySet().stream().filter(e->e.getValue()==NaturalForms.GUOGAO_DROP).toList();check(drops.size()==1,"one raw drop per Guogao star");
