@@ -36,6 +36,16 @@
       "conditions": {
         "items": [
           {
+            "items": "guogaology:nuke_mushroom"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
             "items": "guogaology:ordinal_crystal"
           }
         ]
@@ -54,6 +64,7 @@
       "ingredient_1",
       "ingredient_2",
       "ingredient_3",
+      "ingredient_4",
       "has_recipe"
     ]
   ],

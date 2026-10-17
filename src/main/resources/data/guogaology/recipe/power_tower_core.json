@@ -1,35 +1,34 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "AAB",
+    "BSC",
+    "DEF"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:arrow_knot"
     },
-    {
-      "item": "guogaology:arrow_knot"
-    },
-    {
+    "B": {
       "item": "guogaology:scg_node"
     },
-    {
-      "item": "guogaology:scg_node"
-    },
-    {
+    "C": {
       "item": "guogaology:tree_node_red"
     },
-    {
+    "D": {
       "item": "guogaology:tree_node_green"
     },
-    {
+    "E": {
       "item": "guogaology:tree_node_blue"
     },
-    {
-      "tag": "guogaology:ancient_notation_materials"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
+    "F": {
+      "tag": "guogaology:graham_materials"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:power_tower_core",
     "count": 1

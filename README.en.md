@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.13 · Minecraft Java / Fabric · Local version, not yet published**
+**v0.5.14 · Minecraft Java / Fabric · Local version, not yet published**
 
-This update fixes cropped Nuclear Blast Pearl emblems and gives the Guogao Crystal Drop a complete tapered silhouette with warm rose-violet facets. Recipes, sources and mechanics remain unchanged from0.5.12. See [the work record](docs/WORK-0513.md), [the previous material/scenery update](docs/WORK-0512.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+This update revises regional Lv1 ingredients and fixed-center 8+1 crafting. Regional Lv2/Lv3 use an ε/Γ Mineral Block at the center; Ordinal Cores keep ninefold fusion. Guogao becomes a luminous full cube with the original 😰 expression palette, and Graham plants can grow into the existing tree scenery in Inner and Underworld. See [the work record](docs/WORK-0514.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -56,9 +56,9 @@ The first seven biomes belong to Inner Guogaology. Guogao Dreadwood is in the se
 
 [Survival guide](docs/SURVIVAL-GUIDE.en.md) · [Harvesting reference](docs/BLOCK-BALANCE.en.md) · [Chinese–English terminology](docs/TERMINOLOGY.md)
 
-## Resource acquisition in 0.5.5
+## Current resource acquisition
 
-- Inner and Underworld wilderness no longer places finished cores or Ordinal Crystal blocks. Gather Matrix Sheets, Arrowgrain Knots, SCG Junctions, Hydra Sprigs, Laver Gel, Nuclear Blast Pearls, Set Membranes, Dread Fir Resin and Guogao Crystal Drops, then combine them with existing biome materials. Giant landmarks retain a few display cores and lower-grade chest rewards.
+- Inner and Underworld wilderness no longer places finished cores or Ordinal Crystal blocks. Gather Matrix Sheets, Arrowgrain Knots, SCG Junctions, Hydra Sprigs, Laver Gel, Nuclear Blast Pearls, Set Membranes, Dread Fir Resin and Guogao, then combine them with theme materials. Lv1 puts a base Ordinal Crystal at the center; Lv2/Lv3 surround an ε/Γ Mineral Block with eight matching preceding-grade cores. Giant landmarks retain a few display cores and lower-grade chest rewards.
 - Ordinal Crystal Ore uses vanilla iron's average density as its benchmark, with numbered-stone, transparent-island and Dreadstone variants. Mine shards; four shards and one base crystal convert both ways. Mining a crystal block returns the block itself.
 - LHO disappearance, connected decay and anchored harvesting remain. An Ordinal Crystal stabilizes two neighboring rings; ψ, Z, fffZ and FOS visibly change color. Absence Cores are crafted.
 - A Guogao Lamp Shaper converts one lamp into one of 54 shapes of the same color. Ordinary mining gives the basic whole lamp; Silk Touch preserves its expression and tile.

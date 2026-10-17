@@ -139,14 +139,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:absence_glass",
+          "name": "guogaology:stellar_stone",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 14,
-                "max": 28
+                "min": 6,
+                "max": 12
               }
             }
           ]
@@ -166,6 +166,25 @@
                 "type": "minecraft:uniform",
                 "min": 30,
                 "max": 60
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:absence_glass",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8,
+                "max": 16
               }
             }
           ]

@@ -1,4 +1,4 @@
-# 正式名称与词根 · 0.5.5
+# 正式名称与词根 · 0.5.14
 
 | 中文 | 英文 | 约定 |
 |---|---|---|
@@ -43,7 +43,7 @@
 | 核爆凝珠 | Nuclear Blast Pearl | `cloud_pearl` |
 | 集合膜 | Set Membrane | `set_membrane` |
 | 冥杉树脂 | Dread Fir Resin | `dread_resin` |
-| 馃槹晶滴 | Guogao Crystal Drop | `guogao_drop` |
+| 馃槹 | Guogao | `guogao_drop`；完整发光表情方块 |
 | 图灵终符 | Turing Terminus | `turing_endcap` |
 
 | 群系 | 代表建筑 |

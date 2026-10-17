@@ -36,7 +36,9 @@ public final class CoreResources {
     public static final List<Block> ALL = java.util.stream.Stream.concat(MATERIALS.stream(),
             java.util.stream.Stream.concat(ORES.stream(), java.util.stream.Stream.of(TURING_ENDCAP))).toList();
     private static Block node(String name, boolean clear) {
-        var settings=BlockBalance.apply(name,BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.AMETHYST).noOcclusion());
+        var properties=BlockBehaviour.Properties.of().mapColor(name.equals("guogao_drop")?MapColor.GOLD:MapColor.COLOR_LIGHT_BLUE).sound(SoundType.AMETHYST);
+        if(!name.equals("guogao_drop"))properties.noOcclusion();
+        var settings=BlockBalance.apply(name,properties);
         return register(name,name.equals("hydra_sprig")?new HydraSprigBlock(settings):new NaturalResourceBlock(settings),clear);
     }
     private static Block ore(String name, boolean clear) {

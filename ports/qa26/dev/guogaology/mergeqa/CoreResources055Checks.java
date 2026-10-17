@@ -40,6 +40,10 @@ public final class CoreResources055Checks {
         return found.isEmpty()?ItemStack.EMPTY:found.orElseThrow().value().assemble(grid);
     }
     private static void crafts(ServerLevel world,String output,int count,String... input){var value=craft(world,input);check(value.is(item(output).getItem())&&value.getCount()==count,"loaded native recipe "+output+" ×"+count+" got "+value);}
+    private static String[] centered(String center,String... ring){
+        if(ring.length!=8)throw new IllegalArgumentException("Eight surrounding ingredients required");
+        var grid=new String[9];System.arraycopy(ring,0,grid,0,4);grid[4]=center;System.arraycopy(ring,4,grid,5,4);return grid;
+    }
     public static void run(ServerPlayer player)throws Exception{
         checks=0;var main=player.getMainHandItem();var off=player.getOffhandItem();var mode=player.gameMode();
         try{
@@ -79,22 +83,29 @@ public final class CoreResources055Checks {
         intact(Block.getDrops(GuogaologyBlocks.GIANT_LAVER.defaultBlockState(),world,at,null,player,new ItemStack(Items.SHEARS)),GuogaologyBlocks.GIANT_LAVER,"ordinary shears collect first Laver ingredient");
         for(var tree:GuogaologyBlocks.TREE_NODES)for(var tool:tools)intact(Block.getDrops(tree.defaultBlockState(),world,at,null,player,tool),tree,"TREE node is ordinary any-tool material");
     }
+    public static void runRecipes(ServerLevel world){
+        int before=checks;recipes(world);System.out.println("CORE_RESOURCES_RECIPES_OK checks="+(checks-before)+" regionalLv1/centralEpsilonGamma/alternatives/ordinalNinefold");
+    }
     private static void recipes(ServerLevel world){
         String[][] inputs={
             {"matrix_sheet","ridge_lamina","projection_glass","y_leaves","ordinal_bricks","ordinal_bricks","ordinal_bricks","ordinal_bricks"},
-            {"arrow_knot","arrow_knot","scg_node","scg_node","tree_node_red","tree_node_green","tree_node_blue","beaf_marble"},
+            {"arrow_knot","arrow_knot","scg_node","scg_node","tree_node_red","tree_node_green","tree_node_blue","graham"},
             {"hydra_sprig","hydra_sprig","veblen_petal","veblen_petal","psi_symbol","great_omega_symbol","epsilon_bloom","omega_bloom"},
-            {"lho_letter_l","lho_letter_h","lho_letter_o","fffz_trace","fos_trace","lho_hydra_psi","lho_hydra_z","absence_glass"},
-            {"laver_gel","laver_gel","iblp_node","iblp_node","iblp_marked","iblp_blank","amber_guogao","tianyi_fiber"},
-            {"cloud_pearl","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","guogao_lantern"},
+            {"lho_letter_l","lho_letter_h","lho_letter_o","fffz_trace","fos_trace","lho_hydra_psi","lho_hydra_z","stellar_stone"},
+            {"laver_gel","laver_ribbon","iblp_node","iblp_node","iblp_marked","iblp_blank","gummy","tianyi_fiber"},
+            {"cloud_pearl","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","nuke_mushroom","guogao_lantern"},
             {"set_membrane","set_membrane","turing_tape","turing_tape","proof_stone","turing_endcap","formula_stone","rayo_rose"},
-            {"dread_resin","guogao_drop","dread_leaves","emoji_flower","amber_guogao","star_gold","amber_sequence_light","guogao_lantern"}};
+            {"dread_resin","guogao_drop","dread_leaves","emoji_flower","loquat","star_gold","fruit_cake_gel","guogao_lantern"}};
         for(int i=0;i<REGIONAL.length;i++){
-            var first=Arrays.copyOf(inputs[i],9);first[8]="ordinal_crystal";crafts(world,REGIONAL[i],1,first);
-            var second=new String[9];Arrays.fill(second,REGIONAL[i]);second[8]="ordinal_crystal_lv2";crafts(world,REGIONAL[i]+"_lv2",1,second);
-            Arrays.fill(second,REGIONAL[i]+"_lv2");second[8]="ordinal_crystal_lv3";crafts(world,REGIONAL[i]+"_lv3",1,second);
+            var first=centered("ordinal_crystal",inputs[i]);crafts(world,REGIONAL[i],1,first);
+            var misplaced=first.clone();var edge=misplaced[0];misplaced[0]=misplaced[4];misplaced[4]=edge;
+            check(craft(world,misplaced).isEmpty(),"Lv1 crystal must occupy the center "+REGIONAL[i]);
+            var second=new String[9];Arrays.fill(second,REGIONAL[i]);second[4]="epsilon_block";crafts(world,REGIONAL[i]+"_lv2",1,second);
+            second[4]="ordinal_crystal_lv2";check(craft(world,second).isEmpty(),"old Ordinal center rejected for regional Lv2 "+REGIONAL[i]);
+            Arrays.fill(second,REGIONAL[i]+"_lv2");second[4]="gamma_block";crafts(world,REGIONAL[i]+"_lv3",1,second);
+            second[4]="epsilon_block";check(craft(world,second).isEmpty(),"regional Lv3 requires Gamma rather than Epsilon "+REGIONAL[i]);
         }
-        for(String alternative:new String[]{"bird_shale","conway_link"}){var list=Arrays.copyOf(inputs[1],9);list[7]=alternative;list[8]="ordinal_crystal";crafts(world,"power_tower_core",1,list);}
+        var alternative=inputs[1].clone();alternative[7]="graham_flower";crafts(world,"power_tower_core",1,centered("ordinal_crystal",alternative));
         crafts(world,"ordinal_crystal",1,"ordinal_shard","ordinal_shard","ordinal_shard","ordinal_shard");crafts(world,"ordinal_shard",4,"ordinal_crystal");
         for(int stage=2;stage<=4;stage++){
             String lower=stage==2?"ordinal_crystal":"ordinal_crystal_lv"+(stage-1),higher="ordinal_crystal_lv"+stage;

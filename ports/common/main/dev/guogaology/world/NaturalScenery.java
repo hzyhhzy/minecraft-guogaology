@@ -131,8 +131,9 @@ public final class NaturalScenery {
                     case TREE, SCG -> { if(s.floor!=Integer.MIN_VALUE) CombinatorialForms.drawGraph(forms(b),s.x,s.floor,s.z,24+(int)Math.floorMod(s.salt>>>13,35L),s.salt,form==SceneryDistribution.Form.SCG); }
                 }
     }
+    public static BlockState formMaterial(int material){return material==AstraCity.CHAIR?CityChair.STATE:FORM_MATERIALS[material];}
     private static VoxelBrush forms(SceneryBrush b) {
-        return new VoxelBrush(b.minX,b.maxX,-62,317,b.minZ,b.maxZ,(x,y,z,m)->b.set(x,y,z,m==AstraCity.CHAIR?CityChair.STATE:FORM_MATERIALS[m]));
+        return new VoxelBrush(b.minX,b.maxX,-62,317,b.minZ,b.maxZ,(x,y,z,m)->b.set(x,y,z,formMaterial(m)));
     }
     public static int treeHeight(Site s,boolean haunted) {
         int desired=haunted?20+(int)(Math.pow(WorldNoise.unit(WorldNoise.mix(s.salt+9)),1.55)*116):30+(int)Math.floorMod(s.salt>>>14,41L);

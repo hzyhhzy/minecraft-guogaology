@@ -1,35 +1,34 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "AAB",
+    "BSC",
+    "DEF"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:set_membrane"
     },
-    {
-      "item": "guogaology:set_membrane"
-    },
-    {
+    "B": {
       "item": "guogaology:turing_tape"
     },
-    {
-      "item": "guogaology:turing_tape"
-    },
-    {
+    "C": {
       "item": "guogaology:proof_stone"
     },
-    {
+    "D": {
       "item": "guogaology:turing_endcap"
     },
-    {
+    "E": {
       "item": "guogaology:formula_stone"
     },
-    {
+    "F": {
       "item": "guogaology:rayo_rose"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:boundary_core",
     "count": 1

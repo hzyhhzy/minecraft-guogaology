@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:fruit_guogao"
+            "items": "guogaology:gummy"
           }
         ]
       }
@@ -56,12 +56,22 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal"
+            "items": "guogaology:laver_ribbon"
           }
         ]
       }
     },
     "ingredient_6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_7": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -87,6 +97,7 @@
       "ingredient_4",
       "ingredient_5",
       "ingredient_6",
+      "ingredient_7",
       "has_recipe"
     ]
   ],

@@ -28,6 +28,7 @@ public final class GuogaologyMod implements ModInitializer {
         GuogaologySounds.initialize();
         WorldMaterials.initialize();
         dev.guogaology.mining.MiningContent.initialize();
+        dev.guogaology.world.GrahamGrowth.initialize();
         dev.guogaology.outer.GuogaologyMod.initialize();
         dev.guogaology.lamp.LampShapingContent.initialize();
         CreativeCatalog.initialize();

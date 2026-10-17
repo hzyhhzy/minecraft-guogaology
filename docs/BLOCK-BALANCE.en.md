@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.5.12
+# Block harvesting reference · 0.5.14
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
@@ -175,5 +175,5 @@ Ordinary mining of any emoji lamp returns its whole form with the same color and
 | Voidglass Ordinal Crystal Ore | `empty_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Understone Ordinal Crystal Ore | `dread_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Turing Terminus | `turing_endcap` | 0.8 | 1.5 | Pickaxe | None | 0 | Full block | Block itself |
-| Guogao Crystal Drop | `guogao_drop` | 0.8 | 1.5 | Pickaxe | None | 1 | Stepped crystal drop | Block itself with any tool; concealed in Guogao stars and giant emoji-globe centers |
+| Guogao | `guogao_drop` | 0.8 | 1.5 | Pickaxe | None | 15 | Full block | Block itself with any tool; four complete 😰 faces; concealed in Guogao stars and giant emoji-globe centers |
 | Guogao Lamp Shaper | `guogao_lamp_shaper` | 3.5 | 6 | Pickaxe | None | 0 | Full block | Block itself |

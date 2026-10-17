@@ -90,7 +90,11 @@ def raw_recipe(theme):
     core=THEMES[theme]['core']
     recipe=json.loads((ROOT/f'src/main/resources/data/guogaology/recipe/{core}.json').read_text('utf8'))
     items=[]
-    for value in recipe['ingredients']:
+    # Expand every occupied cell: a shaped key names an ingredient once even
+    # when the surrounding ring contains several copies of it.
+    ingredients=([recipe['key'][symbol] for row in recipe['pattern'] for symbol in row if symbol!=' ']
+                 if recipe['type']=='minecraft:crafting_shaped' else recipe['ingredients'])
+    for value in ingredients:
         if value.get('item')=='guogaology:ordinal_crystal':continue
         if 'item' in value:item=value['item']
         else:
@@ -113,8 +117,8 @@ def reward_bounds(theme,main):
     combined={}
     for item,lo,hi in rewards:
         before=combined.get(item,(0,0));combined[item]=(before[0]+lo,before[1]+hi)
-    # One theme product occupies at most one native stack. Six-chip Astra
-    # recipes plus ordinary chip supplies would otherwise request up to78.
+    # One theme product occupies at most one native stack. Repeated recipe
+    # materials plus ordinary supplies can otherwise exceed that capacity.
     return {item:(min(lo,64),min(hi,64)) for item,(lo,hi) in combined.items()}
 
 

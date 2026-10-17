@@ -131,7 +131,7 @@ public final class GuogaologyMod {
             case "true_omega_boots" -> "guogaology:true_omega_boots";
             case "hell_true_omega_ore" -> "guogaology:nether_true_omega_ore";
         default -> null;};}
-    public static boolean shared(String name){return alias(name)!=null;}
+    public static boolean shared(String name){return name.equals("graham")||alias(name)!=null;}
     public static Identifier id(String name){String shared=alias(name);return shared!=null?Identifier.parse(shared):Identifier.fromNamespaceAndPath("guogaology",(name.equals("googology")||name.equals("guogaology"))?"outer":name);}
     public static void initialize(){
         dev.guogaology.outer.registry.ModBlocks.initialize();

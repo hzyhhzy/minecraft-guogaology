@@ -1,35 +1,28 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "ABB",
+    "BSB",
+    "BCD"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:cloud_pearl"
     },
-    {
+    "B": {
       "item": "guogaology:compute_chip"
     },
-    {
-      "item": "guogaology:compute_chip"
+    "C": {
+      "item": "guogaology:nuke_mushroom"
     },
-    {
-      "item": "guogaology:compute_chip"
-    },
-    {
-      "item": "guogaology:compute_chip"
-    },
-    {
-      "item": "guogaology:compute_chip"
-    },
-    {
-      "item": "guogaology:compute_chip"
-    },
-    {
+    "D": {
       "tag": "guogaology:guogao_lamps"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:astra_critical_core",
     "count": 1

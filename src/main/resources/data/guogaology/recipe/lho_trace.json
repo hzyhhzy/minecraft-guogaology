@@ -1,35 +1,40 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "ABC",
+    "DSE",
+    "FGH"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:lho_letter_l"
     },
-    {
+    "B": {
       "item": "guogaology:lho_letter_h"
     },
-    {
+    "C": {
       "item": "guogaology:lho_letter_o"
     },
-    {
+    "D": {
       "item": "guogaology:fffz_trace"
     },
-    {
+    "E": {
       "item": "guogaology:fos_trace"
     },
-    {
+    "F": {
       "item": "guogaology:lho_hydra_psi"
     },
-    {
+    "G": {
       "item": "guogaology:lho_hydra_z"
     },
-    {
-      "item": "guogaology:absence_glass"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
+    "H": {
+      "item": "guogaology:stellar_stone"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:lho_trace",
     "count": 1

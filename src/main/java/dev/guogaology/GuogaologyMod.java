@@ -28,6 +28,7 @@ public final class GuogaologyMod implements ModInitializer {
         GuogaologySounds.initialize();
         WorldMaterials.initialize();
         dev.guogaology.mining.MiningContent.initialize();
+        dev.guogaology.world.GrahamGrowth.initialize();
         net.fabricmc.loader.api.FabricLoader.getInstance().getEntrypoints("guogaology:outer",Runnable.class).forEach(Runnable::run);
         dev.guogaology.lamp.LampShapingContent.initialize();
         CreativeCatalog.initialize();

@@ -602,7 +602,7 @@
   "advancement.guogaology.guide.biome_astra.title": "走进Astra 推演原",
   "advancement.guogaology.guide.biome_astra.description": "进入里界的Astra 推演原，寻找本地材料与巨构。",
   "advancement.guogaology.guide.material_astra.title": "云中的算力",
-  "advancement.guogaology.guide.material_astra.description": "在蘑菇云内部寻找核爆凝珠，或采集扭结中心的凝珠；拆取机柜获得算力芯片。",
+  "advancement.guogaology.guide.material_astra.description": "在蘑菇云内部寻找核爆凝珠，或采集扭结中心的凝珠；拆取机柜获得算力芯片。一级配方还需表界的核爆菇。",
   "advancement.guogaology.guide.core_astra_1.title": "震撼的一击",
   "advancement.guogaology.guide.core_astra_1.description": "获得1级核爆之心。装入剑或弓，命中会对目标与附近生物产生爆裂伤害，不破坏地形。",
   "advancement.guogaology.guide.core_astra_2.title": "连锁的余波",
@@ -619,8 +619,8 @@
   "advancement.guogaology.guide.core_frontier_2.description": "获得2级界限晶核。装入手稿可切换缓速飞行，并获得防火；护甲仍用于防护。",
   "advancement.guogaology.guide.core_frontier_3.title": "越过界限",
   "advancement.guogaology.guide.core_frontier_3.description": "获得3级界限晶核。装入手稿可自由飞行并冲刺；里界与地府的冲刺飞行更快。",
-  "advancement.guogaology.guide.material_guogao.title": "藏在表情里的晶滴",
-  "advancement.guogaology.guide.material_guogao.description": "采集冥杉树脂；在圣诞树星星内部与终境巨树的外挂表情球中心寻找馃槹晶滴。",
+  "advancement.guogaology.guide.material_guogao.title": "藏在表情里的馃槹",
+  "advancement.guogaology.guide.material_guogao.description": "采集冥杉树脂；在圣诞树星星内部与终境巨树的外挂表情球中心寻找馃槹。它是发光的完整表情方块。",
   "advancement.guogaology.guide.core_guogao_1.title": "令人流汗",
   "advancement.guogaology.guide.core_guogao_1.description": "获得1级果糕之心。剑与弓使目标缓慢、中毒；手稿增加生命，装备护甲本身不直接加生命。",
   "advancement.guogaology.guide.core_guogao_2.title": "诡异开始蔓延",
@@ -643,5 +643,5 @@
   "item.guogaology.landmark_emblem_guogao": "果糕终境巨树探索标志",
   "item.guogaology.brand_emblem": "果糕逻辑标志",
   "item.guogaology.lho_guide_emblem": "LHO空无之境标志",
-  "block.guogaology.guogao_drop": "馃槹晶滴"
+  "block.guogaology.guogao_drop": "馃槹"
 }

@@ -101,7 +101,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:beaf_marble",
+          "name": "guogaology:graham",
           "functions": [
             {
               "function": "minecraft:set_count",

@@ -57,7 +57,7 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/landmark_weaver` | Explore Laver Triangle Palace | Enter the built space of Laver Triangle Palace and explore its paths and exhibits. |
 | `guide/play_laver` | A Note at the Table | Without sneaking, right-click an inlay (held items are allowed) to play its longest row ending in a Matrix Number Brick, one cell per quarter-second. |
 | `guide/biome_astra` | Visit Astra Inference Plains | Enter Astra Inference Plains in Inner to discover its materials and megastructure. |
-| `guide/material_astra` | Computing in the Clouds | Find Nuclear Blast Pearls buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips. |
+| `guide/material_astra` | Computing in the Clouds | Find Nuclear Blast Pearls buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips. Lv1 crafting also uses an Outer-world Nuke Mushroom. |
 | `guide/core_astra_1` | An Astonishing Hit | Obtain Heart of Nuclear Awe Lv1. In a sword or bow, hits burst against the target and nearby creatures without damaging terrain. |
 | `guide/core_astra_2` | Spreading Shockwaves | Obtain Heart of Nuclear Awe Lv2. Lv2 strengthens the on-hit burst. Heart of Nuclear Awe cannot be socketed into manuscripts. |
 | `guide/core_astra_3` | The Critical Point | Obtain Heart of Nuclear Awe Lv3. Lv3 bursts are stronger; matching burst contributions combine by root-sum-squares. |
@@ -70,7 +70,7 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/core_frontier_3` | Beyond the Boundary | Obtain Boundary Core Lv3. In a manuscript, gain free flight and sprint; deep-realm sprint flight is faster. |
 | `guide/landmark_frontier` | Explore Boundary Calculus Court | Enter the built space of Boundary Calculus Court and explore its paths and exhibits. |
 | `guide/enter_underworld` | The Guogao Underworld | In Inner, build a horizontal 5×5 ring of 12 Guogao blocks without corners; colors may be mixed. Throw one more Guogao block inside, then enter the Guogao Underworld. |
-| `guide/material_guogao` | A Drop Behind the Expression | Gather Dread Fir Resin; seek Guogao Crystal Drops inside Christmas-tree stars and at the centers of giant hanging emoji globes. |
+| `guide/material_guogao` | Guogao Behind the Expression | Gather Dread Fir Resin; seek Guogao inside Christmas-tree stars and at the centers of giant hanging emoji globes. It is a luminous full cube with an anxious face. |
 | `guide/core_guogao_1` | Breaking into a Sweat | Obtain Heart of Guogao Lv1. Swords and bows apply Slowness and Poison; manuscripts add health, while armor itself adds none. |
 | `guide/core_guogao_2` | The Unease Spreads | Obtain Heart of Guogao Lv2. Weapons apply stronger debuffs; manuscripts add health, resist selected effects, and prioritize real inventory Totems. |
 | `guide/core_guogao_3` | Hard to Behold | Obtain Heart of Guogao Lv3. Lv3 weapons inflict Wither, Weakness and Nausea with a chance of Blindness; manuscripts improve health and immunities. |

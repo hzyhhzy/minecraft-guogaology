@@ -602,7 +602,7 @@
   "advancement.guogaology.guide.biome_astra.title": "Visit Astra Inference Plains",
   "advancement.guogaology.guide.biome_astra.description": "Enter Astra Inference Plains in Inner to discover its materials and megastructure.",
   "advancement.guogaology.guide.material_astra.title": "Computing in the Clouds",
-  "advancement.guogaology.guide.material_astra.description": "Find Nuclear Blast Pearls buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips.",
+  "advancement.guogaology.guide.material_astra.description": "Find Nuclear Blast Pearls buried inside mushroom clouds or at knot centers; dismantle server racks for Compute Chips. Lv1 crafting also uses an Outer-world Nuke Mushroom.",
   "advancement.guogaology.guide.core_astra_1.title": "An Astonishing Hit",
   "advancement.guogaology.guide.core_astra_1.description": "Obtain Heart of Nuclear Awe Lv1. In a sword or bow, hits burst against the target and nearby creatures without damaging terrain.",
   "advancement.guogaology.guide.core_astra_2.title": "Spreading Shockwaves",
@@ -619,8 +619,8 @@
   "advancement.guogaology.guide.core_frontier_2.description": "Obtain Boundary Core Lv2. In a manuscript, enable slow flight and fire protection; on armor, retain defensive protection.",
   "advancement.guogaology.guide.core_frontier_3.title": "Beyond the Boundary",
   "advancement.guogaology.guide.core_frontier_3.description": "Obtain Boundary Core Lv3. In a manuscript, gain free flight and sprint; deep-realm sprint flight is faster.",
-  "advancement.guogaology.guide.material_guogao.title": "A Drop Behind the Expression",
-  "advancement.guogaology.guide.material_guogao.description": "Gather Dread Fir Resin; seek Guogao Crystal Drops inside Christmas-tree stars and at the centers of giant hanging emoji globes.",
+  "advancement.guogaology.guide.material_guogao.title": "Guogao Behind the Expression",
+  "advancement.guogaology.guide.material_guogao.description": "Gather Dread Fir Resin; seek Guogao inside Christmas-tree stars and at the centers of giant hanging emoji globes. It is a luminous full cube with an anxious face.",
   "advancement.guogaology.guide.core_guogao_1.title": "Breaking into a Sweat",
   "advancement.guogaology.guide.core_guogao_1.description": "Obtain Heart of Guogao Lv1. Swords and bows apply Slowness and Poison; manuscripts add health, while armor itself adds none.",
   "advancement.guogaology.guide.core_guogao_2.title": "The Unease Spreads",
@@ -643,5 +643,5 @@
   "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem",
   "item.guogaology.brand_emblem": "Guogaology Emblem",
   "item.guogaology.lho_guide_emblem": "LHO Realm Emblem",
-  "block.guogaology.guogao_drop": "Guogao Crystal Drop"
+  "block.guogaology.guogao_drop": "Guogao"
 }

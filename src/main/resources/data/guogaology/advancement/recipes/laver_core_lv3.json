@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:laver_core_lv2"
+            "items": "guogaology:gamma_block"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal_lv3"
+            "items": "guogaology:laver_core_lv2"
           }
         ]
       }

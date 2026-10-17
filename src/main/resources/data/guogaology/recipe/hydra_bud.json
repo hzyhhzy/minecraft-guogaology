@@ -1,35 +1,31 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "AAB",
+    "BSC",
+    "DEE"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:hydra_sprig"
     },
-    {
-      "item": "guogaology:hydra_sprig"
-    },
-    {
+    "B": {
       "item": "guogaology:veblen_petal"
     },
-    {
-      "item": "guogaology:veblen_petal"
-    },
-    {
+    "C": {
       "item": "guogaology:psi_symbol"
     },
-    {
+    "D": {
       "item": "guogaology:great_omega_symbol"
     },
-    {
+    "E": {
       "tag": "guogaology:ordinal_flowers"
-    },
-    {
-      "tag": "guogaology:ordinal_flowers"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:hydra_bud",
     "count": 1

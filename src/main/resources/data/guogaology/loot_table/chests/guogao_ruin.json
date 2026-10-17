@@ -82,7 +82,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:amber_guogao",
+          "name": "guogaology:loquat",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -120,7 +120,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:amber_sequence_light",
+          "name": "guogaology:fruit_cake_gel",
           "functions": [
             {
               "function": "minecraft:set_count",

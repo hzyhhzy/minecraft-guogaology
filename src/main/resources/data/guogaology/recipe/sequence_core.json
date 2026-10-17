@@ -1,35 +1,31 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "ABC",
+    "DSE",
+    "EEE"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:matrix_sheet"
     },
-    {
+    "B": {
       "item": "guogaology:ridge_lamina"
     },
-    {
+    "C": {
       "item": "guogaology:projection_glass"
     },
-    {
+    "D": {
       "item": "guogaology:y_leaves"
     },
-    {
+    "E": {
       "item": "guogaology:ordinal_bricks"
-    },
-    {
-      "item": "guogaology:ordinal_bricks"
-    },
-    {
-      "item": "guogaology:ordinal_bricks"
-    },
-    {
-      "item": "guogaology:ordinal_bricks"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:sequence_core",
     "count": 1

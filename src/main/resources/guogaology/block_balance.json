@@ -2095,11 +2095,11 @@
     "resistance": 1.5,
     "tool": "pickaxe",
     "tier": 0,
-    "light": 1,
+    "light": 15,
     "drop": "self",
     "use": "本群系晶核的自然原料；徒手／任意工具完整采集，镐加速",
     "friction": 0.6,
-    "collision": "自然材料形状",
+    "collision": "完整方块",
     "renewable": "自然生成"
   }
 }

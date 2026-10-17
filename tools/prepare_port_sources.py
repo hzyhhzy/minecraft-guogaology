@@ -156,6 +156,8 @@ def adapt(text, target, name):
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
     if target == '26.3':
+        if name == 'GrahamGrowth.java':
+            text = text.replace('PushReaction.DESTROY', 'PushReaction.POPPED')
         if name == 'GuogaologyAtmosphere.java':
             # The extension belongs to FabricRenderState, not the Minecraft class.
             # Emitting invokeinterface also matches the received 0.5.4.1 fix.

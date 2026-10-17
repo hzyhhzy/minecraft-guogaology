@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:fruit_guogao"
+            "items": "#guogaology:guogao_lamps"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:guogao_lamps"
+            "items": "guogaology:dread_leaves"
           }
         ]
       }
@@ -26,7 +26,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:numbered_lamps"
+            "items": "guogaology:dread_resin"
           }
         ]
       }
@@ -36,7 +36,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:dread_leaves"
+            "items": "guogaology:emoji_flower"
           }
         ]
       }
@@ -46,7 +46,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:dread_resin"
+            "items": "guogaology:fruit_cake_gel"
           }
         ]
       }
@@ -56,7 +56,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:emoji_flower"
+            "items": "guogaology:guogao_drop"
           }
         ]
       }
@@ -66,7 +66,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:guogao_drop"
+            "items": "guogaology:loquat"
           }
         ]
       }

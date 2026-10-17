@@ -1,35 +1,19 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:boundary_core"
-    },
-    {
-      "item": "guogaology:ordinal_crystal_lv2"
-    }
+  "pattern": [
+    "AAA",
+    "ASA",
+    "AAA"
   ],
+  "key": {
+    "S": {
+      "item": "guogaology:epsilon_block"
+    },
+    "A": {
+      "item": "guogaology:boundary_core"
+    }
+  },
   "result": {
     "id": "guogaology:boundary_core_lv2",
     "count": 1

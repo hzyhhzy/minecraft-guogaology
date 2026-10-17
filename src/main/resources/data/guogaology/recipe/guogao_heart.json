@@ -1,35 +1,40 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "pattern": [
+    "ABC",
+    "DSE",
+    "FGH"
+  ],
+  "key": {
+    "S": {
+      "item": "guogaology:ordinal_crystal"
+    },
+    "A": {
       "item": "guogaology:dread_resin"
     },
-    {
+    "B": {
       "item": "guogaology:guogao_drop"
     },
-    {
+    "C": {
       "item": "guogaology:dread_leaves"
     },
-    {
+    "D": {
       "item": "guogaology:emoji_flower"
     },
-    {
-      "tag": "guogaology:fruit_guogao"
+    "E": {
+      "item": "guogaology:loquat"
     },
-    {
+    "F": {
       "item": "guogaology:star_gold"
     },
-    {
-      "tag": "guogaology:numbered_lamps"
+    "G": {
+      "item": "guogaology:fruit_cake_gel"
     },
-    {
+    "H": {
       "tag": "guogaology:guogao_lamps"
-    },
-    {
-      "item": "guogaology:ordinal_crystal"
     }
-  ],
+  },
   "result": {
     "id": "guogaology:guogao_heart",
     "count": 1

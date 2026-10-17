@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:guogao_heart"
+            "items": "guogaology:epsilon_block"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal_lv2"
+            "items": "guogaology:guogao_heart"
           }
         ]
       }

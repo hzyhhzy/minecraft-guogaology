@@ -23,14 +23,14 @@ MATERIALS = {
     'laver_gel': ('紫菜胶质', 'Laver Gel', ('#1d665c','#4e9f89','#91d9b0','#e9f8d7')),
     'cloud_pearl': ('核爆凝珠', 'Nuclear Blast Pearl', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
     'set_membrane': ('集合膜', 'Set Membrane', ('#584578','#a39acb','#ded8ef','#fff6dd')),
-    'guogao_drop': ('馃槹晶滴', 'Guogao Crystal Drop', ('#482e51','#8c587e','#dba9a0','#fff0c5')),
+    'guogao_drop': ('馃槹', 'Guogao', ('#5d3c0d','#ffcd2d','#43a7f3','#cce7fb')),
     'dread_resin': ('冥杉树脂', 'Dread Fir Resin', ('#452340','#78465b','#b77866','#eed0a1')),
 }
 ORES = ('ordinal_crystal_ore', 'empty_crystal_ore', 'dread_crystal_ore')
 REGIONAL = ('sequence_core', 'power_tower_core', 'hydra_bud', 'lho_trace',
             'laver_core', 'astra_critical_core', 'boundary_core', 'guogao_heart')
 # Raw materials are ordinary Minecraft blocks, not a second set of jewels.
-CUBES = frozenset(('arrow_knot','scg_node','laver_gel','dread_resin'))
+CUBES = frozenset(('arrow_knot','scg_node','laver_gel','dread_resin','guogao_drop'))
 BOXES = {
     'matrix_sheet': [((1,0,1),(15,2,15)),((2,3,2),(14,5,14))],
     'hydra_sprig': [((6,0,6),(10,9,10)),((2,7,5),(7,12,10)),((10,6,6),(14,10,11))],
@@ -38,9 +38,6 @@ BOXES = {
                      ((7,2,4),(9,14,12)),((7,4,2),(9,12,14)),
                      ((2,7,4),(14,9,12)),((4,7,2),(12,9,14))],
     'cloud_pearl': [((2,2,3),(14,14,13)),((3,1,4),(13,15,12)),((3,3,2),(13,13,14))],
-    'guogao_drop': [((5,0,5),(11,1,11)),((4,1,4),(12,2,12)),((3,2,3),(13,3,13)),
-                    ((2,3,2),(14,7,14)),((3,7,3),(13,9,13)),((4,9,4),(12,11,12)),
-                    ((5,11,5),(11,12,11)),((6,12,6),(10,13,10)),((7,13,7),(9,15,9))],
     **{name:[((0,0,0),(16,16,16))] for name in CUBES},
 }
 TAG_VALUES = {
@@ -48,16 +45,17 @@ TAG_VALUES = {
     'ordinal_flowers': ['epsilon_bloom','emoji_flower','omega_bloom','great_omega_bloom','zeta_vine','psi_fern','phi_bloom','graham_flower'],
     'numbered_lamps': [f'{c}_sequence_light' for c in ('amber','cyan','rose','lime','violet','scarlet')],
     'guogao_lamps': ['guogao_lantern'] + [f'{c}_guogao_lantern' for c in ('cyan','rose','lime','violet','scarlet')],
+    'graham_materials': ['graham','graham_flower'],
 }
 FIRST = {
     'sequence_core': ['matrix_sheet','ridge_lamina','projection_glass','y_leaves'] + ['ordinal_bricks']*4,
-    'power_tower_core': ['arrow_knot']*2 + ['scg_node']*2 + ['tree_node_red','tree_node_green','tree_node_blue','#ancient_notation_materials'],
+    'power_tower_core': ['arrow_knot']*2 + ['scg_node']*2 + ['tree_node_red','tree_node_green','tree_node_blue','#graham_materials'],
     'hydra_bud': ['hydra_sprig']*2 + ['veblen_petal']*2 + ['psi_symbol','great_omega_symbol'] + ['#ordinal_flowers']*2,
-    'lho_trace': ['lho_letter_l','lho_letter_h','lho_letter_o','fffz_trace','fos_trace','lho_hydra_psi','lho_hydra_z','absence_glass'],
-    'laver_core': ['laver_gel']*2 + ['iblp_node']*2 + ['iblp_marked','iblp_blank','#fruit_guogao','tianyi_fiber'],
-    'astra_critical_core': ['cloud_pearl'] + ['compute_chip']*6 + ['#guogao_lamps'],
+    'lho_trace': ['lho_letter_l','lho_letter_h','lho_letter_o','fffz_trace','fos_trace','lho_hydra_psi','lho_hydra_z','stellar_stone'],
+    'laver_core': ['laver_gel','laver_ribbon'] + ['iblp_node']*2 + ['iblp_marked','iblp_blank','gummy','tianyi_fiber'],
+    'astra_critical_core': ['cloud_pearl'] + ['compute_chip']*5 + ['nuke_mushroom','#guogao_lamps'],
     'boundary_core': ['set_membrane']*2 + ['turing_tape']*2 + ['proof_stone','turing_endcap','formula_stone','rayo_rose'],
-    'guogao_heart': ['dread_resin','guogao_drop','dread_leaves','emoji_flower'] + ['#fruit_guogao','star_gold','#numbered_lamps','#guogao_lamps'],
+    'guogao_heart': ['dread_resin','guogao_drop','dread_leaves','emoji_flower','loquat','star_gold','fruit_cake_gel','#guogao_lamps'],
 }
 NEW_COPY = {
     'block.guogaology.ordinal_crystal_ore': ('序数晶矿', 'Ordinal Crystal Ore'),
@@ -177,16 +175,8 @@ def pearl_root_texture():
 def material_texture(name, palette):
     if name == "cloud_pearl": return pearl_cloud_texture()
     if name == "guogao_drop":
-        # A complete faceted drop: no face decal stretched across disconnected
-        # model tiers. Large warm facets carry the shape instead of an emoji.
-        im=Image.new('RGBA',(32,32),'#bd8ea9');d=ImageDraw.Draw(im)
-        d.rectangle((0,0,10,31),fill='#dfafba')
-        d.rectangle((11,0,17,31),fill='#f1c5bb')
-        d.rectangle((23,0,31,31),fill='#93678f')
-        d.rectangle((0,28,31,31),fill='#744b7b')
-        d.rectangle((12,5,14,18),fill='#fff0d7')
-        d.rectangle((11,11,16,13),fill='#fff0d7')
-        return im
+        from guogao_block_art import guogao_face_texture
+        return guogao_face_texture()
     if name == "hydra_sprig":
         im=Image.new('RGBA',(32,32),'#4c9b79');d=ImageDraw.Draw(im)
         d.rectangle((0,0,31,31),outline='#2c6d54',width=2)
@@ -285,6 +275,19 @@ def shapeless(materials, result, count=1):
             'ingredients':[ingredient(n) for n in materials],'result':{'id':'guogaology:'+result,'count':count}}
 
 
+def centered(materials, center, result):
+    """Eight perimeter slots and one fixed center, using native shaped recipes."""
+    assert len(materials)==8
+    symbols={};key={'S':ingredient(center)};ring=[]
+    for name in materials:
+        if name not in symbols:
+            symbol='ABCDEFGH'[len(symbols)];symbols[name]=symbol;key[symbol]=ingredient(name)
+        ring.append(symbols[name])
+    return {'type':'minecraft:crafting_shaped','category':'misc',
+            'pattern':[''.join(ring[:3]),ring[3]+'S'+ring[4],''.join(ring[5:])],
+            'key':key,'result':{'id':'guogaology:'+result,'count':1}}
+
+
 def generated_files():
     out={}
     def put(path,value):out[path]=value
@@ -304,7 +307,12 @@ def generated_files():
             model['elements']=pearl_elements()
             put(A/'textures/block/cloud_pearl_cloud.png',pearl_cloud_texture())
             put(A/'textures/block/cloud_pearl_root.png',pearl_root_texture())
-        if name in ('set_membrane','guogao_drop'):model['elements']=pearl_elements(name)
+        if name=='set_membrane':model['elements']=pearl_elements(name)
+        if name=='guogao_drop':
+            from guogao_block_art import guogao_cap_texture,guogao_cube_model
+            model=guogao_cube_model()
+            put(A/'textures/block/guogao_drop_top.png',guogao_cap_texture(True))
+            put(A/'textures/block/guogao_drop_bottom.png',guogao_cap_texture(False))
         put(A/f'models/block/{name}.json',model)
         put(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
         put(D/f'loot_table/blocks/{name}.json',self_loot(name))
@@ -328,10 +336,10 @@ def generated_files():
     recipes={}
     for core,materials in FIRST.items():
         assert len(materials)==8
-        recipes[core]=shapeless(materials+['ordinal_crystal'],core)
+        recipes[core]=centered(materials,'ordinal_crystal',core)
         for grade in (2,3):
             source=core+('' if grade==2 else '_lv2')
-            recipes[f'{core}_lv{grade}']=shapeless([source]*8+[f'ordinal_crystal_lv{grade}'],f'{core}_lv{grade}')
+            recipes[f'{core}_lv{grade}']=centered([source]*8,'epsilon_block' if grade==2 else 'gamma_block',f'{core}_lv{grade}')
     recipes['ordinal_crystal']=shapeless(['ordinal_shard']*4,'ordinal_crystal')
     recipes['ordinal_shards_from_crystal']=shapeless(['ordinal_crystal'],'ordinal_shard',4)
     for stage in (2,3,4):
@@ -357,7 +365,7 @@ def generated_files():
     balance=read(RES/'guogaology/block_balance.json')
     for name in (*MATERIALS,*ORES,'turing_endcap'):
         balance[name]={'hardness':3 if name in ORES else 0.8,'resistance':3 if name in ORES else 1.5,
-            'tool':'pickaxe','tier':0,'light':1 if name in ('cloud_pearl','dread_resin','guogao_drop') else 0,
+            'tool':'pickaxe','tier':0,'light':15 if name=='guogao_drop' else 1 if name in ('cloud_pearl','dread_resin') else 0,
             'drop':'4～6晶屑；时运增产；精准采集矿石' if name in ORES else 'self',
             'use':'序数晶体的采矿来源；徒手可采集，镐加速' if name in ORES else '本群系晶核的自然原料；徒手／任意工具完整采集，镐加速',
             'friction':0.6,'collision':'完整方块' if name in ORES or name in CUBES or name=='turing_endcap' else '自然材料形状',
