@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.12 · Minecraft Java / Fabric · Local version, not yet published**
+**v0.5.13 · Minecraft Java / Fabric · Local version, not yet published**
 
-This update redesigns the Nuclear Blast Pearl and Lv1 Heart of Nuclear Awe, buries pearls inside mushroom clouds, and equips Astra offices with Shock-Slump Chairs and Starlight Glass. Set Membranes, Matrix Sheets and Sprigs have revised art; hidden Guogao Crystal Drops join the crafting system. Recipes and secondary-chest materials follow the new ingredients. Laver rows can play while holding items. See [the work record](docs/WORK-0512.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+This update fixes cropped Nuclear Blast Pearl emblems and gives the Guogao Crystal Drop a complete tapered silhouette with warm rose-violet facets. Recipes, sources and mechanics remain unchanged from0.5.12. See [the work record](docs/WORK-0513.md), [the previous material/scenery update](docs/WORK-0512.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 

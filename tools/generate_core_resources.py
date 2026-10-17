@@ -23,7 +23,7 @@ MATERIALS = {
     'laver_gel': ('紫菜胶质', 'Laver Gel', ('#1d665c','#4e9f89','#91d9b0','#e9f8d7')),
     'cloud_pearl': ('核爆凝珠', 'Nuclear Blast Pearl', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
     'set_membrane': ('集合膜', 'Set Membrane', ('#584578','#a39acb','#ded8ef','#fff6dd')),
-    'guogao_drop': ('馃槹晶滴', 'Guogao Crystal Drop', ('#347caa','#70bade','#b2e5ee','#f2ffed')),
+    'guogao_drop': ('馃槹晶滴', 'Guogao Crystal Drop', ('#482e51','#8c587e','#dba9a0','#fff0c5')),
     'dread_resin': ('冥杉树脂', 'Dread Fir Resin', ('#452340','#78465b','#b77866','#eed0a1')),
 }
 ORES = ('ordinal_crystal_ore', 'empty_crystal_ore', 'dread_crystal_ore')
@@ -38,7 +38,9 @@ BOXES = {
                      ((7,2,4),(9,14,12)),((7,4,2),(9,12,14)),
                      ((2,7,4),(14,9,12)),((4,7,2),(12,9,14))],
     'cloud_pearl': [((2,2,3),(14,14,13)),((3,1,4),(13,15,12)),((3,3,2),(13,13,14))],
-    'guogao_drop': [((4,0,4),(12,2,12)),((3,2,3),(13,10,13)),((4,10,4),(12,13,12)),((6,13,6),(10,15,10))],
+    'guogao_drop': [((5,0,5),(11,1,11)),((4,1,4),(12,2,12)),((3,2,3),(13,3,13)),
+                    ((2,3,2),(14,7,14)),((3,7,3),(13,9,13)),((4,9,4),(12,11,12)),
+                    ((5,11,5),(11,12,11)),((6,12,6),(10,13,10)),((7,13,7),(9,15,9))],
     **{name:[((0,0,0),(16,16,16))] for name in CUBES},
 }
 TAG_VALUES = {
@@ -158,7 +160,14 @@ def pearl_elements(resource="cloud_pearl"):
 
 
 def pearl_cloud_texture():
-    return Image.open(A/'textures/block/core_d/astra_critical_core.png').convert('RGBA').resize((32,32),Image.Resampling.NEAREST)
+    # The chamfered model projects only the middle of this texture onto its
+    # broad faces. Keep the entire old emblem within that common safe region.
+    im=Image.new('RGBA',(32,32),'#477b82');d=ImageDraw.Draw(im)
+    d.polygon(((0,0),(31,0),(25,6),(6,6),(6,25),(0,31)),fill='#63969a')
+    d.polygon(((31,0),(31,31),(0,31),(6,25),(25,25),(25,6)),fill='#315a65')
+    emblem=Image.open(A/'textures/block/core_d/astra_critical_core.png').convert('RGBA')
+    im.alpha_composite(emblem.resize((16,16),Image.Resampling.NEAREST),(8,8))
+    return im
 
 
 def pearl_root_texture():
@@ -168,9 +177,15 @@ def pearl_root_texture():
 def material_texture(name, palette):
     if name == "cloud_pearl": return pearl_cloud_texture()
     if name == "guogao_drop":
-        from generate_brand import globe_face
-        im=Image.new('RGBA',(32,32),'#70bade')
-        im.alpha_composite(globe_face(26),(3,3))
+        # A complete faceted drop: no face decal stretched across disconnected
+        # model tiers. Large warm facets carry the shape instead of an emoji.
+        im=Image.new('RGBA',(32,32),'#bd8ea9');d=ImageDraw.Draw(im)
+        d.rectangle((0,0,10,31),fill='#dfafba')
+        d.rectangle((11,0,17,31),fill='#f1c5bb')
+        d.rectangle((23,0,31,31),fill='#93678f')
+        d.rectangle((0,28,31,31),fill='#744b7b')
+        d.rectangle((12,5,14,18),fill='#fff0d7')
+        d.rectangle((11,11,16,13),fill='#fff0d7')
         return im
     if name == "hydra_sprig":
         im=Image.new('RGBA',(32,32),'#4c9b79');d=ImageDraw.Draw(im)
