@@ -2944,14 +2944,15 @@
     },
     "scg_node": {
       "style": "像素/纯色纹理（已抽样）",
-      "reason": "已查看本次全量首帧联系表；16/32贴图放大后可见离散像素、整数笔画或纯色材质。尺寸不单独作为风格依据。",
+      "reason": "当前SCG按MATERIALS调色板在原生32×32整数网格绘制，7色、全不透明；明亮玫紫底与金白三叉结点，没有高分辨源图缩小或平滑采样。",
       "evidence_sources": [
-        "outputs/20261018-block-pixels/texture-samples/index.json"
+        "tools/generate_core_resources.py:MATERIALS/scg_node/material_texture",
+        "outputs/20261018-astra-scg-0516/scg-color-comparison.png"
       ],
       "reviewed_at": "2026-10-18",
       "review_method": "Source-code evidence plus actual nearest-neighbor texture contact sheets; geometry/normal/color interpolation classified separately.",
       "texture_sha256": {
-        "guogaology:block/scg_node": "5df8cad625b41480cebb14adaf7f27d7a523b9d6358ef7698e68f3f6c4bc98ee"
+        "guogaology:block/scg_node": "09426e8dc923c6241bf3a18d695dbe07fefb74a75ca8e77254971c287dd80213"
       }
     },
     "sequence_core": {

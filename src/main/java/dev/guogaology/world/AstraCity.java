@@ -56,7 +56,7 @@ public final class AstraCity {
         int floors=3+(int)Math.floorMod(h>>>14,9L),style=(int)Math.floorMod(h>>>37,3L);
         // Keep the full crowns, knots and mushroom caps, including their natural positions.
         for(var p:SceneryDistribution.passes(false)) {
-            int r=switch(p.form()) { case FIR -> FirDecorations.horizontalReach(70,true);case CLOUD -> 96;case KNOT -> 32;default -> 0; };
+            int r=switch(p.form()) { case FIR -> FirDecorations.astraReach(70);case CLOUD -> 96;case KNOT -> 32;default -> 0; };
             if(r==0) continue;
             int reach=(p.form()==SceneryDistribution.Form.CLOUD?128:r)+Math.max(rx,rz)+18;
             for(int a=Math.floorDiv(x-reach,p.cell());a<=Math.floorDiv(x+reach,p.cell());a++)
@@ -73,10 +73,10 @@ public final class AstraCity {
                         }
                     }
                     int objectReach=r;
-                    if(p.form()==SceneryDistribution.Form.FIR)objectReach=FirDecorations.horizontalReach(FirDecorations.normalHeight(site.salt()),FirDecorations.branched(site.salt())||FirDecorations.crooked(site.salt()));
+                    if(p.form()==SceneryDistribution.Form.FIR)objectReach=FirDecorations.astraReach(FirDecorations.normalHeight(site.salt()));
                     else if(p.form()==SceneryDistribution.Form.CLOUD)objectReach=NaturalForms.cloudFir(site.salt())?
                             Math.max(76,(int)Math.ceil(NaturalForms.cloudWidth(site.salt())*.29+
-                                    FirDecorations.horizontalReach(FirDecorations.hangingHeight(site.salt()),FirDecorations.branched(WorldNoise.mix(site.salt()+8191))||FirDecorations.crooked(WorldNoise.mix(site.salt()+8191))))):76;
+                                    FirDecorations.astraReach(FirDecorations.hangingHeight(site.salt())))):76;
                     double distance=Math.hypot(Math.max(0,Math.abs(x-site.x())-rx-3),Math.max(0,Math.abs(z-site.z())-rz-3));
                     if(distance>=objectReach) continue;
                     if(p.form()!=SceneryDistribution.Form.CLOUD || distance<NaturalForms.cloudWidth(site.salt())*.24) return null;

@@ -17,7 +17,7 @@ A = RES / 'assets/guogaology'
 D = RES / 'data/guogaology'
 MATERIALS = {
     'matrix_sheet': ('矩阵薄片', 'Matrix Sheet', ('#4b4775','#a8a1c2','#d7d2e6','#fff4d8')),
-    'scg_node': ('SCG结点', 'SCG Junction', ('#243956','#47617c','#81abc6','#d7edf0')),
+    'scg_node': ('SCG结点', 'SCG Junction', ('#741254','#dc248b','#ffd95a','#fff4df')),
     'hydra_sprig': ('Hydra芽穗', 'Hydra Sprig', ('#164d40','#31886e','#6fd49d','#d9f5b2')),
     'cloud_pearl': ('核爆晶块', 'Nuclear Blast Block', ('#477c98','#85c2d6','#ccecf4','#f6fcff')),
     'set_membrane': ('集合膜', 'Set Membrane', ('#584578','#a39acb','#ded8ef','#fff6dd')),
@@ -153,21 +153,27 @@ def material_texture(name, palette):
         from set_membrane_art import membrane_texture
         return membrane_texture()
     if name == "scg_node":
-        # A clean degree-three graph junction, inset into one ordinary cube.
-        im=Image.new('RGBA',(32,32),'#294a5f');d=ImageDraw.Draw(im)
-        d.rectangle((0,0,31,31),outline='#163345',width=2)
-        d.line((2,29,2,2,29,2),fill='#739bab',width=1)
-        d.line((3,29,29,29,29,3),fill='#1c3b50',width=1)
-        d.rectangle((4,4,27,27),fill='#25465a')
+        # Native32 rose-magenta contrasts with Astra's teal nuclear material.
+        # Every shade derives from MATERIALS so a stale hardcoded palette cannot
+        # silently override the current art direction.
+        dark,base,gold,white=palette
+        def blend(first,second,weight):
+            a=bytes.fromhex(first[1:]);b=bytes.fromhex(second[1:])
+            return tuple(round(x*(1-weight)+y*weight) for x,y in zip(a,b))+(255,)
+        im=Image.new('RGBA',(32,32),base);d=ImageDraw.Draw(im)
+        d.rectangle((0,0,31,31),outline=dark,width=2)
+        d.line((2,29,2,2,29,2),fill=blend(base,white,.42),width=1)
+        d.line((3,29,29,29,29,3),fill=dark,width=1)
+        d.rectangle((4,4,27,27),fill=blend(base,dark,.14))
         paths=(((15,5),(15,13)),((6,24),(12,18)),((24,24),(18,18)))
         for path in paths:
-            d.line(path,fill='#102e42',width=5)
-            d.line(path,fill='#95c5d0',width=3)
-            d.line(path,fill='#d9eff1',width=1)
-        d.polygon(((12,11),(18,11),(21,16),(18,21),(12,21),(9,16)),fill='#142f42')
-        d.polygon(((13,13),(17,13),(19,16),(17,19),(13,19),(11,16)),fill='#72b9c6')
-        d.polygon(((13,13),(17,13),(19,16),(15,16)),fill='#c2e6e8')
-        d.line((13,19,17,19,19,16),fill='#46899f',width=1)
+            d.line(path,fill=dark,width=5)
+            d.line(path,fill=gold,width=3)
+            d.line(path,fill=white,width=1)
+        d.polygon(((12,11),(18,11),(21,16),(18,21),(12,21),(9,16)),fill=dark)
+        d.polygon(((13,13),(17,13),(19,16),(17,19),(13,19),(11,16)),fill=gold)
+        d.polygon(((13,13),(17,13),(19,16),(15,16)),fill=white)
+        d.line((13,19,17,19,19,16),fill=blend(gold,dark,.2),width=1)
         return im
     rng=random.Random(name)
     im=Image.new('RGBA',(32,32),palette[1]);d=ImageDraw.Draw(im)

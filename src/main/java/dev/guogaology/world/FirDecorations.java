@@ -5,13 +5,26 @@ import java.util.List;
 /** Decorations scale with available crown surface, including the narrow upper tiers. */
 public final class FirDecorations {
     private FirDecorations() {}
-    /** Both Astra fir paths use the same straight/crooked choice as the Underworld. */
+    /** Underworld choices remain independent of Astra's fixed-axis silhouette. */
     public static boolean crooked(long salt){return (salt&1)!=0;}
     public static boolean branched(long salt){return Math.floorMod(salt>>>5,3L)!=0;}
+    public static boolean straightAxis(boolean underworld,int kind){return !underworld&&kind==5;}
+    public static double axisX(int x,long salt,double t,int height,boolean haunted,boolean straight){
+        if(straight)return x;
+        if(!haunted)return x+Math.sin(t*2)*1.5;
+        double tilt=(WorldNoise.unit(WorldNoise.mix(salt+29))-.5)*height*.72;
+        return x+tilt*t*t+Math.sin(t*5+WorldNoise.unit(salt)*6)*height*.045*t;
+    }
+    public static double axisZ(int z,long salt,double t,int height,boolean haunted,boolean straight){
+        if(straight||!haunted)return z;
+        double tilt=(WorldNoise.unit(WorldNoise.mix(salt+43))-.5)*height*.62;
+        return z+tilt*t*t+Math.cos(t*5)*height*.05*t;
+    }
     public static int normalHeight(long salt){return 30+(int)Math.floorMod(salt>>>14,41L);}
     public static int hangingHeight(long salt){return 30+(int)Math.floorMod(salt>>>17,31L);}
     /** Includes trunk drift, the widest skirt and endpoint rounding; never clips a curved crown to a city lot. */
     public static int horizontalReach(int height,boolean crooked){return (int)Math.ceil(height*(crooked?.70:.29)+3);}
+    public static int astraReach(int height){return horizontalReach(height,false);}
     public static List<OrdinalLightBand.Pattern> patterns(long salt,int tier,double radius){
         if(radius<3.5)return List.of();
         var quartet=OrdinalLightBand.quartet(salt,tier);

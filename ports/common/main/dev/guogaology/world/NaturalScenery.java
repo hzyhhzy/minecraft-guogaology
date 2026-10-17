@@ -154,21 +154,17 @@ public final class NaturalScenery {
         return desired;
     }
     public static boolean inverted(Site s) { return s.underworld && s.ceiling!=Integer.MIN_VALUE && Math.floorMod(s.salt,3L)==0; }
-    public static boolean vineForm(Site s) { return (s.underworld||s.kind==5)&&FirDecorations.branched(s.salt); }
+    public static boolean vineForm(Site s) { return s.underworld&&FirDecorations.branched(s.salt); }
     private static double treeX(Site s,double t,int height,boolean haunted) {
-        if(!haunted) return s.x+Math.sin(t*2)*1.5;
-        double tilt=(WorldNoise.unit(WorldNoise.mix(s.salt+29))-.5)*height*.72;
-        return s.x+tilt*t*t+Math.sin(t*5+WorldNoise.unit(s.salt)*6)*height*.045*t;
+        return FirDecorations.axisX(s.x,s.salt,t,height,haunted,FirDecorations.straightAxis(s.underworld,s.kind));
     }
     private static double treeZ(Site s,double t,int height,boolean haunted) {
-        if(!haunted) return s.z;
-        double tilt=(WorldNoise.unit(WorldNoise.mix(s.salt+43))-.5)*height*.62;
-        return s.z+tilt*t*t+Math.cos(t*5)*height*.05*t;
+        return FirDecorations.axisZ(s.z,s.salt,t,height,haunted,FirDecorations.straightAxis(s.underworld,s.kind));
     }
     private static void tree(SceneryBrush b,Site s,boolean ornamentsOnly) {
         boolean branched=vineForm(s),haunted=FirDecorations.crooked(s.salt);
         boolean inverted=inverted(s);int dir=inverted?-1:1,root=inverted?s.ceiling-1:s.floor;
-        // Astra retains its original size and placement while sharing all Underworld crown variants.
+        // Astra keeps its original size and placement, with a single fixed-axis crown.
         int height=treeHeight(s,s.underworld&&(branched||haunted));
         if(root==Integer.MIN_VALUE || height<(s.underworld&&branched?25:20)) return;
         firAt(b,s,ornamentsOnly,root,dir,height);
@@ -178,6 +174,7 @@ public final class NaturalScenery {
         else treeAt(b,s,FirDecorations.crooked(s.salt),ornamentsOnly,root,dir,height);
     }
     public static void treeAt(SceneryBrush b,Site s,boolean haunted,boolean ornamentsOnly,int root,int dir,int height) {
+        if(FirDecorations.straightAxis(s.underworld,s.kind))haunted=false;
         int radius=Math.max(7,(int)(height*(haunted?.30:.29))),tiers=Math.max(5,height/12);
         if(ornamentsOnly) { treeOrnaments(b,s,haunted,root,dir,height,radius,tiers);return; }
         for(int y=0;y<height;y++) {

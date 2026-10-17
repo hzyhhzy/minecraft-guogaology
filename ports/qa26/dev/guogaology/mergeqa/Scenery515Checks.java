@@ -38,11 +38,37 @@ public final class Scenery515Checks {
         for(var tile:tiles){var b=new SceneryBrush(tile[0]*16,tile[0]*16+15,tile[1]*16,tile[1]*16+15,(x,y,z,state)->map.put(new BlockPos(x,y,z),state));NaturalScenery.firAt(b,site,false,root,dir,height);NaturalScenery.firAt(b,site,true,root,dir,height);}
         check(map.equals(expected),"shuffled chunk clips retain exact body, hanging lamps and stars");
     }
+    private static void astraStraight(NaturalScenery.Site site,int root,int dir,int height,Map<BlockPos,BlockState> actual)throws Exception{
+        check(!site.underworld()&&site.kind()==5&&!NaturalScenery.vineForm(site),"both Astra fir paths forbid branched stems");
+        var straight=paint(site.x(),site.z(),72,b->{NaturalScenery.treeAt(b,site,false,false,root,dir,height);NaturalScenery.treeAt(b,site,false,true,root,dir,height);});
+        var forcedCrooked=paint(site.x(),site.z(),72,b->{NaturalScenery.treeAt(b,site,true,false,root,dir,height);NaturalScenery.treeAt(b,site,true,true,root,dir,height);});
+        check(actual.equals(straight)&&actual.equals(forcedCrooked),"Astra always selects one straight layered crown, including formerly crooked salts");
+        int starY=root+dir*height+dir*(int)Math.round(FirDecorations.starRadius(height)*.55);
+        var star=actual.get(new BlockPos(site.x(),starY,site.z()));
+        check(star!=null&&star.is(CoreResources.GUOGAO_DROP),"the only Guogao star is centered on the original root axis");
+        check(actual.values().stream().filter(s->s.is(CoreResources.GUOGAO_DROP)).count()==1,"one Astra crown has one star, without branch-tip stars");
+        for(var p:actual.keySet())check(Math.hypot(p.getX()-site.x(),p.getZ()-site.z())<=FirDecorations.astraReach(height),"straight Astra city clearance includes body, number bands, bells and star");
+    }
+    private static void underworldVariants()throws Exception{
+        Method vine=NaturalScenery.class.getDeclaredMethod("vineAt",SceneryBrush.class,NaturalScenery.Site.class,boolean.class,boolean.class,int.class,int.class,int.class);vine.setAccessible(true);
+        for(int kind:new int[]{5,6})for(long salt:new long[]{0,1,65})for(int dir:new int[]{-1,1}){
+            var site=new NaturalScenery.Site(515515,salt,0,0,kind,90,200,true);int root=dir==1?90:200,height=dir==1?40:25;
+            boolean branched=FirDecorations.branched(salt);
+            check(NaturalScenery.vineForm(site)==branched,"Underworld branching remains salt-selected, including kind5");
+            var expected=paint(0,0,72,b->{
+                if(branched){vine.invoke(null,b,site,false,false,root,dir,height);vine.invoke(null,b,site,true,false,root,dir,height);}
+                else{NaturalScenery.treeAt(b,site,FirDecorations.crooked(salt),false,root,dir,height);NaturalScenery.treeAt(b,site,FirDecorations.crooked(salt),true,root,dir,height);}
+            });
+            var actual=fir(site,root,dir,height);check(actual.equals(expected),"Underworld firAt retains the old straight/crooked/branched dispatcher and decorations");
+            if(branched){check(!fir(site,root+dir*9,dir,20).equals(actual),"Underworld cached branches keep explicit geometry identity");check(actual.equals(fir(site,root,dir,height)),"Underworld original cached plan survives another explicit geometry");}
+        }
+    }
     private static void explicitGeometry()throws Exception{
         for(long salt:new long[]{0,1,65}){
             var site=new NaturalScenery.Site(515515,salt,0,0,5,90,200,false);
             var upright=fir(site,90,1,40);var inverted=fir(site,200,-1,25);
             palette(upright);palette(inverted);
+            astraStraight(site,90,1,40,upright);astraStraight(site,200,-1,25,inverted);
             check(inverted.keySet().stream().allMatch(q->q.getY()>150),"explicit root/direction/height cannot reuse an upright plan cached for the same Site");
             check(fir(site,90,1,40).equals(upright),"revisiting the first explicit geometry retains its own plan");
             if(salt==65){clipping(site,90,1,40,upright);clipping(site,200,-1,25,inverted);}
@@ -70,7 +96,7 @@ public final class Scenery515Checks {
         check(ground!=null,"city reservation retains an actual complete Astra Christmas tree in a1.982464km2window");
         final var g=ground;int height=NaturalScenery.treeHeight(g,false);
         var actual=paint(g.x(),g.z(),72,b->{draw.invoke(null,b,g,SceneryDistribution.Form.FIR);draw.invoke(null,b,g,SceneryDistribution.Form.FIR_LIGHTS);});
-        var expected=fir(g,g.floor(),1,height);check(actual.equals(expected),"ordinary Astra FIR/FIR_LIGHTS use the complete shared fir family at their original height/root/direction");palette(actual);
+        var expected=fir(g,g.floor(),1,height);check(actual.equals(expected),"ordinary Astra FIR/FIR_LIGHTS use the straight family at their original height/root/direction");palette(actual);astraStraight(g,g.floor(),1,height,actual);
         check(height<=FirDecorations.normalHeight(g.salt()),"Astra normal height convention retained");
         NaturalScenery.Site cloud=null;NaturalScenery.CloudFir cloudFir=null;int cloudProposals=0;
         startX=Math.floorDiv(origin[0],128)-5;startZ=Math.floorDiv(origin[1],128)-5;
@@ -83,7 +109,7 @@ public final class Scenery515Checks {
         final var c=cloud;var f=cloudFir;var shifted=new NaturalScenery.Site(c.seed(),WorldNoise.mix(c.salt()+8191),f.x(),f.z(),5,c.floor(),f.root(),false);
         Method cloudTree=NaturalScenery.class.getDeclaredMethod("cloudTree",SceneryBrush.class,NaturalScenery.Site.class,boolean.class);cloudTree.setAccessible(true);
         var hanging=paint(f.x(),f.z(),72,b->{cloudTree.invoke(null,b,c,false);cloudTree.invoke(null,b,c,true);});
-        check(hanging.equals(fir(shifted,f.root(),-1,f.height())),"cloud-hanging tree uses the same complete family at its original inverted root/height");palette(hanging);
+        check(hanging.equals(fir(shifted,f.root(),-1,f.height())),"cloud-hanging tree uses the straight family at its original inverted root/height");palette(hanging);astraStraight(shifted,f.root(),-1,f.height(),hanging);
         check(f.height()<=FirDecorations.hangingHeight(c.salt()),"Astra cloud height convention retained");
         System.out.println("SCENERY515_ASTRA_PATHS_OK groundSourceProposals="+proposed+" resolvesTried="+tried+" firstGround="+g+" cloudFirProposals="+cloudProposals+" firstHanging="+f+" pairedEntryPoints/sharedPalette/GuogaoStars");
     }
@@ -102,7 +128,7 @@ public final class Scenery515Checks {
     }
     public static void run(ServerPlayer player)throws Exception{
         checks=0;for(String name:List.of("arrow_knot","laver_gel","dread_resin"))check(!BuiltInRegistries.BLOCK.containsKey(GuogaologyMod.id(name))&&!BuiltInRegistries.ITEM.containsKey(GuogaologyMod.id(name)),"absent0.5.4.1raw IDs are fully removed: "+name);
-        check(CoreResources.MATERIALS.size()==6,"six current raw block materials remain");explicitGeometry();wiring();density();
-        System.out.println("SCENERY515_SERVER_OK checks="+checks+" removedRegistries/AstraGround+Cloud/currentUnderworldFirFamily/cacheGeometry/chunkClips/GuogaoStars/LHOSelectiveDensity");
+        check(CoreResources.MATERIALS.size()==6,"six current raw block materials remain");explicitGeometry();underworldVariants();wiring();density();
+        System.out.println("SCENERY515_SERVER_OK checks="+checks+" removedRegistries/Astra516Ground+CloudStraightAxis/unchangedUnderworldVariants/cacheGeometry/chunkClips/GuogaoStars/LHOSelectiveDensity");
     }
 }

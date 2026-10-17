@@ -1,4 +1,6 @@
 import dev.guogaology.world.*;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.util.*;
 
 /** Standalone production geometry and two-square-kilometre candidate comparison; no game bootstrap. */
@@ -22,13 +24,36 @@ public final class Material515GenerationChecks {
         for(int height:new int[]{20,30,45,60,70})for(int dir:new int[]{-1,1})for(long salt=0;salt<48;salt++){
             int reach=FirDecorations.horizontalReach(height,true);var map=new HashMap<P,Integer>();
             HauntedVines.treePlan(0,80,0,height,dir,salt).draw(new VoxelBrush(-128,128,-128,256,-128,128,(x,y,z,m)->map.put(new P(x,y,z),m)));
-            check(!map.isEmpty(),"shared branched tree has real geometry");
+            check(!map.isEmpty(),"Underworld branched tree has real geometry");
             for(var e:map.entrySet()){
-                check(Math.hypot(e.getKey().x,e.getKey().z)<=reach,"city reservation includes every branched crown/star voxel");
+                check(Math.hypot(e.getKey().x,e.getKey().z)<=reach,"Underworld reach includes every branched crown/star voxel");
                 check(!retired(e.getValue()),"shared fir never emits a retired raw-material slot");
             }
             check(map.values().stream().anyMatch(m->m==NaturalForms.GUOGAO_DROP),"shared branched fir keeps a Guogao star center");
         }
+    }
+    private static void firAxes()throws Exception{
+        var hash=MessageDigest.getInstance("SHA-256");var bytes=ByteBuffer.allocate(8);
+        for(int kind=0;kind<8;kind++){
+            check(!FirDecorations.straightAxis(true,kind),"Underworld kind5 is never mistaken for an Astra tree");
+            check(FirDecorations.straightAxis(false,kind)==(kind==5),"fixed axis applies only to Inner Astra");
+        }
+        for(int height:new int[]{20,30,45,60,70,135})for(long salt=0;salt<256;salt++)for(boolean haunted:new boolean[]{false,true})for(int step=0;step<=100;step++){
+            double t=step/100.0;
+            check(FirDecorations.axisX(-17,salt,t,height,haunted,true)==-17&&FirDecorations.axisZ(29,salt,t,height,haunted,true)==29,"Astra axis stays fixed at every trunk/crown/star height, even for formerly crooked salts");
+            for(double value:new double[]{FirDecorations.axisX(-17,salt,t,height,haunted,false),FirDecorations.axisZ(29,salt,t,height,haunted,false)}){
+                bytes.clear();bytes.putLong(Double.doubleToLongBits(value));hash.update(bytes.array());
+            }
+        }
+        String digest=HexFormat.of().formatHex(hash.digest());
+        // Captured from the exact0.5.15 NaturalScenery treeX/treeZ methods before this change.
+        check(digest.equals("5480104aa616346a3fabf1a2283d508b5fdb2b93eb85f160474115e84ff76a31"),"all Underworld straight/crooked axis coordinates retain their exact double bits");
+        for(int height=20;height<=70;height++)check(FirDecorations.astraReach(height)==(int)Math.ceil(height*.29+3),"Astra city reservation follows the straight crown instead of the branched reach");
+        for(long salt=0;salt<4096;salt++){
+            check(FirDecorations.normalHeight(salt)==30+(int)Math.floorMod(salt>>>14,41L),"ground height selection unchanged");
+            check(FirDecorations.hangingHeight(salt)==30+(int)Math.floorMod(salt>>>17,31L),"cloud height selection unchanged");
+        }
+        System.out.println("ASTRA516_AXIS_OK groundAndCloud=fixed unbranched underworldAxisSamples=620544 underworldSha256="+digest+" cityMaxReach=24 oldBranchedMaxReach=52 heights=unchanged");
     }
     private static long key(int x,int z){return ((long)x<<32)^(z&0xffffffffL);}
     private static boolean eligible(SceneryDistribution.Anchor a,int retention){
@@ -105,10 +130,13 @@ public final class Material515GenerationChecks {
         for(int i=0;i<2;i++)check(before[i]>0&&after[i]>before[i],"each fragment category independently increases");
         System.out.printf(Locale.ROOT,"LHO515_FRAGMENT_PROPOSALS seed=%d area_km2=%.6f sameAbsenceForms=%d fffZ=%d->%d ratio=%.6f FOS=%d->%d ratio=%.6f letters=exact terrainAndBuildingFilters=notIncluded%n",seed,area,proposals,before[0],after[0],after[0]/(double)before[0],before[1],after[1],after[1]/(double)before[1]);
     }
-    public static void main(String[] args){
+    public static void main(String[] args)throws Exception{
+        if(Arrays.asList(args).contains("--astra516-only")){
+            firAxes();System.out.println("ASTRA516_GENERATION_OK checks="+checks+" fixedAstraAxis/unchangedUnderworldDoubleBits/heightRules/cityReach");return;
+        }
         var pass=SceneryDistribution.passes(false).stream().filter(p->p.form()==SceneryDistribution.Form.LHO_HYDRA).findFirst().orElseThrow();
         check(pass.cell()==48&&pass.divisor()==1&&SceneryDistribution.LHO_TREE_SEPARATION==49&&SceneryDistribution.LHO_TREE_NEIGHBOR_RADIUS==2,"calibrated LHO pass and complete neighbour scan");
-        power();firBounds();for(long seed:new long[]{515515L,20261017L})lho(seed);
-        System.out.println("MATERIAL515_GENERATION_OK checks="+checks+" ordinaryPowerWood/sharedFirBounds/2.0184km2BeforeAfter/unchangedLetters");
+        power();firBounds();firAxes();for(long seed:new long[]{515515L,20261017L})lho(seed);
+        System.out.println("MATERIAL515_GENERATION_OK checks="+checks+" ordinaryPowerWood/underworldFirBounds/Astra516FixedAxis/2.0184km2BeforeAfter/unchangedLetters");
     }
 }
