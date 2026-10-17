@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.5.7
+# Block harvesting reference · 0.5.12
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 
@@ -10,7 +10,7 @@ Inner and Underworld wilderness no longer places finished cores or base crystal 
 
 Natural ψ/Z/fffZ/FOS still need an active Ordinal Crystal anchor within 5×5×5, including corners, or an already-stable state. A nearby player's held crystal also counts. Their anchored color changes, touch disappearance, connected-tree decay and permanent player-placement protection remain. Crafted Absence Cores are separate from the wild fragments.
 
-Ordinary mining of any emoji lamp returns its same-color whole open-mouth form. Silk Touch preserves its expression and exterior tile. The shaping bench converts one lamp into any of 54 same-color shapes. Numbered and blank lamps are separate families and retain their own drops; numerical bricks and numbered lamps keep saved digits.
+Ordinary mining of any emoji lamp returns its whole form with the same color and expression, clearing only the exterior-tile selection. Silk Touch preserves the exact form. Right-click switches Guogao/Guogua; the shaping bench converts one lamp into any of 54 same-color shapes. Numbered and blank lamps are separate families and retain their own drops; numerical bricks and numbered lamps keep saved digits.
 
 | Name | Block ID | Hardness | Blast resistance | Tool | Minimum tier | Light | Collision | Drop |
 |---|---|---:|---:|---|---|---:|---|---|
@@ -174,5 +174,6 @@ Ordinary mining of any emoji lamp returns its same-color whole open-mouth form. 
 | Ordinal Crystal Ore | `ordinal_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Voidglass Ordinal Crystal Ore | `empty_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
 | Understone Ordinal Crystal Ore | `dread_crystal_ore` | 3 | 3 | Pickaxe | None | 0 | Full block | 4–6 shards; Fortune; Silk Touch gives ore |
-| Tape Endcap | `turing_endcap` | 0.8 | 1.5 | Pickaxe | None | 0 | Full block | Block itself |
+| Turing Terminus | `turing_endcap` | 0.8 | 1.5 | Pickaxe | None | 0 | Full block | Block itself |
+| Guogao Crystal Drop | `guogao_drop` | 0.8 | 1.5 | Pickaxe | None | 1 | Stepped crystal drop | Block itself with any tool; concealed in Guogao stars and giant emoji-globe centers |
 | Guogao Lamp Shaper | `guogao_lamp_shaper` | 3.5 | 6 | Pickaxe | None | 0 | Full block | Block itself |

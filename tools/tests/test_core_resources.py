@@ -75,6 +75,28 @@ class CoreResourcesChecks(unittest.TestCase):
             for ingredient in recipe['ingredients']:
                 self.assertIn(set(ingredient),({'tag'},{'item'}))
 
+    def test_astra_and_boundary_sources(self):
+        recipe=resources.read(resources.D/'recipe/astra_critical_core.json')['ingredients']
+        self.assertEqual(recipe.count({'item':'guogaology:compute_chip'}),6)
+        self.assertEqual(recipe.count({'item':'guogaology:cloud_pearl'}),1)
+        self.assertIn({'tag':'guogaology:guogao_lamps'},recipe)
+        heart=resources.read(resources.D/'recipe/guogao_heart.json')['ingredients']
+        for name in ('dread_resin','guogao_drop','dread_leaves','emoji_flower'):
+            self.assertEqual(heart.count({'item':'guogaology:'+name}),1)
+        boundary=resources.read(resources.D/'recipe/boundary_core.json')['ingredients']
+        self.assertEqual(boundary.count({'item':'guogaology:proof_stone'}),1)
+        self.assertEqual(boundary.count({'item':'guogaology:turing_endcap'}),1)
+
+    def test_matrix_recipe_and_union_materials(self):
+        recipe=resources.read(resources.D/'recipe/sequence_core.json')['ingredients']
+        self.assertEqual(recipe.count({'item':'guogaology:ordinal_bricks'}),4)
+        for name in ('matrix_sheet','ridge_lamina','projection_glass','y_leaves','ordinal_crystal'):
+            self.assertEqual(recipe.count({'item':'guogaology:'+name}),1)
+        pearl=resources.read(resources.A/'models/block/cloud_pearl.json')
+        self.assertEqual({f['texture'] for e in pearl['elements'] for f in e['faces'].values()}, {'#body','#cloud','#root'})
+        membrane=resources.read(resources.A/'models/block/set_membrane.json')
+        self.assertEqual({f['texture'] for e in membrane['elements'] for f in e['faces'].values()}, {'#body'})
+
     def test_lamp_shaper_recipe_has_one_output(self):
         recipe=resources.read(resources.D/'recipe/guogao_lamp_shaper.json')
         self.assertEqual(recipe['result'],{'id':'guogaology:guogao_lamp_shaper','count':1})

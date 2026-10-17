@@ -12,7 +12,8 @@ public final class FirDecorations {
     }
     public static int starRadius(int height){return Math.clamp(height/22+2,3,6);}
     /** Two intersecting five-point stars give a readable silhouette from every side. */
-    public static void star(VoxelBrush brush,int x,int tipY,int z,int height,int dir){
+    public static void star(VoxelBrush brush,int x,int tipY,int z,int height,int dir){star(brush,x,tipY,z,height,dir,false);}
+    public static void star(VoxelBrush brush,int x,int tipY,int z,int height,int dir,boolean guogao){
         int radius=starRadius(height),cy=tipY+dir*(int)Math.round(radius*.55);
         double[] px=new double[10],py=new double[10];
         for(int i=0;i<10;i++){
@@ -29,6 +30,6 @@ public final class FirDecorations {
                 brush.set(x+d,cy+dir*v,z+u,NaturalForms.GOLD_STAR);
             }
         }
-        brush.set(x,cy,z,NaturalForms.GOLD_STAR);
+        brush.set(x,cy,z,guogao?NaturalForms.GUOGAO_DROP:NaturalForms.GOLD_STAR);
     }
 }

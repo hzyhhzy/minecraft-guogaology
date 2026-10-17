@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:astra_cloud"
+            "items": "#guogaology:guogao_lamps"
           }
         ]
       }
@@ -16,7 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:astra_marble"
+            "items": "guogaology:cloud_pearl"
           }
         ]
       }
@@ -26,32 +26,12 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:astra_mint"
-          }
-        ]
-      }
-    },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:cloud_pearl"
-          }
-        ]
-      }
-    },
-    "ingredient_4": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:compute_chip"
           }
         ]
       }
     },
-    "ingredient_5": {
+    "ingredient_3": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -74,8 +54,6 @@
       "ingredient_1",
       "ingredient_2",
       "ingredient_3",
-      "ingredient_4",
-      "ingredient_5",
       "has_recipe"
     ]
   ],

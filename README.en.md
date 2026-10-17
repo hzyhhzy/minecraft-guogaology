@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.11 · Minecraft Java / Fabric · Local version, not yet published**
+**v0.5.12 · Minecraft Java / Fabric · Local version, not yet published**
 
-This update simplifies wild Laver tables and row playback, redesigns Cloud Pearls as Nuclear Blast Pearls, and hollows out three-block Guogao lamps. Palace layouts and cores are preserved, along with the biome guide and vanilla advancements. See [the work record](docs/WORK-0511.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+This update redesigns the Nuclear Blast Pearl and Lv1 Heart of Nuclear Awe, buries pearls inside mushroom clouds, and equips Astra offices with Shock-Slump Chairs and Starlight Glass. Set Membranes, Matrix Sheets and Sprigs have revised art; hidden Guogao Crystal Drops join the crafting system. Recipes and secondary-chest materials follow the new ingredients. Laver rows can play while holding items. See [the work record](docs/WORK-0512.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -58,7 +58,7 @@ The first seven biomes belong to Inner Guogaology. Guogao Dreadwood is in the se
 
 ## Resource acquisition in 0.5.5
 
-- Inner and Underworld wilderness no longer places finished cores or Ordinal Crystal blocks. Gather Matrix Sheets, Arrowgrain Knots, SCG Junctions, Hydra Sprigs, Laver Gel, Nuclear Blast Pearls, Set Membranes and Dread Fir Resin, then combine them with existing biome materials. Giant landmarks retain a few display cores and lower-grade chest rewards.
+- Inner and Underworld wilderness no longer places finished cores or Ordinal Crystal blocks. Gather Matrix Sheets, Arrowgrain Knots, SCG Junctions, Hydra Sprigs, Laver Gel, Nuclear Blast Pearls, Set Membranes, Dread Fir Resin and Guogao Crystal Drops, then combine them with existing biome materials. Giant landmarks retain a few display cores and lower-grade chest rewards.
 - Ordinal Crystal Ore uses vanilla iron's average density as its benchmark, with numbered-stone, transparent-island and Dreadstone variants. Mine shards; four shards and one base crystal convert both ways. Mining a crystal block returns the block itself.
 - LHO disappearance, connected decay and anchored harvesting remain. An Ordinal Crystal stabilizes two neighboring rings; ψ, Z, fffZ and FOS visibly change color. Absence Cores are crafted.
 - A Guogao Lamp Shaper converts one lamp into one of 54 shapes of the same color. Ordinary mining gives the basic whole lamp; Silk Touch preserves its expression and tile.
@@ -102,13 +102,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.11/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.5.12/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.5.11's scope and actual validation results are tracked in [the current work record](docs/WORK-0511.md); it is not yet published. The published [v0.5.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3) and its [historical validation record](docs/WORK-0503.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.5.12's scope and actual validation results are tracked in [the current work record](docs/WORK-0512.md); it is not yet published. The published [v0.5.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3) and its [historical validation record](docs/WORK-0503.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -118,4 +118,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.5.11 implementation and validation](docs/WORK-0511.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)
+[0.5.12 implementation and validation](docs/WORK-0512.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.5.0 release notes](docs/RELEASE-0.5.0.md)

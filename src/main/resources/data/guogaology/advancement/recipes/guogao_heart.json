@@ -56,12 +56,32 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal"
+            "items": "guogaology:emoji_flower"
           }
         ]
       }
     },
     "ingredient_6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:guogao_drop"
+          }
+        ]
+      }
+    },
+    "ingredient_7": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_8": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -87,6 +107,8 @@
       "ingredient_4",
       "ingredient_5",
       "ingredient_6",
+      "ingredient_7",
+      "ingredient_8",
       "has_recipe"
     ]
   ],

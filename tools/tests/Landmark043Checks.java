@@ -83,7 +83,7 @@ public final class Landmark043Checks {
                         for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++)
                             if(dx!=0||dy!=0||dz!=0)check(p.at(q.x()+dx,q.y()+dy,q.z()+dz)==GLASS,"ordinary glass lamp chamber");
                     }
-                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==LIGHT,"emoji lamp has no free heart");
+                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==GUOGAO_DROP,"emoji lamp contains a raw Guogao Drop in its old heart position");
                     check(p.finaleCores().size()==8&&p.finaleRelics().size()==17,"eight final tributes and retained companion ornaments");
                     check(count(p,GUOGAO_HEART)==9,"eight indoor hearts plus one finale heart");
                 }

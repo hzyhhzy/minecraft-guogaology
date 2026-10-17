@@ -1,7 +1,11 @@
 {
   "variants": {
-    "": {
+    "hanging=false": {
       "model": "guogaology:block/hydra_sprig"
+    },
+    "hanging=true": {
+      "model": "guogaology:block/hydra_sprig",
+      "x": 180
     }
   }
 }

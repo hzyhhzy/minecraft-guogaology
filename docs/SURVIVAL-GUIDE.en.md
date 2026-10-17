@@ -66,7 +66,7 @@ Manuscripts have no durability. With one in your offhand, open the inventory and
 
 | Core | Equipment | Manuscript |
 |---|---|---|
-| Matrix Core | Pick mines 1/2/3 extra blocks, or 1/4/9 deep; root-sum-squares, rounded down | Flat mining +4/8/16 and Haste-bucket +25/50/100%; each aggregates by root-sum-squares |
+| Matrix Core | one Matrix Sheet, one Mountain Lamina, one Projectible Glass, one Y-branch Frost Leaf and4Matrix Digit Bricks (any digits) |
 | Power Tower | Sword/bow attack | Attack, calculated separately from the weapon |
 | Hydra Bud | Fortune II/IV/VI or switchable Silk Touch from Lv1; Looting II/IV/VI; bow infinity/multishot/piercing | Reach +1/2/3 blocks, root-sum-squares |
 | Absence Core | Wear protection 4/16/64, summed | Ordinary targeting range 30% / no proactive targeting / no ordinary retaliation; Lv2+ night vision; no durability effect |
@@ -128,13 +128,14 @@ Inner and Underworld wilderness no longer places finished cores or base crystal 
 | SCG Junction | SCG graph vertices; TREE centers consistently contain their matching ordinary colored node |
 | Hydra Sprig | Branching plants, Hydras and crowns in the Ordinal Garden |
 | Laver Gel | Laver veins and aquatic Laver scenery |
-| Nuclear Blast Pearl | Astra mushroom clouds and woven knots |
+| Nuclear Blast Pearl | Buried mushroom-cloud voxels (1% of fully enclosed cloud), and woven-knot centers |
 | Set Membrane | Set shells and egg scenery in Boundary Highlands |
+| Guogao Crystal Drop | Inside Guogao Christmas-tree stars and giant hanging emoji-globe centers; local secondary-chest ingredient bundles |
 | Dread Fir Resin | Underworld conifer and Dread Fir scenery |
 
 Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Version0.5.6 replaces the iron-specific altitude bands with small veins distributed uniformly throughout the rock, calibrated against the average iron-to-host-rock ratio in a typical vanilla sample. LHO receives one fifth as many vein attempts, with more transparent glass and crystal markings. Both cave walls and exterior rock can expose ore; no extra air-exposure discard applies. Only newly generated chunks change. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
 
-The eight new ingredients look like simple natural materials. Arrowgrain Knots, SCG Junctions, Laver Gel and Dread Fir Resin use full cubes; Matrix Sheets, Hydra Sprigs and Set Membranes retain plain slab, sprig and folded-membrane shapes. Nuclear Blast Pearls resemble a condensed mushroom cloud, with a blue-white crown, narrow stem, spreading base and a little warm light inside the stem, without jewel frames.
+The ingredients retain clear material shapes: Arrowgrain Knots, SCG Junctions, Laver Gel and Dread Fir Resin are full cubes; Matrix Sheets use pale-lavender slabs with broad indigo cells. Hydra Sprigs use clean leaf textures: upright with support below, otherwise hanging with support above, never naturally unsupported. Nuclear Blast Pearls borrow the old Lv1 Heart's teal radiation-marked nucleus in a chamfered solid. The revised Lv1 Heart combines that nucleus with a continuous knot conductor and six computing modules. Set Membranes use three orthogonal violet-and-ivory planes and darker intersections, distinct from the surrounding green shell. Ordinary Astra offices use Shock-Slump Chairs; streetlamp tops use Starlight Glass.
 
 Four shards and one base crystal convert both ways. Mining a base crystal returns the block itself, including by hand. It still provides light, LHO stabilization and basic manuscript enhancement.
 
@@ -142,13 +143,13 @@ Each first-grade regional core costs the eight biome ingredients below, plus one
 
 | Lv1 core | Eight biome ingredients |
 |---|---|
-| Matrix Core | 2 Matrix Sheets, 2 Mountain Laminae, 2 Projectible Glass, 2 Y-branch Frost Leaves |
+| Matrix Core | one Matrix Sheet, one Mountain Lamina, one Projectible Glass, one Y-branch Frost Leaf and4Matrix Digit Bricks (any digits) |
 | Power Tower Core | 2 Arrowgrain Knots, 2 SCG Junctions, one TREE node of each color, one BEAF Marbled Stone/Bird Feather Shale/Conway Chain Stone |
 | Hydra Bud | 2 Hydra Sprigs, 2 Veblen Petals, one ψ Branchstone, one Ω Branchstone, 2ordinal flowers/plants |
 | Absence Core | One each L/H/O Glass, fffZ, FOS, ψ branch, Z branch and Void Glass |
 | Laver Condensation Core | 2 Laver Gel, 2 iBLP Ordinary Points, one Marked Point, one Empty Cell, one Guogao block and one Tianyi Cyan Fiber |
-| Heart of Nuclear Awe | 2 Nuclear Blast Pearls, 2 Compute Chips, 2 Astra Condensed Clouds, one Astra Marble and one Pale-Green Jade |
-| Boundary Core | 2 Set Membranes, 2 Turing Tapes, 2 Proof Strata Stone, one Formula Stone and one Rayo Roseglass |
+| Heart of Nuclear Awe | one Nuclear Blast Pearl, 6 Compute Chips and any Guogao lamp |
+| Boundary Core | 2 Set Membranes, 2 Turing Tapes, one Proof Strata Stone, one Turing Terminus, one Formula Stone and one Rayo Roseglass |
 | Heart of Guogao | 2 Dread Fir Resin, 2 Dread Fir Leaves, one Guogao block, one Starlight Glass, one numbered lamp and one emoji lamp |
 
 | Higher-grade result | Ingredients |
@@ -172,7 +173,7 @@ One input lamp converts into one of 54 same-color shapes: two expressions, each 
 
 Ordinary Outer tables keep their original Alice patterns. Wild Inner iBLP tables omit the gel apex row: the first row is an inlay, two actual cells and a Matrix Number Brick, with inset legs. Palace layouts, cores and diagram tables stay unchanged.
 
-With both hands empty and without sneaking, right-click an inlay to play one row; clicking cells does nothing. The six cardinal directions are scanned for continuous cells ending at a Matrix Number Brick, choosing only the longest valid row. Cells and the digit determine the tune, with blank cells as rests and five ticks per cell (a quarter-second at20TPS). No core or gel is required; player-built matching rows work too. Any unloaded chunk encountered cancels the attempt without loading or waiting. Editing, breaking or unloading a playing row stops it.
+Without sneaking, right-click an inlay to play one row; held items in either hand are allowed; clicking cells does nothing. The six cardinal directions are scanned for continuous cells ending at a Matrix Number Brick, choosing only the longest valid row. Cells and the digit determine the tune, with blank cells as rests and five ticks per cell (a quarter-second at20TPS). No core or gel is required; player-built matching rows work too. Any unloaded chunk encountered cancels the attempt without loading or waiting. Editing, breaking or unloading a playing row stops it.
 
 Laver wood, Guogao sweets, lamps and numerical bricks use shared items. Three-block Guogao lamps have an air center and26unchanged exterior tiles. The Shock-Slump Chair remains available. Turing tapes run #14263231 with right-angle or vertical turns; an ordinary Turing Endcap provides an inactive endpoint without needing a natural Boundary Core.
 

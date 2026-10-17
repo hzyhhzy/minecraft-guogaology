@@ -36,7 +36,7 @@ public final class HauntedVines {
             for(var s:wood) b.tube(s.from.x,s.from.y,s.from.z,s.to.x,s.to.y,s.to.z,Math.max(.9,s.thickness+.3),NaturalForms.FIR_WOOD);
             for(var tip:tips){
                 double rise=tip.y-wood.getFirst().from.y;
-                FirDecorations.star(b,(int)Math.round(tip.x),(int)Math.round(tip.y),(int)Math.round(tip.z),(int)Math.abs(rise),rise<0?-1:1);
+                FirDecorations.star(b,(int)Math.round(tip.x),(int)Math.round(tip.y),(int)Math.round(tip.z),(int)Math.abs(rise),rise<0?-1:1,true);
             }
         }
     }

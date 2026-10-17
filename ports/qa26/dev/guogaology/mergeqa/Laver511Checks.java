@@ -71,7 +71,10 @@ public final class Laver511Checks {
             chunk.setBlockState(edge,Blocks.AIR.defaultBlockState(),0);chunk.setBlockState(edge.east(),Blocks.AIR.defaultBlockState(),0);
             clear(w,at);row(w,at,Direction.EAST,1,1,2,0,1);
             check(click(p,at.east())==InteractionResult.PASS&&LaverMusic.activeCount(w)==0,"grid right-click does not play");
-            p.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.APPLE));check(click(p,at)==InteractionResult.PASS&&LaverMusic.activeCount(w)==0,"occupied offhand does not play");p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);
+            p.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(Items.APPLE));p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.STONE));
+            check(click(p,at)==InteractionResult.SUCCESS&&LaverMusic.activeCount(w)==1,"occupied main hand and offhand can play");
+            check(click(p,at)==InteractionResult.SUCCESS&&LaverMusic.activeCount(w)==0,"occupied hands can stop playback");
+            p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
             p.setShiftKeyDown(true);check(click(p,at)==InteractionResult.PASS,"sneaking preserves ordinary interaction");p.setShiftKeyDown(false);
             check(click(p,at)==InteractionResult.SUCCESS&&LaverMusic.activeCount(w)==1,"actual callback starts a core-free row and grants the guide");
             check(click(p,at)==InteractionResult.SUCCESS&&LaverMusic.activeCount(w)==0,"same inlay stops its performance");

@@ -27,7 +27,7 @@ public final class LaverMusic {
     public static void initialize() {
         PayloadTypeRegistry.playS2C().register(TableNotePayload.ID,TableNotePayload.CODEC);
         UseBlockCallback.EVENT.register((player,world,hand,hit)-> {
-            if(player.isSpectator()||player.isSneaking()||hand!=Hand.MAIN_HAND||!player.getStackInHand(hand).isEmpty()||!player.getStackInHand(Hand.OFF_HAND).isEmpty()||!world.getBlockState(hit.getBlockPos()).isOf(GuogaologyBlocks.LAVER_INLAY)) return ActionResult.PASS;
+            if(player.isSpectator()||player.isSneaking()||hand!=Hand.MAIN_HAND||!world.getBlockState(hit.getBlockPos()).isOf(GuogaologyBlocks.LAVER_INLAY)) return ActionResult.PASS;
             if(world instanceof ServerWorld server)return use(server,hit.getBlockPos(),player)?ActionResult.SUCCESS:ActionResult.PASS;
             return ActionResult.SUCCESS;
         });

@@ -21,7 +21,6 @@ public final class NaturalScenery {
     private static final Map<Key,Site> SITES=new ConcurrentHashMap<>();
     private static final Map<Site,Table> TABLES=new ConcurrentHashMap<>();
     private static final Map<Site,Integer> BOARD_BASES=new ConcurrentHashMap<>();
-    private static final Map<Site,java.util.List<BlockPos>> CLOUD_CORES=new ConcurrentHashMap<>();
     private record VineKey(Site site,boolean great) {}
     private static final Map<VineKey,HauntedVines.Plan> VINES=new ConcurrentHashMap<>();
     private static final BlockState WOOD=GuogaologyBlocks.DREAD_LOG.defaultBlockState();
@@ -46,17 +45,20 @@ public final class NaturalScenery {
             Blocks.GRAY_CONCRETE.defaultBlockState(),Blocks.SEA_LANTERN.defaultBlockState(),Blocks.LIME_STAINED_GLASS.defaultBlockState(),Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState(),
             GuogaologyBlocks.LHO_HYDRA_PSI.defaultBlockState(),GuogaologyBlocks.LHO_HYDRA_Z.defaultBlockState(),
             GuogaologyBlocks.OFFICE_DESK.defaultBlockState(),GuogaologyBlocks.OFFICE_MONITOR.defaultBlockState(),GuogaologyBlocks.SERVER_RACK.defaultBlockState(),
-            Blocks.SMOOTH_QUARTZ_STAIRS.defaultBlockState(),GuogaologyBlocks.STAR_GOLD.defaultBlockState(),
+            Blocks.AIR.defaultBlockState(),GuogaologyBlocks.STAR_GOLD.defaultBlockState(),
             Blocks.AIR.defaultBlockState(),net.minecraft.world.level.block.Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState(),
             Blocks.RED_STAINED_GLASS.defaultBlockState(),Blocks.GREEN_STAINED_GLASS.defaultBlockState(),Blocks.BLUE_STAINED_GLASS.defaultBlockState(),
             CoreResources.MATRIX_SHEET.defaultBlockState(),CoreResources.HYDRA_SPRIG.defaultBlockState(),CoreResources.CLOUD_PEARL.defaultBlockState(),CoreResources.DREAD_RESIN.defaultBlockState(),CoreResources.ARROW_KNOT.defaultBlockState(),
             Blocks.BIRCH_LOG.defaultBlockState(),GuogaologyBlocks.OMEGA_SYMBOL.defaultBlockState(),GuogaologyBlocks.GREAT_OMEGA_SYMBOL.defaultBlockState(),Blocks.MUSHROOM_STEM.defaultBlockState(),Blocks.POLISHED_ANDESITE.defaultBlockState(),
-            Blocks.POLISHED_BLACKSTONE.defaultBlockState(),Blocks.GRAY_STAINED_GLASS.defaultBlockState(),CoreResources.MATRIX_SHEET.defaultBlockState(),CoreResources.ARROW_KNOT.defaultBlockState(),CoreResources.SCG_NODE.defaultBlockState(),CoreResources.HYDRA_SPRIG.defaultBlockState(),CoreResources.LAVER_GEL.defaultBlockState(),CoreResources.CLOUD_PEARL.defaultBlockState(),CoreResources.SET_MEMBRANE.defaultBlockState(),CoreResources.DREAD_RESIN.defaultBlockState(),CoreResources.TURING_ENDCAP.defaultBlockState()};
+            Blocks.POLISHED_BLACKSTONE.defaultBlockState(),Blocks.GRAY_STAINED_GLASS.defaultBlockState(),CoreResources.MATRIX_SHEET.defaultBlockState(),CoreResources.ARROW_KNOT.defaultBlockState(),CoreResources.SCG_NODE.defaultBlockState(),CoreResources.HYDRA_SPRIG.defaultBlockState(),CoreResources.LAVER_GEL.defaultBlockState(),CoreResources.CLOUD_PEARL.defaultBlockState(),CoreResources.SET_MEMBRANE.defaultBlockState(),CoreResources.DREAD_RESIN.defaultBlockState(),CoreResources.TURING_ENDCAP.defaultBlockState(),CoreResources.GUOGAO_DROP.defaultBlockState()};
+    private static final class CityChair {
+        private static final BlockState STATE=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(dev.guogaology.GuogaologyMod.id("nuke_chair")).defaultBlockState().setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING,net.minecraft.core.Direction.SOUTH);
+    }
     public static Site site(long seed,int cell,int cx,int cz,boolean underworld) {
         return site(seed,cell,cx,cz,underworld,false);
     }
     public static Site site(long seed,int cell,int cx,int cz,boolean underworld,boolean deepRoot) {
-        if(SITES.size()>40000) { SITES.clear();TABLES.clear();BOARD_BASES.clear();CLOUD_CORES.clear();VINES.clear(); }
+        if(SITES.size()>40000) { SITES.clear();TABLES.clear();BOARD_BASES.clear();VINES.clear(); }
         return SITES.computeIfAbsent(new Key(seed,cell,cx,cz,underworld,deepRoot),key->{
             var a=SceneryDistribution.anchor(seed,cell,cx,cz,underworld,deepRoot);
             return new Site(a.seed(),a.salt(),a.x(),a.z(),a.kind(),a.floor(),a.ceiling(),a.underworld());
@@ -130,7 +132,7 @@ public final class NaturalScenery {
                 }
     }
     private static VoxelBrush forms(SceneryBrush b) {
-        return new VoxelBrush(b.minX,b.maxX,-62,317,b.minZ,b.maxZ,(x,y,z,m)->b.set(x,y,z,FORM_MATERIALS[m]));
+        return new VoxelBrush(b.minX,b.maxX,-62,317,b.minZ,b.maxZ,(x,y,z,m)->b.set(x,y,z,m==AstraCity.CHAIR?CityChair.STATE:FORM_MATERIALS[m]));
     }
     public static int treeHeight(Site s,boolean haunted) {
         int desired=haunted?20+(int)(Math.pow(WorldNoise.unit(WorldNoise.mix(s.salt+9)),1.55)*116):30+(int)Math.floorMod(s.salt>>>14,41L);
@@ -192,8 +194,8 @@ public final class NaturalScenery {
             }
         }
         int topX=(int)Math.round(treeX(s,1,height,haunted)),topZ=(int)Math.round(treeZ(s,1,height,haunted));
-        FirDecorations.star(forms(b),topX,root+dir*height,topZ,height,dir);
-        // Resin protrudes from the lower trunk's natural fissures; stars remain plain light.
+        FirDecorations.star(forms(b),topX,root+dir*height,topZ,height,dir,haunted);
+        // Resin stays near the root; Guogao stars enclose a single crystal drop.
         if(haunted)for(int i=0;i<4;i++){
             double t=.035+i*.027;int dy=Math.max(1,(int)(t*height));
             int x=(int)Math.round(treeX(s,t,height,true)),z=(int)Math.round(treeZ(s,t,height,true));
@@ -312,6 +314,11 @@ public final class NaturalScenery {
         int dir=hanging?-1:1,base=hanging?s.ceiling-1:s.floor;if(base==Integer.MIN_VALUE) return;
         int height=40+(int)Math.floorMod(s.salt>>>13,31L),width=40+(int)Math.floorMod(s.salt>>>24,31L);
         if(base+dir*height*1.08<-55 || base+dir*height*1.08>313) return;
+        // Record only this chunk's real branch voxels; no world/chunk reads.
+        var body=new java.util.HashSet<BlockPos>();var target=b;
+        b=new SceneryBrush(target.minX,target.maxX,target.minZ,target.maxZ,(x,y,z,state)->{
+            target.set(x,y,z,state);body.add(new BlockPos(x,y,z));
+        });
         int trunk=height/5;
         b.line(s.x,base,s.z,s.x,base+dir*trunk,s.z,0,GuogaologyBlocks.SYMBOLS[(int)Math.floorMod(s.salt,6L)].defaultBlockState());
         var tips=new java.util.ArrayList<BlockPos>();
@@ -320,7 +327,11 @@ public final class NaturalScenery {
         for(var q:new java.util.LinkedHashSet<>(tips)){
             double roll=WorldNoise.unit(WorldNoise.hash(s.salt+21453,q.getX()-s.x,q.getY()-base,q.getZ()-s.z));
             // Independent chances, not a quota: a crown with fewer tips has fewer prizes.
-            if(roll<.65)b.set(q.getX(),q.getY(),q.getZ(),CoreResources.HYDRA_SPRIG.defaultBlockState());
+            if(roll>=.65)continue;
+            var at=q.relative(net.minecraft.core.Direction.UP,dir);
+            boolean below=body.contains(at.below()),above=body.contains(at.above());
+            if((!below&&!above)||body.contains(at))continue;
+            target.set(at.getX(),at.getY(),at.getZ(),CoreResources.HYDRA_SPRIG.defaultBlockState().setValue(dev.guogaology.block.HydraSprigBlock.HANGING,!below));
         }
     }
     static int hydraBranchCount(long salt){return WorldNoise.unit(WorldNoise.mix(salt+21437))<.6829?2:1;}
@@ -573,41 +584,7 @@ public final class NaturalScenery {
     }
     public record CloudFir(int x,int root,int z,int height) {}
     private static void cloudCores(SceneryBrush b,Site s){
-        for(var p:cloudCorePositions(s))b.set(p.getX(),p.getY(),p.getZ(),CoreResources.CLOUD_PEARL.defaultBlockState());
-    }
-    public static java.util.List<BlockPos> cloudCorePositions(Site s){
-        return CLOUD_CORES.computeIfAbsent(s,key->{
-            int count=8+(int)Math.floorMod(WorldNoise.mix(s.salt+9101),9L),radius=cloudWidth(s)/2,height=cloudHeight(s);
-            var out=new java.util.LinkedHashSet<BlockPos>();
-            for(int attempt=0;out.size()<count&&attempt<128;attempt++){
-                long h=WorldNoise.mix(s.salt+attempt*931L+7127);int type=(int)Math.floorMod(h,4L);
-                double u=WorldNoise.unit(WorldNoise.mix(h+13)),v=WorldNoise.unit(WorldNoise.mix(h+31));
-                int axis,sign,x=s.x,y=s.floor,z=s.z;
-                if(type<2){
-                    double angle=u*Math.PI*2,r=radius*(.18+v*.55);
-                    x+=(int)Math.round(Math.cos(angle)*r);z+=(int)Math.round(Math.sin(angle)*r);
-                    axis=1;sign=type==0?1:-1;
-                }else{
-                    axis=(h&16)==0?0:2;sign=(h&32)==0?1:-1;
-                    y+= (int)Math.round(height*(type==2?.70+u*.20:.12+u*.43));
-                    int offset=(int)Math.round((v-.5)*radius*(type==2?.65:.05));
-                    if(axis==0)z+=offset;else x+=offset;
-                }
-                final int a=axis,sg=sign;final int[] edge={sign>0?Integer.MIN_VALUE:Integer.MAX_VALUE};
-                var probe=new VoxelBrush(axis==0?s.x-radius:x,axis==0?s.x+radius:x,
-                        axis==1?s.floor+height/2:y,axis==1?s.floor+height:y,
-                        axis==2?s.z-radius:z,axis==2?s.z+radius:z,(px,py,pz,m)->{
-                    int coordinate=a==0?px:a==1?py:pz;
-                    edge[0]=sg>0?Math.max(edge[0],coordinate):Math.min(edge[0],coordinate);
-                });
-                NaturalForms.cloud(probe,s.x,s.floor,s.z,s.salt);
-                if(edge[0]==Integer.MIN_VALUE||edge[0]==Integer.MAX_VALUE)continue;
-                var q=new BlockPos(axis==0?edge[0]+sign:x,axis==1?edge[0]+sign:y,axis==2?edge[0]+sign:z);
-                if(q.getY()>315||q.getY()< -60)continue;
-                if(out.stream().noneMatch(p->p.distSqr(q)<9))out.add(q);
-            }
-            return java.util.List.copyOf(out);
-        });
+        CloudPearls.draw(forms(b),b.minX,b.maxX,b.minZ,b.maxZ,s.x,s.floor,s.z,s.salt);
     }
     public static CloudFir cloudFir(Site s) {
         if(s.floor==Integer.MIN_VALUE||s.floor+cloudHeight(s)>313||!NaturalForms.cloudFir(s.salt)) return null;

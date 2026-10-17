@@ -69,7 +69,7 @@ def main():
               'baseline_compared': str(args.baseline) if args.baseline else None,
               'loot_tables': loot['tables'], 'sampled_chests': loot['sampled_chests'],
               'protected_underworld': {'number_lamps': 87, 'crystals_per_number_lamp': 0,
-                                      'emoji_heart_deposits': 0, 'finale_lv1_cores': 8,
+                                      'guogao_drop_deposits': 24, 'finale_lv1_cores': 8,
                                       'finale_crystals': 0, 'finale_z': 1}}
     (ROOT/'build/landmark-0403.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', 'utf8')
     print(f"LANDMARK_RESOURCES_055_OK: ordinary renderer palettes, {loot['tables']} current loot tables, {loot['sampled_chests']} sampled chests")

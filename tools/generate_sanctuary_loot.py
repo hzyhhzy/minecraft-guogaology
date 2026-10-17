@@ -113,7 +113,9 @@ def reward_bounds(theme,main):
     combined={}
     for item,lo,hi in rewards:
         before=combined.get(item,(0,0));combined[item]=(before[0]+lo,before[1]+hi)
-    return combined
+    # One theme product occupies at most one native stack. Six-chip Astra
+    # recipes plus ordinary chip supplies would otherwise request up to78.
+    return {item:(min(lo,64),min(hi,64)) for item,(lo,hi) in combined.items()}
 
 
 def table(theme, main):
@@ -157,7 +159,7 @@ def audit():
             else:
                 assert spec['core'] not in bounds
                 for raw,count in raw_recipe(theme).items():
-                    assert bounds[raw][0]>=count*6 and bounds[raw][1]>=count*12
+                    assert bounds[raw][0]>=min(count*6,64) and bounds[raw][1]>=min(count*12,64)
             assert bounds[ordinal]==((1,1) if main else (30,60))
             assert bounds==reward_bounds(theme,main)
             maximum_stacks = sum(math.ceil(hi/64) for lo,hi in bounds.values())

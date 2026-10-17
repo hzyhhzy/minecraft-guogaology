@@ -29,6 +29,7 @@ def run(a):
     assert not a.lamps058_only or a.fresh_world,'Lamp0.5.8 QA must use --fresh-world'
     assert not a.laver_scenes_only or a.fresh_world,'Laver/material scene QA must use a disposable new world'
     assert not (a.advancements057_only or a.advancements510_only or a.advancements_baseline) or a.fresh_world,'Advancement QA must use a disposable new world'
+    assert not a.astra512_only or a.fresh_world,'Astra QA must use a disposable new world'
     assert a.seed is None or a.fresh_world,'--seed applies only to --fresh-world'
     assert a.seed is None or -(1<<63)<=a.seed<(1<<63),'Seed must fit a signed Java long'
     if a.fixture:assert a.fixture.name in ('port-0217','port-qa'),'Use only a disposable QA fixture'
@@ -66,7 +67,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
+             f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
              f'-Dguogaology.qa.advancements057={str(a.advancements057_only or a.advancements510_only or a.advancements_baseline or a.laver_scenes_only).lower()}',f'-Dguogaology.qa.advancementsBaseline={str(a.advancements_baseline).lower()}',f'-Dguogaology.qa.advancements510={str(a.advancements510_only).lower()}',f'-Dguogaology.qa.laverScenes={str(a.laver_scenes_only).lower()}',
              f'-Dguogaology.qa.chainloot0501={str(a.chain_loot0501_only).lower()}',f'-Dguogaology.qa.namespace050={str(a.namespace_only).lower()}',f'-Dguogaology.qa.freshworld={str(a.fresh_world).lower()}',
              f'-Dguogaology.qa.balance057={str(a.balance057_only).lower()}',f'-Dguogaology.qa.ore056={str(a.crystal_ore_only).lower()}',f'-Dguogaology.qa.core055={str(a.core_resources_only or a.crystal_ore_only or a.balance057_only).lower()}',f'-Dguogaology.qa.import0541={str(a.jar_import_only).lower()}','-Dfabric.development=false',f'-Dguogaology.qa.cliffchain049={str(a.cliff_chain049_only).lower()}',f'-Dguogaology.qa.cliffchain048={str(a.cliff_chain_only).lower()}',f'-Dguogaology.qa.coreitems046={str(a.core_items_only).lower()}',f'-Dguogaology.qa.underworld046={str(a.underworld_only).lower()}',f'-Dguogaology.qa.voxy={str(a.voxy).lower()}',f'-Dguogaology.qa.boundaries={str(a.boundaries_only).lower()}',f'-Dguogaology.qa.manuscripts={str(a.manuscripts_only).lower()}',f'-Dguogaology.qa.inventory={str(a.inventory_only).lower()}',f'-Dguogaology.qa.portals={str(a.portals_only).lower()}',f'-Dguogaology.qa.patch051={str(a.patch051_only or a.creative_icons_only).lower()}',f'-Dguogaology.qa.creativeicons047={str(a.creative_icons_only).lower()}',f'-Dguogaology.qa.landmarks043={str(a.landmarks_only).lower()}',f'-Djava.io.tmpdir={temp}',f'-Djna.tmpdir={temp}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
@@ -93,6 +94,7 @@ if __name__=='__main__':
     p.add_argument('--crystal-ore-only',action='store_true',help='Calibrate actual iron density, full-height Ordinal veins and LHO art in a new world')
     p.add_argument('--balance057-only',action='store_true',help='Native0.5.7 armor, fixed core progress and ore-count checks; wood is static-only')
     p.add_argument('--lamps058-only',action='store_true',help='Native expression-preserving lamp drops/clicks, mineral storage mining and actual tooltips')
+    p.add_argument('--astra512-only',action='store_true',help='Native Astra cloud/chair/light/recipes and redesigned art, disposable fo262 only')
     p.add_argument('--laver-scenes-only',action='store_true',help='Focused native Laver-table/audio and redesigned material screenshots, without repeating the advancement sweep')
     p.add_argument('--advancements057-only',action='store_true',help='Real vanilla/guide criteria, client sync and advancement-page screenshots')
     p.add_argument('--advancements510-only',action='store_true',help='Eight biome/material/core/visit paths, native food/table and fully socketed Omega loadout')

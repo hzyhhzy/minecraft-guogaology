@@ -1,6 +1,7 @@
 package dev.guogaology;
 
 import dev.guogaology.block.NaturalResourceBlock;
+import dev.guogaology.block.HydraSprigBlock;
 import dev.guogaology.survival.BlockBalance;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -22,19 +23,19 @@ public final class CoreResources {
     public static final Block CLOUD_PEARL = node("cloud_pearl", false);
     public static final Block SET_MEMBRANE = node("set_membrane", true);
     public static final Block DREAD_RESIN = node("dread_resin", true);
+    public static final Block GUOGAO_DROP = node("guogao_drop", false);
     public static final Block ORDINAL_CRYSTAL_ORE = ore("ordinal_crystal_ore", false);
     public static final Block EMPTY_CRYSTAL_ORE = ore("empty_crystal_ore", true);
     public static final Block DREAD_CRYSTAL_ORE = ore("dread_crystal_ore", false);
     public static final Block TURING_ENDCAP = ore("turing_endcap", false);
     public static final List<Block> MATERIALS = List.of(MATRIX_SHEET, ARROW_KNOT, SCG_NODE,
-            HYDRA_SPRIG, LAVER_GEL, CLOUD_PEARL, SET_MEMBRANE, DREAD_RESIN);
+            HYDRA_SPRIG, LAVER_GEL, CLOUD_PEARL, SET_MEMBRANE, DREAD_RESIN, GUOGAO_DROP);
     public static final List<Block> ORES = List.of(ORDINAL_CRYSTAL_ORE, EMPTY_CRYSTAL_ORE, DREAD_CRYSTAL_ORE);
     public static final List<Block> ALL = java.util.stream.Stream.concat(MATERIALS.stream(),
             java.util.stream.Stream.concat(ORES.stream(), java.util.stream.Stream.of(TURING_ENDCAP))).toList();
     private static Block node(String name, boolean clear) {
-        return register(name, new NaturalResourceBlock(BlockBalance.apply(name,
-                AbstractBlock.Settings.create().mapColor(MapColor.LIGHT_BLUE)
-                        .sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque())), clear);
+        var settings=BlockBalance.apply(name,AbstractBlock.Settings.create().mapColor(MapColor.LIGHT_BLUE).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque());
+        return register(name,name.equals("hydra_sprig")?new HydraSprigBlock(settings):new NaturalResourceBlock(settings),clear);
     }
     private static Block ore(String name, boolean clear) {
         var settings=BlockBalance.apply(name, AbstractBlock.Settings.create()

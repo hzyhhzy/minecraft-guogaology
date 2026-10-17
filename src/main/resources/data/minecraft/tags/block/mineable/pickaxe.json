@@ -112,6 +112,7 @@
     "guogaology:scg_node",
     "guogaology:set_membrane",
     "guogaology:turing_endcap",
-    "guogaology:guogao_lamp_shaper"
+    "guogaology:guogao_lamp_shaper",
+    "guogaology:guogao_drop"
   ]
 }

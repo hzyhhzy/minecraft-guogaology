@@ -6,7 +6,10 @@
       "item": "guogaology:cloud_pearl"
     },
     {
-      "item": "guogaology:cloud_pearl"
+      "item": "guogaology:compute_chip"
+    },
+    {
+      "item": "guogaology:compute_chip"
     },
     {
       "item": "guogaology:compute_chip"
@@ -15,16 +18,13 @@
       "item": "guogaology:compute_chip"
     },
     {
-      "item": "guogaology:astra_cloud"
+      "item": "guogaology:compute_chip"
     },
     {
-      "item": "guogaology:astra_cloud"
+      "item": "guogaology:compute_chip"
     },
     {
-      "item": "guogaology:astra_marble"
-    },
-    {
-      "item": "guogaology:astra_mint"
+      "tag": "guogaology:guogao_lamps"
     },
     {
       "item": "guogaology:ordinal_crystal"

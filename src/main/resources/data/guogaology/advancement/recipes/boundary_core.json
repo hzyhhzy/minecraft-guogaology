@@ -56,6 +56,16 @@
       "conditions": {
         "items": [
           {
+            "items": "guogaology:turing_endcap"
+          }
+        ]
+      }
+    },
+    "ingredient_6": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
             "items": "guogaology:turing_tape"
           }
         ]
@@ -76,6 +86,7 @@
       "ingredient_3",
       "ingredient_4",
       "ingredient_5",
+      "ingredient_6",
       "has_recipe"
     ]
   ],

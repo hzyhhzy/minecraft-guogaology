@@ -43,6 +43,8 @@
 | 核爆凝珠 | Nuclear Blast Pearl | `cloud_pearl` |
 | 集合膜 | Set Membrane | `set_membrane` |
 | 冥杉树脂 | Dread Fir Resin | `dread_resin` |
+| 馃槹晶滴 | Guogao Crystal Drop | `guogao_drop` |
+| 图灵终符 | Turing Terminus | `turing_endcap` |
 
 | 群系 | 代表建筑 |
 |---|---|

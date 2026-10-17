@@ -9,7 +9,7 @@ public final class NaturalForms {
             SCG_SHELL=68,TREE_SHELL=69,SEQUENCE_CORE=72,HYDRA_BUD=73,ASTRA_CRITICAL_CORE=74,GUOGAO_HEART=75,POWER_TOWER_CORE=76,
             BIRCH_WOOD=77,OMEGA_GLYPH=78,GREAT_OMEGA_GLYPH=79,MUSHROOM_STEM=80,SCG_EDGE=81,
             MATRIX_SHEET=84,ARROW_KNOT=85,SCG_NODE=86,HYDRA_SPRIG=87,LAVER_GEL=88,
-            CLOUD_PEARL=89,SET_MEMBRANE=90,DREAD_RESIN=91,TURING_ENDCAP=92;
+            CLOUD_PEARL=89,SET_MEMBRANE=90,DREAD_RESIN=91,TURING_ENDCAP=92,GUOGAO_DROP=93;
     private static double random(long salt,int i) { return WorldNoise.unit(WorldNoise.mix(salt+i*733L)); }
     public static int cloudWidth(long salt) { return 2*(40+(int)Math.floorMod(salt>>>13,31L)); }
     public static int cloudHeight(long salt) {

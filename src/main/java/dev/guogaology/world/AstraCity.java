@@ -107,7 +107,7 @@ public final class AstraCity {
                 var lamp=new Bounds(x,y,z,x,y+6,z);
                 for(var r:reserved)if(r.intersects(lamp)){blocked=true;break;}
                 if(blocked)continue;
-                b.box(x,y,z,x,y+5,z,METAL);b.set(x,y+6,z,NaturalForms.CRYSTAL);
+                b.box(x,y,z,x,y+5,z,METAL);b.set(x,y+6,z,NaturalForms.GOLD_STAR);
             }
         }
     }

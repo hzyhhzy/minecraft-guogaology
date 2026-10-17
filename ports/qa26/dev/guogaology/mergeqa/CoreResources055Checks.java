@@ -81,14 +81,14 @@ public final class CoreResources055Checks {
     }
     private static void recipes(ServerLevel world){
         String[][] inputs={
-            {"matrix_sheet","matrix_sheet","ridge_lamina","ridge_lamina","projection_glass","projection_glass","y_leaves","y_leaves"},
+            {"matrix_sheet","ridge_lamina","projection_glass","y_leaves","ordinal_bricks","ordinal_bricks","ordinal_bricks","ordinal_bricks"},
             {"arrow_knot","arrow_knot","scg_node","scg_node","tree_node_red","tree_node_green","tree_node_blue","beaf_marble"},
             {"hydra_sprig","hydra_sprig","veblen_petal","veblen_petal","psi_symbol","great_omega_symbol","epsilon_bloom","omega_bloom"},
             {"lho_letter_l","lho_letter_h","lho_letter_o","fffz_trace","fos_trace","lho_hydra_psi","lho_hydra_z","absence_glass"},
             {"laver_gel","laver_gel","iblp_node","iblp_node","iblp_marked","iblp_blank","amber_guogao","tianyi_fiber"},
-            {"cloud_pearl","cloud_pearl","compute_chip","compute_chip","astra_cloud","astra_cloud","astra_marble","astra_mint"},
-            {"set_membrane","set_membrane","turing_tape","turing_tape","proof_stone","proof_stone","formula_stone","rayo_rose"},
-            {"dread_resin","dread_resin","dread_leaves","dread_leaves","amber_guogao","star_gold","amber_sequence_light","guogao_lantern"}};
+            {"cloud_pearl","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","compute_chip","guogao_lantern"},
+            {"set_membrane","set_membrane","turing_tape","turing_tape","proof_stone","turing_endcap","formula_stone","rayo_rose"},
+            {"dread_resin","guogao_drop","dread_leaves","emoji_flower","amber_guogao","star_gold","amber_sequence_light","guogao_lantern"}};
         for(int i=0;i<REGIONAL.length;i++){
             var first=Arrays.copyOf(inputs[i],9);first[8]="ordinal_crystal";crafts(world,REGIONAL[i],1,first);
             var second=new String[9];Arrays.fill(second,REGIONAL[i]);second[8]="ordinal_crystal_lv2";crafts(world,REGIONAL[i]+"_lv2",1,second);

@@ -97,7 +97,7 @@ def build():
     node('guide/eat_guogao','guide/enter_outer','guogao_slice','尝一口果糕','A Taste of Guogao',
          '吃下一片果糕切片。','Eat a Guogao Slice.',{'eaten':{'trigger':'minecraft:consume_item','conditions':{'item':{'items':['guogaology:guogao_slice']}}}})
     node('guide/play_laver','guide/biome_weaver','laver_inlay','桌边的一声','A Note at the Table',
-         '双手空着、不潜行，右键镶边石，弹奏通向矩阵数字砖的最长一行桌格，每格四分之一秒。','With both hands empty and without sneaking, right-click an inlay to play its longest row ending in a Matrix Number Brick, one cell per quarter-second.',{'done':{'trigger':'minecraft:impossible'}})
+         '不潜行时右键镶边石（手持物品也可），弹奏通向矩阵数字砖的最长一行桌格，每格四分之一秒。','Without sneaking, right-click an inlay (held items are allowed) to play its longest row ending in a Matrix Number Brick, one cell per quarter-second.',{'done':{'trigger':'minecraft:impossible'}})
     node('guide/omega_mastery','guide/ultimate_station','true_omega_chestplate','Ω，全部展开','Omega, Fully Unfolded',
          '穿戴四件Ω护甲并手持Ω手稿；五件共38槽均镶入兼容的满级晶核。图腾、空槽与未生效的编辑不计。','Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count.',{'done':{'trigger':'minecraft:impossible'}},frame='challenge')
     copy['item.guogaology.guide_emblem']=('果糕逻辑探索指引','Guogaology Exploration Guide')
