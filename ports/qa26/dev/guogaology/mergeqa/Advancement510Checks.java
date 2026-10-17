@@ -4,6 +4,9 @@ import dev.guogaology.*;
 import dev.guogaology.advancement.GuideProgress;
 import dev.guogaology.advancement.GuideLayout;
 import dev.guogaology.ambience.*;
+import dev.guogaology.block.AnchoredBlock;
+import dev.guogaology.block.OrdinalAnchoring;
+import dev.guogaology.block.PortableRelicBlock;
 import dev.guogaology.mining.*;
 import dev.guogaology.survival.*;
 import dev.guogaology.world.ProceduralTerrain;
@@ -28,7 +31,7 @@ import java.util.*;
 public final class Advancement510Checks {
     private static final String[] THEMES={"matrix","power","hydra","absence","weaver","astra","frontier","guogao"};
     private static final String[] CORES={"sequence_core","power_tower_core","hydra_bud","lho_trace","laver_core","astra_critical_core","boundary_core","guogao_heart"};
-    private static final String[] BIOME_ICONS={"y_sequence_stone","power_bricks","epsilon_bloom","lho_hydra_psi","iblp_marked","nuke_chair","turing_tape","guogao_lantern"};
+    private static final String[] BIOME_ICONS={"y_sequence_stone","power_bricks","epsilon_bloom","lho_guide_emblem","iblp_node","nuke_chair","turing_tape","guogao_lantern"};
     private static final List<EquipmentSlot> PLAYER_SLOTS=List.of(EquipmentSlot.MAINHAND,EquipmentSlot.OFFHAND,EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET);
     private static int checks;
     private static void check(boolean b,String why){checks++;if(!b)throw new AssertionError(why);}
@@ -84,6 +87,7 @@ public final class Advancement510Checks {
             fillBiome(inner,probe,theme.biome);GuideProgress.checkPlayer(p);complete(p,"biome_"+theme.id);
         }
         geometry();
+        lhoDisplays(p);
         reset(p,"landmarks_all");int n=0;
         for(String id:THEMES){
             var theme=Arrays.stream(SurvivalTheme.values()).filter(t->t.id.equals(id)).findFirst().orElseThrow();var world=theme.underworld()?under:inner;
@@ -111,6 +115,18 @@ public final class Advancement510Checks {
     private static void geometry(){
         for(var theme:SurvivalTheme.values())for(int rotation=0;rotation<4;rotation++){
             var site=new SurvivalStructures.Site(1200,20,-600,theme,rotation);var plan=site.layout();check(GuideProgress.inside(site,site.entrance()),"rotated entrance "+theme+" "+rotation);
+            if(theme==SurvivalTheme.ABSENCE){
+                check(SurvivalStructures.stateFor(site,0,0,0,SanctuaryLayout.LIGHT).isAir(),"LHO lamps removed");
+                check(SurvivalStructures.stateFor(site,0,0,0,SanctuaryLayout.CRYSTAL).isAir(),"LHO former crystal light placeholders removed");
+                for(var q:plan.railingDisplays()){
+                    byte code=plan.at(q.pos().x(),q.pos().y(),q.pos().z());
+                    var state=SurvivalStructures.stateFor(site,q.pos().x(),q.pos().y(),q.pos().z(),code);
+                    if(state.getBlock() instanceof dev.guogaology.block.AnchoredBlock)check(!dev.guogaology.block.AnchoredBlock.stable(state),"natural railing sample is unstable");
+                }
+                for(byte code:new byte[]{SanctuaryLayout.PHANTOM_FFFZ,SanctuaryLayout.PHANTOM_FOS,SanctuaryLayout.PHANTOM_EMPTY,SanctuaryLayout.PHANTOM_PSI,SanctuaryLayout.PHANTOM_Z}){
+                    var state=SurvivalStructures.stateFor(site,0,0,0,code);check(!dev.guogaology.block.AnchoredBlock.stable(state),"natural interior sample is unstable "+code);
+                }
+            }else if(theme==SurvivalTheme.ASTRA)check(SurvivalStructures.stateFor(site,0,0,0,SanctuaryLayout.LIGHT).is(GuogaologyBlocks.ASTRA_LIGHT),"Astra lighting retained");
             check(!GuideProgress.inside(site,new BlockPos(site.x(),site.y()-1,site.z())),"below building excluded");check(!GuideProgress.inside(site,new BlockPos(site.x(),site.y()+plan.height+2,site.z())),"above building excluded");
             int padding=0,rooms=0;
             for(int y=2;y<plan.height;y+=7)for(int x=-plan.width/2;x<=plan.width/2;x+=7)for(int z=-plan.depth/2;z<=plan.depth/2;z+=7){
@@ -119,6 +135,35 @@ public final class Advancement510Checks {
             }
             check(padding>0&&rooms>0,"both natural padding and authored space tested "+theme);
         }
+    }
+    private static void lhoDisplays(ServerPlayer p){
+        var world=p.level();var center=new BlockPos(8,250,8);var anchor=center.offset(2,0,0);
+        var saved=new LinkedHashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
+        var site=new SurvivalStructures.Site(1200,20,-600,SurvivalTheme.ABSENCE,0);
+        try{
+            for(var q:BlockPos.betweenClosed(center.offset(-4,-4,-4),center.offset(4,4,4))){saved.put(q.immutable(),world.getBlockState(q));world.setBlock(q,Blocks.AIR.defaultBlockState(),2);}
+            p.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);
+            for(byte code:new byte[]{SanctuaryLayout.PHANTOM_FFFZ,SanctuaryLayout.PHANTOM_FOS,SanctuaryLayout.PHANTOM_EMPTY}){
+                var state=SurvivalStructures.stateFor(site,0,0,0,code);var hit=new BlockHitResult(Vec3.atCenterOf(center),Direction.UP,center,false);
+                world.setBlock(center,state,2);check(Block.getDrops(state,world,center,null,p,ItemStack.EMPTY).isEmpty(),"natural unanchored display cannot be harvested "+code);
+                state.useWithoutItem(world,p,hit);check(world.getBlockState(center).isAir(),"natural display vanishes on use "+code);
+                world.setBlock(center,state,2);world.setBlock(anchor,GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState(),3);
+                state.useWithoutItem(world,p,hit);check(world.getBlockState(center).is(state.getBlock())&&OrdinalAnchoring.protects(world,center),"live crystal protects natural display "+code);
+                check(Block.getDrops(world.getBlockState(center),world,center,null,p,ItemStack.EMPTY).stream().anyMatch(s->s.is(state.getBlock().asItem())),"live crystal permits harvest "+code);
+                world.setBlock(anchor,Blocks.AIR.defaultBlockState(),3);
+                var placed=state.setValue(PortableRelicBlock.PLAYER_PLACED,true).setValue(AnchoredBlock.STABLE,true);world.setBlock(center,placed,2);
+                placed.useWithoutItem(world,p,hit);check(world.getBlockState(center).is(state.getBlock()),"player display remains safe without crystal "+code);
+                world.setBlock(center,Blocks.AIR.defaultBlockState(),2);
+            }
+            for(byte code:new byte[]{SanctuaryLayout.PHANTOM_PSI,SanctuaryLayout.PHANTOM_Z}){
+                var state=SurvivalStructures.stateFor(site,0,0,0,code);var next=center.offset(1,0,0);
+                world.setBlock(center,state,2);world.setBlock(next,state,2);state.getBlock().playerWillDestroy(world,center,state,p);
+                check(world.getBlockState(center).isAir()&&world.getBlockState(next).isAir(),"natural building tree chain disappears "+code);
+                world.setBlock(center,state,2);world.setBlock(next,state,2);world.setBlock(anchor,GuogaologyBlocks.ORDINAL_CRYSTAL.defaultBlockState(),3);
+                state.getBlock().playerWillDestroy(world,center,state,p);check(world.getBlockState(next).is(state.getBlock()),"anchor prevents building chain disappearance "+code);
+                world.setBlock(anchor,Blocks.AIR.defaultBlockState(),3);world.setBlock(center,Blocks.AIR.defaultBlockState(),2);world.setBlock(next,Blocks.AIR.defaultBlockState(),2);
+            }
+        }finally{for(var e:saved.entrySet())world.setBlock(e.getKey(),e.getValue(),2);}
     }
     private static ItemStack maxed(String name,int kind){var gear=item(name);var cores=new ArrayList<ItemStack>();for(int n=0;n<GearData.capacity(gear);n++)cores.add(item(kind==6?"ordinal_crystal_lv4":"boundary_core_lv3"));GearData.setCores(gear,cores);return gear;}
     private static void mastery(ServerPlayer p){

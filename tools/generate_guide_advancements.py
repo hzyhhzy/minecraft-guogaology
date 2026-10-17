@@ -102,6 +102,7 @@ def build():
          '穿戴四件Ω护甲并手持Ω手稿；五件共38槽均镶入兼容的满级晶核。图腾、空槽与未生效的编辑不计。','Wear all four Ω armor pieces and hold an Ω Manuscript. Fill all 38 sockets with compatible maximum-grade cores; Totems, empty sockets and uncommitted edits do not count.',{'done':{'trigger':'minecraft:impossible'}},frame='challenge')
     copy['item.guogaology.guide_emblem']=('果糕逻辑探索指引','Guogaology Exploration Guide')
     copy['item.guogaology.brand_emblem']=('果糕逻辑标志','Guogaology Emblem')
+    copy['item.guogaology.lho_guide_emblem']=('LHO空无之境标志','LHO Realm Emblem')
     for theme in THEMES:
         copy['item.guogaology.landmark_emblem_'+theme]=(names['zh_cn']['structure.guogaology.'+theme]+'探索标志',names['en_us']['structure.guogaology.'+theme]+' Exploration Emblem')
     order=reading_order(result);lookup={row[0]:row for row in rows}
@@ -123,6 +124,25 @@ def generate(check=False):
             if not check:retired.unlink()
     put(RES/'assets/guogaology/models/item/guide_emblem.json',{'parent':'minecraft:item/generated','textures':{'layer0':'guogaology:item/guide_emblem'}})
     put(RES/'assets/guogaology/models/item/brand_emblem.json',{'parent':'minecraft:item/generated','textures':{'layer0':'guogaology:item/brand_emblem'}})
+    # Keep the actual L/H/O glyphs and broken glass edging, with sufficient
+    # contrast for a small advancement icon. World block textures stay intact.
+    from PIL import Image
+    from io import BytesIO
+    palette={62:(157,199,230,255),82:(208,229,245,255),89:(115,169,216,255),104:(47,99,175,255)}
+    for letter in 'lho':
+        with Image.open(RES/f'assets/guogaology/textures/block/lho_letter_{letter}.png') as source:
+            icon=Image.new('RGBA',source.size);icon.putdata([palette[p[3]] for p in source.convert('RGBA').getdata()])
+        output=BytesIO();icon.save(output,format='PNG');data=output.getvalue()
+        path=RES/f'assets/guogaology/textures/item/lho_guide_{letter}.png'
+        if not path.exists() or path.read_bytes()!=data:
+            changed.append(str(path.relative_to(ROOT)))
+            if not check:path.write_bytes(data)
+    put(RES/'assets/guogaology/models/item/lho_guide_emblem.json',{
+        'parent':'minecraft:block/cube','gui_light':'side',
+        'textures':{'particle':'guogaology:item/lho_guide_l',
+                    'north':'guogaology:item/lho_guide_l','south':'guogaology:item/lho_guide_l',
+                    'east':'guogaology:item/lho_guide_h','west':'guogaology:item/lho_guide_h',
+                    'up':'guogaology:item/lho_guide_o','down':'guogaology:item/lho_guide_o'}})
     source_icon=RES/'assets/guogaology/icon.png';item_icon=RES/'assets/guogaology/textures/item/brand_emblem.png'
     if not item_icon.exists() or item_icon.read_bytes()!=source_icon.read_bytes():
         changed.append(str(item_icon.relative_to(ROOT)))

@@ -25,6 +25,7 @@ public final class GuideProgress {
     public static final Map<String,Item> LANDMARK_ICONS=new LinkedHashMap<>();
     public static void initialize(){
         Registry.register(Registries.ITEM,GuogaologyMod.id("brand_emblem"),new Item(new Item.Settings()));
+        Registry.register(Registries.ITEM,GuogaologyMod.id("lho_guide_emblem"),new Item(new Item.Settings()));
         for(var theme:SurvivalTheme.values()){
             var id=GuogaologyMod.id("landmark_emblem_"+theme.id);
             LANDMARK_ICONS.put(theme.id,Registry.register(Registries.ITEM,id,new Item(new Item.Settings())));

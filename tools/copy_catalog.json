@@ -796,7 +796,8 @@
       "item.guogaology.landmark_emblem_astra": "Astra 推演中枢探索标志",
       "item.guogaology.landmark_emblem_frontier": "界限演算庭探索标志",
       "item.guogaology.landmark_emblem_guogao": "果糕终境巨树探索标志",
-      "item.guogaology.brand_emblem": "果糕逻辑标志"
+      "item.guogaology.brand_emblem": "果糕逻辑标志",
+      "item.guogaology.lho_guide_emblem": "LHO空无之境标志"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1441,7 +1442,8 @@
       "item.guogaology.landmark_emblem_astra": "Astra Inference Nexus Exploration Emblem",
       "item.guogaology.landmark_emblem_frontier": "Boundary Calculus Court Exploration Emblem",
       "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem",
-      "item.guogaology.brand_emblem": "Guogaology Emblem"
+      "item.guogaology.brand_emblem": "Guogaology Emblem",
+      "item.guogaology.lho_guide_emblem": "LHO Realm Emblem"
     }
   }
 }

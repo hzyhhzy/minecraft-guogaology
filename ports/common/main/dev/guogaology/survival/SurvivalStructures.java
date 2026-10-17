@@ -110,11 +110,8 @@ public final class SurvivalStructures {
             var state=CoreGrades.levels(finaleCore).get(0).defaultBlockState();
             return state.hasProperty(dev.guogaology.block.AnchoredBlock.STABLE)?state.setValue(dev.guogaology.block.AnchoredBlock.STABLE,true):state;
         }
-        if(s.theme==SurvivalTheme.ABSENCE&&(code==SanctuaryLayout.PHANTOM_FFFZ||code==SanctuaryLayout.PHANTOM_FOS||code==SanctuaryLayout.PHANTOM_EMPTY)
-                &&s.layout().railingCollectible(lx,y,lz))
-            return palette(s.theme)[code].setValue(dev.guogaology.block.AnchoredBlock.STABLE,true);
-        if(s.theme==SurvivalTheme.ABSENCE&&code==SanctuaryLayout.PHANTOM_EMPTY)
-            return palette(s.theme)[code].setValue(dev.guogaology.block.AnchoredBlock.STABLE,true);
+        // Natural LHO displays follow wild disappearance rules; only live crystal
+        // protection or later player placement makes them safe to handle.
         if(code==SanctuaryLayout.CROWN)return GuogaologyBlocks.ASTRA_WEAVE.defaultBlockState().setValue(dev.guogaology.block.AstraWeaveBlock.COLOR,AstraCrown.colorAt(lx,y,lz));
         if(code==SanctuaryLayout.BMS_DIGIT){
             var cell=s.layout().bmsCells().get(new SanctuaryLayout.Point(lx,y,lz));
@@ -227,6 +224,8 @@ public final class SurvivalStructures {
             p[SanctuaryLayout.SLAB]=Blocks.DARK_OAK_SLAB.defaultBlockState();
         }
         if(theme==SurvivalTheme.ABSENCE){
+            p[SanctuaryLayout.LIGHT]=Blocks.AIR.defaultBlockState();
+            p[SanctuaryLayout.CRYSTAL]=Blocks.AIR.defaultBlockState();
             p[SanctuaryLayout.WHITE]=Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState();
             p[SanctuaryLayout.SLAB]=Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState();
             p[SanctuaryLayout.DARK]=Blocks.CYAN_STAINED_GLASS.defaultBlockState();

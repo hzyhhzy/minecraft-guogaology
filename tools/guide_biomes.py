@@ -1,8 +1,8 @@
 """Authored biome progression and capability-based core copy, not recipe dumps."""
 
-# Actual existing scenery items, deliberately excluding all core families.
+# Representative scenery; LHO has a dedicated three-letter cube, never a core.
 BIOME_ICONS={'matrix':'y_sequence_stone','power':'power_bricks','hydra':'epsilon_bloom',
-             'absence':'lho_hydra_psi','weaver':'iblp_marked','astra':'nuke_chair',
+             'absence':'lho_guide_emblem','weaver':'iblp_node','astra':'nuke_chair',
              'frontier':'turing_tape','guogao':'guogao_lantern'}
 
 # theme, biome, representative raw icon, material groups, material title/description,

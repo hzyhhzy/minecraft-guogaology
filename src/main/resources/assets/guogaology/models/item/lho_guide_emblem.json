@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "gui_light": "side",
+  "textures": {
+    "particle": "guogaology:item/lho_guide_l",
+    "north": "guogaology:item/lho_guide_l",
+    "south": "guogaology:item/lho_guide_l",
+    "east": "guogaology:item/lho_guide_h",
+    "west": "guogaology:item/lho_guide_h",
+    "up": "guogaology:item/lho_guide_o",
+    "down": "guogaology:item/lho_guide_o"
+  }
+}

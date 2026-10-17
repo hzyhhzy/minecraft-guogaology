@@ -1,5 +1,8 @@
 """Stable guide coordinates; file/hash iteration never decides branch order."""
 THEMES=('matrix','power','hydra','absence','weaver','astra','frontier','guogao')
+# Between native 1.0 spacing and the earlier 1.45 / 1.4 guide layout.
+COLUMN_SPACING=1.2
+LEAF_SPACING=1.2
 
 def positions(nodes):
     children={key:[] for key in nodes}
@@ -25,8 +28,8 @@ def positions(nodes):
         branch=sorted(children[key],key=lambda child:(order.index(child) if child in order else len(order),child))
         if branch:
             rows=[visit(child,depth+1) for child in branch];y=(rows[0]+rows[-1])/2
-        else:y=next_leaf;next_leaf+=1.4
-        result['guogaology:'+key]=[round(depth*1.45,4),round(y,4)]
+        else:y=next_leaf;next_leaf+=LEAF_SPACING
+        result['guogaology:'+key]=[round(depth*COLUMN_SPACING,4),round(y,4)]
         return y
     visit('arrival',0)
     assert len(result)==len(nodes),'Unpositioned guide nodes'
