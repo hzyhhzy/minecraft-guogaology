@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.5.7
+# Three-world survival guide · 0.5.8
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -39,6 +39,8 @@ Everyone can use `/guogaology` or `/guogaology help`. The following commands req
 From 0.5.7, vein attempts per chunk are 24/6/6/4 for ω/ε/Γ/Ω, and exposed ore candidates have a 50% air-discard chance. Γ and Ω favor the bottom: Γ height candidates span approximately Y=−64…55, with very few at Y≥50; Ω spans approximately −64…15. Veins can extend around their starting point and still require suitable host stone and biomes. These changes affect newly generated chunks only.
 
 Only Outer naturally generates ω, ε, Γ and Ω ores, including understone variants in its underground biome. The deeper dimensions do not generate these four equipment ores; they generate separate Ordinal Crystal Ore for the core economy. All four drop usable minerals directly, support Fortune and Silk Touch, and can be mined with an ordinary iron pickaxe. There is no core-dependent processing or exponential ore-mining gate.
+
+Nine-mineral storage blocks match their ores: hardness ω 3, ε 3.5, Γ 4, Ω 4.5, all requiring an iron or better pickaxe. Activated portal frames retain their separate hardness of 200 and no drops.
 
 Each tier crafts a pickaxe, sword, bow, four armor pieces, a Manuscript, and a reversible nine-mineral storage block. Manuscript passive effects work in either hand, with offhand priority when both hands hold one. Names omit “Stone”, for example ω Pickaxe or Ω Chestplate. Each Manuscript has a distinct scroll/folio icon. The four mineral families retain Alice 0.5.4.1 artwork; the ε name has no zero suffix. Number pickaxes/swords remain: three Number Stones give the floor of their average digit, with ordinary stone-to-netherite stats at levels 0–9.
 
@@ -164,7 +166,7 @@ LHO retains its special rules. A base crystal stabilizes the two neighboring rin
 
 Craft a Guogao Lamp Shaper with any emoji lamp at top center, three quartz across the middle, and copper/iron/copper ingots along the bottom.
 
-One input lamp converts into one of 54 same-color shapes: two expressions, each with 26 exterior 3×3×3 tiles and one complete 1×1×1 lamp. The center cell is not an exterior tile. Ordinary mining returns that color's basic whole open-mouth lamp; Silk Touch preserves the exact expression and tile. Numbered and blank lamps do not enter this machine and keep their own mining rules.
+One input lamp converts into one of 54 same-color shapes: two expressions, each with 26 exterior 3×3×3 tiles and one complete 1×1×1 lamp. The center cell is not an exterior tile. Ordinary mining keeps the color and expression, resetting only the tile to a whole lamp. Silk Touch keeps both expression and tile. Right-click switches Guogao/Guogua while retaining color and tile. Numbered and blank lamps do not enter this machine and keep their own mining rules.
 
 ## Shared scenery and building materials
 

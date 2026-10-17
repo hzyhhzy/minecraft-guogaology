@@ -13,8 +13,8 @@ COPY = {
     'item.guogaology.lantern_expression': ('表情：%s', 'Expression: %s'),
     # Verified from emotion=0/1 blockstate models AND the actual mouth pixels.
     # These user-requested names are intentional words; do not replace by emoji.
-    'item.guogaology.lantern_emotion.0': ('馃槹（张嘴）', 'Guogao (open mouth)'),
-    'item.guogaology.lantern_emotion.1': ('馃槬（闭嘴）', 'Guogua (closed mouth)'),
+    'item.guogaology.lantern_emotion.0': ('馃槹', 'Guogao'),
+    'item.guogaology.lantern_emotion.1': ('馃槬', 'Guogua'),
     'item.guogaology.tape_ink.0': ('空心墨点', 'Hollow ink dot'),
     'item.guogaology.tape_ink.1': ('实心墨点', 'Solid ink dot'),
     'block.guogaology.amber_light': ('琥珀彩灯', 'Amber Light'),
@@ -24,19 +24,23 @@ COPY = {
     'block.guogaology.violet_light': ('紫罗兰彩灯', 'Violet Light'),
     'block.guogaology.scarlet_light': ('绯红彩灯', 'Scarlet Light'),
 }
+RETIRED={'item.guogaology.lantern_whole'}
 
 
 def generate(root=ROOT, *, check=False):
     root = Path(root)
     path = root / 'tools/copy_catalog.json'
     catalog = json.loads(path.read_text(encoding='utf-8'))
+    catalog['removed']=sorted(set(catalog.get('removed',()))|RETIRED)
     expected = {}
     for index, locale in enumerate(('zh_cn', 'en_us')):
         values = {key: pair[index] for key, pair in COPY.items()}
         catalog['translations'][locale].update(values)
+        for key in RETIRED:catalog['translations'][locale].pop(key,None)
         lang_path = root / f'src/main/resources/assets/guogaology/lang/{locale}.json'
         language = json.loads(lang_path.read_text(encoding='utf-8'))
         language.update(values)
+        for key in RETIRED:language.pop(key,None)
         expected[lang_path] = language
     expected[path] = catalog
     changed = []

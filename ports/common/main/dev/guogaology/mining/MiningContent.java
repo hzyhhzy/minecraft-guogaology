@@ -39,7 +39,7 @@ public final class MiningContent {
         for(int t=0;t<4;t++){
             String m=EquipmentRules.MINERALS[t];
             MATERIALS[t]=item(m+"_material",new Item(itemSettings(m+"_material")));
-            STORAGE[t]=block(m+"_block",new Block(blockSettings(m+"_block")));
+            STORAGE[t]=block(m+"_block",new Block(blockSettings(m+"_block").strength(3+t*.5f,6).requiresCorrectToolForDrops()));
             for(int u=0;u<2;u++){String id=(u==1?"nether_":"")+m+"_ore";ORES[u][t]=block(id,new OrdinalOre(blockSettings(id).strength(3+t*.5f,6).requiresCorrectToolForDrops(),t+1));}
         }
         for(int tier=0;tier<=4;tier++)for(int kind=0;kind<(tier==0?2:6);kind++){

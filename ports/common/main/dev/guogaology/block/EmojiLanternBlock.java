@@ -21,12 +21,16 @@ public final class EmojiLanternBlock extends StatefulDecorBlock {
         registerDefaultState(getStateDefinition().any().setValue(PART, 27).setValue(EMOTION,0));
     }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(PART,EMOTION); }
+    @Override protected net.minecraft.world.InteractionResult useWithoutItem(BlockState state,net.minecraft.world.level.Level world,net.minecraft.core.BlockPos pos,net.minecraft.world.entity.player.Player player,net.minecraft.world.phys.BlockHitResult hit){
+        if(!world.isClientSide())world.setBlock(pos,state.setValue(EMOTION,1-state.getValue(EMOTION)),Block.UPDATE_CLIENTS);
+        return net.minecraft.world.InteractionResult.SUCCESS;
+    }
     @Override protected List<ItemStack> getDrops(BlockState state,LootParams.Builder builder){
         var drops=super.getDrops(state,builder);
         var tool=builder.getOptionalParameter(LootContextParams.TOOL);
         boolean silk=tool!=null&&EnchantmentHelper.getItemEnchantmentLevel(builder.getLevel().registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH),tool)>0;
-        if(!silk)for(var stack:drops)if(stack.is(asItem()))copyAppearance(stack,defaultBlockState());
+        if(!silk)for(var stack:drops)if(stack.is(asItem()))copyAppearance(stack,state.setValue(PART,27));
         return drops;
     }
     public static BlockState tile(Block lamp, int x, int y, int z) {

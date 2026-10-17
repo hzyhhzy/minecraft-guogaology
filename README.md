@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.7 · Minecraft Java / Fabric · 本地版本，尚未发布**
+**v0.5.8 · Minecraft Java / Fabric · 本地版本，尚未发布**
 
-本轮调整ε/Ω矿物频率、四档整数护甲与晶核固定5/10/20秒采集，并修复及补充生存引导进度。见[本轮记录](docs/WORK-057.md)和[进度清单](docs/ADVANCEMENTS-057.md)。
+本轮简化果糕灯表情名称、保留普通掉落的表情、增加右键表情切换，并让矿物结晶块对齐矿石采集难度。见[本轮记录](docs/WORK-058.md)；上轮的[39项生存引导](docs/ADVANCEMENTS-057.md)继续保留。
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -88,9 +88,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 写入 `build/releases/0.5.7/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 写入 `build/releases/0.5.8/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.5.7 的实施范围与实际验证结果记录在[本轮清单](docs/WORK-057.md)，此版本尚未发布。已发布的[v0.5.3 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3)及其[历史验证记录](docs/WORK-0503.md)仍可查阅；不要把旧版验证范围视为本版的新增测试结果。
+0.5.8 的实施范围与实际验证结果记录在[本轮清单](docs/WORK-058.md)，此版本尚未发布。已发布的[v0.5.3 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3)及其[历史验证记录](docs/WORK-0503.md)仍可查阅；不要把旧版验证范围视为本版的新增测试结果。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -104,4 +104,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.5.7实施与验证进度](docs/WORK-057.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)
+[0.5.8实施与验证进度](docs/WORK-058.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)

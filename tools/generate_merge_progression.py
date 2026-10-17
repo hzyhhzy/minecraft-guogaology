@@ -89,7 +89,7 @@ def generate():
         simple('circuit_from_'+machine,['guogaology:'+machine],'guogaology:compute_chip',2)
     for name in ('mineable/pickaxe','needs_iron_tool'):
         p=RES/f'data/minecraft/tags/block/{name}.json';v=read(p)
-        v['values']=list(dict.fromkeys(v['values']+[f'guogaology:{prefix}{m}_ore' for prefix in ('','nether_') for m in METALS]))
+        v['values']=list(dict.fromkeys(v['values']+[f'guogaology:{prefix}{m}_ore' for prefix in ('','nether_') for m in METALS]+[f'guogaology:{m}_block' for m in METALS]))
         write(p,v)
     for p in (RES/'data/minecraft/tags').rglob('*.json'):
         v=read(p);v['values']=[x for x in v.get('values',[]) if not old_id(x if isinstance(x,str) else x.get('id',''))]

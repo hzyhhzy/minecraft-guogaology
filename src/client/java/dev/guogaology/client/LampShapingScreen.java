@@ -24,9 +24,10 @@ public final class LampShapingScreen extends HandledScreen<LampShapingMenu> {
     }
     private Text label(int choice){
         int part=LampShapes.part(choice);
-        Text form=part==27?Text.translatable("item.guogaology.lantern_whole"):
-                Text.translatable("item.guogaology.lantern_tile",part%3+1,part/3%3+1,part/9+1);
-        return Text.translatable("item.guogaology.expression_variant",Text.translatable("item.guogaology.lantern_emotion."+LampShapes.emotion(choice)),form);
+        Text emotion=Text.translatable("item.guogaology.lantern_emotion."+LampShapes.emotion(choice));
+        if(part==27)return emotion;
+        return Text.translatable("item.guogaology.expression_variant",emotion,
+                Text.translatable("item.guogaology.lantern_tile",part%3+1,part/3%3+1,part/9+1));
     }
     @Override public void render(DrawContext graphics,int mouseX,int mouseY,float delta){
         for(var button:choices)if(button!=null)button.active=handler.hasInput();

@@ -19,6 +19,10 @@
     "guogaology:nether_omega_ore",
     "guogaology:nether_epsilon_ore",
     "guogaology:nether_gamma_ore",
-    "guogaology:nether_true_omega_ore"
+    "guogaology:nether_true_omega_ore",
+    "guogaology:omega_block",
+    "guogaology:epsilon_block",
+    "guogaology:gamma_block",
+    "guogaology:true_omega_block"
   ]
 }

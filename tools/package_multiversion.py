@@ -100,6 +100,13 @@ def verify_guide_policy(archive, target):
         assert visible[name]==value,f'Incorrect guide payload: {target}/{name}'
 
 
+def verify_mineral_block_tools(archive, target):
+    for tag in ('mineable/pickaxe','needs_iron_tool'):
+        values=json.loads(archive.read(f'data/minecraft/tags/block/{tag}.json'))['values']
+        for mineral in ('omega','epsilon','gamma','true_omega'):
+            assert 'guogaology:'+mineral+'_block' in values,f'Mineral storage tool policy missing: {target}/{tag}/{mineral}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -137,6 +144,7 @@ def package(targets, output_dir=None):
             verify_ore_policy(archive, target)
             verify_crystal_ore_policy(archive, target)
             verify_guide_policy(archive, target)
+            verify_mineral_block_tools(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
             assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))

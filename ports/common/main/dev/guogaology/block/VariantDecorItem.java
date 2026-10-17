@@ -46,6 +46,5 @@ public final class VariantDecorItem extends BlockItem {
         out.accept(Component.translatable("item.guogaology.lantern_expression",emotion(stack)));
         int part=variant(stack,"part",27,27);
         if(part>=0&&part<27)out.accept(Component.translatable("item.guogaology.lantern_tile",part%3+1,part/3%3+1,part/9+1));
-        else out.accept(Component.translatable("item.guogaology.lantern_whole"));
     }
 }

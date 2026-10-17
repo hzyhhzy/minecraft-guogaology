@@ -31,6 +31,7 @@ final class LampShaping055Checks {
     private static int count(ServerPlayer p,Item item){int n=0;for(int i=0;i<p.getInventory().getContainerSize();i++)if(p.getInventory().getItem(i).is(item))n+=p.getInventory().getItem(i).getCount();return n;}
     static void run(ServerPlayer real){
         checks=0;var pos=real.blockPosition().offset(3,0,0);var world=real.level();var saved=world.getBlockState(pos);
+        var clickPos=pos.above();var savedClick=world.getBlockState(clickPos);
         try{
             world.setBlock(pos,LampShapingContent.BLOCK.defaultBlockState(),2);
             var silk=new ItemStack(Items.DIAMOND_PICKAXE);silk.enchant(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH),1);
@@ -47,9 +48,17 @@ final class LampShaping055Checks {
                         check(output.get(DataComponents.BLOCK_STATE).apply(lamp.defaultBlockState()).equals(state),"menu writes exact portable form");
                         var natural=Block.getDrops(state,world,pos,null,p,ItemStack.EMPTY);
                         check(natural.size()==1&&natural.getFirst().is(lamp.asItem())&&natural.getFirst().getCount()==1,"normal mining yields exactly one same-color lamp");
-                        check(natural.getFirst().get(DataComponents.BLOCK_STATE).apply(lamp.defaultBlockState()).equals(lamp.defaultBlockState()),"normal mining normalizes tile and expression");
+                        check(natural.getFirst().get(DataComponents.BLOCK_STATE).apply(lamp.defaultBlockState()).equals(state.setValue(EmojiLanternBlock.PART,27)),"normal mining preserves expression and removes only tile");
                         var preserved=Block.getDrops(state,world,pos,null,p,silk);
                         check(preserved.size()==1&&preserved.getFirst().get(DataComponents.BLOCK_STATE).apply(lamp.defaultBlockState()).equals(state),"Silk Touch preserves actual tile and expression");
+                        world.setBlock(clickPos,state,2);
+                        var hit=new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(clickPos),net.minecraft.core.Direction.UP,clickPos,false);
+                        check(state.useWithoutItem(world,p,hit)==net.minecraft.world.InteractionResult.SUCCESS,"successful click consumes interaction");
+                        var switched=world.getBlockState(clickPos);
+                        check(switched.equals(state.setValue(EmojiLanternBlock.EMOTION,1-state.getValue(EmojiLanternBlock.EMOTION))),"right click changes only expression");
+                        var switchedDrops=Block.getDrops(switched,world,clickPos,null,p,ItemStack.EMPTY);
+                        check(switchedDrops.size()==1&&switchedDrops.getFirst().get(DataComponents.BLOCK_STATE).apply(lamp.defaultBlockState()).equals(switched.setValue(EmojiLanternBlock.PART,27)),"mining after toggling keeps the new expression");
+                        switched.useWithoutItem(world,p,hit);check(world.getBlockState(clickPos).equals(state),"second click restores original expression and tile");
                     }
                     for(int invalid:new int[]{-1,54,Integer.MAX_VALUE})check(!menu.clickMenuButton(p,invalid),"server rejects forged choice");
                     check(menu.getSlot(0).getItem().getCount()==2,"selection alone consumes no input");
@@ -57,8 +66,8 @@ final class LampShaping055Checks {
             }
             check(!LampShapingMenu.accepts(new ItemStack(GuogaologyBlocks.PLAIN_LIGHTS[0]))&&!LampShapingMenu.accepts(new ItemStack(GuogaologyBlocks.SEQUENCE_LIGHTS[0])),"blank and numeric lights are not editable emoji lamps");
             transactions(real,pos);
-            System.out.println("LAMP_SHAPING_055_OK checks="+checks+" colors=6 forms=54 normalSilk=324 selections=validated itemConservation=pickup/shift/fullInventory/close/death");
-        }finally{world.setBlock(pos,saved,2);}
+            System.out.println("LAMP_SHAPING_058_OK checks="+checks+" colors=6 forms=54 normalSilk=324 clicks=648 selections=validated itemConservation=pickup/shift/fullInventory/close/death");
+        }finally{world.setBlock(pos,saved,2);world.setBlock(clickPos,savedClick,2);}
     }
     private static void transactions(ServerPlayer real,net.minecraft.core.BlockPos pos){
         var lamp=GuogaologyBlocks.GUOGAO_LANTERN.asItem();var p=dummy(real);var menu=menu(p,pos);

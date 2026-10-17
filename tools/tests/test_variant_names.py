@@ -15,8 +15,8 @@ from update_variant_copy import COPY, generate
 class VariantNames(unittest.TestCase):
     def test_copy_is_current_and_preserves_requested_names(self):
         generate(check=True)
-        self.assertEqual(COPY['item.guogaology.lantern_emotion.0'][0], '馃槹（张嘴）')
-        self.assertEqual(COPY['item.guogaology.lantern_emotion.1'][0], '馃槬（闭嘴）')
+        self.assertEqual(COPY['item.guogaology.lantern_emotion.0'][0], '馃槹')
+        self.assertEqual(COPY['item.guogaology.lantern_emotion.1'][0], '馃槬')
         for locale in range(2):
             self.assertNotEqual(COPY['item.guogaology.lantern_emotion.0'][locale], COPY['item.guogaology.lantern_emotion.1'][locale])
             self.assertNotEqual(COPY['item.guogaology.tape_ink.0'][locale], COPY['item.guogaology.tape_ink.1'][locale])

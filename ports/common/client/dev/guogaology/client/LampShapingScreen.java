@@ -24,9 +24,10 @@ public final class LampShapingScreen extends AbstractContainerScreen<LampShaping
     }
     private Component label(int choice){
         int part=LampShapes.part(choice);
-        Component form=part==27?Component.translatable("item.guogaology.lantern_whole"):
-                Component.translatable("item.guogaology.lantern_tile",part%3+1,part/3%3+1,part/9+1);
-        return Component.translatable("item.guogaology.expression_variant",Component.translatable("item.guogaology.lantern_emotion."+LampShapes.emotion(choice)),form);
+        Component emotion=Component.translatable("item.guogaology.lantern_emotion."+LampShapes.emotion(choice));
+        if(part==27)return emotion;
+        return Component.translatable("item.guogaology.expression_variant",emotion,
+                Component.translatable("item.guogaology.lantern_tile",part%3+1,part/3%3+1,part/9+1));
     }
     @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float delta){
         for(var button:choices)if(button!=null)button.active=menu.hasInput();
