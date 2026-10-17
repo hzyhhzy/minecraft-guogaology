@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.5.15
+# Three-world survival guide · 0.6.0
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 

@@ -1,4 +1,4 @@
-# Block harvesting reference · 0.5.15
+# Block harvesting reference · 0.6.0
 
 [简体中文](BLOCK-BALANCE.md) | English · [Survival guide](SURVIVAL-GUIDE.en.md)
 

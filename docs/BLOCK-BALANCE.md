@@ -1,4 +1,4 @@
-# 方块采集表 · 0.5.15
+# 方块采集表 · 0.6.0
 
 简体中文 | [English](BLOCK-BALANCE.en.md) · [生存指南](SURVIVAL-GUIDE.md)
 

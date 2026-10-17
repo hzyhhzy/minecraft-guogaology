@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.5.15 · Minecraft Java / Fabric · 本地版本，尚未发布**
+**v0.6.0 · Minecraft Java / Fabric** · [下载 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)
 
-本轮简化八系一级晶核的材料与对称配方，沿用中央序数晶体的8＋1布局；二级／三级中央仍为ε／Γ结晶块，序数晶核仍按九合一升阶。核爆晶块改为完整方块，馃槹六面重绘原😰的焦虑流汗表情并保持亮度15；LHO野外ψ／Z与fffZ／FOS密度提高一倍。见[本轮记录](docs/WORK-0515.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
+0.6.0 汇集此前的资源获取重制、群系晶核配方、生存进度引导、紫菜桌逐行演奏和场景美术调整。包含 Alice（AliceLdl）的0.5.4.1修改及四版本适配；Astra圣诞树保持直轴，SCG结点采用鲜艳玫紫与金白配色，编织冠保留64阶循环渐变。见[发行说明](docs/RELEASE-0.6.0.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -29,7 +29,7 @@
 
 另已验证Voxy World Gen V2 2.4.3：服务端只安装生成器，客户端同时安装Voxy 0.2.19-beta；表界、里界、地府远景接收、返回切换及重启后新客户端接收通过。使用32区块半径/2并发，冷生成有明显负载；见[远景联机测试](docs/DEDICATED-VOXY-055.md)。
 
-0.5.3 的同一份 1.21.1 JAR 已验证可通过 NeoForge21.1.248＋Sinytra Connector beta.16 加载（beta.17 曾在 0.5.2 验证）。0.5.5 保留这些兼容修复，但本轮未重跑 Connector；这种安装方式使用 Forgified Fabric API，不同时安装普通 Fabric API。Connector 不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
+0.5.3 的同一份 1.21.1 JAR 已验证可通过 NeoForge21.1.248＋Sinytra Connector beta.16 加载（beta.17 曾在 0.5.2 验证）。0.6.0 保留这些兼容修复，但本轮未重跑 Connector；这种安装方式使用 Forgified Fabric API，不同时安装普通 Fabric API。Connector 不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
 
 游戏内支持简体中文和英语，随 Minecraft「选项 → 语言」切换；同一 JAR 包含两种语言。方块与装备名称、变体提示、强化台、创造分类、群系、建筑、进度、声音字幕和命令帮助均有对应翻译。装有 Mod Menu 时，模组名称与简介也可随语言切换，无需额外安装翻译包。
 
@@ -88,9 +88,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 写入 `build/releases/0.5.12/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 写入 `build/releases/0.6.0/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.5.12 的实施范围与实际验证结果记录在[本轮清单](docs/WORK-0512.md)，此版本尚未发布。已发布的[v0.5.3 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3)及其[历史验证记录](docs/WORK-0503.md)仍可查阅；不要把旧版验证范围视为本版的新增测试结果。
+0.6.0 的发布范围与实际验证结果记录在[发布记录](docs/WORK-060.md)。[v0.5.3 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3)及其[历史验证记录](docs/WORK-0503.md)仍可查阅；旧版测试结果不代表本版重新测试过相同环境。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -104,4 +104,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.5.12实施与验证进度](docs/WORK-0512.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.5.0更新](docs/RELEASE-0.5.0.md)
+[0.6.0发布与验证](docs/WORK-060.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.6.0更新](docs/RELEASE-0.6.0.md)
