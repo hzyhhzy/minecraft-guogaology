@@ -36,6 +36,27 @@ def verify_client_hooks(archive, metadata):
         assert 'dev.guogaology.client.mixin.'+required in active,f'Unregistered client hook: {required}'
 
 
+def verify_jei_compat(archive, metadata, target):
+    """Optional26.3 workaround must never create a server/JEI hard dependency."""
+    config_name='guogaology.jei-compat.mixins.json'
+    entry={'config':config_name,'environment':'client'}
+    assert 'jei' not in metadata['depends'], 'JEI must remain optional'
+    prefix='dev/guogaology/client/compat/jei/'
+    sync='dev/guogaology/compat/RecipeSyncCompat.class'
+    if target!='26.3':
+        assert config_name not in archive.namelist(), '26.3 JEI hook leaked to another target'
+        assert not any(name.startswith(prefix) for name in archive.namelist()), '26.3 JEI classes leaked to another target'
+        assert sync not in archive.namelist(), '26.3 recipe sync leaked to another target'
+        return
+    assert entry in metadata['mixins'], 'JEI hook must be client-only'
+    config=json.loads(archive.read(config_name))
+    assert config['plugin']=='dev.guogaology.client.compat.jei.JeiTagCompatPlugin', 'Missing JEI version guard'
+    assert config['client']==['JeiVanillaTagsMixin'] and not config.get('mixins'), 'JEI hook must be client-only'
+    assert prefix+'JeiTagCompatPlugin.class' in archive.namelist(), 'Missing JEI version guard class'
+    assert sync in archive.namelist(), 'Missing recipe synchronization'
+    assert metadata['entrypoints']['main'].index('dev.guogaology.compat.RecipeSyncCompat') > metadata['entrypoints']['main'].index('dev.guogaology.GuogaologyMod'), 'Recipe synchronization must follow serializer registration'
+
+
 def verify_ore_policy(archive, target):
     """Resource imports must not restore donor counts after the host overlay."""
     from generate_ore_distribution import COUNTS, TOPS
@@ -168,6 +189,7 @@ def package(targets, output_dir=None):
             assert metadata['depends']['minecraft']==target
             entries=archive.namelist()
             verify_client_hooks(archive, metadata)
+            verify_jei_compat(archive, metadata, target)
             verify_namespace(archive)
             verify_ore_policy(archive, target)
             verify_crystal_ore_policy(archive, target)

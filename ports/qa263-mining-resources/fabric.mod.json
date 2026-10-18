@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "guogaology-mining-263-qa",
+  "version": "1.0.0",
+  "name": "Guogaology isolated dedicated mining checks",
+  "environment": "server",
+  "entrypoints": {"server": ["dev.guogaology.miningqa263.MiningServerChecks"]},
+  "depends": {"guogaology": "*", "minecraft": "26.3", "java": ">=25", "fabric-api": "*"}
+}

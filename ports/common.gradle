@@ -139,3 +139,39 @@ if (project.name == '26.3' && project.hasProperty('releaseQa263')) {
         }
     }
 }
+
+// Native tool/tag regression on a real dedicated server; no client dependencies.
+if (project.name == '26.3' && project.hasProperty('miningQa263')) {
+    sourceSets {
+        miningQa263 {
+            java.srcDir rootProject.file('qa263-mining')
+            resources.srcDir rootProject.file('qa263-mining-resources')
+            compileClasspath += sourceSets.main.compileClasspath
+            runtimeClasspath += output + compileClasspath
+        }
+    }
+    tasks.register('miningQa263Jar', Jar) {
+        dependsOn tasks.named('miningQa263Classes')
+        from sourceSets.miningQa263.output
+        archiveBaseName = 'guogaology-mining-263-qa'
+        destinationDirectory = layout.buildDirectory.dir('qa')
+    }
+}
+
+// Separate real TCP recipe/tag replay. Never included in production source sets.
+if (project.name == '26.3' && project.hasProperty('networkQa263')) {
+    sourceSets {
+        networkQa263 {
+            java.srcDir rootProject.file('qa263-network')
+            resources.srcDir rootProject.file('qa263-network-resources')
+            compileClasspath += sourceSets.client.compileClasspath
+            runtimeClasspath += output + compileClasspath
+        }
+    }
+    tasks.register('networkQa263Jar', Jar) {
+        dependsOn tasks.named('networkQa263Classes')
+        from sourceSets.networkQa263.output
+        archiveBaseName = 'guogaology-network-263-qa'
+        destinationDirectory = layout.buildDirectory.dir('qa')
+    }
+}

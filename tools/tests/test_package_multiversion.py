@@ -8,7 +8,7 @@ import sys
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from package_multiversion import ROOT, verify_structure_template, verify_client_hooks
+from package_multiversion import ROOT, verify_structure_template, verify_client_hooks, verify_jei_compat
 
 
 class ClientHookValidationTests(unittest.TestCase):
@@ -33,6 +33,41 @@ class ClientHookValidationTests(unittest.TestCase):
         with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin'],False) as archive:
             with self.assertRaisesRegex(AssertionError,'Missing registered mixin'):
                 verify_client_hooks(archive,{'mixins':['client.json']})
+
+
+class OptionalJeiValidationTests(unittest.TestCase):
+    def archive(self, include=True):
+        stream=io.BytesIO()
+        with ZipFile(stream,'w') as out:
+            if include:
+                out.writestr('guogaology.jei-compat.mixins.json',json.dumps({
+                    'plugin':'dev.guogaology.client.compat.jei.JeiTagCompatPlugin',
+                    'client':['JeiVanillaTagsMixin']}))
+                out.writestr('dev/guogaology/client/compat/jei/JeiTagCompatPlugin.class',b'fixture')
+                out.writestr('dev/guogaology/compat/RecipeSyncCompat.class',b'fixture')
+        return ZipFile(stream)
+
+    def metadata(self):
+        return {'depends':{},'entrypoints':{'main':['dev.guogaology.GuogaologyMod','dev.guogaology.compat.RecipeSyncCompat']},'mixins':[{'config':'guogaology.jei-compat.mixins.json','environment':'client'}]}
+
+    def test_263_optional_client_patch_is_allowed(self):
+        with self.archive() as archive:verify_jei_compat(archive,self.metadata(),'26.3')
+
+    def test_hook_on_dedicated_server_is_rejected(self):
+        metadata=self.metadata();metadata['mixins']=['guogaology.jei-compat.mixins.json']
+        with self.archive() as archive:
+            with self.assertRaisesRegex(AssertionError,'client-only'):verify_jei_compat(archive,metadata,'26.3')
+
+    def test_jei_hard_dependency_is_rejected(self):
+        metadata=self.metadata();metadata['depends']['jei']='*'
+        with self.archive() as archive:
+            with self.assertRaisesRegex(AssertionError,'optional'):verify_jei_compat(archive,metadata,'26.3')
+
+    def test_other_targets_exclude_workaround(self):
+        for target in ('1.21.1','1.21.11','26.2'):
+            with self.archive(False) as archive:verify_jei_compat(archive,{'depends':{},'mixins':[]},target)
+            with self.archive() as archive:
+                with self.assertRaisesRegex(AssertionError,'leaked'):verify_jei_compat(archive,self.metadata(),target)
 
 
 class StructureValidationTests(unittest.TestCase):

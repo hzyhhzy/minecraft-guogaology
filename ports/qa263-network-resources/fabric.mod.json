@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "guogaology-network-263-qa",
+  "version": "1.0.0",
+  "name": "Guogaology isolated 26.3 TCP recipe replay",
+  "environment": "*",
+  "entrypoints": {
+    "server": ["dev.guogaology.networkqa263.NetworkServerChecks"],
+    "client": ["dev.guogaology.networkqa263.NetworkClientChecks"]
+  },
+  "depends": {"guogaology": "*", "minecraft": "26.3", "java": ">=25", "fabric-api": "*"},
+  "mixins": ["network-263-qa.mixins.json"]
+}

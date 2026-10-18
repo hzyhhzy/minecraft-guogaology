@@ -245,6 +245,19 @@ def prepare(target, release):
     # Only the old atmosphere hooks are superseded by environment attributes.
     # Keep unrelated client hooks (flight prediction / inventory positioning).
     metadata["mixins"] = ["guogaology.mixins.json", {"config": "guogaology.client.mixins.json", "environment": "client"}]
+    if target == '26.3':
+        metadata["entrypoints"]["main"].append("dev.guogaology.compat.RecipeSyncCompat")
+        # JEI31.14's client-only recipe fallback must not replace live server tags.
+        # Keep this optional hook out of the other targets and dedicated servers.
+        metadata["mixins"].append({"config": "guogaology.jei-compat.mixins.json", "environment": "client"})
+        write(out / "guogaology.jei-compat.mixins.json", {
+            "required": True,
+            "package": "dev.guogaology.client.compat.jei",
+            "plugin": "dev.guogaology.client.compat.jei.JeiTagCompatPlugin",
+            "compatibilityLevel": "JAVA_25",
+            "client": ["JeiVanillaTagsMixin"],
+            "injectors": {"defaultRequire": 1},
+        })
     write(out / "fabric.mod.json", metadata)
     client_mixins = read(out / "guogaology.client.mixins.json")
     client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GuogaologyFogMixin", "GuogaologySkyLightMixin", "CoreItemViewMixin")]
