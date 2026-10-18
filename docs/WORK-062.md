@@ -63,11 +63,17 @@ The final historical command/loading-screen regression `portal062-ui-c` passes: 
 | 26.2 | `30f3f01c5037d07ca226a3475a942d2d93e7a2e607fe8dc3b698261a75816016` |
 | 26.3 | `6c4e4c5bcfceda21e9297ad7c8d5b0e3652d66cb66e4b7ef77571af83e0d0c68` |
 
-All four are in `build/releases/0.6.2/`. Work remains on `codex/0.6.2-asymmetric-portals`; real main is unchanged at1900d1e. No push or Release is performed.
+All four are in `build/releases/0.6.2/`. Work remains on `codex/0.6.2-asymmetric-portals`; real main is unchanged at1900d1e. The implementation turn ended with local commit3da38d5 and no push or Release.
 
 ## Local installation
 
 After all final tests exited, the normal fo262 instance was confirmed closed and updated under the user's standing installation authorization. Previous0.6.1 is backed up at `build/backups/fo262-before-0.6.2/`; exactly one actual guogaology Mod remains and the installed hash matches the final tested26.2 artifact above. All55 other Mod hashes,129 configuration hashes, and48 fo263_2 Mod hashes remain unchanged. The21,178 fo262 and356 fo263_2 normal-save file length/mtime records also remain unchanged; this metadata check is not described as a full save-content hash comparison. Normal fo263_2 remains0.6.1. Receipt: `build/install-062.json`.
+
+## Publication follow-up
+
+The user subsequently explicitly requests `push+release`. This authorizes pushing the current development branch and publishing v0.6.2, while the previous instruction to leave main unmerged remains in force. The release includes0.6.1's26.3 optional-JEI/tag/recipe synchronization fixes as well as this portal work. Bilingual release notes and READMEs are updated without changing production code or the tested JARs.
+
+Generate the complete corresponding source archive from the exact final release commit on this branch, verify every archived file against Git, preserve executable Gradle wrappers and all attribution/license notices, and include the source and all other attachments in the final SHA-256 list. Check the four-target GitHub workflow before publication. Final packaging and remote evidence are recorded after the release commit in ignored `build/bundle-062-proof.json` and `build/release-062-remote.json`; source and tag must identify that same commit. No main merge is part of this publication.
 
 Preflight records are retained rather than overwritten. `portal062-warm-a` was canceled to correct a QA-only concurrent-fixture counter before trials. `portal062-warm-b` exposed a boundary-source fixture which had unloaded after setup; its timing series is incomplete and is not the final warm-rate sample. Offline decoding confirms all 21 physical source portal/frame blocks and its registered gate remained intact. The report did not directly log the transient source-loaded boolean, so its unloaded-source diagnosis is a strongly supported explanation rather than a recorded boolean observation. Gameplay gained the source-loading guard above; final warm fixtures explicitly establish source/target residency before starting their clocks.
 

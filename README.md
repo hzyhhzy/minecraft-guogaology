@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.0 · Minecraft Java / Fabric** · [下载 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)
+**v0.6.2 · Minecraft Java / Fabric** · [下载 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.2)
 
-0.6.0 汇集此前的资源获取重制、群系晶核配方、生存进度引导、紫菜桌逐行演奏和场景美术调整。包含 Alice（AliceLdl）的0.5.4.1修改及四版本适配；Astra圣诞树保持直轴，SCG结点采用鲜艳玫紫与金白配色，编织冠保留64阶循环渐变。见[发行说明](docs/RELEASE-0.6.0.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
+0.6.2 改善传送门往返复用：按坐标比例采用24/96格搜索、尝试四向安全落点，里界出口不高于Y200，并收紧物理进门范围。包含0.6.1的26.3可选JEI标签保护与数字装备配方同步修复。此版本从独立分支发布，暂未合入main；完整对应源码可从Release附件或v0.6.2标签取得。见[发行说明](docs/RELEASE-0.6.2.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。Alice（AliceLdl）的0.5.4.1原始修改及既有四版本适配继续保留。
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -25,13 +25,13 @@
 
 四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；本轮不提供旧存档迁移或旧 ID 别名。
 
-0.6.0 已完成隔离26.2（Sodium/Voxy）及26.3（原生渲染、Sodium两组）定向运行检查；26.3的序数晶矿编码与地形高度标签适配也已修复。其余两版完成编译和资源检查。具体场景及验证边界见[0.6.0记录](docs/WORK-060.md)。
+0.6.2 四版均通过构建和资源检查；本轮实际运行验证为隔离26.2的传送、加载界面及真实0.6.0存档副本升级。26.3的JEI四种客户端/服务端安装组合已在0.6.1修复时验证，本轮未重复该矩阵；1.21.x和Connector没有新增运行验证。详见[0.6.2记录](docs/WORK-062.md)和[JEI修复记录](docs/WORK-061.md)。
 
 0.5.5 已通过本机26.2独立Fabric服务端验证：真实客户端连接、手稿和台子操作、跨维度、飞行及停服重启保存。测试只监听127.0.0.1，未对局域网或公网开放；环境和范围见[服务端测试记录](docs/DEDICATED-SERVER-055.md)。这不是多人容量压测。
 
 另已验证Voxy World Gen V2 2.4.3：服务端只安装生成器，客户端同时安装Voxy 0.2.19-beta；表界、里界、地府远景接收、返回切换及重启后新客户端接收通过。使用32区块半径/2并发，冷生成有明显负载；见[远景联机测试](docs/DEDICATED-VOXY-055.md)。
 
-0.5.3 的同一份 1.21.1 JAR 已验证可通过 NeoForge21.1.248＋Sinytra Connector beta.16 加载（beta.17 曾在 0.5.2 验证）。0.6.0 保留这些兼容修复，但本轮未重跑 Connector；这种安装方式使用 Forgified Fabric API，不同时安装普通 Fabric API。Connector 不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
+0.5.3 的同一份 1.21.1 JAR 已验证可通过 NeoForge21.1.248＋Sinytra Connector beta.16 加载（beta.17 曾在 0.5.2 验证）。0.6.2 保留这些兼容修复，但本轮未重跑 Connector；这种安装方式使用 Forgified Fabric API，不同时安装普通 Fabric API。Connector 不是必需依赖。具体版本与测试范围见[兼容说明](docs/CONNECTOR-COMPATIBILITY.md)。
 
 游戏内支持简体中文和英语，随 Minecraft「选项 → 语言」切换；同一 JAR 包含两种语言。方块与装备名称、变体提示、强化台、创造分类、群系、建筑、进度、声音字幕和命令帮助均有对应翻译。装有 Mod Menu 时，模组名称与简介也可随语言切换，无需额外安装翻译包。
 
@@ -90,9 +90,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 写入 `build/releases/0.6.0/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 写入 `build/releases/0.6.2/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.6.0 的发布范围与实际验证结果记录在[发布记录](docs/WORK-060.md)。[v0.5.3 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.5.3)及其[历史验证记录](docs/WORK-0503.md)仍可查阅；旧版测试结果不代表本版重新测试过相同环境。
+0.6.2 的范围与实际验证结果记录在[工作记录](docs/WORK-062.md)。[v0.6.0 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)及其[历史验证记录](docs/WORK-060.md)仍可查阅；旧版测试结果不代表本版重新测试过相同环境。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -106,4 +106,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.6.0发布与验证](docs/WORK-060.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.6.0更新](docs/RELEASE-0.6.0.md)
+[0.6.2验证](docs/WORK-062.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.6.2更新](docs/RELEASE-0.6.2.md)
