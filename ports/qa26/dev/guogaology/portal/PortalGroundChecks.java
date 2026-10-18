@@ -91,8 +91,8 @@ public final class PortalGroundChecks {
 
         plane(64,Blocks.STONE.defaultBlockState());
         var exit=search("flat-below-high-source");check(exit.getY()==65,"high mapped Y never overrides a real flat ground candidate");
-        var reused=new PortalSiteSearch(new PortalTravel.Target(world,ORIGIN,PortalKind.INNER));reused.step();
-        check(reused.finished()&&exit.equals(reused.exit()),"existing safe portal reuses in one step");reset();
+        var reused=PortalTravel.knownGate(world,ORIGIN,PortalKind.INNER);
+        check(reused!=null&&exit.equals(reused.center()),"loaded existing safe gate is eligible for reuse");reset();
 
         plane(64,Blocks.GRASS_BLOCK.defaultBlockState());
         for(int x=minX();x<minX()+48;x++)for(int z=minZ();z<minZ()+48;z++)put(x,65,z,((x+z)%2==0?Blocks.SHORT_GRASS:Blocks.SNOW).defaultBlockState());

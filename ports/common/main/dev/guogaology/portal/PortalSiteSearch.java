@@ -10,22 +10,20 @@ final class PortalSiteSearch {
     static final int RADIUS=24,SCAN_HEIGHT_PER_STEP=32;
     private record Candidate(BlockPos pos,PortalTravel.Site site) {}
     private final PortalTravel.Target target;
-    private final List<PortalState.Gate> existing;
     private final List<BlockPos> columns=new ArrayList<>(),candidates=new ArrayList<>();
     private final List<Candidate> platforms=new ArrayList<>();
     private final Set<BlockPos> seen=new HashSet<>();
-    private int gateIndex,columnIndex,candidateIndex,phase,scanY=Integer.MIN_VALUE;
+    private int columnIndex,candidateIndex,phase,scanY=Integer.MIN_VALUE;
     private boolean finished;
     private BlockPos exit;
     PortalSiteSearch(PortalTravel.Target target){
         this.target=target;
-        existing=PortalTravel.nearbyGates(target.world(),target.desired(),target.kind());
         var desired=target.desired();int cx=desired.getX()>>4,cz=desired.getZ()>>4;
         columns.add(PortalTravel.boundedCenter(desired));
         // The entire build footprint and its block-update rim stay inside loaded chunks.
         for(int x=cx-1;x<=cx+1;x++)for(int z=cz-1;z<=cz+1;z++)for(int dx:new int[]{5,8,10})for(int dz:new int[]{5,8,10}){
             var pos=new BlockPos((x<<4)+dx,desired.getY(),(z<<4)+dz);
-            if(PortalTravel.inSearchWindow(desired,pos)&&!columns.contains(pos))columns.add(pos);
+            if(PortalTravel.inSearchWindow(desired,pos)&&PortalTravel.inGateWindow(target,pos)&&!columns.contains(pos))columns.add(pos);
         }
         columns.sort(Comparator.comparingDouble(p->distance(p,desired)));
     }
@@ -36,7 +34,7 @@ final class PortalSiteSearch {
     }
     private void candidate(BlockPos column,int y){
         var world=target.world();
-        if(y<world.getMinY()+5||y+5>=world.getMaxY()+1)return;
+        if(y>PortalGeometry.maxGateY(world)||y<world.getMinY()+5||y+5>=world.getMaxY()+1)return;
         var pos=new BlockPos(column.getX(),y,column.getZ());
         if(seen.add(pos))candidates.add(pos);
     }
@@ -44,7 +42,7 @@ final class PortalSiteSearch {
         if(scanY==Integer.MIN_VALUE){
             var chunk=world.getChunkSource().getChunkNow(column.getX()>>4,column.getZ()>>4);
             if(chunk==null){columnIndex++;return;}
-            scanY=Math.min(world.getMaxY()-5,chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,column.getX()&15,column.getZ()&15));
+            scanY=Math.min(Math.min(world.getMaxY()-5,PortalGeometry.maxGateY(world)-1),chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,column.getX()&15,column.getZ()&15));
             int top=world.getMinY()+5;
             for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++)top=Math.max(top,chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,(column.getX()+x)&15,(column.getZ()+z)&15)+1);
             // Emergency candidates only; any real ground/water contact outranks these.
@@ -63,14 +61,8 @@ final class PortalSiteSearch {
     void step(){
         if(finished)return;
         var world=target.world();var desired=target.desired();
-        if(phase==0){
-            if(gateIndex<existing.size()){
-                var gate=existing.get(gateIndex++);
-                if(PortalRitual.complete(world,gate)&&PortalTravel.isSafe(world,gate.center().offset(0,0,3))){exit=gate.center();finished=true;}
-                return;
-            }
-            phase=1;
-        }
+        // Existing gates are loaded and validated individually by PortalPreparation before terrain search.
+        if(phase==0)phase=1;
         if(phase==1){
             if(columnIndex<columns.size()){scanColumn(world,columns.get(columnIndex));return;}
             candidates.sort(Comparator.comparingDouble(p->distance(p,desired)));phase=2;

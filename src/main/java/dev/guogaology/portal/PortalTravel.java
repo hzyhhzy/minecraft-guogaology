@@ -32,9 +32,13 @@ public final class PortalTravel {
         ServerLifecycleEvents.SERVER_STOPPED.register(server->{PENDING.clear();BLOCKED.clear();LAST_SAFE.clear();PortalPreparation.clear();});
     }
     private static boolean inside(ServerPlayerEntity player,Request request){
-        return player.getServerWorld().getRegistryKey().equals(request.source)&&player.getBoundingBox().intersects(new Box(
+        if(!player.getServerWorld().getRegistryKey().equals(request.source))return false;
+        if(request.ritual)return insideGate(player,request.gate.center());
+        return player.getBoundingBox().intersects(new Box(
                 Vec3d.of(request.gate.center().add(-1,0,-1)),Vec3d.of(request.gate.center().add(2,1,2))));
     }
+    static boolean insideGate(ServerPlayerEntity player,BlockPos center){return PortalGeometry.inside(player,center);}
+    static BlockPos landing(ServerWorld world,BlockPos center){return PortalGeometry.landing(world,center);}
     private static void release(UUID player){
         var request=PENDING.remove(player);
         if(request!=null){
@@ -47,10 +51,12 @@ public final class PortalTravel {
         for(var entry:new ArrayList<>(PENDING.entrySet())){
             var player=server.getPlayerManager().getPlayer(entry.getKey());var request=entry.getValue();
             if(player==null||!player.isAlive()||player.hasVehicle()||player.hasPassengers()||!inside(player,request)){release(entry.getKey());continue;}
+            if(server.getTicks()-request.started>PortalPreparation.TIMEOUT_TICKS||System.nanoTime()-request.wallStarted>45_000_000_000L){release(entry.getKey());eject(player,request);continue;}
+            // A just-arrived player's neighboring chunks can still be loading. Missing data is not a broken frame.
+            if(request.ritual&&!loaded(player.getServerWorld(),request.gate.center().add(-2,0,-2),request.gate.center().add(2,0,2)))continue;
             if(request.ritual&&!PortalRitual.complete(player.getServerWorld(),request.gate)){
                 release(entry.getKey());eject(player,request);PortalRitual.collapseAt(player.getServerWorld(),request.gate.center());continue;
             }
-            if(server.getTicks()-request.started>PortalPreparation.TIMEOUT_TICKS||System.nanoTime()-request.wallStarted>45_000_000_000L){release(entry.getKey());eject(player,request);continue;}
             var result=PortalPreparation.prepare(player.getServerWorld(),request.gate);
             if(result.status()==PortalPreparation.Status.FAILED){release(entry.getKey());eject(player,request);}
             else if(result.status()==PortalPreparation.Status.READY){
@@ -81,7 +87,7 @@ public final class PortalTravel {
             net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(request.recipient,new PortalLoadingPayload(request.token,request.gate.dimension(),waiting));
     }
     public static void queue(ServerPlayerEntity player,BlockPos touched){
-        var gate=PortalRitual.gateAt(player.getServerWorld(),touched);if(gate!=null)request(player,gate,true);
+        var gate=PortalRitual.gateAt(player.getServerWorld(),touched);if(gate!=null&&insideGate(player,gate.center()))request(player,gate,true);
     }
     public static void queue(ServerPlayerEntity player){queue(player,player.getBlockPos());}
     static void cancelGate(ServerWorld world,PortalState.Gate gate){
@@ -107,8 +113,6 @@ public final class PortalTravel {
                 destination.equals(GuogaologyMod.DIMENSION)?PortalKind.INNER:PortalKind.OUTER;
         var gate=new PortalState.Gate(source.getValue().toString(),player.getBlockPos(),kind,destination.getValue().toString());
         var plan=target(player.getServerWorld(),gate);if(plan==null)return false;
-        var known=knownGate(plan.world(),plan.desired(),kind);
-        if(known!=null&&transfer(player,destination,known.center()))return true;
         request(player,gate,false);return true;
     }
     public static void travel(ServerPlayerEntity player){toDimension(player,GuogaologyMod.OUTER);}
@@ -136,7 +140,11 @@ public final class PortalTravel {
         release(player.getUuid());player.fallDistance=0;
         player.teleportTo(new TeleportTarget(world,new Vec3d(x,500,z),Vec3d.ZERO,player.getYaw(),player.getPitch(),TeleportTarget.ADD_PORTAL_CHUNK_TICKET));player.setPortalCooldown(40);
     }
-    record Target(ServerWorld world,BlockPos desired,PortalKind kind) {}
+    record Target(ServerWorld world,BlockPos desired,PortalKind kind,Vec3d searchPosition) {
+        Target(ServerWorld world,BlockPos desired,PortalKind kind){this(world,desired,kind,Vec3d.ofCenter(desired));}
+        int searchRadius(){return (kind==PortalKind.INNER&&world.getRegistryKey().equals(GuogaologyMod.DIMENSION)
+                ||kind==PortalKind.GUOGAO&&world.getRegistryKey().equals(GuogaologyMod.GUOGAO))?96:24;}
+    }
     static RegistryKey<World> requestedDestination(RegistryKey<World> source,PortalState.Gate gate){
         return gate.targetDimension().isEmpty()?destination(source,gate.kind()):RegistryKey.of(net.minecraft.registry.RegistryKeys.WORLD,net.minecraft.util.Identifier.of(gate.targetDimension()));
     }
@@ -151,13 +159,15 @@ public final class PortalTravel {
         var mapped=scaledPosition(Vec3d.ofCenter(origin),source.getRegistryKey(),key);
         double x=Math.clamp(mapped.x,world.getWorldBorder().getBoundWest()+20,world.getWorldBorder().getBoundEast()-20);
         double z=Math.clamp(mapped.z,world.getWorldBorder().getBoundNorth()+20,world.getWorldBorder().getBoundSouth()-20);
-        return new Target(world,BlockPos.ofFloored(x,Math.clamp(mapped.y,24,230),z),kind);
+        double y=Math.clamp(mapped.y,24,Math.min(230,PortalGeometry.maxGateY(world)));
+        return new Target(world,BlockPos.ofFloored(x,y,z),kind,new Vec3d(x,y,z));
     }
     private static boolean transfer(ServerPlayerEntity player,RegistryKey<World> targetDimension,BlockPos gate){
         var server=player.getServerWorld().getServer();var source=player.getServerWorld().getRegistryKey();var world=server.getWorld(targetDimension);
-        if(world==null||!isSafe(world,gate.add(0,0,3)))return false;
+        var feet=world==null?null:landing(world,gate);if(feet==null)return false;
         PortalState.get(server).setReturn(player.getUuid(),new PortalState.ReturnPoint(source.getValue().toString(),player.getPos(),player.getYaw(),player.getPitch()));
-        player.fallDistance=0;player.teleportTo(new TeleportTarget(world,Vec3d.ofBottomCenter(gate.add(0,0,3)),Vec3d.ZERO,180,0,
+        float yaw=(float)Math.toDegrees(Math.atan2(gate.getZ()-feet.getZ(),gate.getX()-feet.getX()))-90;
+        player.fallDistance=0;player.teleportTo(new TeleportTarget(world,Vec3d.ofBottomCenter(feet),Vec3d.ZERO,yaw,0,
                 TeleportTarget.SEND_TRAVEL_THROUGH_PORTAL_PACKET.then(TeleportTarget.ADD_PORTAL_CHUNK_TICKET)));player.setPortalCooldown(40);return true;
     }
     static boolean loaded(ServerWorld world,BlockPos minimum,BlockPos maximum){
@@ -210,7 +220,7 @@ public final class PortalTravel {
         return -1;
     }
     static Site assessSite(ServerWorld world,BlockPos center){
-        if(center.getY()<world.getBottomY()+5||center.getY()+5>=world.getTopY()
+        if(center.getY()>PortalGeometry.maxGateY(world)||center.getY()<world.getBottomY()+5||center.getY()+5>=world.getTopY()
                 ||!world.getWorldBorder().contains(center.add(-4,0,-4))||!world.getWorldBorder().contains(center.add(4,0,4))
                 ||!loaded(world,center.add(-5,0,-5),center.add(5,0,5)))return Site.INVALID;
         int ground=0,water=0,fill=0;
@@ -236,14 +246,26 @@ public final class PortalTravel {
         long dx=(long)center.getX()-desired.getX(),dz=(long)center.getZ()-desired.getZ();
         return Math.abs((center.getX()>>4)-(desired.getX()>>4))<=1&&Math.abs((center.getZ()>>4)-(desired.getZ()>>4))<=1&&dx*dx+dz*dz<=PortalSiteSearch.RADIUS*PortalSiteSearch.RADIUS;
     }
-    private static double squared(BlockPos a,BlockPos b){double x=(double)a.getX()-b.getX(),y=(double)a.getY()-b.getY(),z=(double)a.getZ()-b.getZ();return x*x+y*y+z*z;}
     static List<PortalState.Gate> nearbyGates(ServerWorld world,BlockPos desired,PortalKind kind){
-        String dimension=world.getRegistryKey().getValue().toString();var gates=new ArrayList<PortalState.Gate>();
-        for(var gate:PortalState.get(world.getServer()).gates())if(gate.dimension().equals(dimension)&&gate.kind()==kind&&inSearchWindow(desired,gate.center()))gates.add(gate);
-        gates.sort(Comparator.comparingDouble(g->squared(g.center(),desired)));return gates;
+        return nearbyGates(new Target(world,desired,kind));
+    }
+    static boolean inGateWindow(Target target,BlockPos center){
+        return center.getY()<=PortalGeometry.maxGateY(target.world())
+                &&Math.abs(center.getX()+.5-target.searchPosition().x)<=target.searchRadius()
+                &&Math.abs(center.getZ()+.5-target.searchPosition().z)<=target.searchRadius();
+    }
+    static List<PortalState.Gate> nearbyGates(Target target){
+        var world=target.world();String dimension=world.getRegistryKey().getValue().toString();var gates=new ArrayList<PortalState.Gate>();
+        for(var gate:PortalState.get(world.getServer()).gates()){
+            if(!gate.dimension().equals(dimension)||gate.kind()!=target.kind())continue;
+            // Keep the unrounded scaled center: reciprocal 24/96 windows then agree at negative coordinates and their edges.
+            if(inGateWindow(target,gate.center()))gates.add(gate);
+        }
+        gates.sort(Comparator.<PortalState.Gate>comparingDouble(g->Vec3d.ofCenter(g.center()).squaredDistanceTo(target.searchPosition()))
+                .thenComparingLong(g->g.center().asLong()));return gates;
     }
     static PortalState.Gate knownGate(ServerWorld world,BlockPos desired,PortalKind kind){
-        for(var gate:nearbyGates(world,desired,kind))if(PortalRitual.complete(world,gate)&&isSafe(world,gate.center().add(0,0,3)))return gate;
+        for(var gate:nearbyGates(world,desired,kind))if(PortalRitual.complete(world,gate)&&landing(world,gate.center())!=null)return gate;
         return null;
     }
     static BlockPos boundedCenter(BlockPos desired){int x=(desired.getX()>>4)<<4,z=(desired.getZ()>>4)<<4;return new BlockPos(Math.clamp(desired.getX(),x+5,x+10),desired.getY(),Math.clamp(desired.getZ(),z+5,z+10));}

@@ -32,20 +32,45 @@ public final class PortalPreparation {
     private static final class Warming {
         final PortalTravel.Target target;
         final Map<ChunkPos,CompletableFuture<OptionalChunk<Chunk>>> chunks=new LinkedHashMap<>();
+        final Set<PortalState.Gate> attempted=new HashSet<>();
         long started,touched;
-        boolean requested,failed;
+        boolean requested,failed,terrain;
+        PortalState.Gate candidate;
         PortalSiteSearch search;
         BlockPos exit;
         Warming(PortalTravel.Target target,long now){
             this.target=target;started=touched=now;
+            if(!nextCandidate())loadTerrain();
+        }
+        boolean nextCandidate(){
+            var next=PortalTravel.nearbyGates(target).stream().filter(g->!attempted.contains(g)).findFirst().orElse(null);
+            if(next==null)return false;
+            release();candidate=next;attempted.add(next);terrain=false;search=null;
+            // The complete gate, all twelve landing choices and their hazard rim need at most four FULL chunks.
+            load(next.center().add(-5,0,-5),next.center().add(5,0,5));return true;
+        }
+        void loadTerrain(){
+            release();candidate=null;terrain=true;
             int cx=target.desired().getX()>>4,cz=target.desired().getZ()>>4;
+            load(new BlockPos((cx-1)<<4,0,(cz-1)<<4),new BlockPos(((cx+1)<<4)+15,0,((cz+1)<<4)+15));
+        }
+        void load(BlockPos minimum,BlockPos maximum){
             var manager=target.world().getChunkManager();
-            for(int x=cx-1;x<=cx+1;x++)for(int z=cz-1;z<=cz+1;z++){
+            for(int x=minimum.getX()>>4;x<=maximum.getX()>>4;x++)for(int z=minimum.getZ()>>4;z<=maximum.getZ()>>4;z++){
                 var chunk=new ChunkPos(x,z);USERS.merge(new TicketKey(target.world(),chunk),1,Integer::sum);
                 manager.addTicket(TICKET,chunk,2,chunk);
                 try{chunks.put(chunk,manager.getChunkFutureSyncOnMainThread(x,z,ChunkStatus.FULL,true));}
                 catch(RuntimeException error){chunks.put(chunk,CompletableFuture.failedFuture(error));}
             }
+        }
+        int ready(){
+            for(var entry:chunks.entrySet()){
+                var future=entry.getValue();if(!future.isDone())return 0;
+                try{if(!future.join().isPresent())return -1;}
+                catch(RuntimeException error){GuogaologyMod.LOGGER.debug("Gate destination loading failed",error);return -1;}
+                if(target.world().getChunkManager().getWorldChunk(entry.getKey().x,entry.getKey().z)==null)return 0;
+            }
+            return 1;
         }
         void release(){
             for(var chunk:chunks.keySet()){
@@ -53,6 +78,7 @@ public final class PortalPreparation {
                 if(left<=0){USERS.remove(key);target.world().getChunkManager().removeTicket(TICKET,chunk,2,chunk);}
                 else USERS.put(key,left);
             }
+            chunks.clear();
             // Minecraft may share these futures with other consumers: never cancel a chunk future.
         }
     }
@@ -76,19 +102,27 @@ public final class PortalPreparation {
         var warm=warming(source,gate,true);if(warm==null)return WAITING;
         long now=source.getServer().getTicks();
         if(warm.failed||now-warm.started>TIMEOUT_TICKS)return FAILED;
-        for(var entry:warm.chunks.entrySet()){
-            var future=entry.getValue();if(!future.isDone())return WAITING;
-            try{if(!future.join().isPresent()){warm.failed=true;return FAILED;}}
-            catch(RuntimeException error){warm.failed=true;GuogaologyMod.LOGGER.debug("Gate destination loading failed",error);return FAILED;}
-            if(warm.target.world().getChunkManager().getWorldChunk(entry.getKey().x,entry.getKey().z)==null)return WAITING;
+        int ready=warm.ready();if(ready==0)return WAITING;
+        if(ready<0){
+            if(warm.candidate!=null){warm.exit=null;if(!warm.nextCandidate())warm.loadTerrain();return WAITING;}
+            warm.failed=true;return FAILED;
         }
         if(budgetTick!=now){budgetTick=now;remaining=SEARCH_BUDGET;searchDeadline=System.nanoTime()+SEARCH_NANOS;}
         if(warm.exit!=null){
             if(remaining==0||System.nanoTime()>=searchDeadline)return WAITING;remaining--;
             if(PortalRitual.complete(warm.target.world(),new PortalState.Gate(warm.target.world().getRegistryKey().getValue().toString(),warm.exit,warm.target.kind()))
-                    &&PortalTravel.isSafe(warm.target.world(),warm.exit.add(0,0,3)))return new Result(Status.READY,warm.exit);
+                    &&PortalTravel.landing(warm.target.world(),warm.exit)!=null)return new Result(Status.READY,warm.exit);
             warm.exit=null;warm.search=null;
         }
+        if(warm.candidate!=null){
+            if(remaining==0||System.nanoTime()>=searchDeadline)return WAITING;remaining--;
+            if(PortalRitual.complete(warm.target.world(),warm.candidate)&&PortalTravel.landing(warm.target.world(),warm.candidate.center())!=null){
+                warm.exit=warm.candidate.center();return new Result(Status.READY,warm.exit);
+            }
+            if(!warm.nextCandidate())warm.loadTerrain();return WAITING;
+        }
+        // A second concurrent request may just have built a reusable gate. Check its record before constructing another.
+        if(warm.nextCandidate())return WAITING;
         if(warm.search==null)warm.search=new PortalSiteSearch(warm.target);
         while(remaining>0&&System.nanoTime()<searchDeadline&&!warm.search.finished()){remaining--;warm.search.step();}
         if(!warm.search.finished())return WAITING;

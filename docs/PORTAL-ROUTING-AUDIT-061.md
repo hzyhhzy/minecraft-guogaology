@@ -1,5 +1,7 @@
 # Portal reuse and return inspection — 0.6.1
 
+Subsequent design decision: the user selected vanilla-style asymmetric registered-gate search **without** fixed endpoint binding. The final precise24/96 plan and its implementation/testing are recorded in `WORK-062.md`. The historical endpoint-priority option below was not adopted; the absence of a permanent peer record is not itself a defect.
+
 The user reports that a journey can use an existing destination gate, while its return constructs another gate. This is a read-only review of the installed0.6.1 algorithm, not a portal patch. No normal world is edited or opened for the inspection.
 
 ## Confirmed cause

@@ -99,7 +99,7 @@ public final class Portal050Checks {
                 server(c,p->{check(PortalTravel.isSafe(p.level(),p.blockPosition()),"wall-clock timeout has a safe retreat");place(p,COLD,false);check(p.level().getServer().getLevel(GuogaologyMod.OUTER).getChunkSource().getChunkNow(COLD.getX()>>4,COLD.getZ()>>4)==null,"command target is genuinely unvisited");});stage=6;ticks=0;
             }else if(stage==6){
                 if(ticks<15||c.gui.screen()!=null||c.player.position().distanceToSqr(Vec3.atBottomCenterOf(COLD))>1)return;
-                sent=System.nanoTime();c.player.connection.sendCommand("guogaology visit");stage=7;ticks=0;
+                sent=System.nanoTime();c.player.connection.sendCommand("guogaology tp outer");stage=7;ticks=0;
             }else if(stage==7){
                 if(!received&&field(PortalLoading.class,null,"request")!=null){received=true;feedback=System.nanoTime()-sent;waitingScreen=(LevelLoadingScreen)c.gui.screen();System.out.println("PORTAL_COLD_COMMAND_FEEDBACK_MS "+feedback/1_000_000.);}
                 if(c.level.dimension().equals(GuogaologyMod.OUTER)&&!handedOff){
@@ -111,9 +111,9 @@ public final class Portal050Checks {
                     System.out.println("PORTAL_COLD_HANDOFF_MS "+arrival/1_000_000.+" screen_reused="+(c.gui.screen()==waitingScreen));
                 }
                 if(!handedOff||c.gui.screen()!=null)return;
-                server(c,p->{check(PortalTravel.isSafe(p.level(),p.blockPosition()),"actual C2S visit has a safe destination");check(PortalRitual.gateAt(p.level(),p.blockPosition().offset(0,0,-3))!=null,"actual C2S visit constructs the complete exit");PortalRitual.fillPortal(p.level().getServer().overworld(),COLD.offset(0,0,-3),PortalKind.OUTER);});stage=8;ticks=0;
+                server(c,p->{check(PortalTravel.isSafe(p.level(),p.blockPosition()),"actual C2S tp outer has a safe destination");check(PortalRitual.gateAt(p.level(),p.blockPosition().offset(0,0,-3))!=null,"actual C2S tp outer constructs the complete exit");PortalRitual.fillPortal(p.level().getServer().overworld(),COLD.offset(0,0,-3),PortalKind.OUTER);});stage=8;ticks=0;
             }else if(stage==8){
-                if(ticks<15)return;photo(c,"cold-command-arrival");sent=System.nanoTime();c.player.connection.sendCommand("guogaology visit");stage=9;ticks=0;
+                if(ticks<15)return;photo(c,"cold-command-arrival");sent=System.nanoTime();c.player.connection.sendCommand("guogaology tp overworld");stage=9;ticks=0;
             }else if(stage==9){
                 if(!c.level.dimension().equals(net.minecraft.world.level.Level.OVERWORLD)||c.gui.screen()!=null)return;
                 System.out.println("PORTAL_WARM_RETURN_MS "+(System.nanoTime()-sent)/1_000_000.);
