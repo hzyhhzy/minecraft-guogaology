@@ -61,3 +61,7 @@ Native evidence: `build/runtime-qa/building063-native-a/`, including `launch-out
 Normal Minecraft was confirmed closed. Following standing authorization, install the final tested26.2 JAR into normalfo262, back up0.6.2 at `build/backups/fo262-before-0.6.3`, and verify the sole main-Mod ID and exact hash.55 other Mods,129 configuration files and48 normalfo263_2 Mod files remain unchanged. Both normal save trees' file size/mtime snapshots are unchanged (21,178fo262 records and356fo263_2 records). Receipt: `build/install-063.json`.
 
 Normalfo263_2 remains0.6.1. Keep the fix on `codex/0.6.3-building-fixes` with a local commit only; no push, Release or merge into real `main` (`1900d1eaa821d80afe41b8588cbb0f61563cdfdd`). Existing saved wrong blocks are not silently rewritten; corrected authored digits apply to newly generated construction.
+
+## Publication follow-up authorization
+
+The user subsequently explicitly requests pushing0.6.3 and publishing a Release. This supersedes the previous no-publication scope for this version only; retain the independent branch and leave real `main` unchanged. Publish the exact already tested four binaries together with matching complete source, checksums and license/provenance files. Documentation-only release preparation does not require changing/rebuilding those tested binaries. The requested research on adding resource blocks to all giants is a proposal only and is excluded from this release.

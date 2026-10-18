@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.2 · Minecraft Java / Fabric** · [Download Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.2)
+**v0.6.3 · Minecraft Java / Fabric** · [Download Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
 
-Version 0.6.2 improves portal return reuse with scale-aware 24/96-block searches, four-sided safe arrival choices, an Inner arrival cap of Y200 and tighter physical entry bounds. It includes the 0.6.1 fixes for optional JEI tag safety and Numeric equipment recipe synchronization on 26.3. This release is published from its independent branch and is not yet merged into main; complete matching source is available in the release attachments and the v0.6.2 tag. See [release notes](docs/RELEASE-0.6.2.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md). Alice (AliceLdl)'s original 0.5.4.1 work and existing four-version integration remain included.
+Version0.6.3 fixes the giant-blueprint digit1/Guogao material-code collision while retaining all24 legitimate emoji-globe centers. Focused Astra office/giant checks did not reproduce current overlaps; production layout logic is unchanged. It retains0.6.2 portal improvements and0.6.1 optional26.3 JEI fixes. This release is published from its independent branch without merging main; complete matching source is available in the attachments and v0.6.3 tag. See [release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md). Alice (AliceLdl)'s original0.5.4.1 work and existing four-version integration remain included.
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -18,13 +18,13 @@ Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mine
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
 
-All four 0.6.2 targets pass build/resource checks. This round's actual runtime tests use isolated 26.2 for portal travel, loading UI and a copied genuine 0.6.0 save. The four independent client/server JEI installation combinations on 26.3 were tested during the 0.6.1 repair and were not repeated this round. No new 1.21.x or Connector runtime validation is claimed; see [0.6.2 evidence](docs/WORK-062.md) and [JEI repair evidence](docs/WORK-061.md).
+All four0.6.3 targets pass build/resource checks. This round uses isolated26.2 for native palette, blueprint, placed-block and rendered-scene checks, alongside pure geometry reservation regressions. Other-version, Connector and Voxy runtime environments were not rerun. Portal/real0.6.0 save upgrades were tested in0.6.2, and the four independent26.3 client/server JEI installation combinations in0.6.1. See [0.6.3 evidence](docs/WORK-063.md), [portal evidence](docs/WORK-062.md) and [JEI repair evidence](docs/WORK-061.md).
 
 Version 0.5.5 passed a local 26.2 dedicated Fabric server check with a separate client: manuscript/station interactions, dimension travel, flight and saved-world restart. The test bound only to 127.0.0.1 and was not exposed to the LAN or Internet. See [the test record and scope](docs/DEDICATED-SERVER-055.md); this was not a multiplayer capacity benchmark.
 
 A separate local test with Voxy World Gen V2 2.4.3 on the server and Voxy 0.2.19-beta on the client passed distant-data reception, return trips and fresh-client reception after restart in all three additional dimensions. The server does not need the Voxy renderer. Tested at 32-chunk radius/2 active tasks; cold generation causes substantial load. See [the LOD multiplayer test](docs/DEDICATED-VOXY-055.md).
 
-The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Version 0.6.2 retains those compatibility fixes, but Connector was not rerun for this update. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
+The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Version 0.6.3 retains those compatibility fixes, but Connector was not rerun for this update. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
 
 | Minecraft | Java | Fabric Loader | Fabric API used for builds |
 |---|---|---|---|
@@ -104,13 +104,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.2/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.3/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.6.2's scope and actual validation results are tracked in [the work record](docs/WORK-062.md). The published [v0.6.0](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0) and its [historical validation record](docs/WORK-060.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version0.6.3's scope and actual validation results are tracked in [the work record](docs/WORK-063.md). The published [v0.6.0](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0) and its [historical validation record](docs/WORK-060.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -120,4 +120,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.6.2 validation](docs/WORK-062.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.2 release notes](docs/RELEASE-0.6.2.md)
+[0.6.3 validation](docs/WORK-063.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.3 release notes](docs/RELEASE-0.6.3.md)
