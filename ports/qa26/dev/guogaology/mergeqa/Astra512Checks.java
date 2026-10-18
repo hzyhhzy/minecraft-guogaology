@@ -76,6 +76,7 @@ public final class Astra512Checks {
         System.out.println("ASTRA512_CLOUD salt="+salt+" cloud="+full.cardinality()+" interior="+count+" pearls="+points.size());
     }
     private static void guogao(ServerPlayer p)throws Exception{
+        runSanctuaryMaterials();
         for(int height:new int[]{30,90,250})for(int dir:new int[]{-1,1}){
             var map=new HashMap<BlockPos,Integer>();FirDecorations.star(new VoxelBrush(-15,15,-62,317,-15,15,(x,y,z,m)->map.put(new BlockPos(x,y,z),m)),0,150,0,height,dir,true);
             var drops=map.entrySet().stream().filter(e->e.getValue()==NaturalForms.GUOGAO_DROP).toList();check(drops.size()==1,"one raw drop per Guogao star");
@@ -83,9 +84,33 @@ public final class Astra512Checks {
         }
         var layout=dev.guogaology.survival.SanctuaryLayout.of(dev.guogaology.survival.SurvivalTheme.GUOGAO);
         check(layout.emojiLampCenters().size()==24,"24existing emoji globes retained");
-        for(var q:layout.emojiLampCenters())check(layout.at(q.x(),q.y(),q.z())==dev.guogaology.survival.SanctuaryLayout.GUOGAO_DROP,"exact former Lv1 Heart center now contains raw Drop");
+        for(var q:layout.emojiLampCenters())check(layout.at(q.x(),q.y(),q.z())==dev.guogaology.survival.SanctuaryLayout.PRIMARY_RAW,"exact former Lv1 Heart center retains its theme raw Drop");
         check(layout.finaleCores().size()==8,"eight finale tributes unchanged");
         var mapped=new HashMap<BlockPos,BlockState>();forms(mapped).set(0,220,0,NaturalForms.GUOGAO_DROP);check(mapped.get(new BlockPos(0,220,0)).is(CoreResources.GUOGAO_DROP),"natural raw-material index resolves to the new block");
+    }
+    /** Can run independently of the cloud/scenery sweep after native registries initialize. */
+    public static void runSanctuaryMaterials(){
+        int before=checks;
+        for(var theme:dev.guogaology.survival.SurvivalTheme.values()){
+            var site=new dev.guogaology.survival.SurvivalStructures.Site(0,0,0,theme,0);
+            for(int n=0;n<16;n++){
+                byte code=(byte)(dev.guogaology.survival.SanctuaryLayout.FIXED_NUMBER+n);
+                check(dev.guogaology.survival.SurvivalStructures.stateFor(site,0,1,0,code).equals(GuogaologyBlocks.ordinalBrick(n)),
+                        "native palette retains fixed digit "+n+" in "+theme);
+            }
+            if(theme==dev.guogaology.survival.SurvivalTheme.POWER)for(int side:new int[]{-1,1}){
+                byte code=site.layout().at(side*6,5,28);
+                check(dev.guogaology.survival.SurvivalStructures.stateFor(site,side*6,5,28,code).equals(GuogaologyBlocks.ordinalBrick(1)),
+                        "native tower digit1does not become Guogao");
+            }
+            if(theme==dev.guogaology.survival.SurvivalTheme.GUOGAO)for(var q:site.layout().emojiLampCenters()){
+                byte code=site.layout().at(q.x(),q.y(),q.z());
+                check(code==dev.guogaology.survival.SanctuaryLayout.PRIMARY_RAW,"emoji center uses the existing raw-material slot");
+                check(dev.guogaology.survival.SurvivalStructures.stateFor(site,q.x(),q.y(),q.z(),code).is(CoreResources.GUOGAO_DROP),
+                        "native emoji center keeps the exact same Guogao block");
+            }
+        }
+        System.out.println("SANCTUARY_MATERIAL_CODES_OK checks="+(checks-before)+" fixedDigits=128 towerOnes=2 unchangedEmojiCenters=24");
     }
     private static void sprigs(ServerPlayer p)throws Exception{
         var method=NaturalScenery.class.getDeclaredMethod("hydra",SceneryBrush.class,NaturalScenery.Site.class);method.setAccessible(true);int upright=0,hanging=0;

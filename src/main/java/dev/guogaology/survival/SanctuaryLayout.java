@@ -30,7 +30,7 @@ public final class SanctuaryLayout {
     public static final byte PHANTOM_FFFZ=118,PHANTOM_EMPTY=119;
     public static final byte BOUNDARY_CORE=120,TURING=121,SET_GLASS=122,FORMULA=123,PROOF=124;
     public static final byte TAPE_BUTTON=125,SCG_EDGE=126;
-    public static final byte PRIMARY_RAW=47,GUOGAO_DROP=49,SECONDARY_RAW=127;
+    public static final byte PRIMARY_RAW=47,SECONDARY_RAW=127;
     public static final int MATERIAL_COUNT=128;
     public record RailingDisplay(Point pos,int run,int index,Point road) {}
     private final List<RailingDisplay> railingDisplays=new ArrayList<>();

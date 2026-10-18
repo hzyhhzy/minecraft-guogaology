@@ -248,7 +248,6 @@ public final class SurvivalStructures {
         p[SanctuaryLayout.SECONDARY_RAW]=(theme==SurvivalTheme.POWER?CoreResources.SCG_NODE:
                 theme==SurvivalTheme.FRONTIER?CoreResources.TURING_ENDCAP:
                 theme==SurvivalTheme.MATRIX?GuogaologyBlocks.RIDGE_LAMINA:CoreResources.CLOUD_PEARL).defaultBlockState();
-        p[SanctuaryLayout.GUOGAO_DROP]=CoreResources.GUOGAO_DROP.defaultBlockState();
         return p;
     }
 }

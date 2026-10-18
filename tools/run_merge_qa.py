@@ -33,6 +33,7 @@ def run(a):
     assert not a.core514_only or a.fresh_world,'Core0.5.14 QA must use a disposable new world'
     assert not a.core515_only or a.fresh_world,'Core0.5.15 QA must use a disposable new world'
     assert not a.astra516_only or a.fresh_world,'Astra0.5.16 QA must use a disposable new world'
+    assert not a.building063_only or a.fresh_world,'Building0.6.3 QA must use a disposable new world'
     assert a.seed is None or a.fresh_world,'--seed applies only to --fresh-world'
     assert a.seed is None or -(1<<63)<=a.seed<(1<<63),'Seed must fit a signed Java long'
     if a.fixture:assert a.fixture.name in ('port-0217','port-qa'),'Use only a disposable QA fixture'
@@ -70,7 +71,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
+             f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
              f'-Dguogaology.qa.advancements057={str(a.advancements057_only or a.advancements510_only or a.advancements_baseline or a.laver_scenes_only).lower()}',f'-Dguogaology.qa.advancementsBaseline={str(a.advancements_baseline).lower()}',f'-Dguogaology.qa.advancements510={str(a.advancements510_only).lower()}',f'-Dguogaology.qa.laverScenes={str(a.laver_scenes_only).lower()}',
              f'-Dguogaology.qa.chainloot0501={str(a.chain_loot0501_only).lower()}',f'-Dguogaology.qa.namespace050={str(a.namespace_only).lower()}',f'-Dguogaology.qa.freshworld={str(a.fresh_world).lower()}',
              f'-Dguogaology.qa.balance057={str(a.balance057_only).lower()}',f'-Dguogaology.qa.ore056={str(a.crystal_ore_only).lower()}',f'-Dguogaology.qa.core055={str(a.core_resources_only or a.crystal_ore_only or a.balance057_only).lower()}',f'-Dguogaology.qa.import0541={str(a.jar_import_only).lower()}','-Dfabric.development=false',f'-Dguogaology.qa.cliffchain049={str(a.cliff_chain049_only).lower()}',f'-Dguogaology.qa.cliffchain048={str(a.cliff_chain_only).lower()}',f'-Dguogaology.qa.coreitems046={str(a.core_items_only).lower()}',f'-Dguogaology.qa.underworld046={str(a.underworld_only).lower()}',f'-Dguogaology.qa.voxy={str(a.voxy).lower()}',f'-Dguogaology.qa.boundaries={str(a.boundaries_only).lower()}',f'-Dguogaology.qa.manuscripts={str(a.manuscripts_only).lower()}',f'-Dguogaology.qa.inventory={str(a.inventory_only).lower()}',f'-Dguogaology.qa.portals={str(a.portals_only).lower()}',f'-Dguogaology.qa.patch051={str(a.patch051_only or a.creative_icons_only).lower()}',f'-Dguogaology.qa.creativeicons047={str(a.creative_icons_only).lower()}',f'-Dguogaology.qa.landmarks043={str(a.landmarks_only).lower()}',f'-Djava.io.tmpdir={temp}',f'-Djna.tmpdir={temp}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}',
@@ -100,6 +101,7 @@ if __name__=='__main__':
     p.add_argument('--astra512-only',action='store_true',help='Native Astra cloud/chair/light/recipes and redesigned art, disposable fo262 only')
     p.add_argument('--core514-only',action='store_true',help='Native0.5.14 recipes, safe Graham growth and full luminous Guogao cube; four settled native scenes, disposable fo262 only')
     p.add_argument('--core515-only',action='store_true',help='Native0.5.15 recipes/scenery and nine settled art scenes, including all six Guogao faces and exact production firs; requires --fresh-world')
+    p.add_argument('--building063-only',action='store_true',help='Native fixed-digit palettes and legitimate Guogao building material regression')
     p.add_argument('--astra516-only',action='store_true',help='Native0.5.16 straight Astra firs and vivid SCG: current checks plus three focused settled scenes; requires --fresh-world')
     p.add_argument('--laver-scenes-only',action='store_true',help='Focused native Laver-table/audio and redesigned material screenshots, without repeating the advancement sweep')
     p.add_argument('--advancements057-only',action='store_true',help='Real vanilla/guide criteria, client sync and advancement-page screenshots')

@@ -26,8 +26,24 @@ public final class Landmark043Checks {
         return reached;
     }
     private static int count(SanctuaryLayout p,byte code){int n=0;for(int y=0;y<p.height;y++)for(int z=-p.depth/2;z<=p.depth/2;z++)for(int x=-p.width/2;x<=p.width/2;x++)if(p.at(x,y,z)==code)n++;return n;}
+    private static void materialCodes()throws Exception{
+        var owners=new TreeMap<Integer,String>();
+        for(var field:SanctuaryLayout.class.getFields()){
+            if(field.getType()!=byte.class&&!field.getName().equals("COURT_NODE")&&!field.getName().equals("COURT_BLANK"))continue;
+            int first=((Number)field.get(null)).intValue();
+            int length=field.getName().equals("FIXED_NUMBER")||field.getName().equals("PIXEL")?16:1;
+            for(int offset=0;offset<length;offset++){
+                int code=first+offset;String owner=field.getName()+(length>1?"+"+offset:"");
+                check(code>=0&&code<MATERIAL_COUNT,"material code fits the existing byte palette: "+owner);
+                String prior=owners.putIfAbsent(code,owner);
+                check(prior==null,"unique material code "+code+": "+prior+" / "+owner);
+            }
+        }
+        check(owners.size()==MATERIAL_COUNT,"all128material slots, including both16-value ranges, are accounted for");
+    }
     public static void main(String[] args)throws Exception{
         if(args.length==2&&args[0].equals("--write-baseline")){writeBaseline(Path.of(args[1]));return;}
+        materialCodes();
         for(var theme:SurvivalTheme.values()){
             var p=SanctuaryLayout.of(theme);var reached=reachable(p);
             int priorFurniture=switch(theme){case MATRIX->30;case POWER->56;case HYDRA->21;case ABSENCE->20;case WEAVER->44;case ASTRA->35;case GUOGAO->50;case FRONTIER->35;};
@@ -59,6 +75,8 @@ public final class Landmark043Checks {
             }
             switch(theme){
                 case POWER->{
+                    for(int side:new int[]{-1,1})for(int n=0;n<16;n++)
+                        check(p.at(side*6,4+n,28)==FIXED_NUMBER+n,"both tower columns retain fixed digit "+n);
                     check(count(p,POWER_CORE)==8,"eight Power cores");
                     for(byte m:new byte[]{RED,GREEN,BLUE})check(count(p,m)>=3,"ordinary TREE nodes remain "+m);
                     check(p.height==250&&p.arena.y()==209,"highest tenth-storey battle floor, same tower height");
@@ -72,6 +90,7 @@ public final class Landmark043Checks {
                     for(var c:p.chests())if(c.relic()){var q=c.floor();check(p.at(q.x(),q.y(),q.z())>AIR&&p.at(q.x(),q.y()+1,q.z())==AIR&&p.at(q.x(),q.y()+2,q.z())==AIR,"main chest has actual supported placement and lid clearance");}
                 }
                 case ABSENCE->{
+                    check(count(p,(byte)(FIXED_NUMBER+1))==17,"seventeen LHO display/base cells retain fixed digit1");
                     check(count(p,PHANTOM_EMPTY)==8,"only eight authored Absence cores");
                     for(byte m:new byte[]{PHANTOM_PSI,PHANTOM_Z,PHANTOM_FOS,PHANTOM_FFFZ})
                         check(count(p,m)>0,"LHO natural symbol materials remain "+m);
@@ -79,11 +98,12 @@ public final class Landmark043Checks {
                 case GUOGAO->{
                     check(p.numberLamps().size()==87&&p.emojiLampCenters().size()==24,"exterior lamp silhouettes retained");
                     for(var lamp:p.numberLamps()){
-                        var q=lamp.center();check(p.at(q.x(),q.y(),q.z())==PRIMARY_RAW,"ordinary resin lamp center");
+                        var q=lamp.center();check(p.at(q.x(),q.y(),q.z())==PRIMARY_RAW,"ordinary number lamp raw-material center");
                         for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++)
                             if(dx!=0||dy!=0||dz!=0)check(p.at(q.x()+dx,q.y()+dy,q.z()+dz)==GLASS,"ordinary glass lamp chamber");
                     }
-                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==GUOGAO_DROP,"emoji lamp contains a raw Guogao Drop in its old heart position");
+                    for(var q:p.emojiLampCenters())check(p.at(q.x(),q.y(),q.z())==PRIMARY_RAW,"emoji lamp retains its raw Guogao Drop through the theme material");
+                    check(count(p,(byte)(FIXED_NUMBER+1))==12,"six11242flower displays retain both fixed digit1cells");
                     check(p.finaleCores().size()==8&&p.finaleRelics().size()==17,"eight final tributes and retained companion ornaments");
                     check(count(p,GUOGAO_HEART)==9,"eight indoor hearts plus one finale heart");
                 }
