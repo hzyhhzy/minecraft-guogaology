@@ -4,11 +4,11 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**开发版本 v0.6.6 · Minecraft Java / Fabric** · [已发布版本 v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
+**v0.6.6 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.6)
 
 0.6.6 将原生配方书的「GGG」页改为「果糕逻辑」（英文 Guogaology），直接使用 Mod 主 Logo。晶核及其他 Mod 专属配方分别集中到「晶核」「果糕逻辑」页，并从原四个具体分类移出；全局搜索、通用木系及普通沙子＋火药 TNT 配方保留。修复分枝晶核的虚拟精准采集只影响掉落、未同步影响经验的漏洞，普通与额外开采一并修正；保留原版刷怪笼的经验例外，不改写玩家实际工具的附魔或镶嵌数据。
 
-沿用0.6.5的八系配方、自然原料和巨构箱奖调整，以及0.6.4的空无晶核兼容清理；现有存档ID及fffZ/FOS、ψ/Z稳定机制不变。开发与验证见[0.6.6工作记录](docs/WORK-066.md)。0.6.6仍在独立开发分支，未合入main、未发布；main保持不变。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。见[0.6.3发行说明](docs/RELEASE-0.6.3.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
+沿用0.6.5的八系配方、自然原料和巨构箱奖调整，以及0.6.4的空无晶核兼容清理；现有存档ID及fffZ/FOS、ψ/Z稳定机制不变。0.6.6已合入真正的main，[本版发行说明](docs/RELEASE-0.6.6.md)汇总自0.6.3以来的更新，[工作记录](docs/WORK-066.md)说明实际验证范围。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。[当前生存指南](docs/SURVIVAL-GUIDE.md) · [生存引导](docs/ADVANCEMENTS-057.md)
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
