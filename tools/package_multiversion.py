@@ -32,12 +32,23 @@ def verify_client_hooks(archive, metadata):
                 full=config['package']+'.'+name
                 assert full.replace('.','/')+'.class' in archive.namelist(),f'Missing registered mixin: {full}'
                 active.add(full)
-    for required in ('ManuscriptVerticalFlightMixin','InventoryOriginAccessor','RecipeBookSectionsMixin'):
+    for required in ('ManuscriptVerticalFlightMixin','InventoryOriginAccessor','RecipeBookSectionsMixin','RecipeBookCollectionsMixin'):
         assert 'dev.guogaology.client.mixin.'+required in active,f'Unregistered client hook: {required}'
-    if metadata['depends']['minecraft']!='1.21.1':
-        for required in ('RecipeBookCollectionsMixin','RecipeBookTabTooltipMixin'):
+    modern=metadata['depends']['minecraft']!='1.21.1'
+    if modern:
+        for required in ('RecipeBookTabTooltipMixin','RecipeBookBrandIconMixin'):
             assert 'dev.guogaology.client.mixin.'+required in active,f'Unregistered modern recipe-book hook: {required}'
         assert 'dev/guogaology/client/recipebook/SectionRecipeBookCategory.class' in archive.namelist(),'Missing modern recipe-book category'
+    # Read the packaged UTF-8 constant, including javac's inlined render-site copy.
+    # Resource IDs resolve directly to assets/<namespace>/<path> for GUI blits.
+    icon=metadata['icon'];assert icon.startswith('assets/'),'Main logo must be an asset path'
+    namespace,path=icon.removeprefix('assets/').split('/',1)
+    texture=(namespace+':'+path).encode('utf8')
+    constant=b'\x01'+len(texture).to_bytes(2,'big')+texture
+    renderer='dev/guogaology/client/mixin/RecipeBookBrandIconMixin.class' if modern else 'dev/guogaology/client/recipebook/SectionRecipeBookButton.class'
+    for name in ('dev/guogaology/client/recipebook/RecipeBookSections.class',renderer):
+        assert constant in archive.read(name),f'Recipe-book brand icon differs from the main Mod logo: {name}'
+    assert icon in archive.namelist(),'Missing recipe-book/main brand texture'
 
 
 def verify_jei_compat(archive, metadata, target):

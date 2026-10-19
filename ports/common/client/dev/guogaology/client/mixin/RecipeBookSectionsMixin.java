@@ -18,7 +18,7 @@ public abstract class RecipeBookSectionsMixin {
         if(tabInfos.stream().noneMatch(tab->tab.category()==SearchRecipeBookCategory.CRAFTING))return;
         var tabs=new ArrayList<>(tabInfos);
         tabs.add(new RecipeBookComponent.TabInfo(GuogaologyBlocks.ORDINAL_CRYSTAL.asItem().getDefaultInstance(),Optional.empty(),SectionRecipeBookCategory.CORES));
-        tabs.add(new RecipeBookComponent.TabInfo(GuogaologyBlocks.ORDINAL_BRICKS.asItem().getDefaultInstance(),Optional.empty(),SectionRecipeBookCategory.GGG));
+        tabs.add(new RecipeBookComponent.TabInfo(net.minecraft.world.item.ItemStack.EMPTY,Optional.empty(),SectionRecipeBookCategory.GGG));
         tabInfos=List.copyOf(tabs);
     }
     @Inject(method="updateTabs",at=@At("TAIL"))

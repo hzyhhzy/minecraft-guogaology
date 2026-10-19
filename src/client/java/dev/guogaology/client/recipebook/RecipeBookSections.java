@@ -4,6 +4,7 @@ import java.util.Set;
 
 /** Client presentation only; recipe categories and server recipe IDs remain vanilla. */
 public final class RecipeBookSections {
+    public static final String BRAND_ICON_TEXTURE="guogaology:icon.png";
     public enum Section {
         CORES("gui.guogaology.recipebook.cores"), GGG("gui.guogaology.recipebook.ggg");
         private final String translationKey;

@@ -263,7 +263,7 @@ def prepare(target, release):
     write(out / "fabric.mod.json", metadata)
     client_mixins = read(out / "guogaology.client.mixins.json")
     client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GuogaologyFogMixin", "GuogaologySkyLightMixin", "CoreItemViewMixin")]
-    client_mixins["client"].extend(["RecipeBookCollectionsMixin", "RecipeBookTabTooltipMixin"])
+    client_mixins["client"].extend(["RecipeBookTabTooltipMixin", "RecipeBookBrandIconMixin"])
     write(out / "guogaology.client.mixins.json", client_mixins)
     # Fabric supplies metadata for the active pack type. A shared numeric range cannot
     # describe both resource 75 and data 94 without conflicting legacy-format rules.

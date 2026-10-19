@@ -12,27 +12,49 @@ from package_multiversion import ROOT, verify_structure_template, verify_client_
 
 
 class ClientHookValidationTests(unittest.TestCase):
-    def archive(self, names, classes=True):
+    def names(self,target='26.2'):
+        common=['InventoryOriginAccessor','ManuscriptVerticalFlightMixin','RecipeBookSectionsMixin','RecipeBookCollectionsMixin']
+        return common+([] if target=='1.21.1' else ['RecipeBookTabTooltipMixin','RecipeBookBrandIconMixin'])
+
+    def metadata(self,target='26.2'):
+        return {'mixins':[{'config':'client.json','environment':'client'}],
+                'depends':{'minecraft':target},'icon':'assets/guogaology/icon.png'}
+
+    def archive(self, names=None, classes=True, target='26.2'):
+        if names is None:names=self.names(target)
         stream=io.BytesIO()
         with ZipFile(stream,'w') as out:
             out.writestr('client.json',json.dumps({'package':'dev.guogaology.client.mixin','client':names}))
+            # The checker reads the exact CONSTANT_Utf8 icon literal at the helper
+            # and javac-inlined render site, not an arbitrary substring.
+            literal=b'guogaology:icon.png';constant=b'\x01'+len(literal).to_bytes(2,'big')+literal
+            out.writestr('assets/guogaology/icon.png',b'fixture PNG')
             if classes:
-                for name in names:out.writestr('dev/guogaology/client/mixin/'+name+'.class',b'fixture')
+                for name in names:out.writestr('dev/guogaology/client/mixin/'+name+'.class',b'fixture'+constant)
+                out.writestr('dev/guogaology/client/recipebook/RecipeBookSections.class',b'fixture'+constant)
+                if target=='1.21.1':out.writestr('dev/guogaology/client/recipebook/SectionRecipeBookButton.class',b'fixture'+constant)
+                else:out.writestr('dev/guogaology/client/recipebook/SectionRecipeBookCategory.class',b'fixture')
         return ZipFile(stream)
 
     def test_client_hooks_are_packaged_and_enabled(self):
-        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin']) as archive:
-            verify_client_hooks(archive,{'mixins':[{'config':'client.json','environment':'client'}]})
+        for target in ('1.21.1','1.21.11','26.2','26.3'):
+            with self.subTest(target=target),self.archive(target=target) as archive:
+                verify_client_hooks(archive,self.metadata(target))
 
     def test_dropping_client_config_is_rejected(self):
-        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin']) as archive:
+        with self.archive() as archive:
+            metadata=self.metadata();metadata['mixins']=[]
             with self.assertRaisesRegex(AssertionError,'Unregistered client hook'):
-                verify_client_hooks(archive,{'mixins':[]})
+                verify_client_hooks(archive,metadata)
+        for target in ('1.21.1','1.21.11','26.2','26.3'):
+            for required in self.names(target):
+                with self.subTest(target=target,required=required),self.archive([name for name in self.names(target) if name!=required],target=target) as archive:
+                    with self.assertRaisesRegex(AssertionError,required):verify_client_hooks(archive,self.metadata(target))
 
     def test_registering_an_unpackaged_class_is_rejected(self):
-        with self.archive(['InventoryOriginAccessor','ManuscriptVerticalFlightMixin'],False) as archive:
+        with self.archive(classes=False) as archive:
             with self.assertRaisesRegex(AssertionError,'Missing registered mixin'):
-                verify_client_hooks(archive,{'mixins':['client.json']})
+                verify_client_hooks(archive,self.metadata())
 
 
 class OptionalJeiValidationTests(unittest.TestCase):

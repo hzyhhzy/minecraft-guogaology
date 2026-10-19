@@ -4,9 +4,11 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**Development v0.6.5 · Minecraft Java / Fabric** · [Published v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
+**Development v0.6.6 · Minecraft Java / Fabric** · [Published v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
 
-Version0.6.5 rebalances eight core recipes, natural material sources and giant-landmark chest rewards. Native recipe books gain Cores and GGG sections; ordinary wood recipes remain in vanilla categories. Main chests supply2–4capital Ω materials. It retains0.6.4's Absence Core compatibility cleanup and unchanged FFFZ/FOS and ψ/Z stability mechanics. See [implementation and validation](docs/WORK-065.md). Version0.6.3 is merged into main;0.6.5 remains on an independent, unpublished development branch. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original0.5.4.1 work and all four target adaptations remain included. See [0.6.3 release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+Version 0.6.6 renames the native recipe book's GGG section to **Guogaology** (**果糕逻辑** in Chinese) and draws the Mod's main logo directly on its tab. Core and other Mod-specific recipes move from the four original concrete categories into Cores and Guogaology respectively. Global search, ordinary wood recipes and vanilla sand/gunpowder TNT remain available. The update fixes Branch Core's virtual Silk Touch affecting loot without applying the corresponding experience rule, for both ordinary and extra excavation. Vanilla's Spawner experience exception remains, and the held tool's actual enchantments and socketed cores stay intact.
+
+The update retains 0.6.5's core recipes, natural materials and landmark rewards, plus 0.6.4's Absence Core compatibility cleanup. Saved IDs and FFFZ/FOS and ψ/Z stability mechanics are unchanged. See the [0.6.6 work record](docs/WORK-066.md). Version 0.6.6 remains on an independent development branch, without a main merge or publication; main is unchanged. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See [0.6.3 release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -18,7 +20,7 @@ Authorized Googology Dimension 1.0.0 (Alice version) terrain, templates and mine
 
 Download **one** JAR matching your Minecraft version from [Releases](https://github.com/hzyhhzy/minecraft-guogaology/releases). Install Fabric Loader and the matching Fabric API, then put both mod JARs in your instance's `mods` folder. Clients and servers need matching versions of Guogaology.
 
-All four0.6.3 targets pass build/resource checks. This round uses isolated26.2 for native palette, blueprint, placed-block and rendered-scene checks, alongside pure geometry reservation regressions. Other-version, Connector and Voxy runtime environments were not rerun. Portal/real0.6.0 save upgrades were tested in0.6.2, and the four independent26.3 client/server JEI installation combinations in0.6.1. See [0.6.3 evidence](docs/WORK-063.md), [portal evidence](docs/WORK-062.md) and [JEI repair evidence](docs/WORK-061.md).
+All four 0.6.3 targets passed build/resource checks. That version used isolated 26.2 for native palette, blueprint, placed-block and rendered-scene checks, alongside pure geometry reservation regressions. Other-version, Connector and Voxy runtime environments were not rerun then. Portal/real 0.6.0 save upgrades were tested in 0.6.2, and the four independent 26.3 client/server JEI installation combinations in 0.6.1. See [0.6.3 evidence](docs/WORK-063.md), [portal evidence](docs/WORK-062.md) and [JEI repair evidence](docs/WORK-061.md).
 
 Version 0.5.5 passed a local 26.2 dedicated Fabric server check with a separate client: manuscript/station interactions, dimension travel, flight and saved-world restart. The test bound only to 127.0.0.1 and was not exposed to the LAN or Internet. See [the test record and scope](docs/DEDICATED-SERVER-055.md); this was not a multiplayer capacity benchmark.
 
@@ -33,9 +35,11 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID is `guogaology` starting with0.5.0. Version0.6.5 retains current saved IDs and0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with0.5.0. Version0.6.6 retains current saved IDs and0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
 
-All four0.6.5 targets build and88Python checks pass. Isolated26.2 tests in both languages verify1900crafts,8192native chest fills,6144entity-loot draws, recipe-book search/filtering, narrow layout and the2×2inventory. Other targets were built only. Raw stability classes and existing resource entrypoints are preserved; the real saved-world upgrade tests from0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
+All four 0.6.6 targets pass builds, resource/localization checks and 88 Python tests. The final 26.2 artifact passes isolated hidden Chinese and English runs, each with 1,546 real survival block breaks plus native recipe-book category, search, filter, narrow-screen and inventory checks; repeated Silk ore recovery awards no XP. The closed normal fo262 instance is backed up and updated; fo263_2 is unchanged. Other targets were built only this round. Connector bytecode was inspected but its runtime was not rerun. See the [0.6.6 record](docs/WORK-066.md) for evidence and scope.
+
+Historical validation: all four 0.6.5 targets built and 88 Python checks passed. Isolated 26.2 tests for that version in both languages verified 1900 crafts, 8192 native chest fills, 6144 entity-loot draws, recipe-book search/filtering, narrow layout and the 2×2 inventory. Other targets were built only then. Raw stability classes and existing resource entrypoints were preserved; the real saved-world upgrade tests from 0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
 
 ## Language
 
@@ -106,7 +110,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.5/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.6/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
@@ -122,4 +126,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.6.3 validation](docs/WORK-063.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.3 release notes](docs/RELEASE-0.6.3.md)
+[0.6.6 work record](docs/WORK-066.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.3 release notes](docs/RELEASE-0.6.3.md)

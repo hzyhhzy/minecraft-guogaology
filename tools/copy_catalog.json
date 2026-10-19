@@ -797,7 +797,7 @@
       "item.guogaology.lho_guide_emblem": "LHO空无之境标志",
       "block.guogaology.guogao_drop": "馃槹",
       "gui.guogaology.recipebook.cores": "晶核",
-      "gui.guogaology.recipebook.ggg": "GGG"
+      "gui.guogaology.recipebook.ggg": "果糕逻辑"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1443,7 +1443,7 @@
       "item.guogaology.lho_guide_emblem": "LHO Realm Emblem",
       "block.guogaology.guogao_drop": "Guogao",
       "gui.guogaology.recipebook.cores": "Cores",
-      "gui.guogaology.recipebook.ggg": "GGG"
+      "gui.guogaology.recipebook.ggg": "Guogaology"
     }
   }
 }

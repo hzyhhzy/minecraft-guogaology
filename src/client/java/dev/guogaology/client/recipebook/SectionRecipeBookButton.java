@@ -26,6 +26,11 @@ public final class SectionRecipeBookButton extends RecipeGroupButtonWidget {
     @Override public void renderWidget(DrawContext context,int mouseX,int mouseY,float delta){
         int selected=isToggled()?-2:0;
         context.drawGuiTexture(Identifier.ofVanilla(isToggled()?"recipe_book/tab_selected":"recipe_book/tab"),getX()+selected,getY(),getWidth(),getHeight());
-        context.drawItemWithoutEntity(new ItemStack(section==RecipeBookSections.Section.CORES?GuogaologyBlocks.ORDINAL_CRYSTAL:GuogaologyBlocks.ORDINAL_BRICKS),getX()+9+selected,getY()+5);
+        if(section==RecipeBookSections.Section.CORES)context.drawItemWithoutEntity(new ItemStack(GuogaologyBlocks.ORDINAL_CRYSTAL),getX()+9+selected,getY()+5);
+        else{
+            // Reuse the exact metadata icon, scaled as a texture rather than inventing an inventory item.
+            context.getMatrices().push();context.getMatrices().translate(getX()+9+selected,getY()+5,0);context.getMatrices().scale(.125f,.125f,1);
+            context.drawTexture(Identifier.of(RecipeBookSections.BRAND_ICON_TEXTURE),0,0,0f,0f,128,128,128,128);context.getMatrices().pop();
+        }
     }
 }

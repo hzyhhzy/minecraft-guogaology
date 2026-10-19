@@ -16,6 +16,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.display.*;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.client.ClientRecipeBook;
+import net.fabricmc.loader.api.FabricLoader;
 
 /** Actual synchronized recipe-book UI checks in a disposable native26.2 session. Never creates fake collections. */
 public final class RecipeBook065Checks {
@@ -100,8 +103,56 @@ public final class RecipeBook065Checks {
         for(String id:List.of("guogaology:enhancement_table","guogaology:compute_chip","guogaology:omega_pickaxe"))check(gggIds.contains(id),"mod-specific recipe present "+id);
         check(tabs(component).size()==7,"five native categories plus two client categories");
         check(tab(component,SectionRecipeBookCategory.CORES).getMessage().getString().equals(net.minecraft.network.chat.Component.translatable("gui.guogaology.recipebook.cores").getString()),"core label is localized");
-        check(tab(component,SectionRecipeBookCategory.GGG).getMessage().getString().equals("GGG"),"GGG label is exact");
+        String brandTitle=tab(component,SectionRecipeBookCategory.GGG).getMessage().getString();String language=client.getLanguageManager().getSelected();
+        check(brandTitle.equals(language.equals("zh_cn")?"果糕逻辑":"Guogaology"),"brand page uses the requested localized Mod name");
+        check(((RecipeBookComponent.TabInfo)field(tab(component,SectionRecipeBookCategory.GGG),"tabInfo")).primaryIcon().isEmpty(),"brand tab uses a texture rather than a visible registered item");
         var ids=new JsonArray();coreIds.forEach(ids::add);report.add("coreOutputs",ids);report.addProperty("nativeCraftingCollections",all.size());report.addProperty("gggCollections",ggg.size());
+    }
+    private static Map<RecipeDisplayId,RecipeDisplayEntry> entries(List<RecipeCollection> collections){
+        var result=new LinkedHashMap<RecipeDisplayId,RecipeDisplayEntry>();for(var collection:collections)for(var entry:collection.getRecipes())result.put(entry.id(),entry);return result;
+    }
+    private static boolean result(Minecraft client,RecipeDisplayEntry entry,Item item){return entry.resultItems(SlotDisplayContext.fromLevel(client.level)).stream().anyMatch(stack->stack.is(item));}
+    private static void exclusiveCategories(Minecraft client)throws Exception{
+        var book=client.player.getRecipeBook();var context=SlotDisplayContext.fromLevel(client.level);
+        var search=entries(book.getCollection(SearchRecipeBookCategory.CRAFTING));var cores=entries(book.getCollection(SectionRecipeBookCategory.CORES));var brand=entries(book.getCollection(SectionRecipeBookCategory.GGG));
+        var ordinary=new LinkedHashMap<RecipeDisplayId,RecipeDisplayEntry>();
+        for(var category:List.of(RecipeBookCategories.CRAFTING_BUILDING_BLOCKS,RecipeBookCategories.CRAFTING_REDSTONE,RecipeBookCategories.CRAFTING_EQUIPMENT,RecipeBookCategories.CRAFTING_MISC)){
+            var categoryEntries=entries(book.getCollection(category));
+            for(var id:categoryEntries.keySet()){check(!cores.containsKey(id),"core display ID absent from original category "+category+" / "+id);check(!brand.containsKey(id),"brand display ID absent from original category "+category+" / "+id);}
+            ordinary.putAll(categoryEntries);
+        }
+        for(var id:cores.keySet()){check(search.containsKey(id),"global Search retains core display ID "+id);check(!brand.containsKey(id),"core and brand display IDs are disjoint");}
+        for(var id:brand.keySet())check(search.containsKey(id),"global Search retains brand display ID "+id);
+        var recovered=new HashSet<>(ordinary.keySet());recovered.addAll(cores.keySet());recovered.addAll(brand.keySet());check(recovered.equals(search.keySet()),"entry partition neither loses nor duplicates Search recipes");
+        RecipeDisplayEntry vanillaTnt=null,modTnt=null;
+        for(var entry:search.values()){
+            if(result(client,entry,Items.TNT)){
+                if(RecipeBookCollections.matches(entry,RecipeBookSections.Section.GGG,context)){modTnt=entry;check(brand.containsKey(entry.id()),"nuke-mushroom TNT display belongs to brand page");check(!ordinary.containsKey(entry.id()),"nuke-mushroom TNT display leaves original categories");}
+                else{vanillaTnt=entry;check(ordinary.containsKey(entry.id()),"vanilla sand/gunpowder TNT display remains in original category");}
+            }
+            for(var stack:entry.resultItems(context))if(RecipeBookSections.isCommonWood(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString()))check(ordinary.containsKey(entry.id()),"wood display remains in original category "+entry.id());
+        }
+        check(vanillaTnt!=null&&modTnt!=null,"real synced vanilla TNT and nuke-mushroom TNT displays are both present");
+        for(Item vanilla:List.of(Items.STICK,Items.CRAFTING_TABLE,Items.BUNDLE))check(ordinary.values().stream().anyMatch(entry->result(client,entry,vanilla)),"vanilla recipe remains in concrete original category "+vanilla);
+        for(var collection:book.getCollection(SearchRecipeBookCategory.CRAFTING)){
+            var sections=new HashSet<Integer>();for(var entry:collection.getRecipes())sections.add(RecipeBookCollections.matches(entry,RecipeBookSections.Section.CORES,context)?1:RecipeBookCollections.matches(entry,RecipeBookSections.Section.GGG,context)?2:0);
+            check(sections.size()==1,"native collections are homogeneous before indexing");
+        }
+        // Deliberately give three real server-synchronized entries one category/group in a separate native book.
+        // Vanilla must build three indexed collections, so mixed groups cannot erase its TNT entry by output ID.
+        var fixture=new ClientRecipeBook();var core=cores.values().iterator().next();
+        for(var entry:List.of(vanillaTnt,modTnt,core))fixture.add(new RecipeDisplayEntry(entry.id(),entry.display(),OptionalInt.of(66066),vanillaTnt.category(),entry.craftingRequirements()));
+        fixture.rebuildCollections();var fixtureSearch=entries(fixture.getCollection(SearchRecipeBookCategory.CRAFTING));var fixtureOrdinary=entries(fixture.getCollection(vanillaTnt.category()));
+        check(fixtureSearch.size()==3&&fixture.getCollection(SearchRecipeBookCategory.CRAFTING).size()==3,"native mixed-group rebuild produces three searchable partitions");
+        check(fixtureOrdinary.size()==1&&fixtureOrdinary.containsKey(vanillaTnt.id()),"mixed group retains only original vanilla TNT in its original tab");
+        check(entries(fixture.getCollection(SectionRecipeBookCategory.CORES)).keySet().equals(Set.of(core.id())),"mixed group core is exclusive by display ID");
+        check(entries(fixture.getCollection(SectionRecipeBookCategory.GGG)).keySet().equals(Set.of(modTnt.id())),"mixed group mod TNT is exclusive by display ID");
+        report.addProperty("layoutVersion","0.6.6");report.addProperty("ordinaryDisplayEntries",ordinary.size());report.addProperty("globalSearchDisplayEntries",search.size());report.addProperty("mixedNativeGroupRegression",true);
+        byte[] texture;try(var input=client.getResourceManager().getResource(Identifier.parse(RecipeBookSections.BRAND_ICON_TEXTURE)).orElseThrow().open()){texture=input.readAllBytes();}
+        var metadataIcon=FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().findPath("assets/guogaology/icon.png").orElseThrow();
+        check(Arrays.equals(texture,Files.readAllBytes(metadataIcon)),"brand texture is the exact Mod metadata logo PNG");
+        check(java.nio.ByteBuffer.wrap(texture,16,8).getInt()==128&&java.nio.ByteBuffer.wrap(texture,20,4).getInt()==128,"original brand PNG dimensions remain128x128");
+        report.addProperty("brandLogoTexture",RecipeBookSections.BRAND_ICON_TEXTURE);report.addProperty("brandLogoSha256",HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(texture)));
     }
     private static Set<String> inventoryPage(Minecraft client,RecipeBookComponent<?> book)throws ReflectiveOperationException{
         check(((RecipeBookTabButton)field(book,"selectedTab")).getCategory()==SectionRecipeBookCategory.GGG,"inventory selected tab remains GGG");
@@ -135,7 +186,7 @@ public final class RecipeBook065Checks {
         if(phase==0){
             if(!(client.gui.screen() instanceof CraftingScreen screen)||client.player==null||client.level==null)return false;
             if(ticks<30||client.player.getRecipeBook().getCollection(SectionRecipeBookCategory.CORES).isEmpty())return false;
-            var book=component(screen);if(!book.isVisible())book.toggleVisibility();book.recipesUpdated();memberships(client,book);geometry(book,screen.width,screen.height);
+            var book=component(screen);if(!book.isVisible())book.toggleVisibility();book.recipesUpdated();memberships(client,book);exclusiveCategories(client);geometry(book,screen.width,screen.height);
             filtering(book,client,false);select(book,SectionRecipeBookCategory.CORES);int unfiltered=page(book).size();check(unfiltered>0,"core UI shows learned recipes");
             filtering(book,client,true);var filtered=page(book);check(!filtered.isEmpty()&&filtered.size()<unfiltered,"craftable filter removes unavailable core recipes");
             for(var collection:filtered)check(collection.hasCraftable(),"every filtered core collection is craftable");
@@ -185,7 +236,7 @@ public final class RecipeBook065Checks {
             }
             if(!picture(client,"recipebook065-inventory-ggg"))return false;
             if(savedMouseX!=null)mousePosition(client,savedMouseX,savedMouseY);
-            report.addProperty("language",client.getLanguageManager().getSelected());report.addProperty("customTabHoverTooltips",true);
+            report.addProperty("language",client.getLanguageManager().getSelected());report.addProperty("brandPageTitle",tab(component((InventoryScreen)client.gui.screen()),SectionRecipeBookCategory.GGG).getMessage().getString());report.addProperty("customTabHoverTooltips",true);
             report.addProperty("inventoryScreenshotFile","screenshots/recipebook065-inventory-ggg.png");
             report.addProperty("checks",checks);report.addProperty("status","passed");report.addProperty("source","Server-unlocked native recipe displays; native collection identities, search tree, mouse tab handlers, filter callback, hover tooltip renderer, crafting and inventory screens.");
             Files.writeString(client.gameDirectory.toPath().resolve("recipebook065-checks.json"),new GsonBuilder().setPrettyPrinting().create().toJson(report)+"\n");

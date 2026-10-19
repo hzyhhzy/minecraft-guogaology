@@ -47,6 +47,8 @@ def run(a):
     assert not a.core515_only or a.fresh_world,'Core0.5.15 QA must use a disposable new world'
     assert not a.astra516_only or a.fresh_world,'Astra0.5.16 QA must use a disposable new world'
     assert not a.building063_only or a.fresh_world,'Building0.6.3 QA must use a disposable new world'
+    assert not a.recipebook066_only or a.fresh_world,'Recipebook0.6.6 QA must use a disposable new world'
+    assert not a.recipebook066_baseline or a.recipebook066_only,'Baseline requires recipebook066 mode'
     assert not a.material065_only or a.fresh_world,'Material0.6.5 QA must use a disposable new world'
     assert not a.absence064_baseline or (a.absence064_only and a.fresh_world),'Absence baseline requires --absence064-only --fresh-world'
     assert not a.absence064_only or a.absence064_baseline or a.fixture,'Absence upgrade verification requires the actual old QA fixture'
@@ -70,6 +72,10 @@ def run(a):
         full=minecraft/'libraries'/path;assert full.is_file(),full;classpath.append(full)
     classpath.append(instance/'fo262.jar')
     for folder,name in [('libs',f'guogaology-dimension-26.2-{release}.jar'),('qa',f'guogaology-merge-qa-{release}.jar')]:
+        if folder=='libs' and a.recipebook066_baseline:
+            old=ROOT/'build/releases/0.6.5/guogaology-dimension-26.2-0.6.5.jar'
+            with ZipFile(old) as archive:assert json.loads(archive.read('fabric.mod.json'))['version']=='0.6.5'
+            shutil.copy2(old,mods/old.name);continue
         if folder=='libs' and a.absence064_baseline:
             old=(a.absence064_baseline_jar or ROOT/'build/absence064-baseline/guogaology-dimension-26.2-0.6.3.jar').resolve()
             assert old.is_file(),f'Missing preserved0.6.3 release JAR: {old}'
@@ -103,9 +109,20 @@ def run(a):
         assert len(main)==len(helper)==1,'One exact production and QA JAR per material QA run'
         inputs=material065_inputs(main[0],helper[0],release,language=a.language,voxy=a.voxy,seed=a.seed)
         (game/'material065-run-input.json').write_text(json.dumps(inputs,indent=2)+'\n','utf8')
+    if a.recipebook066_only:
+        main=list(mods.glob('guogaology-dimension-26.2-*.jar'));helper=list(mods.glob('guogaology-merge-qa-*.jar'));assert len(main)==len(helper)==1
+        record={'mode':'baseline065' if a.recipebook066_baseline else 'fixed066','language':a.language,'freshWorld':a.fresh_world}
+        for role,path in [('production',main[0]),('qa',helper[0])]:
+            with ZipFile(path) as archive:identity=json.loads(archive.read('fabric.mod.json'))
+            assert identity['id']==('guogaology' if role=='production' else 'guogaology-merge-qa'),'Wrong native QA input identity'
+            if role=='production':assert identity['version']==('0.6.5' if a.recipebook066_baseline else release),'Wrong native production version'
+            else:assert path.name==f'guogaology-merge-qa-{release}.jar','Wrong native QA helper artifact'
+            record[role+'Jar']=path.name;record[role+'Sha256']=hashlib.sha256(path.read_bytes()).hexdigest();record[role+'MetadataVersion']=identity['version']
+        (game/'recipebook066-run-input.json').write_text(json.dumps(record,indent=2)+'\n','utf8')
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
+             f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
              f'-Dguogaology.qa.material065={str(a.material065_only).lower()}',
              f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
@@ -139,6 +156,8 @@ if __name__=='__main__':
     p.add_argument('--core514-only',action='store_true',help='Native0.5.14 recipes, safe Graham growth and full luminous Guogao cube; four settled native scenes, disposable fo262 only')
     p.add_argument('--core515-only',action='store_true',help='Native0.5.15 recipes/scenery and nine settled art scenes, including all six Guogao faces and exact production firs; requires --fresh-world')
     p.add_argument('--building063-only',action='store_true',help='Native fixed-digit palettes and legitimate Guogao building material regression')
+    p.add_argument('--recipebook066-only',action='store_true',help='Focused native0.6.6 survival XP and exclusive branded recipe-book UI; fresh world only')
+    p.add_argument('--recipebook066-baseline',action='store_true',help='Reproduce BranchSilk XP with the exact preserved0.6.5JAR, no UI or normal save')
     p.add_argument('--material065-only',action='store_true',help='Native0.6.5 recipes/chests/mobLooting/Stellar16x and actual core/GGG recipe-book groups; requires --fresh-world')
     p.add_argument('--absence064-only',action='store_true',help='Native Lv1 Empty legacy-state/item compatibility; baseline writes a fresh0.6.3world, verifier requires that disposable --fixture')
     p.add_argument('--absence064-baseline',action='store_true',help='With --absence064-only --fresh-world, write old states/items using preserved release0.6.3')

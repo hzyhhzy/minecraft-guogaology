@@ -8,7 +8,8 @@
     "ManuscriptVerticalFlightMixin",
     "InventoryOriginAccessor",
     "CoreItemViewMixin",
-    "RecipeBookSectionsMixin"
+    "RecipeBookSectionsMixin",
+    "RecipeBookCollectionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

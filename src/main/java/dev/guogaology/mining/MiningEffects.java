@@ -80,6 +80,10 @@ public final class MiningEffects {
             if(level>=3){target.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA,ticks,0));if(attacker.getRandom().nextFloat()<.2f)target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,ticks,0));}
         }
     }
+    /** XP needs the eligible virtual Silk Touch, but no virtual Fortune or tool mutation. */
+    public static ItemStack experienceTool(BlockState state,ServerWorld world,Entity owner,ItemStack tool){
+        return !tool.isEmpty()&&GearData.silkTouch(tool)?lootTool(state,world,owner,tool):tool;
+    }
     /** Modifies a loot-context copy; the real tool and its enchantments are untouched. */
     public static ItemStack lootTool(BlockState state,ServerWorld world,Entity entity,ItemStack tool){
         if(tool.isEmpty()||!(entity instanceof LivingEntity owner)||state.hasBlockEntity())return tool;
