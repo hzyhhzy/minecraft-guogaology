@@ -81,6 +81,10 @@ def adapt(text, target, name):
         text=text.replace('CraftingInput input,HolderLookup.Provider lookup,','CraftingInput input,')
     if name == 'MiningOres.java':
         text=re.sub(r'\bcp\.([xz])\b(?!\()',r'cp.\1()',text)
+    if name == 'AbsenceCoreStackMixin.java':
+        # 26.x stores a bound item Holder in the converging constructor; 1.21.11 uses ItemLike.
+        text=text.replace('<init>(Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V',
+                          '<init>(Lnet/minecraft/core/Holder;ILnet/minecraft/core/component/PatchedDataComponentMap;)V')
     if name == 'OrdinalAnchoring.java':
         # 26.x ChunkPos is a record; the Fabric load callback also supplies
         # newlyGenerated. Keep the 1.21.11 two-argument callback in common.

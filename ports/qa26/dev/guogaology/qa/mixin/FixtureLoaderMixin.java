@@ -7,6 +7,7 @@ import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -33,7 +34,9 @@ public abstract class FixtureLoaderMixin {
         var settings=new LevelSettings("Guogaology fresh namespace QA",GameType.CREATIVE,
                 LevelSettings.DifficultySettings.DEFAULT,true,WorldDataConfiguration.DEFAULT);
         ((WorldOpenFlows)(Object)this).createFreshLevel(name,settings,options,
-                WorldPresets::createNormalWorldDimensions,new TitleScreen());
+                registries->Boolean.getBoolean("guogaology.qa.absence064")
+                        ?registries.lookupOrThrow(Registries.WORLD_PRESET).getOrThrow(WorldPresets.FLAT).value().createWorldDimensions()
+                        :WorldPresets.createNormalWorldDimensions(registries),new TitleScreen());
         ci.cancel();
     }
     @Shadow private void openWorldLoadBundledResourcePack(LevelStorageSource.LevelStorageAccess storage,WorldStem stem,PackRepository packs,Runnable cancel){throw new AssertionError();}

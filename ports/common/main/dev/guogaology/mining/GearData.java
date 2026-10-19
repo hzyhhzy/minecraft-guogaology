@@ -37,7 +37,12 @@ public final class GearData {
     public static boolean forbidsSockets(ItemStack stack){return MiningContent.GEAR.containsKey(stack.getItem())&&hasNativeEnchantments(stack);}
     public static String modificationHint(ItemStack stack){return forbidsSockets(stack)?forbidsEnchantments(stack)?"enchantment_socket_conflict":"enchanted_no_sockets":forbidsEnchantments(stack)?"socketed_no_enchantments":null;}
     public static int capacity(ItemStack gear){var spec=MiningContent.GEAR.get(gear.getItem());return spec==null?0:EquipmentRules.slots(spec.tier(),spec.kind());}
-    public static List<ItemStack> coreSlots(ItemStack s){return s.getOrDefault(MiningContent.CORES,List.of());}
+    public static List<ItemStack> coreSlots(ItemStack s){
+        List<ItemStack> source=s.getOrDefault(MiningContent.CORES,List.of());
+        var normalized=AbsenceCoreItems.normalizedInstalled(source);
+        if(normalized!=source)s.set(MiningContent.CORES,normalized);
+        return normalized;
+    }
     public static List<ItemStack> cores(ItemStack s){return coreSlots(s).stream().filter(c->!c.isEmpty()).toList();}
     public static boolean isSocketTotem(ItemStack gear,ItemStack item){return gear.getItem() instanceof DenxiManuscript&&item.is(Items.TOTEM_OF_UNDYING);}
     public static int socketTotems(ItemStack gear){return gear.getItem() instanceof DenxiManuscript&&!hasNativeEnchantments(gear)?(int)coreSlots(gear).stream().filter(s->s.is(Items.TOTEM_OF_UNDYING)).count():0;}
@@ -63,6 +68,7 @@ public final class GearData {
     }
     public static void setCores(ItemStack s,List<ItemStack> slots){
         if(slots.size()>EquipmentRules.MAX_SOCKETS)throw new IllegalArgumentException("Too many sockets");
+        slots=AbsenceCoreItems.normalizedInstalled(slots);
         var prior=coreSlots(s);boolean same=prior.size()==slots.size();
         for(int i=0;same&&i<slots.size();i++)same=ItemStack.matches(prior.get(i),slots.get(i));
         if(same)return;
@@ -124,11 +130,13 @@ public final class GearData {
         var list=new ArrayList<>(coreSlots(gear));
         int capacity=capacity(gear);
         while(list.size()<capacity)list.add(ItemStack.EMPTY);
-        for(int i=0;i<capacity;i++)if(list.get(i).isEmpty()){list.set(i,core.copyWithCount(1));break;}
+        for(int i=0;i<capacity;i++)if(list.get(i).isEmpty()){
+            var installed=AbsenceCoreItems.normalizedCopy(core);installed.setCount(1);list.set(i,installed);break;
+        }
         setCores(gear,list);core.shrink(1);return null;
     }
     public static ItemStack remove(ItemStack gear,int index){
-        if(index<0||index>=coreSlots(gear).size())return ItemStack.EMPTY;
-        var list=new ArrayList<>(coreSlots(gear));var result=list.set(index,ItemStack.EMPTY).copy();setCores(gear,list);return result;
+        var slots=coreSlots(gear);if(index<0||index>=slots.size())return ItemStack.EMPTY;
+        var list=new ArrayList<>(slots);var result=AbsenceCoreItems.normalizedCopy(list.set(index,ItemStack.EMPTY));setCores(gear,list);return result;
     }
 }

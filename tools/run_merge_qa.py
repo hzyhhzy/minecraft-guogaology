@@ -3,7 +3,7 @@
 Reads libraries and Fabric/Sodium from the chosen installation. Never copies
 accounts, normal settings or normal saves. Use a QA fixture or a fresh normal world.
 """
-import argparse,json,shutil,subprocess
+import argparse,hashlib,json,shutil,subprocess
 from pathlib import Path
 from zipfile import ZipFile
 ROOT=Path(__file__).resolve().parents[1]
@@ -34,6 +34,11 @@ def run(a):
     assert not a.core515_only or a.fresh_world,'Core0.5.15 QA must use a disposable new world'
     assert not a.astra516_only or a.fresh_world,'Astra0.5.16 QA must use a disposable new world'
     assert not a.building063_only or a.fresh_world,'Building0.6.3 QA must use a disposable new world'
+    assert not a.absence064_baseline or (a.absence064_only and a.fresh_world),'Absence baseline requires --absence064-only --fresh-world'
+    assert not a.absence064_only or a.absence064_baseline or a.fixture,'Absence upgrade verification requires the actual old QA fixture'
+    assert not a.absence064_baseline_jar or a.absence064_baseline,'An old JAR is used only for the explicit absence baseline writer'
+    if a.absence064_only and a.fixture:
+        assert a.fixture.resolve().is_relative_to((ROOT/'build/runtime-qa').resolve()),'Absence fixtures must be earlier disposable runtime-qa worlds, never normal saves'
     assert a.seed is None or a.fresh_world,'--seed applies only to --fresh-world'
     assert a.seed is None or -(1<<63)<=a.seed<(1<<63),'Seed must fit a signed Java long'
     if a.fixture:assert a.fixture.name in ('port-0217','port-qa'),'Use only a disposable QA fixture'
@@ -51,6 +56,13 @@ def run(a):
         full=minecraft/'libraries'/path;assert full.is_file(),full;classpath.append(full)
     classpath.append(instance/'fo262.jar')
     for folder,name in [('libs',f'guogaology-dimension-26.2-{release}.jar'),('qa',f'guogaology-merge-qa-{release}.jar')]:
+        if folder=='libs' and a.absence064_baseline:
+            old=(a.absence064_baseline_jar or ROOT/'build/absence064-baseline/guogaology-dimension-26.2-0.6.3.jar').resolve()
+            assert old.is_file(),f'Missing preserved0.6.3 release JAR: {old}'
+            with ZipFile(old) as archive:
+                identity=json.loads(archive.read('fabric.mod.json'))
+                assert identity['id']=='guogaology' and identity['version']=='0.6.3','Absence fixture writer requires actual0.6.3 production'
+            shutil.copy2(old,mods/old.name);continue
         if folder=='libs' and a.advancements_baseline:
             baseline=list((instance/'mods').glob('guogaology-dimension-26.2-*.jar'))
             assert len(baseline)==1,'Baseline reads the unique installed main Mod, without modifying it'
@@ -68,9 +80,14 @@ def run(a):
         if identity in required:shutil.copy2(jar,mods/jar.name);copied.add(identity)
     assert copied==required
     if a.fixture:shutil.copytree(a.fixture,game/'saves/port-qa',ignore=shutil.ignore_patterns('session.lock'))
+    if a.absence064_only:
+        main=[jar for jar in mods.glob('*.jar') if jar.name.startswith('guogaology-dimension-26.2-')]
+        assert len(main)==1,'One exact production JAR per absence QA run'
+        (game/'absence064-run-input.json').write_text(json.dumps({'mode':'baseline063' if a.absence064_baseline else 'upgrade064','productionJar':main[0].name,'productionSha256':hashlib.sha256(main[0].read_bytes()).hexdigest(),'fixture':str(a.fixture.resolve()) if a.fixture else None,'freshWorld':a.fresh_world},indent=2)+'\n','utf8')
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
+             f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
              f'-Dguogaology.qa.advancements057={str(a.advancements057_only or a.advancements510_only or a.advancements_baseline or a.laver_scenes_only).lower()}',f'-Dguogaology.qa.advancementsBaseline={str(a.advancements_baseline).lower()}',f'-Dguogaology.qa.advancements510={str(a.advancements510_only).lower()}',f'-Dguogaology.qa.laverScenes={str(a.laver_scenes_only).lower()}',
              f'-Dguogaology.qa.chainloot0501={str(a.chain_loot0501_only).lower()}',f'-Dguogaology.qa.namespace050={str(a.namespace_only).lower()}',f'-Dguogaology.qa.freshworld={str(a.fresh_world).lower()}',
@@ -102,6 +119,9 @@ if __name__=='__main__':
     p.add_argument('--core514-only',action='store_true',help='Native0.5.14 recipes, safe Graham growth and full luminous Guogao cube; four settled native scenes, disposable fo262 only')
     p.add_argument('--core515-only',action='store_true',help='Native0.5.15 recipes/scenery and nine settled art scenes, including all six Guogao faces and exact production firs; requires --fresh-world')
     p.add_argument('--building063-only',action='store_true',help='Native fixed-digit palettes and legitimate Guogao building material regression')
+    p.add_argument('--absence064-only',action='store_true',help='Native Lv1 Empty legacy-state/item compatibility; baseline writes a fresh0.6.3world, verifier requires that disposable --fixture')
+    p.add_argument('--absence064-baseline',action='store_true',help='With --absence064-only --fresh-world, write old states/items using preserved release0.6.3')
+    p.add_argument('--absence064-baseline-jar','--baseline-jar',dest='absence064_baseline_jar',type=Path,help='Explicit0.6.3production JAR; default build/absence064-baseline/guogaology-dimension-26.2-0.6.3.jar')
     p.add_argument('--astra516-only',action='store_true',help='Native0.5.16 straight Astra firs and vivid SCG: current checks plus three focused settled scenes; requires --fresh-world')
     p.add_argument('--laver-scenes-only',action='store_true',help='Focused native Laver-table/audio and redesigned material screenshots, without repeating the advancement sweep')
     p.add_argument('--advancements057-only',action='store_true',help='Real vanilla/guide criteria, client sync and advancement-page screenshots')

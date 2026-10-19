@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.3 · Minecraft Java / Fabric** · [Download Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
+**Development v0.6.4 · Minecraft Java / Fabric** · [Published v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
 
-Version0.6.3 fixes the giant-blueprint digit1/Guogao material-code collision while retaining all24 legitimate emoji-globe centers. Focused Astra office/giant checks did not reproduce current overlaps; production layout logic is unchanged. It retains0.6.2 portal improvements and0.6.1 optional26.3 JEI fixes. This release is published from its independent branch without merging main; complete matching source is available in the attachments and v0.6.3 tag. See [release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md). Alice (AliceLdl)'s original0.5.4.1 work and existing four-version integration remain included.
+Version0.6.4 retires the finished Lv1 Absence Core's old stability/disappearance behavior, retaining its saved IDs and block-state schema while removing obsolete flags from old loose and installed core items. FFFZ/FOS and ψ/Z stability mechanics are unchanged. See [implementation and upgrade checks](docs/WORK-064.md). Version0.6.3 is now merged into main;0.6.4 remains on an independent, unpublished development branch. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original0.5.4.1 work and all four target adaptations remain included. See [0.6.3 release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -33,7 +33,9 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID is `guogaology` starting with 0.5.0. This change includes no old-save migration or aliases for the former IDs. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with0.5.0. Version0.6.4 retains current saved IDs and only normalizes the Lv1 Absence Core's obsolete components; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
+
+All four0.6.4 targets build and84Python checks pass. Isolated26.2 tests reopen a real0.6.3save, verify old chest/player/installed items and compare FFFZ/FOS/ψ/Z behavior against the old production JAR:283baseline and589upgrade assertions pass. Other targets were not launched this round. See [0.6.4 evidence](docs/WORK-064.md).
 
 ## Language
 

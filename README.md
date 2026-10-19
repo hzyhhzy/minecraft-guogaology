@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.3 · Minecraft Java / Fabric** · [下载 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
+**开发版本 v0.6.4 · Minecraft Java / Fabric** · [已发布版本 v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
 
-0.6.3 修复巨构数字“1”与馃槹的内部材料编号冲突，保留24个原有表情球中心。Astra普通楼避让专项检查未复现当前重叠，布局算法没有改动。继承0.6.2的传送门优化与0.6.1的26.3可选JEI修复。此版本从独立分支发布，暂未合入main；完整对应源码可从Release附件或v0.6.3标签取得。见[发行说明](docs/RELEASE-0.6.3.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。Alice（AliceLdl）的0.5.4.1原始修改及既有四版本适配继续保留。
+0.6.4 清理一级空无晶核的旧稳定与消失机制，保留旧存档ID及方块属性，并清理旧物品和已镶嵌晶核中多余的状态标记。fffZ/FOS和ψ/Z的稳定机制不变。开发与兼容验证见[工作记录](docs/WORK-064.md)。0.6.3已合入main；本轮0.6.4仍在独立分支，尚未发布。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。见[0.6.3发行说明](docs/RELEASE-0.6.3.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -23,7 +23,9 @@
 | 26.2 | 25 | 0.153.0+26.2 |
 | 26.3 | 25 | 0.161.0+26.3 |
 
-四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；本轮不提供旧存档迁移或旧 ID 别名。
+四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；0.6.4保留现有存档ID，仅清理一级空无晶核的旧组件。不提供更早`googology`命名空间的迁移或旧ID别名。
+
+0.6.4四版构建和84项Python检查通过；隔离26.2实测0.6.3存档升级、旧箱子/玩家/已镶嵌物品保存及fffZ/FOS/ψ/Z行为对照通过（283项旧版基线、589项升级检查）。其他版本本轮未启动。见[0.6.4记录](docs/WORK-064.md)。
 
 0.6.3 四版均通过构建和资源检查；本轮在隔离26.2完成原生材质、蓝图、放置与画面验证，并进行纯算法巨构避让回归。没有重跑其他版本或Connector/Voxy环境。0.6.2传送及真实0.6.0存档升级测试、0.6.1的26.3JEI四种安装组合属于此前验证。详见[0.6.3记录](docs/WORK-063.md)、[传送门记录](docs/WORK-062.md)和[JEI修复记录](docs/WORK-061.md)。
 
