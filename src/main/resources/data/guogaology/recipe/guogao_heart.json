@@ -3,18 +3,21 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "BSB",
-    "ABA"
+    "CSC",
+    "ACA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:guogao_drop"
+      "item": "guogaology:fruit_cake_gel"
     },
     "B": {
-      "item": "guogaology:fruit_cake_gel"
+      "item": "guogaology:guogao_drop"
+    },
+    "C": {
+      "tag": "guogaology:fruit_guogao"
     }
   },
   "result": {

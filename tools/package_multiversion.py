@@ -32,8 +32,12 @@ def verify_client_hooks(archive, metadata):
                 full=config['package']+'.'+name
                 assert full.replace('.','/')+'.class' in archive.namelist(),f'Missing registered mixin: {full}'
                 active.add(full)
-    for required in ('ManuscriptVerticalFlightMixin','InventoryOriginAccessor'):
+    for required in ('ManuscriptVerticalFlightMixin','InventoryOriginAccessor','RecipeBookSectionsMixin'):
         assert 'dev.guogaology.client.mixin.'+required in active,f'Unregistered client hook: {required}'
+    if metadata['depends']['minecraft']!='1.21.1':
+        for required in ('RecipeBookCollectionsMixin','RecipeBookTabTooltipMixin'):
+            assert 'dev.guogaology.client.mixin.'+required in active,f'Unregistered modern recipe-book hook: {required}'
+        assert 'dev/guogaology/client/recipebook/SectionRecipeBookCategory.class' in archive.namelist(),'Missing modern recipe-book category'
 
 
 def verify_jei_compat(archive, metadata, target):
@@ -156,6 +160,21 @@ def verify_mineral_block_tools(archive, target):
             assert 'guogaology:'+mineral+'_block' in values,f'Mineral storage tool policy missing: {target}/{tag}/{mineral}'
 
 
+def verify_gel_loot_policy(archive, target):
+    """Check final imported payloads independently of the generator and adapter."""
+    functions='modifier' if target=='26.3' else 'functions'
+    function='type' if target=='26.3' else 'function'
+    for entity,count in (('fruit_cake_slime',2),('fruit_slime',1)):
+        path=f'data/guogaology/loot_table/entities/{entity}.json'
+        expected={'type':'minecraft:entity','pools':[{'rolls':1,'entries':[{
+            'type':'minecraft:item','name':'guogaology:fruit_cake_gel',functions:[
+                {function:'minecraft:set_count','count':count},
+                {function:'minecraft:enchanted_count_increase','enchantment':'minecraft:looting',
+                 'count':{'type':'minecraft:uniform','min':0.0,'max':1.0}}]}]}],
+            'random_sequence':'guogaology:'+entity}
+        assert json.loads(archive.read(path))==expected,f'Stale/overwritten gel mob loot: {target}/{entity}'
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -196,6 +215,7 @@ def package(targets, output_dir=None):
             verify_motion_tags263(archive, target)
             verify_guide_policy(archive, target)
             verify_mineral_block_tools(archive, target)
+            verify_gel_loot_policy(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
             assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))

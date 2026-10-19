@@ -103,6 +103,11 @@ public final class SurvivalStructures {
         // Natural LHO displays follow wild disappearance rules; only live crystal
         // protection or later player placement makes them safe to handle.
         if(code==SanctuaryLayout.CROWN)return GuogaologyBlocks.ASTRA_WEAVE.getDefaultState().with(dev.guogaology.block.AstraWeaveBlock.COLOR,AstraCrown.colorAt(lx,y,lz));
+        // New Absence landmarks retain every authored cell, but fixed-number studies
+        // and any numeric panel backing use the same ordinary frosted facade instead.
+        if(s.theme==SurvivalTheme.ABSENCE&&(code==SanctuaryLayout.BMS_DIGIT
+                ||code>=SanctuaryLayout.FIXED_NUMBER&&code<SanctuaryLayout.FIXED_NUMBER+16))
+            return Blocks.WHITE_STAINED_GLASS.getDefaultState();
         if(code==SanctuaryLayout.BMS_DIGIT){
             var cell=s.layout().bmsCells().get(new SanctuaryLayout.Point(lx,y,lz));
             if(cell==null)throw new IllegalStateException("Missing BMS panel metadata");

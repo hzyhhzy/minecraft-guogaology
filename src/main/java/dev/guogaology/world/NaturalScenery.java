@@ -358,20 +358,14 @@ public final class NaturalScenery {
             int u=col-matrix.width()/2;int x=s.x+(turn%2==0?u:0),z=s.z+(turn%2==1?u:0);
             b.set(x,base+matrix.height()-1-row,z,GuogaologyBlocks.ordinalBrick(matrix.rows()[row][col]));
         }
-        var reward=CoreResources.MATRIX_SHEET.getDefaultState();
-        // Thin authored backing plates are harvestable without erasing the visible expression.
-        for(int col=0;col<matrix.width();col+=3){
-            int u=col-matrix.width()/2;
-            int x=s.x+(turn%2==0?u:1),z=s.z+(turn%2==1?u:1);
-            b.set(x,base,z,CoreResources.MATRIX_SHEET.getDefaultState());
-        }
+        // The crest is emitted from the complete expression before chunk clipping.
+        NaturalForms.matrixCrest(forms(b),s.x,base,s.z,matrix.width(),matrix.height(),turn);
         // The expression's first column is the flagpole side, independent of viewing axis.
         {
             int col=0;
             int u=col-matrix.width()/2,x=s.x+(turn%2==0?u:0),z=s.z+(turn%2==1?u:0);
             int ground=ProceduralTerrain.column(s.seed,x,z,false).surface(false,s.floor);
             b.box(x,ground,z,x,base-1,z,GuogaologyBlocks.ORDINAL_STONE.getDefaultState());
-            b.set(x,base+matrix.height(),z,reward);
         }
     }
     public static boolean bmsHasCore(long salt) { return Math.floorMod(WorldNoise.mix(salt+2521),20L)==0; }
@@ -520,7 +514,7 @@ public final class NaturalScenery {
             b.set(s.x,s.floor+height+1,s.z,GuogaologyBlocks.SET_GLASS.getDefaultState());
         }
         if(s.kind==3 && Math.floorMod(s.salt,4L)==0&&NaturalForms.absenceFragmentPresent(s.salt,s.x,s.floor+1,s.z))
-            b.set(s.x,s.floor+1,s.z,FORM_MATERIALS[NaturalForms.absenceFragmentMaterial(s.salt,0)]);
+            NaturalForms.absenceFragment(forms(b),s.salt,s.x,s.floor+1,s.z,NaturalForms.absenceFragmentMaterial(s.salt,0));
     }
     private static void laver(SceneryBrush b,Site s) {
         int height=laverHeight(s);if(height<8) return;

@@ -6,13 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:sequence_core_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:sequence_core_lv2"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -21,13 +21,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:ordinal_bricks"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 8,
+            "max": 16
+          }
         }
       ]
     },
@@ -36,17 +40,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:matrix_sheet",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
-              }
-            }
-          ]
+          "name": "guogaology:matrix_sheet"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 4,
+            "max": 8
+          }
         }
       ]
     },
@@ -55,17 +59,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:matrix_archive_ceramic",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:ridge_lamina"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 4,
+            "max": 8
+          }
         }
       ]
     },
@@ -74,17 +78,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ridge_lamina",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_crystal"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -93,17 +97,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:projection_glass",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:true_omega_material"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -112,36 +116,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:y_log",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:matrix_archive_ceramic"
         }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
+      ],
+      "functions": [
         {
-          "type": "minecraft:item",
-          "name": "guogaology:y_leaves",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
-              }
-            }
-          ]
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 16,
+            "max": 24
+          }
         }
       ]
     }

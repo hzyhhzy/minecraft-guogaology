@@ -11,10 +11,10 @@
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:matrix_sheet"
+      "item": "guogaology:ordinal_bricks"
     },
     "B": {
-      "item": "guogaology:ordinal_bricks"
+      "item": "guogaology:matrix_sheet"
     },
     "C": {
       "item": "guogaology:ridge_lamina"

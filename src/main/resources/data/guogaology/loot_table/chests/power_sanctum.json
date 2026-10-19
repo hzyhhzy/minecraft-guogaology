@@ -6,13 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:power_tower_core_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:power_tower_core_lv2"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -21,13 +21,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:power_bricks"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 8,
+            "max": 16
+          }
         }
       ]
     },
@@ -36,17 +40,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:power_bricks",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 48,
-                "max": 64
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_bricks"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 8,
+            "max": 16
+          }
         }
       ]
     },
@@ -55,17 +59,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:scg_node",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_crystal"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -74,17 +78,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:recursive_bronze",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:true_omega_material"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -93,55 +97,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:tree_node_red",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
-              }
-            }
-          ]
+          "name": "guogaology:recursive_bronze"
         }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
+      ],
+      "functions": [
         {
-          "type": "minecraft:item",
-          "name": "guogaology:tree_node_green",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:tree_node_blue",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 8
-              }
-            }
-          ]
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 16,
+            "max": 24
+          }
         }
       ]
     }

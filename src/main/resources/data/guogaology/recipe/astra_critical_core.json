@@ -3,8 +3,8 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "BSB",
-    "ABA"
+    "CSC",
+    "ACA"
   ],
   "key": {
     "S": {
@@ -15,6 +15,9 @@
     },
     "B": {
       "item": "guogaology:cloud_pearl"
+    },
+    "C": {
+      "item": "guogaology:nuke_mushroom"
     }
   },
   "result": {

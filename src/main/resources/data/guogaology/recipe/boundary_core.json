@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "BSB",
+    "CSC",
     "ABA"
   ],
   "key": {
@@ -11,10 +11,13 @@
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:set_membrane"
+      "item": "guogaology:turing_tape"
     },
     "B": {
       "item": "guogaology:turing_endcap"
+    },
+    "C": {
+      "item": "guogaology:set_membrane"
     }
   },
   "result": {

@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "BSB",
+    "CSC",
     "ABA"
   ],
   "key": {
@@ -11,10 +11,13 @@
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:hydra_sprig"
+      "tag": "guogaology:ordinal_branch_stones"
     },
     "B": {
-      "tag": "guogaology:ordinal_branch_stones"
+      "item": "guogaology:hydra_sprig"
+    },
+    "C": {
+      "tag": "guogaology:ordinal_flowers"
     }
   },
   "result": {

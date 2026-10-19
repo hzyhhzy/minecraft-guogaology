@@ -2,24 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ABC",
-    "DSD",
-    "CBA"
+    "ABA",
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "item": "guogaology:iblp_node"
-    },
-    "B": {
-      "item": "guogaology:gummy"
-    },
-    "C": {
       "item": "guogaology:laver_ribbon"
     },
-    "D": {
+    "B": {
       "item": "guogaology:iblp_marked"
     }
   },

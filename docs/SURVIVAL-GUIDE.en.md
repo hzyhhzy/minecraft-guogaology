@@ -25,7 +25,7 @@ Destination styles are ivory/gold Omega for surface/home, indigo matrix-and-moun
 
 Activated frames have hardness 200, four times obsidian. They can be mined, but never drop items with any tool, including Silk Touch; breaking one still collapses the entire gate. Unactivated construction materials and return frames retain their original hardness and drops.
 
-Horizontal scales are Overworld:Outer:Inner:Underworld = 1:1:4:16. Falling to Y≤−500 in Outer leads to Inner Y=500; void damage remains active during the descent, so insufficient protection can be fatal. Falling to Y≤−120 in Inner leads to Underworld Y=500; quarter gravity and no fall damage apply there. New destinations still require chunk generation. Approaching a portal only prepares chunks. Entering first reuses a nearby complete, safe portal, then scans real ground. Ordinary replaceable vegetation and thin snow can be cleared, and short foundations can fill height differences of up to three blocks. When complete ground is unavailable, a connected ledge or near-water platform takes priority over a void platform. Exits are no longer deliberately raised into the sky; existing safe gates are not relocated. Loading and search have time and per-tick limits. An unsuccessful trip is silently cancelled and the player is returned outside the source gate; leaving allows another attempt. Containers and structures are not overwritten.
+Horizontal scales are Overworld:Outer:Inner:Underworld = 1: 1: 4: 16. Falling to Y≤−500 in Outer leads to Inner Y=500; void damage remains active during the descent, so insufficient protection can be fatal. Falling to Y≤−120 in Inner leads to Underworld Y=500; quarter gravity and no fall damage apply there. New destinations still require chunk generation. Approaching a portal only prepares chunks. Entering first reuses a nearby complete, safe portal, then scans real ground. Ordinary replaceable vegetation and thin snow can be cleared, and short foundations can fill height differences of up to three blocks. When complete ground is unavailable, a connected ledge or near-water platform takes priority over a void platform. Exits are no longer deliberately raised into the sky; existing safe gates are not relocated. Loading and search have time and per-tick limits. An unsuccessful trip is silently cancelled and the player is returned outside the source gate; leaving allows another attempt. Containers and structures are not overwritten.
 
 Everyone can use `/guogaology` or `/guogaology help`. The following commands require administrator permission level 2:
 
@@ -110,16 +110,16 @@ Each of the eight giant landmarks retains eight local Lv1 cores in deliberately 
 
 | Reward | Contents |
 |---|---|
-| Main chest | One local Lv2 core, one Ordinal Core Lv1, existing theme goods, and 16–32 of the local new material (LHO instead supplies 32–64 Void Glass); Power also provides 8–16 SCG Junctions |
-| Side chest | 6–12 complete eight-material ingredient sets for the local first-grade core, excluding the base crystal; 30–60 Ordinal Shards; existing lower-tier theme goods |
+| Main chest | One local Lv2 core; each Lv1 ingredient, including the central base crystal, averages three times its recipe quantity; 2–4 Ω Ordinal Minerals; 16–24 theme decorations, averaging 20 |
+| Side chest | One local Lv1 core; each Lv1 ingredient, including the central base crystal, averages its recipe quantity; 16–24 theme decorations, averaging 20 |
 
-Compared with 0.5.4.1, main chests drop one grade and side chests provide ingredients instead of finished Lv1 cores. Inner landmarks average about 1/km²; Underworld landmarks about 0.5/km².
+All eight giant families follow these rules; ordinary small-building loot is unchanged. An ingredient required c times has a main-chest range of 2c–4c. Side chests give exactly 1 when c=1, otherwise c−1…c+1. Ingredients roll independently: three/one sets describes each ingredient’s expected quantity, not a guarantee that an individual chest crafts exactly three/one cores. A tagged group selects one legal alternative and supplies that group’s quantity; it does not give a full set of every alternative. No extra high-grade Ordinal Core, shards or other equipment minerals are added. The main-chest material is `true_omega_material` (Ω Ordinal Mineral). Decoration pools do not repeat direct recipe ingredients. Inner landmarks average about 1/km²; Underworld landmarks about 0.5/km².
 
 ## Obtaining and fusing cores
 
 The nine core families display Lv1–3; the base Ordinal Crystal is ungraded. The internal Ordinal Crystal stages 2–4 correspond to displayed Ordinal Core Lv1–3. Matrix Core, Absence Core and Heart of Nuclear Awe retain the established Sequence, Empty Set and Criticality effects.
 
-Inner and Underworld wilderness no longer places finished cores or base crystal blocks. Gather theme ingredients from the corresponding scenery and combine them with ordinary materials; no pre-existing core or Silk Touch is required:
+Inner and Underworld wilderness no longer places finished cores or base crystal blocks. Gather theme ingredients from scenery and ordinary sources, including direct Outer ingredients; no pre-existing core or Silk Touch is required:
 
 | Material | Where to look |
 |---|---|
@@ -127,10 +127,15 @@ Inner and Underworld wilderness no longer places finished cores or base crystal 
 | Power Tower Wood | Small power towers and Graham trees |
 | SCG Junction | SCG graph vertices; TREE centers consistently contain their matching ordinary colored node |
 | Hydra Sprig | Branching plants, Hydras and crowns in the Ordinal Garden |
-| Laver Sheet | Laver plants; shears can also collect sheets from Laver leaves |
-| Nuclear Blast Block | Buried mushroom-cloud voxels (1% of fully enclosed cloud), and woven-knot centers |
-| Set Membrane | Set shells and egg scenery in Boundary Highlands |
-| Guogao | Inside Guogao Christmas-tree stars and giant hanging emoji-globe centers; local secondary-chest ingredient bundles |
+| Laver Sheet and iBLP Marked Point | Shears or Silk Touch collect intact leaves, each crafting 4 sheets; marked points come from valid iBLP tables |
+| Nuclear Blast Block, Compute Chip and Nuke Mushroom | Blocks come from enclosed Astra clouds and knot centers; a rack/monitor dismantles into 2 chips; mushrooms come from Outer Astra scenery |
+| Set Membrane, Turing Terminus and Tape | Set shells, long tapes and their two ends in Boundary Highlands; termini can also be crafted from Proof Stone and ordinary stone |
+| Guogao, Fruit Guogao Block and Fruit Cake Gel | Star interiors and giant-tree lights provide Guogao; four relief and four plain fruit blocks are valid ingredients; Outer Fruit Cake Slimes and Fruit Slimes provide gel |
+| Ordinal Flower and Branch Stone | Six existing Ordinal Garden plants and the ε/ω/Ω/ζ/ψ/φ Branch Stones; Guogao Flowers are excluded |
+| Void Glass, fffZ and FOS | LHO terrain and fragment scenery; the recipe requires one fffZ and one FOS, without substitution |
+| Stellar Stone | A Stellar Stone Block unpacks into 9 stones; 9 stones now pack back into one block |
+
+Fruit Cake Slimes (`fruit_cake_slime`) drop 2 Fruit Cake Gels by default; Fruit Slimes (`fruit_slime`) drop 1. Both support normal vanilla Looting increases. Existing small-mob spawning on the larger mob’s death is unchanged; those smaller mobs must be killed separately for their drops.
 
 Ordinal Crystal Ore has numbered-stone, transparent-island and Dreadstone variants with the same drops. Version0.5.6 replaces the iron-specific altitude bands with small veins distributed uniformly throughout the rock, calibrated against the average iron-to-host-rock ratio in a typical vanilla sample. LHO receives one fifth as many vein attempts, with more transparent glass and crystal markings. Both cave walls and exterior rock can expose ore; no extra air-exposure discard applies. Only newly generated chunks change. Hand mining works and pickaxes are faster. Each ore drops 4–6 shards before Fortune; Silk Touch returns the ore.
 
@@ -144,23 +149,24 @@ Regional Lv1 cores use fixed-center 3×3 shaped recipes. Put one base Ordinal Cr
 
 | Lv1 core | Outer eight ingredients and positions |
 |---|---|
-| Matrix Core | Corners: 4 Matrix Sheets; top/bottom: 2 Matrix Number Bricks, any digits; left/right: 2 Mountain Laminae |
-| Power Tower Core | Corners: 4 Power Tower Wood; top: one SCG Junction; left/right/bottom: red/green/blue TREE nodes, one each |
-| Hydra Bud | Corners: 4 Hydra Sprigs; each cardinal slot accepts any ε/ω/Ω/ζ/ψ/φ Branch Stone, including repeats |
-| Absence Core | Corners: 4 fffZ/FOS fragments, freely mixed; top/bottom/left/right: 4 Stellar Stones |
-| Laver Condensation Core | Top-left/bottom-right: 2 iBLP Ordinary Points; top-right/bottom-left: 2 Laver Sheets; top/bottom: 2 Gummies; left/right: 2 Marked Points |
-| Heart of Nuclear Awe | Corners: 4 Compute Chips; top/bottom/left/right: 4 Nuclear Blast Blocks |
-| Boundary Core | Corners: 4 Set Membranes; top/bottom/left/right: 4 Turing Termini |
-| Heart of Guogao | Corners: 4 Guogao; top/bottom/left/right: 4 Fruit Cake Gels |
+| Matrix Core | Corners: 4 Number Bricks of any digits; top/bottom: 2 Matrix Sheets; left/right: 2 Mountain Laminae |
+| Power Tower Core | Corners: 4 Power Tower Wood; four cardinal slots: 4 Number Bricks of any digits |
+| Hydra Bud | Corners: any 4 of the six Branch Stones; top/bottom: 2 Hydra Sprigs; left/right: 2 Ordinal Flowers, excluding Guogao Flowers; mixing and repeats allowed |
+| Absence Core | Corners: 4 Void Glass; top/bottom: 2 Stellar Stones; left: 1 fffZ; right: 1 FOS |
+| Laver Core | Corners: 4 Laver Sheets; four cardinal slots: 4 iBLP Marked Points |
+| Heart of Nuclear Awe | Corners: 4 Compute Chips; top: 1 Nuclear Blast Block; left/right/bottom: 3 Nuke Mushrooms |
+| Boundary Core | Corners: 4 Tape Blocks; top/bottom: 2 Turing Termini; left/right: 2 Set Membranes |
+| Heart of Guogao | Corners: 4 Fruit Cake Gels; top: 1 Guogao; left/right/bottom: 3 fruit blocks, relief or plain |
 
 | Higher-grade result | Ingredients |
 |---|---|
-| Any regional Lv2 | Eight matching Lv1 cores around one central ε Mineral Block |
+| Power Tower Lv2 | Corners: 4 Power Tower Lv1 cores; top: 1 SCG Junction; left/right/bottom: red/green/blue TREE nodes; central ε Mineral Block |
+| Other seven regional Lv2 | Eight matching Lv1 cores around one central ε Mineral Block |
 | Any regional Lv3 | Eight matching Lv2 cores around one central Γ Mineral Block |
 | Ordinal Core Lv1 | Nine base Ordinal Crystals |
 | Ordinal Core Lv2/3 | Nine preceding-grade Ordinal Cores |
 
-Regional Lv2 and Lv3 also use fixed-center 8+1 shaped recipes. Ordinal Cores keep ninefold fusion. Base crystals and Ordinal Cores unpack reversibly; regional cores have no unpacking recipe. Cores drop intact with any tool or hands. Displayed Lv1/2/3 takes100/200/400 game ticks (5/10/20seconds at20TPS), unaffected by tools, enchantments, effects or manuscripts. The ungraded Ordinal Crystal is exempt: hardness1.5 like stone, normal pickaxe acceleration, and intact drops with any tool.
+The Ordinal Flower tag contains only the six existing ε/ω/Ω flowers, ζ Vine, ψ Fern and φ Flower, excluding Guogao Flowers. Number Bricks use `ordinal_bricks` and accept all digits 0–15. Regional Lv2/Lv3 retain eight outer slots and a fixed central mineral block; Power Tower Lv2 uses four preceding cores and the four node ingredients listed above. Ordinal Cores keep ninefold fusion. Base crystals and Ordinal Cores unpack reversibly; regional cores have no unpacking recipe. Cores drop intact with any tool or hands. Displayed Lv1/2/3 takes100/200/400 game ticks (5/10/20seconds at20TPS), unaffected by tools, enchantments, effects or manuscripts. The ungraded Ordinal Crystal is exempt: hardness1.5 like stone, normal pickaxe acceleration, and intact drops with any tool.
 
 LHO retains its special rules. A base crystal stabilizes the two neighboring rings, a full 5×5×5 cube including corners. Natural ψ, Z, fffZ and FOS visibly change color within that field and are re-evaluated after an anchor is removed. A nearby player's held crystal also counts. Player-placed materials are permanently stable. Absence Cores no longer spawn as wild fragments; the former Empty Set fragment chance is shared equally between fffZ and FOS. Version0.5.15 doubles wild ψ/Z tree and fffZ/FOS fragment generation density in newly generated chunks; other LHO scenery and mechanics remain unchanged.
 

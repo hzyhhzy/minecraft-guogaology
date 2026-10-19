@@ -25,6 +25,17 @@ def clear_generated(out):
         path.unlink(missing_ok=True)
 
 def load(path):return json.loads(path.read_text(encoding='utf8'))
+
+def apply_current_entity_loot(out,target):
+    """Host progression owns these two drops; donor imports must not restore old tables."""
+    for entity in ('fruit_cake_slime','fruit_slime'):
+        rel=Path('data/guogaology/loot_table/entities')/(entity+'.json')
+        value=load(ROOT/'src/main/resources'/rel)
+        if target=='26.3':
+            from prepare_port_resources import convert_263_loot
+            value=convert_263_loot(value)
+        write(Path(out)/rel,value)
+
 def state(v):
     if isinstance(v,dict):return {'Name':v['id'],**({'Properties':v['properties']} if v.get('properties') else {})} if 'id' in v else v
     m=re.fullmatch(r'([^\[]+)(?:\[(.*)\])?',v)
@@ -286,6 +297,8 @@ def prepare(target,out):
         tag=load(path) if path.exists() else {'replace':False,'values':[]}
         stones=['ordinal_stone','hell_ordinal_stone','andesite_ordinal_stone','diorite_ordinal_stone','granite_ordinal_stone','tuff_ordinal_stone','cobbled_ordinal_stone']
         tag['values']=list(dict.fromkeys(tag['values']+[remap_id(SOURCE_NS+':'+s) for s in stones]));write(path,tag)
+    # Run after clear_generated and every donor write, with target-native loot keys.
+    apply_current_entity_loot(out,target)
 
 if __name__=='__main__':
     import argparse

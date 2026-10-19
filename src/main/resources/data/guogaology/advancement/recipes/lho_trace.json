@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#guogaology:absence_fragments"
+            "items": "guogaology:absence_glass"
           }
         ]
       }
@@ -16,12 +16,32 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:ordinal_crystal"
+            "items": "guogaology:fffz_trace"
           }
         ]
       }
     },
     "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:fos_trace"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:ordinal_crystal"
+          }
+        ]
+      }
+    },
+    "ingredient_4": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -43,6 +63,8 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
+      "ingredient_3",
+      "ingredient_4",
       "has_recipe"
     ]
   ],

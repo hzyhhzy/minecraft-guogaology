@@ -795,7 +795,9 @@
       "item.guogaology.landmark_emblem_guogao": "果糕终境巨树探索标志",
       "item.guogaology.brand_emblem": "果糕逻辑标志",
       "item.guogaology.lho_guide_emblem": "LHO空无之境标志",
-      "block.guogaology.guogao_drop": "馃槹"
+      "block.guogaology.guogao_drop": "馃槹",
+      "gui.guogaology.recipebook.cores": "晶核",
+      "gui.guogaology.recipebook.ggg": "GGG"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1439,7 +1441,9 @@
       "item.guogaology.landmark_emblem_guogao": "Guogao Finality Tree Exploration Emblem",
       "item.guogaology.brand_emblem": "Guogaology Emblem",
       "item.guogaology.lho_guide_emblem": "LHO Realm Emblem",
-      "block.guogaology.guogao_drop": "Guogao"
+      "block.guogaology.guogao_drop": "Guogao",
+      "gui.guogaology.recipebook.cores": "Cores",
+      "gui.guogaology.recipebook.ggg": "GGG"
     }
   }
 }

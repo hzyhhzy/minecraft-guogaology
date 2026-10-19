@@ -16,12 +16,22 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:hydra_sprig"
+            "items": "#guogaology:ordinal_flowers"
           }
         ]
       }
     },
     "ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "guogaology:hydra_sprig"
+          }
+        ]
+      }
+    },
+    "ingredient_3": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -43,6 +53,7 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
+      "ingredient_3",
       "has_recipe"
     ]
   ],

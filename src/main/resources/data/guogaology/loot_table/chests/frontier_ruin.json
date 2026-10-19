@@ -6,17 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:set_membrane",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:boundary_core"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -25,17 +21,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:turing_endcap",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:turing_tape"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 3,
+            "max": 5
+          }
         }
       ]
     },
@@ -44,17 +40,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_shard",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 30,
-                "max": 60
-              }
-            }
-          ]
+          "name": "guogaology:turing_endcap"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 1,
+            "max": 3
+          }
         }
       ]
     },
@@ -63,17 +59,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:limit_stone",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:set_membrane"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 1,
+            "max": 3
+          }
         }
       ]
     },
@@ -82,17 +78,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:formula_stone",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 12
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_crystal"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -101,17 +93,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:proof_stone",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 12
-              }
-            }
-          ]
+          "name": "guogaology:axiom_porcelain"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 16,
+            "max": 24
+          }
         }
       ]
     }

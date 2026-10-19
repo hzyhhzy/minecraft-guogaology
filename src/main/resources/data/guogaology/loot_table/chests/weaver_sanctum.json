@@ -6,13 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:laver_core_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:laver_core_lv2"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -21,13 +21,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_crystal_lv2",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1
-            }
-          ]
+          "name": "guogaology:laver_ribbon"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 8,
+            "max": 16
+          }
         }
       ]
     },
@@ -36,17 +40,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:laver_ribbon",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
-              }
-            }
-          ]
+          "name": "guogaology:iblp_marked"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 8,
+            "max": 16
+          }
         }
       ]
     },
@@ -55,17 +59,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:resonant_silk",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_crystal"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -74,17 +78,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:laver_planks",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 32,
-                "max": 64
-              }
-            }
-          ]
+          "name": "guogaology:true_omega_material"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -93,55 +97,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:basic_laver_pattern",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 16,
-                "max": 32
-              }
-            }
-          ]
+          "name": "guogaology:resonant_silk"
         }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
+      ],
+      "functions": [
         {
-          "type": "minecraft:item",
-          "name": "guogaology:lty_yarn",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "guogaology:tianyi_fiber",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 16,
+            "max": 24
+          }
         }
       ]
     }

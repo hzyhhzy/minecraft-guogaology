@@ -41,19 +41,22 @@ TAG_VALUES = {
     'guogao_lamps': ['guogao_lantern'] + [f'{c}_guogao_lantern' for c in ('cyan','rose','lime','violet','scarlet')],
     'absence_fragments': ['fffz_trace','fos_trace'],
     'ordinal_branch_stones': ['epsilon_symbol','omega_symbol','great_omega_symbol','zeta_symbol','psi_symbol','phi_symbol'],
+    'ordinal_flowers': ['epsilon_bloom','omega_bloom','great_omega_bloom','zeta_vine','psi_fern','phi_bloom'],
 }
 # Ring order: NW,N,NE,W,E,SW,S,SE. Opposite slots carry matching
 # ingredients where their counts permit it; all four-of-a-kind occupy corners.
 FIRST = {
-    'sequence_core': ['matrix_sheet','ordinal_bricks','matrix_sheet','ridge_lamina','ridge_lamina','matrix_sheet','ordinal_bricks','matrix_sheet'],
-    'power_tower_core': ['power_bricks','scg_node','power_bricks','tree_node_red','tree_node_green','power_bricks','tree_node_blue','power_bricks'],
-    'hydra_bud': ['hydra_sprig','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','hydra_sprig'],
-    'lho_trace': ['#absence_fragments','stellar_stone','#absence_fragments','stellar_stone','stellar_stone','#absence_fragments','stellar_stone','#absence_fragments'],
-    'laver_core': ['iblp_node','gummy','laver_ribbon','iblp_marked','iblp_marked','laver_ribbon','gummy','iblp_node'],
-    'astra_critical_core': ['compute_chip','cloud_pearl','compute_chip','cloud_pearl','cloud_pearl','compute_chip','cloud_pearl','compute_chip'],
-    'boundary_core': ['set_membrane','turing_endcap','set_membrane','turing_endcap','turing_endcap','set_membrane','turing_endcap','set_membrane'],
-    'guogao_heart': ['guogao_drop','fruit_cake_gel','guogao_drop','fruit_cake_gel','fruit_cake_gel','guogao_drop','fruit_cake_gel','guogao_drop'],
+    'sequence_core': ['ordinal_bricks','matrix_sheet','ordinal_bricks','ridge_lamina','ridge_lamina','ordinal_bricks','matrix_sheet','ordinal_bricks'],
+    'power_tower_core': ['power_bricks','ordinal_bricks','power_bricks','ordinal_bricks','ordinal_bricks','power_bricks','ordinal_bricks','power_bricks'],
+    'hydra_bud': ['#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones','#ordinal_flowers','#ordinal_flowers','#ordinal_branch_stones','hydra_sprig','#ordinal_branch_stones'],
+    'lho_trace': ['absence_glass','stellar_stone','absence_glass','fffz_trace','fos_trace','absence_glass','stellar_stone','absence_glass'],
+    'laver_core': ['laver_ribbon','iblp_marked','laver_ribbon','iblp_marked','iblp_marked','laver_ribbon','iblp_marked','laver_ribbon'],
+    'astra_critical_core': ['compute_chip','cloud_pearl','compute_chip','nuke_mushroom','nuke_mushroom','compute_chip','nuke_mushroom','compute_chip'],
+    'boundary_core': ['turing_tape','turing_endcap','turing_tape','set_membrane','set_membrane','turing_tape','turing_endcap','turing_tape'],
+    'guogao_heart': ['fruit_cake_gel','guogao_drop','fruit_cake_gel','#fruit_guogao','#fruit_guogao','fruit_cake_gel','#fruit_guogao','fruit_cake_gel'],
 }
+POWER_SECOND = ['power_tower_core','scg_node','power_tower_core','tree_node_red','tree_node_green',
+                'power_tower_core','tree_node_blue','power_tower_core']
 NEW_COPY = {
     'block.guogaology.ordinal_crystal_ore': ('序数晶矿', 'Ordinal Crystal Ore'),
     'block.guogaology.empty_crystal_ore': ('空境序数晶矿', 'Voidglass Ordinal Crystal Ore'),
@@ -80,6 +83,16 @@ def read(path):
 def self_loot(name):
     return {'type':'minecraft:block','pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'guogaology:'+name}],
                                             'conditions':[{'condition':'minecraft:survives_explosion'}]}]}
+
+
+def gel_entity_loot(entity, count):
+    """Ordinary guaranteed gel drops plus vanilla Looting's uniform 0..1 bonus."""
+    return {'type':'minecraft:entity','pools':[{'rolls':1,'entries':[{
+        'type':'minecraft:item','name':'guogaology:fruit_cake_gel','functions':[
+            {'function':'minecraft:set_count','count':count},
+            {'function':'minecraft:enchanted_count_increase','enchantment':'minecraft:looting',
+             'count':{'type':'minecraft:uniform','min':0.0,'max':1.0}}]}]}],
+        'random_sequence':'guogaology:'+entity}
 
 
 def ore_loot(name):
@@ -277,6 +290,8 @@ def generated_files():
         put(A/f'models/item/{name}.json',{'parent':'guogaology:block/'+name})
         put(D/f'loot_table/blocks/{name}.json',ore_loot(name) if name in ORES else self_loot(name))
     put(D/'loot_table/blocks/ordinal_crystal.json',self_loot('ordinal_crystal'))
+    for entity,count in (('fruit_cake_slime',2),('fruit_slime',1)):
+        put(D/f'loot_table/entities/{entity}.json',gel_entity_loot(entity,count))
     path=D/'loot_table/blocks/giant_laver.json'
     put(path,collectible_laver_loot(read(path)))
     for name,values in TAG_VALUES.items():
@@ -287,7 +302,11 @@ def generated_files():
         recipes[core]=centered(materials,'ordinal_crystal',core)
         for grade in (2,3):
             source=core+('' if grade==2 else '_lv2')
-            recipes[f'{core}_lv{grade}']=centered([source]*8,'epsilon_block' if grade==2 else 'gamma_block',f'{core}_lv{grade}')
+            ring=POWER_SECOND if core=='power_tower_core' and grade==2 else [source]*8
+            recipes[f'{core}_lv{grade}']=centered(ring,'epsilon_block' if grade==2 else 'gamma_block',f'{core}_lv{grade}')
+    recipes['stellar_stone_block']={'type':'minecraft:crafting_shaped','category':'misc',
+        'pattern':['MMM','MMM','MMM'],'key':{'M':ingredient('stellar_stone')},
+        'result':{'id':'guogaology:stellar_stone_block','count':1}}
     recipes['ordinal_crystal']=shapeless(['ordinal_shard']*4,'ordinal_crystal')
     recipes['ordinal_shards_from_crystal']=shapeless(['ordinal_crystal'],'ordinal_shard',4)
     for stage in (2,3,4):
@@ -360,7 +379,7 @@ def generate(check=False):
         A/f'blockstates/{name}.json',A/f'models/block/{name}.json',A/f'models/item/{name}.json',
         A/f'textures/block/{name}.png',D/f'loot_table/blocks/{name}.json')]
     obsolete += [A/f'textures/block/{name}.png' for name in ('cloud_pearl_cloud','cloud_pearl_root','guogao_drop_top','guogao_drop_bottom')]
-    obsolete += [D/f'tags/item/{name}.json' for name in ('ancient_notation_materials','ordinal_flowers','numbered_lamps','graham_materials')]
+    obsolete += [D/f'tags/item/{name}.json' for name in ('ancient_notation_materials','numbered_lamps','graham_materials')]
     for path in obsolete:
         if path.exists():
             changed.append('remove '+str(path.relative_to(ROOT)))

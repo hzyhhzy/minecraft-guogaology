@@ -63,7 +63,7 @@ public final class CombinatorialForms {
         }
     }
     public static void drawGraph(VoxelBrush b,int x,int base,int z,int height,long salt,boolean subcubic) {
-        Graph graph=spacedTree(salt,subcubic,height);
+        Graph graph=resourceTree(salt,subcubic,height);
         for(int i=0;i<graph.edges.size();i++) {
             var edge=graph.edges.get(i);var a=graph.nodes.get(edge.a);var c=graph.nodes.get(edge.b);
             double px=x+a.x*height,py=base+a.y*height,pz=z+a.z*height;
@@ -119,6 +119,62 @@ public final class CombinatorialForms {
         var nodes=new ArrayList<Node>();
         for(int i=0;i<count;i++)nodes.add(new Node(xs[i]/height,ys[i]/height,zs[i]/height,source.nodes.get(i).label));
         return new Graph(List.copyOf(nodes),source.edges);
+    }
+    /** Keep the established silhouette, inserting short degree-three twigs along its long edges. */
+    public static Graph resourceTree(long salt,boolean subcubic,int height){
+        Graph skeleton=spacedTree(salt,subcubic,height);
+        var nodes=new ArrayList<>(skeleton.nodes);var edges=new ArrayList<>(skeleton.edges);
+        double[] bounds={Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY};
+        for(var n:nodes){bounds[0]=Math.min(bounds[0],n.x*height);bounds[1]=Math.min(bounds[1],n.y*height);bounds[2]=Math.min(bounds[2],n.z*height);
+            bounds[3]=Math.max(bounds[3],n.x*height);bounds[4]=Math.max(bounds[4],n.y*height);bounds[5]=Math.max(bounds[5],n.z*height);}
+        // Each former center funds exactly two new centers of its own color. Splitting an
+        // edge instead of adding children to a junction also keeps every SCG degree <=3.
+        for(int owner=0;owner<skeleton.nodes.size();owner++){
+            boolean added=false;
+            for(double separation:new double[]{4.25,3.75}){
+                if(addResourceTwig(nodes,edges,skeleton.nodes.get(owner),height,salt+owner*619L,bounds,separation)){added=true;break;}
+            }
+            // Never enlarge the silhouette or crowd the glass merely to meet a quota.
+            if(!added)break;
+        }
+        return new Graph(List.copyOf(nodes),List.copyOf(edges));
+    }
+    private static boolean addResourceTwig(ArrayList<Node> nodes,ArrayList<Edge> edges,Node owner,int height,long salt,double[] bounds,double gap){
+        var order=new ArrayList<Integer>();for(int i=0;i<edges.size();i++)if(edges.get(i).a!=edges.get(i).b)order.add(i);
+        order.sort((i,j)->Double.compare(twigScore(nodes,edges.get(j),owner,height),twigScore(nodes,edges.get(i),owner,height)));
+        for(int ei:order){var edge=edges.get(ei);var a=nodes.get(edge.a);var c=nodes.get(edge.b);
+            double dx=c.x-a.x,dz=c.z-a.z,horizontal=Math.hypot(dx,dz);
+            if(horizontal<1e-8){dx=1;dz=0;horizontal=1;}
+            for(double t:new double[]{.5,.35,.65,.2,.8})for(double shift:new double[]{0,2.0,-2.0}){
+                double x=(a.x*(1-t)+c.x*t)*height-dz/horizontal*shift,y=(a.y*(1-t)+c.y*t)*height,z=(a.z*(1-t)+c.z*t)*height+dx/horizontal*shift;
+                var joint=new Node(x/height,y/height,z/height,owner.label);
+                if(!within(joint,height,bounds)||!clearNode(nodes,joint,height,gap))continue;
+                double phase=WorldNoise.unit(WorldNoise.mix(salt))*Math.PI*2;
+                for(int turn=0;turn<24;turn++){
+                    double angle=phase+(turn%8)*Math.PI/4,dy=(turn/8-1)*3.0;
+                    var tip=new Node((x+Math.cos(angle)*5.5)/height,(y+dy)/height,(z+Math.sin(angle)*5.5)/height,owner.label);
+                    if(!within(tip,height,bounds)||!clearNode(nodes,tip,height,gap))continue;
+                    int middle=nodes.size(),end=middle+1;nodes.add(joint);nodes.add(tip);
+                    edges.set(ei,new Edge(edge.a,middle));edges.add(new Edge(middle,edge.b));edges.add(new Edge(middle,end));return true;
+                }
+            }
+        }
+        return false;
+    }
+    private static double twigScore(List<Node> nodes,Edge e,Node owner,int height){
+        var a=nodes.get(e.a);var c=nodes.get(e.b);
+        double length=Math.sqrt(Math.pow(a.x-c.x,2)+Math.pow(a.y-c.y,2)+Math.pow(a.z-c.z,2))*height;
+        double distance=Math.sqrt(Math.pow((a.x+c.x)*.5-owner.x,2)+Math.pow((a.y+c.y)*.5-owner.y,2)+Math.pow((a.z+c.z)*.5-owner.z,2))*height;
+        return length-distance*.12;
+    }
+    private static boolean within(Node n,int height,double[] bounds){
+        return n.x*height>=bounds[0]&&n.x*height<=bounds[3]&&n.y*height>=bounds[1]&&n.y*height<=bounds[4]&&n.z*height>=bounds[2]&&n.z*height<=bounds[5];
+    }
+    private static boolean clearNode(List<Node> nodes,Node n,int height,double gap){
+        long x=Math.round(n.x*height),y=Math.round(n.y*height),z=Math.round(n.z*height);
+        for(var a:nodes){long dx=x-Math.round(a.x*height),dy=y-Math.round(a.y*height),dz=z-Math.round(a.z*height);if(dx*dx+dy*dy+dz*dz<gap*gap)return false;}
+        return true;
     }
     public static boolean treeNodeIsRare(long salt,int index){var nodes=tree(salt,false).nodes;return treeNodeIsRare(salt,index,nodes.get(Math.floorMod(index,nodes.size())).label);}
     private static boolean treeNodeIsRare(long salt,int index,int color){return true;}

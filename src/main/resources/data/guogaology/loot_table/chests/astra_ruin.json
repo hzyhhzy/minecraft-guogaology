@@ -6,17 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:compute_chip",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 26,
-                "max": 54
-              }
-            }
-          ]
+          "name": "guogaology:astra_critical_core"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -25,17 +21,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:cloud_pearl",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 24,
-                "max": 48
-              }
-            }
-          ]
+          "name": "guogaology:compute_chip"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 3,
+            "max": 5
+          }
         }
       ]
     },
@@ -44,17 +40,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:ordinal_shard",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 30,
-                "max": 60
-              }
-            }
-          ]
+          "name": "guogaology:cloud_pearl"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
         }
       ]
     },
@@ -63,17 +55,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:astra_marble",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8,
-                "max": 16
-              }
-            }
-          ]
+          "name": "guogaology:nuke_mushroom"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 2,
+            "max": 4
+          }
         }
       ]
     },
@@ -82,17 +74,32 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "guogaology:astra_mint",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 4,
-                "max": 12
-              }
-            }
-          ]
+          "name": "guogaology:ordinal_crystal"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "guogaology:astra_marble"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 16,
+            "max": 24
+          }
         }
       ]
     }

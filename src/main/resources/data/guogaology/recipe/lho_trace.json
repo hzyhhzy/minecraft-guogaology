@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "BSB",
+    "CSD",
     "ABA"
   ],
   "key": {
@@ -11,10 +11,16 @@
       "item": "guogaology:ordinal_crystal"
     },
     "A": {
-      "tag": "guogaology:absence_fragments"
+      "item": "guogaology:absence_glass"
     },
     "B": {
       "item": "guogaology:stellar_stone"
+    },
+    "C": {
+      "item": "guogaology:fffz_trace"
+    },
+    "D": {
+      "item": "guogaology:fos_trace"
     }
   },
   "result": {

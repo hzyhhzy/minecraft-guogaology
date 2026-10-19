@@ -8,6 +8,12 @@ public final class SceneryDistribution {
     // Calibrated against the former58-grid/one-third selector with the same49-block tree arbitration.
     public static final int LHO_TREE_CELL=48,LHO_TREE_SEPARATION=49;
     public static final int LHO_TREE_NEIGHBOR_RADIUS=(LHO_TREE_SEPARATION+LHO_TREE_CELL-1)/LHO_TREE_CELL;
+    public static final int FOLDED_TAPE_CELL=32;
+    // Calibrated with real terrain/landmark/whole-object rejection:99 ->411 tapes
+    // in the same2km2 sample (4.15x). Extra proposals compensate for denser arbitration;
+    // the former79-grid stream already included the157-grid tape stream.
+    public static final double FOLDED_TAPE_CHANCE=10.0*FOLDED_TAPE_CELL*FOLDED_TAPE_CELL
+            *(1.0/(3*79*79)+1.0/(3*157*157));
     public enum Form { FIR, FIR_LIGHTS, HYDRA, CLOUD, CLOUD_LIGHTS, KNOT, BMS, SMALL_PLANTS, TABLE, JELLY, LAVER, DESERT_ROCK, ABSENCE, LHO_HYDRA, Y_TREE, YARN, UNDERGROWTH, POWER_TOWER, GRAHAM_TREE, TREE, SCG, GREAT_VINE, GREAT_VINE_LIGHTS, OMEGA_TREE, OMEGA_MUSHROOM, RIDGE_CROWN, RIDGE_SPROUT, REFLECTION_RIDGE, PROJECTION_WALL, WATER_RIDGE, VEBLEN, CONWAY_CHAIN, BEAF_REEF, BIRD_NEST, SET_SHELL, TURING_STRIP, RAYO_CROWN, PROOF_STRATA, DROWNED_PTO, RANK_SHELLS, PROOF_ESCARPMENT, FOLDED_TAPE, FORMULA_GEODE, LAVER_REEF, LAVER_WATER_FRONDS, ASTRA_COOLANT_REEF, ASTRA_BUBBLE }
     public static boolean aquatic(Form form){return switch(form){case WATER_RIDGE,CONWAY_CHAIN,BEAF_REEF,BIRD_NEST,DROWNED_PTO,LAVER_REEF,LAVER_WATER_FRONDS,ASTRA_COOLANT_REEF,ASTRA_BUBBLE,RAYO_CROWN,FORMULA_GEODE->true;default->false;};}
     public static boolean deepRoot(Form form){return form==Form.GREAT_VINE||form==Form.GREAT_VINE_LIGHTS||aquatic(form);}
@@ -17,7 +23,7 @@ public final class SceneryDistribution {
             if(form==Form.DESERT_ROCK && Math.floorMod(WorldNoise.mix(salt+21419),5L)!=0)return false;
             // Smaller cells supply five times as many candidates; retain the original 1/3 selection rate.
             if(form==Form.GRAHAM_TREE)return kind==biome && WorldNoise.unit(WorldNoise.mix(salt+21423))<5.0*19*19/(3*43*43);
-            if(form==Form.FOLDED_TAPE)return kind==biome && WorldNoise.unit(WorldNoise.mix(salt+21429))<1.0/3+79.0*79/(3*157*157);
+            if(form==Form.FOLDED_TAPE)return kind==biome && WorldNoise.unit(WorldNoise.mix(salt+21429))<FOLDED_TAPE_CHANCE;
             return (biome<0 || kind==biome) && (divisor==1 || (Math.floorMod(salt,divisor)==0)!=skipZero);
         }
     }
@@ -60,7 +66,7 @@ public final class SceneryDistribution {
             new Pass(Form.BMS,18,14,0,4,true),
             new Pass(Form.SMALL_PLANTS,9,7,-1,1,false),
             // A complete usable tape must not be punctured by subsequent small mineral growth.
-            new Pass(Form.FOLDED_TAPE,79,62,7,3,false),
+            new Pass(Form.FOLDED_TAPE,FOLDED_TAPE_CELL,62,7,3,false),
             new Pass(Form.JELLY,13,6,4,3,true),
             new Pass(Form.FIR_LIGHTS,64,72,5,13,false),
             new Pass(Form.CLOUD_LIGHTS,128,128,5,3,false),

@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**Development v0.6.4 · Minecraft Java / Fabric** · [Published v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
+**Development v0.6.5 · Minecraft Java / Fabric** · [Published v0.6.3](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.3)
 
-Version0.6.4 retires the finished Lv1 Absence Core's old stability/disappearance behavior, retaining its saved IDs and block-state schema while removing obsolete flags from old loose and installed core items. FFFZ/FOS and ψ/Z stability mechanics are unchanged. See [implementation and upgrade checks](docs/WORK-064.md). Version0.6.3 is now merged into main;0.6.4 remains on an independent, unpublished development branch. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original0.5.4.1 work and all four target adaptations remain included. See [0.6.3 release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+Version0.6.5 rebalances eight core recipes, natural material sources and giant-landmark chest rewards. Native recipe books gain Cores and GGG sections; ordinary wood recipes remain in vanilla categories. Main chests supply2–4capital Ω materials. It retains0.6.4's Absence Core compatibility cleanup and unchanged FFFZ/FOS and ψ/Z stability mechanics. See [implementation and validation](docs/WORK-065.md). Version0.6.3 is merged into main;0.6.5 remains on an independent, unpublished development branch. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original0.5.4.1 work and all four target adaptations remain included. See [0.6.3 release notes](docs/RELEASE-0.6.3.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -33,9 +33,9 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID is `guogaology` starting with0.5.0. Version0.6.4 retains current saved IDs and only normalizes the Lv1 Absence Core's obsolete components; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with0.5.0. Version0.6.5 retains current saved IDs and0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
 
-All four0.6.4 targets build and84Python checks pass. Isolated26.2 tests reopen a real0.6.3save, verify old chest/player/installed items and compare FFFZ/FOS/ψ/Z behavior against the old production JAR:283baseline and589upgrade assertions pass. Other targets were not launched this round. See [0.6.4 evidence](docs/WORK-064.md).
+All four0.6.5 targets build and88Python checks pass. Isolated26.2 tests in both languages verify1900crafts,8192native chest fills,6144entity-loot draws, recipe-book search/filtering, narrow layout and the2×2inventory. Other targets were built only. Raw stability classes and existing resource entrypoints are preserved; the real saved-world upgrade tests from0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
 
 ## Language
 
@@ -106,7 +106,7 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.3/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.5/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 

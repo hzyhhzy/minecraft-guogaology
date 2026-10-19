@@ -3,8 +3,8 @@
   "category": "misc",
   "pattern": [
     "ABA",
-    "CSD",
-    "AEA"
+    "BSB",
+    "ABA"
   ],
   "key": {
     "S": {
@@ -14,16 +14,7 @@
       "item": "guogaology:power_bricks"
     },
     "B": {
-      "item": "guogaology:scg_node"
-    },
-    "C": {
-      "item": "guogaology:tree_node_red"
-    },
-    "D": {
-      "item": "guogaology:tree_node_green"
-    },
-    "E": {
-      "item": "guogaology:tree_node_blue"
+      "item": "guogaology:ordinal_bricks"
     }
   },
   "result": {

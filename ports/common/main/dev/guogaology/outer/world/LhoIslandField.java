@@ -65,6 +65,7 @@ public final class LhoIslandField {
    private static final long STELLAR_SEED_SALT = 7811616009423711346L;
    private static final long STELLAR_RARITY_SEED_SALT = 7811616009423712882L;
    public static final int STELLAR_RARITY_ONE_IN = 1100;
+   public static final int STELLAR_DENSITY_MULTIPLIER = 16;
    public static final int ISLAND_HEIGHT_LIMIT = 256;
    public static final int ISLAND_HEIGHT_FADE_START = 224;
    public static final int EDGE_ISLAND_BAND = 16;
@@ -270,7 +271,9 @@ public final class LhoIslandField {
    }
 
    public static boolean passesStellarRarity(long var0, int var2, int var3, int var4) {
-      return stellarRarityScore(var0, var2, var3, var4) < 8384883669867978L;
+      // Scale the independent rarity gate exactly, retaining the old local minima,
+      // terrain/noise and spacing. 1100 / 16 is fractional, so do not round a divisor.
+      return stellarRarityScore(var0, var2, var3, var4) < (Long.MAX_VALUE / STELLAR_RARITY_ONE_IN) * STELLAR_DENSITY_MULTIPLIER;
    }
 
    public static boolean passesStellarRarity(long var0, int var2, int var3, int var4, int var5) {

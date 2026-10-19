@@ -11,6 +11,13 @@ public final class NaturalForms {
             MATRIX_SHEET=84,SCG_NODE=86,HYDRA_SPRIG=87,
             CLOUD_PEARL=89,SET_MEMBRANE=90,TURING_ENDCAP=92,GUOGAO_DROP=93;
     private static double random(long salt,int i) { return WorldNoise.unit(WorldNoise.mix(salt+i*733L)); }
+    /** The whole BMS expression has one thin sheet per column directly above its top row. */
+    public static void matrixCrest(VoxelBrush b,int x,int base,int z,int width,int height,int turn){
+        for(int col=0;col<width;col++){
+            int u=col-width/2;
+            b.set(x+(turn%2==0?u:0),base+height,z+(turn%2==1?u:0),MATRIX_SHEET);
+        }
+    }
     public static int cloudWidth(long salt) { return 2*(40+(int)Math.floorMod(salt>>>13,31L)); }
     public static int cloudHeight(long salt) {
         int oldWidth=cloudWidth(salt)/2;
@@ -111,7 +118,18 @@ public final class NaturalForms {
         }
     }
 
-    public static void absence(VoxelBrush b,int cx,int base,int cz,long salt) {
+    private record FragmentPos(int x,int y,int z){}
+    public static void absence(VoxelBrush target,int cx,int base,int cz,long salt) {
+        var planned=new java.util.LinkedHashMap<FragmentPos,Integer>();
+        // Replay the original single-fragment painter completely first: a later arc
+        // can cover an earlier fragment, and that erased trigger must not grow a clump.
+        absenceBody(new VoxelBrush(cx-24,cx+24,base-2,base+32,cz-24,cz+24,
+                (x,y,z,m)->planned.put(new FragmentPos(x,y,z),m)),cx,base,cz,salt);
+        var centers=planned.entrySet().stream().filter(e->e.getValue()==FFFZ||e.getValue()==FOS).toList();
+        for(var center:centers)expandFragment(planned,center.getKey(),center.getValue(),salt);
+        planned.forEach((p,m)->target.set(p.x,p.y,p.z,m));
+    }
+    private static void absenceBody(VoxelBrush b,int cx,int base,int cz,long salt) {
         double angle=random(salt,21)*Math.PI*2;
         int echo=absenceFragmentMaterial(salt,0);
         int mode=(int)Math.floorMod(salt>>>8,3L);
@@ -165,6 +183,32 @@ public final class NaturalForms {
     public static boolean absenceWordPresent(long salt,int group){return Math.floorMod(WorldNoise.mix(salt+811+group*131L),6L)==0;}
     /** Wild FOS/fffZ candidates retain one quarter, twice the previous one eighth. */
     public static boolean absenceFragmentPresent(long salt,int x,int y,int z){return Math.floorMod(WorldNoise.hash(salt^0x464f5312L,x,y,z),4L)==0;}
+
+    public static int absenceFragmentSize(long salt,int x,int y,int z){return 1+(int)Math.floorMod(WorldNoise.hash(salt^0x46524147434c554dL,x,y,z),4L);}
+    /** One original trigger becomes one small connected, same-material cluster inside R1. */
+    public static void absenceFragment(VoxelBrush b,long salt,int x,int y,int z,int material){
+        int size=absenceFragmentSize(salt,x,y,z),turn=(int)Math.floorMod(WorldNoise.hash(salt+21465,x,y,z),4L);
+        int dx=turn==0?1:turn==2?-1:0,dz=turn==1?1:turn==3?-1:0;
+        b.set(x,y,z,material);
+        if(size>=2)b.set(x+dx,y,z+dz,material);
+        if(size>=3)b.set(x-dz,y,z+dx,material);
+        if(size>=4)b.set(x,y+1,z,material);
+    }
+    private static void expandFragment(java.util.Map<FragmentPos,Integer> planned,FragmentPos center,int material,long salt){
+        int wanted=absenceFragmentSize(salt,center.x,center.y,center.z);
+        var cluster=new java.util.ArrayList<FragmentPos>();cluster.add(center);
+        var options=new java.util.ArrayList<FragmentPos>();
+        for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++){
+            var p=new FragmentPos(center.x+dx,center.y+dy,center.z+dz);if(!planned.containsKey(p))options.add(p);
+        }
+        options.sort((a,c)->Long.compareUnsigned(WorldNoise.hash(salt+21465,a.x,a.y,a.z),WorldNoise.hash(salt+21465,c.x,c.y,c.z)));
+        while(cluster.size()<wanted){
+            FragmentPos next=null;
+            for(var p:options)if(cluster.stream().anyMatch(q->Math.abs(p.x-q.x)+Math.abs(p.y-q.y)+Math.abs(p.z-q.z)==1)){next=p;break;}
+            if(next==null)break;
+            options.remove(next);cluster.add(next);planned.put(next,material);
+        }
+    }
 
     public static int yTreeHeight(long salt) { return 7+(int)(Math.pow(random(salt,42),1.7)*34); }
     public static void absenceHydra(VoxelBrush b,int x,int y,int z,long salt) {
@@ -233,7 +277,7 @@ public final class NaturalForms {
         int h=omegaHeight(salt);double angle=random(salt,133)*Math.PI*2,a=h*.34;
         double[][] path={{-1,.90},{-.96,.73},{-.72,.58},{-.35,.59},{-.10,.71},{0,.89},{.10,.71},{.35,.59},{.72,.58},{.96,.73},{1,.90}};
         var branches=new java.util.ArrayList<double[]>();var tips=new java.util.ArrayList<int[]>();
-        var surface=new java.util.TreeMap<Long,Integer>();
+        var surface=new java.util.TreeMap<Long,PlantTop>();
         var plant=smallPlantBrush(b,cx,base,cz,surface);
         for(int plane=0;plane<2;plane++){
             double turn=angle+plane*Math.PI/2,c=Math.cos(turn),s=Math.sin(turn);
@@ -248,10 +292,11 @@ public final class NaturalForms {
         for(var q:branches)plant.line(q[0],q[1],q[2],q[3],q[4],q[5],0,BIRCH_WOOD);
         for(var q:tips)plant.set(q[0],q[1],q[2],OMEGA_GLYPH);
         smallPlantCrystal(b,salt,surface);
+        omegaSprigs(b,salt,surface);
     }
     /** A bell-shaped Omega cap with a flared skirt, on an ordinary mushroom stem. */
     public static void omegaMushroom(VoxelBrush b,int cx,int base,int cz,long salt){
-        var surface=new java.util.TreeMap<Long,Integer>();
+        var surface=new java.util.TreeMap<Long,PlantTop>();
         var plant=smallPlantBrush(b,cx,base,cz,surface);
         int h=omegaHeight(salt);double radius=4+random(salt,147)*1.7,cy=base+h-3.6;
         double leanX=(random(salt,149)-.5)*2,leanZ=(random(salt,151)-.5)*2;
@@ -275,18 +320,37 @@ public final class NaturalForms {
         smallPlantCrystal(b,salt,surface);
     }
 
-    private static VoxelBrush smallPlantBrush(VoxelBrush target,int x,int y,int z,java.util.Map<Long,Integer> surface){
+    private record PlantTop(int y,int material){}
+    private static VoxelBrush smallPlantBrush(VoxelBrush target,int x,int y,int z,java.util.Map<Long,PlantTop> surface){
         return new VoxelBrush(x-8,x+8,y-1,y+15,z-8,z+8,(px,py,pz,m)->{
             target.set(px,py,pz,m);
-            surface.merge(((long)px<<32)|(pz&0xffffffffL),py,Math::max);
+            surface.merge(((long)px<<32)|(pz&0xffffffffL),new PlantTop(py,m),(a,c)->a.y>c.y?a:c);
         });
     }
-    private static void smallPlantCrystal(VoxelBrush b,long salt,java.util.SortedMap<Long,Integer> surface){
+    private static Long smallPlantCrystalKey(long salt,java.util.SortedMap<Long,PlantTop> surface){
+        if(random(salt,157)>=.5||surface.isEmpty())return null;
+        return new java.util.ArrayList<>(surface.keySet()).get((int)(random(salt,163)*surface.size()));
+    }
+    private static void smallPlantCrystal(VoxelBrush b,long salt,java.util.SortedMap<Long,PlantTop> surface){
         // Select from the whole plant before the brush clips to a chunk, so there is never
         // one new crystal per chunk and loading chunks in a different order changes nothing.
-        if(random(salt,157)>=.5||surface.isEmpty())return;
-        var p=new java.util.ArrayList<>(surface.entrySet()).get((int)(random(salt,163)*surface.size()));
-        b.set((int)(p.getKey()>>32),p.getValue()+1,(int)(long)p.getKey(),GREAT_OMEGA_GLYPH);
+        Long key=smallPlantCrystalKey(salt,surface);if(key==null)return;
+        b.set((int)(key>>32),surface.get(key).y+1,(int)(long)key,GREAT_OMEGA_GLYPH);
+    }
+    public static int omegaSprigCount(long salt){return 1+(int)Math.floorMod(WorldNoise.mix(salt+21467),3L);}
+    private static void omegaSprigs(VoxelBrush b,long salt,java.util.SortedMap<Long,PlantTop> surface){
+        int roof=surface.values().stream().mapToInt(PlantTop::y).max().orElse(Integer.MIN_VALUE);
+        Long ornament=smallPlantCrystalKey(salt,surface);
+        var candidates=new java.util.ArrayList<>(surface.entrySet());
+        candidates.removeIf(e->e.getValue().y<roof-1||e.getValue().material!=Y_LEAF&&e.getValue().material!=BIRCH_WOOD||e.getKey().equals(ornament));
+        candidates.sort((a,c)->Long.compareUnsigned(WorldNoise.mix(salt^a.getKey()),WorldNoise.mix(salt^c.getKey())));
+        var selected=new java.util.ArrayList<Long>();
+        for(var e:candidates){
+            long key=e.getKey();int x=(int)(key>>32),z=(int)key;
+            if(selected.stream().anyMatch(q->Math.abs((int)(q>>32)-x)<2&&Math.abs((int)(long)q-z)<2))continue;
+            selected.add(key);b.set(x,e.getValue().y+1,z,HYDRA_SPRIG);
+            if(selected.size()==omegaSprigCount(salt))break;
+        }
     }
 
     public static void understoryTree(VoxelBrush b,int cx,int base,int cz,int height,long salt,boolean emoji) {

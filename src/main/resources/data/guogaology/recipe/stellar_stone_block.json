@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "guogaology:stellar_stone"
+    }
+  },
+  "result": {
+    "id": "guogaology:stellar_stone_block",
+    "count": 1
+  }
+}

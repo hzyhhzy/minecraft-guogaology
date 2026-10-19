@@ -181,25 +181,27 @@ def convert_263_noise(data, out, name):
     return data
 
 
+def convert_263_loot(value):
+    if isinstance(value,list):return [convert_263_loot(v) for v in value]
+    if not isinstance(value,dict):return value
+    result={k:convert_263_loot(v) for k,v in value.items()}
+    for old in ('function','condition'):
+        if old in result and isinstance(result[old],str):result['type']=result.pop(old)
+    if 'functions' in result:result['modifier']=result.pop('functions')
+    if result.get('type') == 'minecraft:block_state_property':
+        result['type'] = 'minecraft:match_block'
+        result['blocks'] = result.pop('block')
+        if 'properties' in result:result['state'] = result.pop('properties')
+    if 'conditions' in result:
+        conditions=result.pop('conditions')
+        assert len(conditions)<=1,'Review compound predicates before porting'
+        if conditions:result['condition']=conditions[0]
+    return result
+
+
 def convert_263_misc(out):
-    def loot(value):
-        if isinstance(value,list):return [loot(v) for v in value]
-        if not isinstance(value,dict):return value
-        result={k:loot(v) for k,v in value.items()}
-        for old in ('function','condition'):
-            if old in result and isinstance(result[old],str):result['type']=result.pop(old)
-        if 'functions' in result:result['modifier']=result.pop('functions')
-        if result.get('type') == 'minecraft:block_state_property':
-            result['type'] = 'minecraft:match_block'
-            result['blocks'] = result.pop('block')
-            if 'properties' in result:result['state'] = result.pop('properties')
-        if 'conditions' in result:
-            conditions=result.pop('conditions')
-            assert len(conditions)<=1,'Review compound predicates before porting'
-            if conditions:result['condition']=conditions[0]
-        return result
     for path in (out / 'data/guogaology/loot_table').rglob('*.json'):
-        write(path,loot(read(path)))
+        write(path,convert_263_loot(read(path)))
     for path in (out / 'data/guogaology/advancement').rglob('*.json'):
         data=read(path)
         for criterion in data.get('criteria', {}).values():
@@ -261,6 +263,7 @@ def prepare(target, release):
     write(out / "fabric.mod.json", metadata)
     client_mixins = read(out / "guogaology.client.mixins.json")
     client_mixins["client"] = [m for m in client_mixins["client"] if m not in ("GuogaologyFogMixin", "GuogaologySkyLightMixin", "CoreItemViewMixin")]
+    client_mixins["client"].extend(["RecipeBookCollectionsMixin", "RecipeBookTabTooltipMixin"])
     write(out / "guogaology.client.mixins.json", client_mixins)
     # Fabric supplies metadata for the active pack type. A shared numeric range cannot
     # describe both resource 75 and data 94 without conflicting legacy-format rules.

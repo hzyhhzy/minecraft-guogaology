@@ -6,7 +6,7 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:gummy"
+            "items": "guogaology:iblp_marked"
           }
         ]
       }
@@ -16,32 +16,12 @@
       "conditions": {
         "items": [
           {
-            "items": "guogaology:iblp_marked"
-          }
-        ]
-      }
-    },
-    "ingredient_2": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "guogaology:iblp_node"
-          }
-        ]
-      }
-    },
-    "ingredient_3": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
             "items": "guogaology:laver_ribbon"
           }
         ]
       }
     },
-    "ingredient_4": {
+    "ingredient_2": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -63,8 +43,6 @@
       "ingredient_0",
       "ingredient_1",
       "ingredient_2",
-      "ingredient_3",
-      "ingredient_4",
       "has_recipe"
     ]
   ],
