@@ -17,11 +17,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.lwjgl.sdl.SDLVideo;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeSet;
 
 /** No integrated server or direct server-object calls; normal TCP packet decoding is required. */
 public final class NetworkClientChecks implements ClientModInitializer {
@@ -36,9 +44,36 @@ public final class NetworkClientChecks implements ClientModInitializer {
         var recipes=((FabricRecipeAccess)client.player.connection.recipes()).getSynchronizedRecipes();
         var out=new JsonObject();out.addProperty("count",recipes.recipes().size());
         var present=new JsonObject();
-        for(String id:new String[]{"guogaology:number_pickaxe","guogaology:number_sword","guogaology:cobblestone_from_number_stones","minecraft:stick","minecraft:charcoal"})
+        for(String id:new String[]{"guogaology:number_pickaxe","guogaology:number_sword","guogaology:cobblestone_from_number_stones","guogaology:hydra_bud","minecraft:stick","minecraft:charcoal"})
             present.addProperty(id,recipes.get(ResourceKey.create(Registries.RECIPE,Identifier.parse(id)))!=null);
         out.add("recipesPresent",present);return out;
+    }
+    private static HashMap<Integer,RecipeDisplayEntry> entries(Minecraft client) {
+        var out=new HashMap<Integer,RecipeDisplayEntry>();
+        client.player.getRecipeBook().getCollections().forEach(collection->collection.getRecipes().forEach(entry->out.put(entry.id().index(),entry)));
+        return out;
+    }
+    private static JsonObject hydraDisplay(Minecraft client,RecipeDisplayEntry entry) {
+        NetworkProbe.check(entry.display() instanceof ShapedCraftingRecipeDisplay,"received native shaped Hydra display");
+        var shaped=(ShapedCraftingRecipeDisplay)entry.display();
+        NetworkProbe.check(shaped.width()==3&&shaped.height()==3&&shaped.ingredients().size()==9,"061 real3x3 Hydra display");
+        var context=SlotDisplayContext.fromLevel(client.level);var expectedBranches=new TreeSet<>(NetworkProbe.BRANCH_ITEMS.stream().map(name->"guogaology:"+name).toList());
+        var slots=new JsonArray();int namedTags=0;
+        for(int index=0;index<9;index++) {
+            var slot=shaped.ingredients().get(index);var resolved=new TreeSet<String>();
+            slot.resolveForStacks(context).forEach(stack->{if(!stack.isEmpty())resolved.add(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());});
+            var row=new JsonObject();row.addProperty("slot",index);row.addProperty("type",slot.getClass().getName());var ids=new JsonArray();resolved.forEach(ids::add);row.add("items",ids);
+            if(index==1||index==3||index==5||index==7) {
+                NetworkProbe.check(slot instanceof SlotDisplay.TagSlotDisplay,"branch slot is an actual named-tag network display at"+index);
+                var tag=((SlotDisplay.TagSlotDisplay)slot).tag().unwrapKey();
+                NetworkProbe.check(tag.isPresent()&&tag.orElseThrow().equals(NetworkProbe.BRANCHES),"network display preserves ordinal_branch_stones named lookup");
+                NetworkProbe.check(resolved.equals(expectedBranches),"named branch display resolves all six active-registry alternatives");namedTags++;row.addProperty("namedTag",tag.orElseThrow().location().toString());
+            } else NetworkProbe.check(resolved.equals(new TreeSet<>(List.of(index==4?"guogaology:ordinal_crystal":"guogaology:hydra_sprig"))),"061 Hydra exact non-tag slot"+index);
+            slots.add(row);
+        }
+        var results=new TreeSet<String>();entry.resultItems(context).forEach(stack->results.add(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString()));
+        NetworkProbe.check(results.equals(new TreeSet<>(List.of("guogaology:hydra_bud"))),"native display result is actual HydraBud");
+        var out=new JsonObject();out.addProperty("displayId",entry.id().index());out.addProperty("namedBranchSlots",namedTags);out.add("slots",slots);return out;
     }
     private void finish(Minecraft client,JsonObject result) throws Exception {
         done=true;
@@ -87,6 +122,14 @@ public final class NetworkClientChecks implements ClientModInitializer {
                 if(++ticks<240)return;
                 if(!JeiProbe.ready())return;
                 var before=NetworkProbe.inspect(client.player.connection.registryAccess());before.addProperty("integratedServer",false);
+                var serverBeforePath=Path.of(System.getProperty("guogaology.qa.network263.serverDir")).resolve("network-server-before.json");
+                if(!Files.isRegularFile(serverBeforePath))return;
+                var serverBefore=JsonParser.parseString(Files.readString(serverBeforePath)).getAsJsonObject();
+                var existing=entries(client);var absent=new JsonArray();
+                for(var value:serverBefore.getAsJsonArray("expectedDisplayIds")) {
+                    NetworkProbe.check(!existing.containsKey(value.getAsInt()),"fresh client recipe book has no pre-unlocked target display"+value);absent.add(value);
+                }
+                before.add("targetDisplaysAbsentBefore",absent);
                 before.add("fabricRecipeSync",recipeSync(client));
                 lastProbe=before.deepCopy();
                 NetworkProbe.write("network-client-ready.json",before);ready=true;ticks=0;
@@ -97,15 +140,18 @@ public final class NetworkClientChecks implements ClientModInitializer {
             if(!Files.isRegularFile(afterPath))return;
             if(++ticks<180)return;
             var server=JsonParser.parseString(Files.readString(afterPath)).getAsJsonObject();
-            var received=new HashSet<Integer>();
-            client.player.getRecipeBook().getCollections().forEach(collection->collection.getRecipes().forEach(entry->received.add(entry.id().index())));
+            var nativeEntries=entries(client);var received=new HashSet<>(nativeEntries.keySet());
             var expected=server.getAsJsonArray("expectedDisplayIds");
             NetworkProbe.check(!expected.isEmpty(),"server emitted native recipe display IDs");
             for(var id:expected)NetworkProbe.check(received.contains(id.getAsInt()),"native client recipebook received display "+id);
-            NetworkProbe.check(client.player.getInventory().contains(new ItemStack(NetworkProbe.item("guogaology:ordinal_stone"))),"numeric stone reached client inventory over TCP");
+            NetworkProbe.check(client.player.getInventory().contains(new ItemStack(NetworkProbe.item(NetworkProbe.pickupItem()))),"actual first-pickup item reached client inventory over TCP");
             var result=NetworkProbe.inspect(client.player.connection.registryAccess());NetworkProbe.validateTags(result);
             result.addProperty("success",true);result.addProperty("realTcp",true);result.addProperty("integratedServer",false);
             result.add("expectedDisplayIds",expected);var ids=new JsonArray();received.stream().sorted().forEach(ids::add);result.add("receivedDisplayIds",ids);
+            if(NetworkProbe.branchPickup()) {
+                NetworkProbe.check(expected.size()==1,"one native shaped Hydra recipe display unlocked");
+                result.add("hydraDisplay",hydraDisplay(client,nativeEntries.get(expected.get(0).getAsInt())));
+            }
             var synchronizedRecipes=recipeSync(client);result.add("fabricRecipeSync",synchronizedRecipes);
             if(Boolean.getBoolean("guogaology.qa.network263.requireCustom"))
                 for(var entry:synchronizedRecipes.getAsJsonObject("recipesPresent").entrySet())NetworkProbe.check(entry.getValue().getAsBoolean(),"actual Fabric synchronized recipe includes "+entry.getKey());

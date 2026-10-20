@@ -24,12 +24,23 @@ import java.util.TreeMap;
 /** Identical native registry/stack observations on both sides of the real connection. */
 final class NetworkProbe {
     static final TagKey<Item> NUMBERS=TagKey.create(Registries.ITEM,Identifier.parse("guogaology:number_stones"));
+    static final TagKey<Item> BRANCHES=TagKey.create(Registries.ITEM,Identifier.parse("guogaology:ordinal_branch_stones"));
+    static final List<String> BRANCH_ITEMS=List.of("epsilon_symbol","omega_symbol","great_omega_symbol","zeta_symbol","psi_symbol","phi_symbol");
     static final List<String> RECIPES=List.of("number_pickaxe","number_sword","cobblestone_from_number_stones");
     static final String[] MATERIALS={"wooden","stone","copper","iron","diamond","netherite","golden"};
     static Path directory() { return FabricLoader.getInstance().getGameDir(); }
+    static String pickupItem() {
+        String value=System.getProperty("guogaology.qa.network263.pickup","guogaology:ordinal_stone");
+        check(value.equals("guogaology:ordinal_stone")||BRANCH_ITEMS.stream().anyMatch(name->value.equals("guogaology:"+name)),"allowed isolated first-pickup item");
+        return value;
+    }
+    static boolean branchPickup() {return !pickupItem().equals("guogaology:ordinal_stone");}
+    static List<String> pickupRecipes() {return branchPickup()?List.of("hydra_bud"):RECIPES;}
     static void guard() {
         if (!Boolean.getBoolean("guogaology.qa.network263") || !Files.isRegularFile(directory().resolve("network-qa-isolated.json")))
             throw new IllegalStateException("Network QA requires its isolated runner marker");
+        if(Boolean.getBoolean("guogaology.qa.network263.branchControl"))
+            check(FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().getMetadata().getVersion().getFriendlyString().equals(System.getProperty("guogaology.qa.network263.expectedVersion")),"branch-pickup control loads the exact requested old release");
     }
     static Item item(String id) { return BuiltInRegistries.ITEM.getValue(Identifier.parse(id)); }
     static void write(String name,JsonObject value) throws Exception {
@@ -39,6 +50,15 @@ final class NetworkProbe {
     static JsonObject inspect() {
         var out=new JsonObject();
         out.addProperty("productionVersion",FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().getMetadata().getVersion().getFriendlyString());
+        out.addProperty("pickupItem",pickupItem());
+        out.addProperty("loaderVersion",FabricLoader.getInstance().getModContainer("fabricloader").orElseThrow().getMetadata().getVersion().getFriendlyString());
+        out.addProperty("fabricApiVersion",FabricLoader.getInstance().getModContainer("fabric-api").orElseThrow().getMetadata().getVersion().getFriendlyString());
+        out.addProperty("jeiInstalled",FabricLoader.getInstance().isModLoaded("jei"));
+        FabricLoader.getInstance().getModContainer("jei").ifPresent(mod->out.addProperty("jeiVersion",mod.getMetadata().getVersion().getFriendlyString()));
+        var branches=BuiltInRegistries.ITEM.get(BRANCHES);
+        out.addProperty("branchTagPresent",branches.isPresent());
+        var branchMembers=new JsonArray();branches.ifPresent(values->values.stream().map(value->BuiltInRegistries.ITEM.getKey(value.value()).toString()).sorted().forEach(branchMembers::add));
+        out.add("branchTagMembers",branchMembers);
         var tag=BuiltInRegistries.ITEM.get(NUMBERS);
         out.addProperty("numberTagPresent",tag.isPresent());
         var members=new JsonArray();
@@ -78,6 +98,7 @@ final class NetworkProbe {
     static JsonObject inspect(HolderLookup.Provider provider) {
         var out=inspect();var active=new JsonObject();
         active.add("numberStones",tagSnapshot(provider.lookupOrThrow(Registries.ITEM),NUMBERS));
+        active.add("branchStones",tagSnapshot(provider.lookupOrThrow(Registries.ITEM),BRANCHES));
         active.add("mineableAxe",tagSnapshot(provider.lookupOrThrow(Registries.BLOCK),BlockTags.MINEABLE_WITH_AXE));
         out.add("activeRegistryAccess",active);return out;
     }
@@ -87,6 +108,11 @@ final class NetworkProbe {
         out.add("members",ids);return out;
     }
     static void validateTags(JsonObject probe) {
+        check(probe.get("branchTagPresent").getAsBoolean(),"native ordinal_branch_stones item tag must exist");
+        var branches=new java.util.TreeSet<String>();probe.getAsJsonArray("branchTagMembers").forEach(value->branches.add(value.getAsString()));
+        check(branches.equals(new java.util.TreeSet<>(BRANCH_ITEMS.stream().map(name->"guogaology:"+name).toList())),"all six actual named branch-tag members survive");
+        var activeBranches=probe.getAsJsonObject("activeRegistryAccess").getAsJsonObject("branchStones");
+        check(activeBranches.get("present").getAsBoolean()&&activeBranches.get("members").equals(probe.get("branchTagMembers")),"active connection branch lookup matches the live static registry");
         check(probe.get("numberTagPresent").getAsBoolean(),"native number_stones item tag must exist");
         for(var entry:probe.getAsJsonObject("numberMembership").entrySet())
             check(entry.getValue().getAsBoolean(),"native item tag contains "+entry.getKey());

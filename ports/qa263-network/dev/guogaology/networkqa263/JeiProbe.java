@@ -80,6 +80,7 @@ final class JeiProbe {
         checks.add(inspectRecipe(manager,smeltCategory,smelt,"minecraft:charcoal","minecraft:charcoal",List.of("minecraft:oak_log","minecraft:birch_log")));
         var custom=new JsonObject();
         for(String id:NetworkProbe.RECIPES)custom.addProperty(id,craft.containsKey("guogaology:"+id));
+        if(NetworkProbe.branchPickup())custom.addProperty("hydra_bud",craft.containsKey("guogaology:hydra_bud"));
         out.add("customRecipesAvailable",custom);
         boolean requireCustom=Boolean.getBoolean("guogaology.qa.network263.requireCustom");
         boolean serverJei=Boolean.getBoolean("guogaology.qa.network263.serverJei");
@@ -94,8 +95,13 @@ final class JeiProbe {
                 checks.add(inspectRecipe(manager,craftCategory,craft,"guogaology:cobblestone_from_number_stones","minecraft:cobblestone",numbers));
             }
         }
+        if(NetworkProbe.branchPickup()&&requireCustom) {
+            var required=new ArrayList<>(NetworkProbe.BRANCH_ITEMS.stream().map(name->"guogaology:"+name).toList());
+            required.add("guogaology:hydra_sprig");required.add("guogaology:ordinal_crystal");
+            checks.add(inspectRecipe(manager,craftCategory,craft,"guogaology:hydra_bud","guogaology:hydra_bud",required));
+        }
         Object gui=call(API+"runtime.IJeiRuntime",runtime,"getRecipesGui");
-        String shown=requireCustom?"guogaology:number_pickaxe":serverJei?"guogaology:cobblestone_from_number_stones":"minecraft:stick";
+        String shown=NetworkProbe.branchPickup()&&requireCustom?"guogaology:hydra_bud":requireCustom?"guogaology:number_pickaxe":serverJei?"guogaology:cobblestone_from_number_stones":"minecraft:stick";
         call(API+"runtime.IRecipesGui",gui,"showRecipes",craftCategory,List.of(craft.get(shown)),List.of());
         out.addProperty("checked",true);out.addProperty("craftingCount",craft.size());out.addProperty("smeltingCount",smelt.size());
         out.addProperty("shownRecipe",shown);out.add("recipes",checks);

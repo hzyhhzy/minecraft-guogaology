@@ -1,4 +1,4 @@
-"""Replay first Numeric Stone pickup over real loopback TCP using an exact release.
+"""Replay first Numeric Stone or Branch Stone pickup over real loopback TCP.
 
 Server and hidden/unlocked client use separate fresh directories. Normal fo263_2
 provides read-only libraries/mods; its configuration/accounts/saves are never copied.
@@ -15,10 +15,14 @@ import time
 from zipfile import ZipFile
 
 from run_release_263_qa import library_classpath, normal_inventory, mod_metadata, sha256, java_executable
+from run_loot_263_qa import launcher_libraries, library_path
 
 ROOT=Path(__file__).resolve().parents[1]
 MC=Path.home()/'AppData/Roaming/.minecraft'
 JAVA=MC/'runtime/java-runtime-epsilon'
+BRANCH_ITEMS=('epsilon_symbol','omega_symbol','great_omega_symbol','zeta_symbol','psi_symbol','phi_symbol')
+EXACT_061='1cf73cbd73b65bb04870f4b0c0dc5d772573a3d486196acaacc2c8b2e5b0ea30'
+EXACT_060='a101bfd94cdf5cb27646bba2b10f881665bad89e180e6e59cf67121cdf83fe39'
 
 
 def write(path,value):
@@ -36,11 +40,51 @@ def listeners(pid):
             if row.split() and row.split()[-1]==str(pid) and 'LISTENING' in row]
 
 
+def override_mod(path,identity):
+    path=path.resolve();build=(ROOT/'build').resolve()
+    assert path.is_relative_to(build) and path.is_file(),'Mod overrides must be existing build-only JARs'
+    metadata=mod_metadata(path,strict=False)
+    assert metadata.get('id')==identity,f'Wrong override Mod ID: {path}'
+    dependency=metadata.get('depends',{}).get('minecraft')
+    if dependency is not None:
+        assert '26.3' in str(dependency) and not str(dependency).strip().startswith('<26.3'),'Override does not declare Minecraft26.3 support'
+    else:
+        # JEI72 itself omits a direct minecraft dependency. Its26.3 file and
+        # explicit26.3 Fabric API dependency identify that supported artifact.
+        assert '26.3' in path.name and '26.3' in str(metadata.get('depends',{}).get('fabric-api','')),'Override lacks both Minecraft26.3 and matching Fabric API target evidence'
+    return path
+
+
+def runtime_libraries(metadata,instance,args):
+    """Share the build-only official Loader override with the isolated loot runner."""
+    client_cp,loader_version,loader_override=launcher_libraries(metadata,instance,args)
+    if loader_override:
+        # The official client profile's seven common Loader/Mixin/ASM libraries
+        # also replace every old Fabric/ASM entry in the dedicated-server path.
+        server_loader=[Path(entry['path']) for entry in loader_override['libraries']]
+    else:
+        server_loader=[]
+        for library in metadata['libraries']:
+            if library['name'].split(':')[0] not in ('net.fabricmc','org.ow2.asm'):continue
+            path=(instance.parent.parent/'libraries'/library_path(library)).resolve()
+            assert path.is_file(),path
+            server_loader.append(path)
+    return client_cp,server_loader,loader_version,loader_override
+
+
 def run(a):
     assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]*',a.label),'Use one fresh directory label'
+    pickup=a.pickup_item or ('epsilon_symbol' if a.branch_pickup else 'ordinal_stone')
+    branch_control=a.branch_pickup or pickup in BRANCH_ITEMS
+    if branch_control:
+        assert not (a.client_mods_full or a.server_jei_only or a.jei_both_sides),'Branch control isolates client-only JEI'
+        a.client_jei_only=True
+    if a.jei_jar or a.mezz_config_jar:
+        assert a.client_jei_only or a.server_jei_only or a.jei_both_sides,'Explicit JEI dependency overrides require a JEI mode'
     instance=a.instance.resolve();assert instance.name=='fo263_2' and instance.parent.name=='versions'
     minecraft=instance.parent.parent;metadata=json.loads((instance/'fo263_2.json').read_text('utf-8-sig'))
     assert metadata['mainClass']=='net.fabricmc.loader.impl.launch.knot.KnotClient'
+    client_cp,server_loader,loader_version,loader_override=runtime_libraries(metadata,instance,a)
     release=a.release_jar.resolve();release_meta=mod_metadata(release);version=release_meta['version']
     assert release_meta['id']=='guogaology' and release_meta['depends']['minecraft']=='26.3'
     server_release=(a.server_release_jar or release).resolve();server_meta=mod_metadata(server_release)
@@ -50,6 +94,9 @@ def run(a):
     require_custom_recipes=tuple(map(int,server_version.groups()))>=(0,6,1)
     server_digest=sha256(server_release)
     digest=sha256(release);before=normal_inventory(instance)
+    if branch_control:
+        assert version=='0.6.1' and digest==EXACT_061,'Branch client must be the exact published0.6.1'
+        assert (server_meta['version']=='0.6.1' and server_digest==EXACT_061) or (a.server_release_jar and server_meta['version']=='0.6.0' and server_digest==EXACT_060),'Use exact061 server by default; exact060 is only an explicit mixed-version control'
     current=next(line.split('=',1)[1].strip() for line in (ROOT/'gradle.properties').read_text().splitlines() if line.startswith('mod_version='))
     helper=(a.qa_jar or ROOT/f'ports/26.3/build/qa/guogaology-network-263-qa-{current}.jar').resolve()
     assert mod_metadata(helper)['id']=='guogaology-network-263-qa'
@@ -59,13 +106,15 @@ def run(a):
     for directory in (server,client):
         (directory/'mods').mkdir(parents=True);(directory/'temp').mkdir()
         write(directory/'network-qa-isolated.json',{'release':server_meta['version'] if directory==server else version,
-            'sha256':server_digest if directory==server else digest,'role':directory.name})
+            'sha256':server_digest if directory==server else digest,'role':directory.name,'pickupItem':'guogaology:'+pickup,'branchControl':branch_control})
     installed=[]
     for path in sorted((instance/'mods').glob('*.jar')):
         try:identity=mod_metadata(path,strict=False)['id']
         except (KeyError,json.JSONDecodeError):continue
         installed.append((identity,path))
-    api=[path for identity,path in installed if identity=='fabric-api'];assert len(api)==1
+    api=[override_mod(a.api_jar,'fabric-api')] if a.api_jar else [path for identity,path in installed if identity=='fabric-api']
+    assert len(api)==1
+    api_metadata=mod_metadata(api[0])
     for directory in (server,client):
         for path in (server_release if directory==server else release,helper,api[0]):copy_mod(path,directory)
     if a.client_mods_full:
@@ -74,7 +123,9 @@ def run(a):
             copy_mod(path,client)
     if a.client_jei_only or a.server_jei_only or a.jei_both_sides:
         for identity in ('jei','mezz_config'):
-            matches=[path for mod_id,path in installed if mod_id==identity];assert len(matches)==1,identity
+            explicit=a.jei_jar if identity=='jei' else a.mezz_config_jar
+            matches=[override_mod(explicit,identity)] if explicit else [path for mod_id,path in installed if mod_id==identity]
+            assert len(matches)==1,identity
             if a.client_jei_only or a.jei_both_sides:copy_mod(matches[0],client)
             if a.server_jei_only or a.jei_both_sides:copy_mod(matches[0],server)
     cp=[]
@@ -86,16 +137,9 @@ def run(a):
                 assert target.is_relative_to(server)
                 data=jar.read(f'META-INF/{kind}/{relative}');assert hashlib.sha256(data).hexdigest()==checksum
                 target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data);cp.append(target)
-    for library in metadata['libraries']:
-        group,artifact,v,*classifier=library['name'].split(':')
-        if group not in ('net.fabricmc','org.ow2.asm'):continue
-        relative=library.get('downloads',{}).get('artifact',{}).get('path')
-        if not relative:
-            suffix='-'+classifier[0] if classifier else ''
-            relative=f'{group.replace(".","/")}/{artifact}/{v}/{artifact}-{v}{suffix}.jar'
-        path=(minecraft/'libraries'/relative).resolve();assert path.is_file();cp.append(path)
+    cp.extend(server_loader)
     assert not any('client' in path.name or 'lwjgl' in path.name for path in cp)
-    java=java_executable(a.java_home);client_cp=library_classpath(metadata,minecraft,instance/'fo263_2.jar')
+    java=java_executable(a.java_home)
     with socket.socket() as probe:probe.bind(('127.0.0.1',0));port=probe.getsockname()[1]
     (server/'eula.txt').write_text('eula=true\n',encoding='utf-8')
     (server/'server.properties').write_text(
@@ -103,16 +147,21 @@ def run(a):
         'enable-status=false\nenable-query=false\nenable-rcon=false\nenable-jmx-monitoring=false\nmanagement-server-enabled=false\n'
         'white-list=false\nenforce-whitelist=false\nmax-players=1\ngamemode=survival\nview-distance=2\nsimulation-distance=2\nspawn-protection=0\n'
         'pause-when-empty-seconds=0\nlevel-name=world\nlevel-seed=601263\n',encoding='utf-8')
+    filtering='textureFiltering:1\nmaxAnisotropyBit:1\n' if a.known_filter_workaround else 'textureFiltering:0\nmaxAnisotropyBit:2\n'
     (client/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:3\nsimulationDistance:5\n'
-        'textureFiltering:0\nmaxAnisotropyBit:2\nsoundCategory_master:0.0\nlang:zh_cn\n',encoding='utf-8')
+        +filtering+'soundCategory_master:0.0\nlang:zh_cn\n',encoding='utf-8')
     def jvm(directory):
         return [str(java),'-Xms512M','-Xmx3G','-XX:StackShadowPages=32','--enable-native-access=ALL-UNNAMED',
             '--add-exports','java.base/jdk.internal.misc=ALL-UNNAMED','-Dfile.encoding=UTF-8','-Dfabric.development=false',
             '-Dguogaology.qa.network263=true',f'-XX:ErrorFile={directory}/hs_err_pid%p.log',
+            f'-Dguogaology.qa.network263.pickup=guogaology:{pickup}',
+            f'-Dguogaology.qa.network263.branchControl={str(branch_control).lower()}',
+            f'-Dguogaology.qa.network263.expectedVersion={server_meta["version"] if directory==server else version}',
             f'-Djava.io.tmpdir={directory}/temp',f'-Djna.tmpdir={directory}/temp']
     server_command=jvm(server)+['-Djava.awt.headless=true','-cp',';'.join(map(str,cp)),
         'net.fabricmc.loader.impl.launch.knot.KnotServer','nogui']
-    client_command=jvm(client)+[f'-Dguogaology.qa.network263.address=127.0.0.1:{port}',
+    client_profile_args=loader_override['jvmArguments'] if loader_override else []
+    client_command=jvm(client)+client_profile_args+[f'-Dguogaology.qa.network263.address=127.0.0.1:{port}',
         f'-Dguogaology.qa.network263.serverJei={str(a.server_jei_only or a.jei_both_sides).lower()}',
         f'-Dguogaology.qa.network263.requireCustom={str(require_custom_recipes).lower()}',
         f'-Dguogaology.qa.network263.serverDir={server}',f'-Dorg.lwjgl.system.SharedLibraryExtractPath={client}/temp',
@@ -121,11 +170,26 @@ def run(a):
         '--uuid','00000000000000000000000000000001','--accessToken','0','--userType','legacy','--versionType','release',
         '--width','1400','--height','900']
     report={'version':version,'productionSha256':digest,'bind':'127.0.0.1','port':port,'clientModsFull':a.client_mods_full,
+        'pickupItem':'guogaology:'+pickup,'branchControl':branch_control,'knownFilterWorkaround':a.known_filter_workaround,
+        'mixedVersionControl':server_meta['version']!=version,
         'serverProductionVersion':server_meta['version'],'serverProductionSha256':server_digest,
         'fullRecipeSyncExpected':require_custom_recipes,
         'jeiMode':'both' if a.jei_both_sides else 'client' if a.client_jei_only else 'server' if a.server_jei_only else 'none',
         'serverMods':{path.name:sha256(path) for path in (server/'mods').glob('*.jar')},
         'clientMods':{path.name:sha256(path) for path in (client/'mods').glob('*.jar')}}
+    def mod_inputs(directory):
+        values=[]
+        for path in sorted((directory/'mods').glob('*.jar')):
+            data=mod_metadata(path,strict=False)
+            values.append({'id':data['id'],'version':data['version'],'file':path.name,'sha256':sha256(path),'depends':data.get('depends',{})})
+        return values
+    report['clientModMetadata']=mod_inputs(client);report['serverModMetadata']=mod_inputs(server)
+    report['loaderVersions']=['net.fabricmc:fabric-loader:'+loader_version]
+    report['expectedLoaderVersion']=loader_version;report['expectedFabricApiVersion']=api_metadata['version']
+    report['loaderOverride']=loader_override
+    report['serverLoaderLibraries']=[{'path':str(path),'sha256':sha256(path)} for path in server_loader]
+    report['instanceMetadataSha256']=sha256(instance/'fo263_2.json');report['minecraftClientSha256']=sha256(instance/'fo263_2.jar')
+    write(game/'staging.json',{**report,'serverCommand':server_command,'clientCommand':client_command})
     server_process=client_process=None
     environment=os.environ.copy()
     for key in ('JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS'):environment.pop(key,None)
@@ -178,17 +242,36 @@ def run(a):
         result=json.loads(result_path.read_text());report['clientResult']=result
         report['success']=report['clientExit']==0 and result.get('success') is True
         write(game/'network-result.json',report)
-        print(json.dumps(report,ensure_ascii=False,indent=2),flush=True)
+        if branch_control:
+            print(json.dumps({'success':report['success'],'pickupItem':report['pickupItem'],'clientVersion':version,
+                'serverVersion':server_meta['version'],'clientJei':next((entry for entry in report['clientModMetadata'] if entry['id']=='jei'),None),
+                'nativeDisplays':result.get('expectedDisplayIds'),'tagFingerprintsMatch':report['staticTagsBeforeMatchServer'],
+                'outputDirectory':str(game)},ensure_ascii=False),flush=True)
+        else:print(json.dumps(report,ensure_ascii=False,indent=2),flush=True)
         assert report['success'],f'Native TCP recipe replay rejected; evidence in {game}'
         assert report['staticTagsBeforeMatchServer'],'Client/server whole block+item tag fingerprints differ'
+        server_after=json.loads((server/'network-server-after.json').read_text())
+        for observed in (result,server_after):
+            assert observed.get('loaderVersion')==loader_version,'Runtime Loader differs from the staged environment'
+            assert observed.get('fabricApiVersion')==api_metadata['version'],'Runtime Fabric API differs from the staged environment'
         assert all(result.get(key) is True for key in ('hidden','notFocusable','mouseUnlocked','realTcp'))
         jei_expected=a.client_jei_only or a.jei_both_sides or a.client_mods_full
         assert result['jei']['installed'] is jei_expected,'Unexpected client JEI runtime presence'
         if jei_expected:
             assert result['jei']['checked'] and result['jei']['actualRecipeScreen'].startswith('mezz.jei.')
             expected_checks=6 if require_custom_recipes else 4 if a.jei_both_sides else 3
+            if pickup in BRANCH_ITEMS and require_custom_recipes:expected_checks+=1
             assert len(result['jei']['recipes'])==expected_checks,'Missing real JEI recipe/input/output checks'
         assert (client/'screenshots'/result['screenshot']).read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+        if branch_control:
+            server_after=json.loads((server/'network-server-after.json').read_text())
+            client_before=json.loads((client/'network-client-ready.json').read_text())
+            assert server_after.get('actualItemEntityPickedUp') is True and server_after.get('inventoryHasPickupItem') is True
+            assert client_before.get('targetDisplaysAbsentBefore')==result['expectedDisplayIds'],'Target displays were not independently absent before natural pickup'
+            assert result.get('pickupItem')=='guogaology:'+pickup
+            if pickup in BRANCH_ITEMS:assert result.get('hydraDisplay',{}).get('namedBranchSlots')==4,'Missing actual named-tag Hydra network display'
+            expected_jei=next(entry for entry in report['clientModMetadata'] if entry['id']=='jei')['version']
+            assert result.get('jeiVersion')==expected_jei,'Actual JEI runtime version differs from staged artifact'
         print('NETWORK263_TCP_PICKUP_OK',flush=True)
     finally:
         if client_process is not None and client_process.poll() is None:client_process.terminate();client_process.wait(timeout=20)
@@ -206,6 +289,14 @@ if __name__=='__main__':
     parser.add_argument('--server-release-jar',type=Path,help='Optional distinct exact server release, proving a client-only update against an older server')
     parser.add_argument('--label',required=True)
     parser.add_argument('--qa-jar',type=Path)
+    parser.add_argument('--branch-pickup',action='store_true',help='Exact061 client-only JEI control; defaults to one fresh epsilon_symbol pickup')
+    parser.add_argument('--pickup-item',choices=(*BRANCH_ITEMS,'ordinal_stone'),help='One real pickup per new world/player; run each six branches in its own fresh --label')
+    parser.add_argument('--jei-jar',type=Path,help='Explicit build-only JEI override; otherwise use installed31.14.0.72')
+    parser.add_argument('--mezz-config-jar',type=Path,help='Optional build-only MezzConfig override; otherwise use installed dependency')
+    parser.add_argument('--api-jar',type=Path,help='Optional build-only Fabric API override copied unchanged into both isolated sides')
+    parser.add_argument('--loader-profile',type=Path,help='Optional build-only official26.3 Fabric Loader profile for both isolated sides')
+    parser.add_argument('--loader-libraries',type=Path,help='Build-only Maven tree for --loader-profile; defaults to profile sibling libraries/')
+    parser.add_argument('--known-filter-workaround',action='store_true',help='Use textureFiltering1/maxAnisotropyBit1 only in the isolated client options')
     parser.add_argument('--java-home',type=Path,default=JAVA)
     parser.add_argument('--instance',type=Path,default=MC/'versions/fo263_2')
     mods=parser.add_mutually_exclusive_group()

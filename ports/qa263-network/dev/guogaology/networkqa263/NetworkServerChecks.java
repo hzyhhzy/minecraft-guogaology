@@ -63,37 +63,50 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
                     before.addProperty("dedicated",true);before.addProperty("bind",server.getLocalIp());
                     before.addProperty("onlinePlayers",server.getPlayerList().getPlayerCount());
                     var known=new JsonObject();
-                    for(String id:NetworkProbe.RECIPES) {
+                    var beforeDisplays=new JsonArray();
+                    for(String id:NetworkProbe.pickupRecipes()) {
                         var key=ResourceKey.create(Registries.RECIPE,Identifier.parse("guogaology:"+id));
                         boolean unlocked=player.getRecipeBook().contains(key);known.addProperty(id,unlocked);
                         NetworkProbe.check(!unlocked,"fresh player must not already know "+id);
+                        var advancement=server.getAdvancements().get(Identifier.parse("guogaology:recipes/"+id));
+                        NetworkProbe.check(advancement!=null&&!player.getAdvancements().getOrStartProgress(advancement).isDone(),"fresh actual advancement not already complete "+id);
+                        server.getRecipeManager().listDisplaysForRecipe(key,entry->beforeDisplays.add(entry.id().index()));
                     }
+                    NetworkProbe.check(!beforeDisplays.isEmpty(),"authoritative recipe manager has an unlockable display");
+                    before.add("expectedDisplayIds",beforeDisplays);before.addProperty("freshPlayerRecipeAdvancements",true);
                     before.add("recipesBefore",known);NetworkProbe.write("network-server-before.json",before);
                     prepared=true;ticks=0;
                 }
                 if(!spawned) {
                     if(!Files.isRegularFile(NetworkProbe.directory().resolve("network-pickup-request.txt")))return;
-                    drop=new ItemEntity(player.level(),player.getX(),player.getY()+.2,player.getZ(),new ItemStack(NetworkProbe.item("guogaology:ordinal_stone")));
+                    // No direct awardRecipes call or manually completed advancement: the
+                    // native ItemEntity collision must cause inventory_changed/reward packets.
+                    drop=new ItemEntity(player.level(),player.getX(),player.getY()+.2,player.getZ(),new ItemStack(NetworkProbe.item(NetworkProbe.pickupItem())));
                     drop.setNoPickUpDelay();drop.setDeltaMovement(Vec3.ZERO);
-                    NetworkProbe.check(player.level().addFreshEntity(drop),"spawned actual numeric-stone item entity");
-                    spawned=true;ticks=0;System.out.println("NETWORK263_REAL_PICKUP_SPAWNED");return;
+                    NetworkProbe.check(player.level().addFreshEntity(drop),"spawned actual first-pickup item entity");
+                    spawned=true;ticks=0;System.out.println("NETWORK263_REAL_PICKUP_SPAWNED item="+NetworkProbe.pickupItem());return;
                 }
                 if(++ticks>400)throw new AssertionError("real pickup/recipe reward timeout");
-                boolean has=player.getInventory().contains(new ItemStack(NetworkProbe.item("guogaology:ordinal_stone")));
+                boolean has=player.getInventory().contains(new ItemStack(NetworkProbe.item(NetworkProbe.pickupItem())));
                 if(!has||!drop.isRemoved())return;
-                for(String id:NetworkProbe.RECIPES)
+                for(String id:NetworkProbe.pickupRecipes())
                     if(!player.getRecipeBook().contains(ResourceKey.create(Registries.RECIPE,Identifier.parse("guogaology:"+id))))return;
-                var after=NetworkProbe.inspect(server.registryAccess());after.addProperty("actualItemEntityPickedUp",true);after.addProperty("inventoryHasNumericStone",has);
+                var after=NetworkProbe.inspect(server.registryAccess());after.addProperty("actualItemEntityPickedUp",true);after.addProperty("inventoryHasPickupItem",has);
+                if(!NetworkProbe.branchPickup())after.addProperty("inventoryHasNumericStone",has);
                 var recipes=new JsonObject();var displays=new JsonArray();
-                for(String id:NetworkProbe.RECIPES) {
+                for(String id:NetworkProbe.pickupRecipes()) {
                     var key=ResourceKey.create(Registries.RECIPE,Identifier.parse("guogaology:"+id));
                     boolean unlocked=player.getRecipeBook().contains(key);recipes.addProperty(id,unlocked);
                     NetworkProbe.check(unlocked,"native advancement unlocked "+id+" after actual pickup");
+                    var advancement=server.getAdvancements().get(Identifier.parse("guogaology:recipes/"+id));
+                    var progress=player.getAdvancements().getOrStartProgress(advancement);
+                    NetworkProbe.check(progress.isDone(),"real inventory advancement completed "+id);
+                    if(NetworkProbe.branchPickup())NetworkProbe.check(progress.getCriterion("ingredient_0")!=null&&progress.getCriterion("ingredient_0").isDone(),"the branch inventory_changed criterion actually completed");
                     server.getRecipeManager().listDisplaysForRecipe(key,entry->displays.add(entry.id().index()));
                 }
                 after.add("unlockedRecipes",recipes);after.add("expectedDisplayIds",displays);
                 NetworkProbe.write("network-server-after.json",after);done=true;
-                System.out.println("NETWORK263_SERVER_PICKUP_UNLOCK_OK displays="+displays);
+                System.out.println("NETWORK263_SERVER_PICKUP_UNLOCK_OK item="+NetworkProbe.pickupItem()+" displays="+displays);
             } catch(Throwable error) {
                 done=true;error.printStackTrace();
                 try {var failure=new JsonObject();failure.addProperty("error",error.toString());NetworkProbe.write("network-server-failed.json",failure);}
