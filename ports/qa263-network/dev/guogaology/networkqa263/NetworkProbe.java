@@ -2,6 +2,7 @@ package dev.guogaology.networkqa263;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -28,17 +29,32 @@ final class NetworkProbe {
     static final List<String> BRANCH_ITEMS=List.of("epsilon_symbol","omega_symbol","great_omega_symbol","zeta_symbol","psi_symbol","phi_symbol");
     static final List<String> RECIPES=List.of("number_pickaxe","number_sword","cobblestone_from_number_stones");
     static final String[] MATERIALS={"wooden","stone","copper","iron","diamond","netherite","golden"};
+    private static int pickupStage;
     static Path directory() { return FabricLoader.getInstance().getGameDir(); }
-    static String pickupItem() {
+    static boolean candidate() {return Boolean.getBoolean("guogaology.qa.network263.candidateRegression");}
+    static String itemRegression(){return System.getProperty("guogaology.qa.network263.itemRegression","off");}
+    static boolean itemsEnabled(){return !itemRegression().equals("off");}
+    static String initialPickupItem() {
         String value=System.getProperty("guogaology.qa.network263.pickup","guogaology:ordinal_stone");
         check(value.equals("guogaology:ordinal_stone")||BRANCH_ITEMS.stream().anyMatch(name->value.equals("guogaology:"+name)),"allowed isolated first-pickup item");
         return value;
     }
+    static String pickupItem() {return pickupStage==1?"guogaology:ordinal_stone":initialPickupItem();}
+    static int pickupStage() {return pickupStage;}
+    static boolean twoStages() {return candidate()&&!initialPickupItem().equals("guogaology:ordinal_stone");}
+    static void nextPickup() {check(twoStages()&&pickupStage==0,"one numeric follow-up on the same connection");pickupStage=1;}
+    static String stageFile(String name) {int dot=name.lastIndexOf('.');return pickupStage==0?name:name.substring(0,dot)+"-numeric"+name.substring(dot);}
     static boolean branchPickup() {return !pickupItem().equals("guogaology:ordinal_stone");}
-    static List<String> pickupRecipes() {return branchPickup()?List.of("hydra_bud"):RECIPES;}
+    static List<String> pickupRecipes() {return branchPickup()?List.of("hydra_bud"):candidate()?List.of("cobblestone_from_number_stones"):RECIPES;}
+    static JsonObject hydraExpected() {
+        try{return JsonParser.parseString(Files.readString(directory().resolve("network-hydra-expected.json"))).getAsJsonObject();}
+        catch(Exception error){throw new IllegalStateException("Missing exact-server Hydra recipe fixture",error);}
+    }
     static void guard() {
         if (!Boolean.getBoolean("guogaology.qa.network263") || !Files.isRegularFile(directory().resolve("network-qa-isolated.json")))
             throw new IllegalStateException("Network QA requires its isolated runner marker");
+        check(List.of("off","observe","verify").contains(itemRegression()),"known opt-in item regression mode");
+        check(!itemsEnabled()||candidate(),"item regression only belongs to explicit candidate QA");
         if(Boolean.getBoolean("guogaology.qa.network263.branchControl"))
             check(FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().getMetadata().getVersion().getFriendlyString().equals(System.getProperty("guogaology.qa.network263.expectedVersion")),"branch-pickup control loads the exact requested old release");
     }
@@ -51,6 +67,7 @@ final class NetworkProbe {
         var out=new JsonObject();
         out.addProperty("productionVersion",FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().getMetadata().getVersion().getFriendlyString());
         out.addProperty("pickupItem",pickupItem());
+        out.addProperty("pickupStage",pickupStage);out.addProperty("candidateRegression",candidate());
         out.addProperty("loaderVersion",FabricLoader.getInstance().getModContainer("fabricloader").orElseThrow().getMetadata().getVersion().getFriendlyString());
         out.addProperty("fabricApiVersion",FabricLoader.getInstance().getModContainer("fabric-api").orElseThrow().getMetadata().getVersion().getFriendlyString());
         out.addProperty("jeiInstalled",FabricLoader.getInstance().isModLoaded("jei"));

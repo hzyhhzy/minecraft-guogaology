@@ -8,6 +8,39 @@ from pathlib import Path
 from zipfile import ZipFile
 ROOT=Path(__file__).resolve().parents[1]
 
+def item068_normal_snapshot(instance):
+    """Read-only proof that the normal instance was never a QA game directory."""
+    result={}
+    for folder in ('mods','config'):
+        for path in sorted((instance/folder).rglob('*')):
+            if path.is_file():result[str(path.relative_to(instance))]=hashlib.sha256(path.read_bytes()).hexdigest()
+    for path in sorted((instance/'saves').rglob('*')):
+        if path.is_file():
+            stat=path.stat();result[str(path.relative_to(instance))]=[stat.st_size,stat.st_mtime_ns]
+    return result
+
+def verify_item068_outputs(game):
+    """Post-check original native evidence; Gson may omit JSON-null input fields."""
+    proof=json.loads((game/'item068-normal-protection.json').read_text('utf8'))
+    assert proof['unchanged'] and not proof['changedEntries'],'Normal instance changed during isolated item QA'
+    result=json.loads((game/'item068-results.json').read_text('utf8'))
+    expected=json.loads((game/'item068-run-input.json').read_text('utf8'))
+    actual=result['inputs']
+    # Only absent expected-null keys are equivalent. Every other field remains
+    # mandatory, and unexpected fields (even null ones) are rejected.
+    assert set(actual)<=set(expected),'Unexpected native QA provenance fields'
+    assert all(key in actual or value is None for key,value in expected.items()),'Missing non-null native QA provenance field'
+    assert all(actual[key]==expected[key] for key in actual),'Native QA input provenance changed'
+    for role in ('production','qa'):
+        path=game/'mods'/expected[role+'Jar']
+        assert hashlib.sha256(path.read_bytes()).hexdigest()==expected[role+'Sha256'],f'Changed {role} artifact'
+    assert result['status']=='PASS' and result['minecraft']=='26.2'
+    assert result['nativeItemContextCount']==56 and len(result['signPlacementAndPersistence'])==4 and result['actualPlayerHarvest']['caseCount']==50
+    assert len(result['screenshots'])==7 and all((game/'screenshots'/name).is_file() for name in result['screenshots']),'Missing completed item QA photos'
+    return {'status':'PASS','checks':result['checks'],'nativeItemContexts':56,'harvestCases':50,'signCases':4,'screenshots':result['screenshots'],
+            'productionSha256':expected['productionSha256'],'qaSha256':expected['qaSha256'],'protectedEntries':proof['protectedEntries'],
+            'omittedNullInputFields':sorted(set(expected)-set(actual))}
+
 def material065_inputs(production,helper,release,*,language,voxy,seed):
     records={}
     for role,path,expected_id in (('production',production,'guogaology'),('qa',helper,'guogaology-merge-qa')):
@@ -33,6 +66,7 @@ def run(a):
     instance=a.instance.resolve();assert instance.name=='fo262','Runtime scope is fo262 only'
     metadata=json.loads((instance/'fo262.json').read_text('utf-8-sig'));minecraft=instance.parent.parent
     assert bool(a.fixture) != a.fresh_world,'Choose exactly one of --fixture or --fresh-world'
+    assert not a.item068_only or not any(value for key,value in vars(a).items() if key.endswith('_only') and key!='item068_only'),'Item QA is a separate focused mode'
     assert not a.namespace_only or a.fresh_world,'Namespace QA must use --fresh-world'
     assert not a.chain_loot0501_only or a.fresh_world,'0.5.1 chain/loot QA must use --fresh-world'
     assert not a.jar_import_only or a.fresh_world,'JAR import QA must use --fresh-world'
@@ -47,6 +81,7 @@ def run(a):
     assert not a.core515_only or a.fresh_world,'Core0.5.15 QA must use a disposable new world'
     assert not a.astra516_only or a.fresh_world,'Astra0.5.16 QA must use a disposable new world'
     assert not a.building063_only or a.fresh_world,'Building0.6.3 QA must use a disposable new world'
+    assert not a.item068_only or a.fresh_world,'Item0.6.8 QA must use a disposable new world'
     assert not a.recipebook066_only or a.fresh_world,'Recipebook0.6.6 QA must use a disposable new world'
     assert not a.recipebook066_baseline or a.recipebook066_only,'Baseline requires recipebook066 mode'
     assert not a.material065_only or a.fresh_world,'Material0.6.5 QA must use a disposable new world'
@@ -119,10 +154,15 @@ def run(a):
             else:assert path.name==f'guogaology-merge-qa-{release}.jar','Wrong native QA helper artifact'
             record[role+'Jar']=path.name;record[role+'Sha256']=hashlib.sha256(path.read_bytes()).hexdigest();record[role+'MetadataVersion']=identity['version']
         (game/'recipebook066-run-input.json').write_text(json.dumps(record,indent=2)+'\n','utf8')
+    if a.item068_only:
+        main=list(mods.glob('guogaology-dimension-26.2-*.jar'));helper=list(mods.glob('guogaology-merge-qa-*.jar'));assert len(main)==len(helper)==1
+        record=material065_inputs(main[0],helper[0],release,language=a.language,voxy=a.voxy,seed=a.seed);record['mode']='item068'
+        (game/'item068-run-input.json').write_text(json.dumps(record,indent=2)+'\n','utf8')
+        protected_before=item068_normal_snapshot(instance)
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
+             f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
              f'-Dguogaology.qa.material065={str(a.material065_only).lower()}',
              f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
@@ -138,8 +178,17 @@ def run(a):
         process=subprocess.Popen(command,cwd=game,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
         try:code=process.wait(timeout=300 if a.landmarks_only else 1100)
         except subprocess.TimeoutExpired:process.terminate();process.wait(timeout=20);raise RuntimeError('Own QA process timed out')
+        finally:
+            if a.item068_only:
+                protected_after=item068_normal_snapshot(instance)
+                changed=sorted(key for key in protected_before.keys()|protected_after.keys() if protected_before.get(key)!=protected_after.get(key))
+                proof={'normalInstance':str(instance),'mode':'item068','protectedEntries':len(protected_before),'changedEntries':changed,'unchanged':not changed,'scope':'SHA256 of normal mods/config; size+mtime of normal save files; normal files are never copied as QA fixtures.'}
+                (game/'item068-normal-protection.json').write_text(json.dumps(proof,indent=2)+'\n','utf8')
     if code or not (game/'port-client-ok.txt').is_file():
         print((game/'launch-output.log').read_text('utf8',errors='replace')[-14000:]);raise RuntimeError(f'QA failed: {code}')
+    if a.item068_only:
+        verification=verify_item068_outputs(game)
+        (game/'item068-runner-verification.json').write_text(json.dumps(verification,indent=2)+'\n','utf8')
     print((game/'port-client-ok.txt').read_text(),flush=True)
     print('PRODUCTION_PORT_OK 26.2',flush=True)
 
@@ -156,6 +205,7 @@ if __name__=='__main__':
     p.add_argument('--core514-only',action='store_true',help='Native0.5.14 recipes, safe Graham growth and full luminous Guogao cube; four settled native scenes, disposable fo262 only')
     p.add_argument('--core515-only',action='store_true',help='Native0.5.15 recipes/scenery and nine settled art scenes, including all six Guogao faces and exact production firs; requires --fresh-world')
     p.add_argument('--building063-only',action='store_true',help='Native fixed-digit palettes and legitimate Guogao building material regression')
+    p.add_argument('--item068-only',action='store_true',help='Focused actual door/slab/sign placement, NBT and eight item-context regression in a fresh disposable flat world')
     p.add_argument('--recipebook066-only',action='store_true',help='Focused native0.6.6 survival XP and exclusive branded recipe-book UI; fresh world only')
     p.add_argument('--recipebook066-baseline',action='store_true',help='Reproduce BranchSilk XP with the exact preserved0.6.5JAR, no UI or normal save')
     p.add_argument('--material065-only',action='store_true',help='Native0.6.5 recipes/chests/mobLooting/Stellar16x and actual core/GGG recipe-book groups; requires --fresh-world')

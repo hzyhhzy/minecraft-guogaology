@@ -36,6 +36,17 @@ def apply_current_entity_loot(out,target):
             value=convert_263_loot(value)
         write(Path(out)/rel,value)
 
+def apply_current_wood_loot(out,target):
+    """Keep host door/slab conservation rules after all immutable donor imports."""
+    from generate_wood_loot import TABLES
+    for name in TABLES:
+        rel=Path('data/guogaology/loot_table/blocks')/(name+'.json')
+        value=load(ROOT/'src/main/resources'/rel)
+        if target=='26.3':
+            from prepare_port_resources import convert_263_loot
+            value=convert_263_loot(value)
+        write(Path(out)/rel,value)
+
 def state(v):
     if isinstance(v,dict):return {'Name':v['id'],**({'Properties':v['properties']} if v.get('properties') else {})} if 'id' in v else v
     m=re.fullmatch(r'([^\[]+)(?:\[(.*)\])?',v)
@@ -299,6 +310,7 @@ def prepare(target,out):
         tag['values']=list(dict.fromkeys(tag['values']+[remap_id(SOURCE_NS+':'+s) for s in stones]));write(path,tag)
     # Run after clear_generated and every donor write, with target-native loot keys.
     apply_current_entity_loot(out,target)
+    apply_current_wood_loot(out,target)
 
 if __name__=='__main__':
     import argparse

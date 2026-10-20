@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "guogaology:block/graham_vine"
+    "model": "guogaology:item/graham_vine"
   }
 }

@@ -34,7 +34,7 @@ public abstract class FixtureLoaderMixin {
         var settings=new LevelSettings("Guogaology fresh namespace QA",GameType.CREATIVE,
                 LevelSettings.DifficultySettings.DEFAULT,true,WorldDataConfiguration.DEFAULT);
         ((WorldOpenFlows)(Object)this).createFreshLevel(name,settings,options,
-                registries->Boolean.getBoolean("guogaology.qa.absence064")||Boolean.getBoolean("guogaology.qa.material065")||Boolean.getBoolean("guogaology.qa.recipebook066")
+                registries->Boolean.getBoolean("guogaology.qa.item068")||Boolean.getBoolean("guogaology.qa.absence064")||Boolean.getBoolean("guogaology.qa.material065")||Boolean.getBoolean("guogaology.qa.recipebook066")
                         ?registries.lookupOrThrow(Registries.WORLD_PRESET).getOrThrow(WorldPresets.FLAT).value().createWorldDimensions()
                         :WorldPresets.createNormalWorldDimensions(registries),new TitleScreen());
         ci.cancel();

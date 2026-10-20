@@ -7,6 +7,7 @@ the shared namespace. The unrelated Loquat fruit item is retained.
 """
 from pathlib import Path
 import json, re
+from generate_wood_loot import wood_loot
 
 ROOT=Path(__file__).resolve().parents[1]
 RES=ROOT/'src/main/resources';A=RES/'assets/guogaology';D=RES/'data/guogaology'
@@ -108,12 +109,8 @@ def generate():
     # Doors drop only their lower half; signs return the standing item.
     for shape in SHAPES:
         if shape in ('log','leaves'):continue
-        name='dread_'+shape;item='dread_sign' if shape=='wall_sign' else name
-        conditions=[{'condition':'minecraft:survives_explosion'}]
-        if shape=='door':conditions.append({'condition':'minecraft:block_state_property','block':'guogaology:dread_door','properties':{'half':'lower'}})
-        if len(conditions)>1:conditions=[{'condition':'minecraft:all_of','terms':conditions}]
-        functions=[{'function':'minecraft:set_count','count':2,'conditions':[{'condition':'minecraft:block_state_property','block':'guogaology:dread_slab','properties':{'type':'double'}}]}] if shape=='slab' else []
-        write(D/f'loot_table/blocks/{name}.json',{'type':'minecraft:block','pools':[{'rolls':1,'entries':[{'type':'minecraft:item','name':'guogaology:'+item,'functions':functions}],'conditions':conditions}]})
+        name='dread_'+shape
+        write(D/f'loot_table/blocks/{name}.json',wood_loot('dread',shape))
     # Add normal crafting categories, while explicitly excluding logs_that_burn.
     for side in ('block','item'):
         base=RES/f'data/minecraft/tags/{side}'

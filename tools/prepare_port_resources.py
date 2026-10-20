@@ -321,6 +321,8 @@ def prepare(target, release):
     portable = convert_items(out)
     from prepare_outer_resources import prepare as prepare_outer
     prepare_outer(target, out)
+    from prepare_sign_resources import prepare as prepare_signs
+    prepare_signs(out, target)
     if target == '26.3':
         # All three other native motion/heightmap tags inherit this base tag.
         # Append last so imported world resources cannot erase our current solids.

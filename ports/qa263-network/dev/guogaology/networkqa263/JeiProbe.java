@@ -96,8 +96,7 @@ final class JeiProbe {
             }
         }
         if(NetworkProbe.branchPickup()&&requireCustom) {
-            var required=new ArrayList<>(NetworkProbe.BRANCH_ITEMS.stream().map(name->"guogaology:"+name).toList());
-            required.add("guogaology:hydra_sprig");required.add("guogaology:ordinal_crystal");
+            var required=new ArrayList<String>();NetworkProbe.hydraExpected().getAsJsonArray("requiredInputs").forEach(value->required.add(value.getAsString()));
             checks.add(inspectRecipe(manager,craftCategory,craft,"guogaology:hydra_bud","guogaology:hydra_bud",required));
         }
         Object gui=call(API+"runtime.IJeiRuntime",runtime,"getRecipesGui");

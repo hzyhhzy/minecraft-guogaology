@@ -25,7 +25,7 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
     private ServerPlayer player;
     private ItemEntity drop;
     private int ticks;
-    private boolean prepared,spawned,done;
+    private boolean prepared,spawned,done,itemsDone;
     @Override public void onInitializeServer() {
         NetworkProbe.guard();
         ServerPlayConnectionEvents.JOIN.register((handler,sender,server)->{
@@ -33,8 +33,17 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
             player=handler.player;ticks=0;
         });
         ServerTickEvents.END_SERVER_TICK.register(server->{
-            if(player==null||done)return;
+            if(player==null)return;
             try {
+                if(done) {
+                    if(NetworkProbe.itemsEnabled()&&(!NetworkProbe.twoStages()||NetworkProbe.pickupStage()==1)&&!itemsDone&&Files.isRegularFile(NetworkProbe.directory().resolve("item-regression-request.txt"))){
+                        var observations=ItemServerRegression.run(player);NetworkProbe.write("item-regression-server.json",observations);itemsDone=true;
+                        System.out.println("NETWORK263_ITEM_REGRESSION_COLLECTED mode="+NetworkProbe.itemRegression()+" cases="+observations.get("caseCount")+" expectedMatches="+observations.get("expectedBehaviorMatches"));return;
+                    }
+                    if(NetworkProbe.twoStages()&&NetworkProbe.pickupStage()==0&&Files.isRegularFile(NetworkProbe.directory().resolve("network-numeric-prepare-request.txt"))) {
+                        NetworkProbe.nextPickup();prepared=false;spawned=false;done=false;drop=null;ticks=0;
+                    } else return;
+                }
                 if(!prepared) {
                     if(++ticks<20)return;
                     NetworkProbe.check(server.isDedicatedServer()&&"127.0.0.1".equals(server.getLocalIp()),"real loopback-only dedicated server");
@@ -62,6 +71,8 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
                     before.add("nativeTagNetworkPayload",wire);
                     before.addProperty("dedicated",true);before.addProperty("bind",server.getLocalIp());
                     before.addProperty("onlinePlayers",server.getPlayerList().getPlayerCount());
+                    var serverRecipes=new JsonArray();server.getRecipeManager().getRecipes().stream().map(holder->holder.id().identifier().toString()).sorted().forEach(serverRecipes::add);
+                    before.add("serverRecipeIds",serverRecipes);
                     var known=new JsonObject();
                     var beforeDisplays=new JsonArray();
                     for(String id:NetworkProbe.pickupRecipes()) {
@@ -74,11 +85,11 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
                     }
                     NetworkProbe.check(!beforeDisplays.isEmpty(),"authoritative recipe manager has an unlockable display");
                     before.add("expectedDisplayIds",beforeDisplays);before.addProperty("freshPlayerRecipeAdvancements",true);
-                    before.add("recipesBefore",known);NetworkProbe.write("network-server-before.json",before);
+                    before.add("recipesBefore",known);NetworkProbe.write(NetworkProbe.stageFile("network-server-before.json"),before);
                     prepared=true;ticks=0;
                 }
                 if(!spawned) {
-                    if(!Files.isRegularFile(NetworkProbe.directory().resolve("network-pickup-request.txt")))return;
+                    if(!Files.isRegularFile(NetworkProbe.directory().resolve(NetworkProbe.stageFile("network-pickup-request.txt"))))return;
                     // No direct awardRecipes call or manually completed advancement: the
                     // native ItemEntity collision must cause inventory_changed/reward packets.
                     drop=new ItemEntity(player.level(),player.getX(),player.getY()+.2,player.getZ(),new ItemStack(NetworkProbe.item(NetworkProbe.pickupItem())));
@@ -105,7 +116,7 @@ public final class NetworkServerChecks implements DedicatedServerModInitializer 
                     server.getRecipeManager().listDisplaysForRecipe(key,entry->displays.add(entry.id().index()));
                 }
                 after.add("unlockedRecipes",recipes);after.add("expectedDisplayIds",displays);
-                NetworkProbe.write("network-server-after.json",after);done=true;
+                NetworkProbe.write(NetworkProbe.stageFile("network-server-after.json"),after);done=true;
                 System.out.println("NETWORK263_SERVER_PICKUP_UNLOCK_OK item="+NetworkProbe.pickupItem()+" displays="+displays);
             } catch(Throwable error) {
                 done=true;error.printStackTrace();

@@ -1,0 +1,79 @@
+{
+  "description": "Unmodified official JEI Minecraft26.3 Fabric artifacts. Do not substitute version-renamed JARs.",
+  "sources": [
+    "https://maven.blamejared.com/mezz/jei/jei-26.3-fabric/maven-metadata.xml",
+    "https://modrinth.com/mod/jei/versions?g=26.3&l=fabric"
+  ],
+  "artifacts": [
+    {
+      "version": "31.13.0.71",
+      "sha256": "702dff6780e428882e24ac97a5d263e84cc61cf772eced6aebef37941c1b237b",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/z05WinXf/jei-26.3-fabric-31.13.0.71.jar"
+    },
+    {
+      "version": "31.14.0.72",
+      "sha256": "79d222604dd70517d2bd4c7e9cc3687ea5e777e0e249f4e9de6f0965bb0856fc",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/Zebwcvua/jei-26.3-fabric-31.14.0.72.jar"
+    },
+    {
+      "version": "31.15.0.73",
+      "sha256": "64709195d0896eadccb913b015e939c2a4597bab9da3f3c1912aba94518f5e0e",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/bCms6aK9/jei-26.3-fabric-31.15.0.73.jar"
+    },
+    {
+      "version": "31.15.0.75",
+      "sha256": "744a162d8c6d8b4f2942adc64933c70717fbde08a2d143d3cfd0bb071a2ada48",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/rWIUh2x6/jei-26.3-fabric-31.15.0.75.jar"
+    },
+    {
+      "version": "31.15.0.76",
+      "sha256": "03ff7f362ffaa372375a606cf21f3a66dd9fcd2e689d392b7ca665cbf8d3229b",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/QAlcOtcT/jei-26.3-fabric-31.15.0.76.jar"
+    },
+    {
+      "version": "31.15.0.77",
+      "sha256": "4efb9a0405d5c7f8acf0b1e6f634e6b6e7a9fb5d48ad73a464b133bc735de2f0",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/mEglbjN9/jei-26.3-fabric-31.15.0.77.jar"
+    },
+    {
+      "version": "31.15.0.78",
+      "sha256": "a4dfdc3296c479914e9f999a28902fe09f5e1b7b0911512f43af45d5eabcf9f7",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/9gHa4K2j/jei-26.3-fabric-31.15.0.78.jar"
+    },
+    {
+      "version": "31.15.0.79",
+      "sha256": "abceb5f43c9d1b7fea978060d27c784458ec6c8eb9d5b8f44bcea33179904812",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/9l0HTgBg/jei-26.3-fabric-31.15.0.79.jar"
+    },
+    {
+      "version": "31.15.0.81",
+      "sha256": "98e67735824e824e77a62b23730bea7cdfdbfe5cbb68b9fe0c3b1ed019998210",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/6C5ANLvN/jei-26.3-fabric-31.15.0.81.jar"
+    },
+    {
+      "version": "31.15.0.82",
+      "sha256": "b1cc10c21a93413f9d3b335d4e1c753ec02e67e4fc695b6be99f2f3f1b235e2d",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/f58Zbel1/jei-26.3-fabric-31.15.0.82.jar"
+    },
+    {
+      "version": "31.16.0.83",
+      "sha256": "d220a9f36a87227b02e0df719d77fa210e18ce6f69cf2d60e6e654c9d11cbc6b",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/sdbLsn9E/jei-26.3-fabric-31.16.0.83.jar"
+    },
+    {
+      "version": "31.16.0.84",
+      "sha256": "078df9f6157aebf55976c53dfcce5996d14f2b021fd50fc12ee99868ed9f27e2",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/G8Pw3LAj/jei-26.3-fabric-31.16.0.84.jar"
+    },
+    {
+      "version": "31.16.0.85",
+      "sha256": "5d1e43c12c81d3bd87bcaf7ae0251b2fbc2cdeb5c30906ea87284dc554354325",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/wQJNj1C5/jei-26.3-fabric-31.16.0.85.jar"
+    },
+    {
+      "version": "31.16.0.86",
+      "sha256": "6448a0cb485d8c63ac8ca7adc29a696e23d25ac07fd90b63e80edd0322d641d1",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/FZo1k4Vx/jei-26.3-fabric-31.16.0.86.jar"
+    }
+  ]
+}

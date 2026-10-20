@@ -54,6 +54,8 @@ processResources {
     inputs.property 'version', project.version
     inputs.property 'preserveJsonEscapes', true
     inputs.file 'tools/prepare_legacy_resources.py'
+    inputs.file 'tools/prepare_sign_resources.py'
+    inputs.file 'tools/generate_wood_loot.py'
     filesMatching('fabric.mod.json') { expand([version: project.version]) { escapeBackslash = true } }
     doLast {
         def configFile = new File(destinationDir, 'guogaology.mixins.json')
