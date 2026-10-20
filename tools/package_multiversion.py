@@ -186,6 +186,63 @@ def verify_gel_loot_policy(archive, target):
         assert json.loads(archive.read(path))==expected,f'Stale/overwritten gel mob loot: {target}/{entity}'
 
 
+def verify_loot_tag_entries(archive, target):
+    """Resolve every packaged loot tag and member, independently of port conversion.
+
+    Current loot sets refer to shipped item roots. An external tag/member must
+    acquire an explicit resolution source before it can pass this release guard.
+    Actual registry/codec loading remains a separate native check.
+    """
+    entries=set(archive.namelist());resolved={};used_members=set();count=0;tables=0
+    def item(identifier,where,required=True):
+        assert isinstance(identifier,str) and ':' in identifier and not identifier.startswith('#'),f'Invalid loot item: {where}/{identifier}'
+        namespace,path=identifier.split(':',1)
+        roots=(f'assets/{namespace}/models/item/{path}.json',f'assets/{namespace}/items/{path}.json')
+        if not any(root in entries for root in roots):
+            assert not required,f'Unresolved loot tag item: {where}/{identifier}'
+            return set()
+        return {identifier}
+    def tag(identifier,where,chain=(),required=True):
+        assert isinstance(identifier,str) and ':' in identifier and not identifier.startswith('#'),f'Invalid loot tag: {where}/{identifier}'
+        assert identifier not in chain,f'Cyclic loot tag: {where}/{identifier}'
+        if identifier in resolved:return resolved[identifier]
+        namespace,path=identifier.split(':',1);name=f'data/{namespace}/tags/item/{path}.json'
+        if name not in entries:
+            assert not required,f'Unresolved loot item tag: {where}/{identifier}'
+            return set()
+        members=set()
+        for value in json.loads(archive.read(name))['values']:
+            member=value['id'] if isinstance(value,dict) else value
+            needed=value.get('required',True) if isinstance(value,dict) else True
+            assert isinstance(member,str),f'Invalid loot tag member: {name}/{member}'
+            members.update(tag(member[1:],name,(*chain,identifier),needed) if member.startswith('#') else item(member,name,needed))
+        resolved[identifier]=members
+        return members
+    def walk(value,where):
+        nonlocal count
+        if isinstance(value,list):
+            for index,child in enumerate(value):walk(child,f'{where}[{index}]')
+        elif isinstance(value,dict):
+            if value.get('type')=='minecraft:tag':
+                count+=1
+                if target=='26.3':
+                    assert 'items' in value and 'name' not in value,f'Legacy loot tag codec: {target}/{where}'
+                    holders=value['items']
+                    if isinstance(holders,str) and holders.startswith('#'):members=tag(holders[1:],where)
+                    elif isinstance(holders,list):members=set().union(*(item(member,where) for member in holders))
+                    else:members=item(holders,where)
+                else:
+                    assert 'name' in value and 'items' not in value,f'Wrong legacy loot tag codec: {target}/{where}'
+                    members=tag(value['name'],where)
+                assert members,f'Empty loot tag selection: {target}/{where}'
+                used_members.update(members)
+            for key,child in value.items():walk(child,where+'.'+key)
+    for name in sorted(entries):
+        if name.startswith('data/guogaology/loot_table/') and name.endswith('.json'):
+            tables+=1;walk(json.loads(archive.read(name)),name)
+    return {'lootTables':tables,'tagEntries':count,'resolvedTags':len(resolved),'resolvedItems':len(used_members)}
+
+
 def package(targets, output_dir=None):
     from audit_localization import audit
     audit(ROOT)
@@ -227,6 +284,7 @@ def package(targets, output_dir=None):
             verify_guide_policy(archive, target)
             verify_mineral_block_tools(archive, target)
             verify_gel_loot_policy(archive, target)
+            verify_loot_tag_entries(archive, target)
             frame=json.loads(archive.read('guogaology/block_balance.json'))['guogao_portal_frame']
             assert frame['hardness']==200 and frame['drop']=='none',f'Stale activated portal frame: {target}'
             loot=json.loads(archive.read('data/guogaology/loot_table/blocks/guogao_portal_frame.json'))

@@ -1,0 +1,60 @@
+{
+  "artifact": "guogaology-dimension-26.3-0.6.6.jar",
+  "sha256": "c72f91f4588b2271f812c4e0e0479a30ac06c66b7f0927a4cbe4cef38a9226f0",
+  "entries": [
+    {
+      "table": "data/guogaology/loot_table/chests/guogao_ruin.json",
+      "pointer": "/pools/3/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:fruit_guogao",
+        "expand": true
+      }
+    },
+    {
+      "table": "data/guogaology/loot_table/chests/guogao_sanctum.json",
+      "pointer": "/pools/3/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:fruit_guogao",
+        "expand": true
+      }
+    },
+    {
+      "table": "data/guogaology/loot_table/chests/hydra_ruin.json",
+      "pointer": "/pools/1/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:ordinal_branch_stones",
+        "expand": true
+      }
+    },
+    {
+      "table": "data/guogaology/loot_table/chests/hydra_ruin.json",
+      "pointer": "/pools/3/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:ordinal_flowers",
+        "expand": true
+      }
+    },
+    {
+      "table": "data/guogaology/loot_table/chests/hydra_sanctum.json",
+      "pointer": "/pools/1/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:ordinal_branch_stones",
+        "expand": true
+      }
+    },
+    {
+      "table": "data/guogaology/loot_table/chests/hydra_sanctum.json",
+      "pointer": "/pools/3/entries/0",
+      "entry": {
+        "type": "minecraft:tag",
+        "name": "guogaology:ordinal_flowers",
+        "expand": true
+      }
+    }
+  ]
+}

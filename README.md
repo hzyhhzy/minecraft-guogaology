@@ -4,11 +4,11 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.6 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.6)
+**0.6.7 独立开发修复 · Minecraft Java / Fabric** · [最新已发布版 v0.6.6](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.6)
 
-0.6.6 将原生配方书的「GGG」页改为「果糕逻辑」（英文 Guogaology），直接使用 Mod 主 Logo。晶核及其他 Mod 专属配方分别集中到「晶核」「果糕逻辑」页，并从原四个具体分类移出；全局搜索、通用木系及普通沙子＋火药 TNT 配方保留。修复分枝晶核的虚拟精准采集只影响掉落、未同步影响经验的漏洞，普通与额外开采一并修正；保留原版刷怪笼的经验例外，不改写玩家实际工具的附魔或镶嵌数据。
+0.6.7 修复 Minecraft 26.3 使用旧格式战利品标签条目，导致四张巨构箱子战利品表无法解析并阻断世界加载的问题。只转换26.3所需的标签格式，物品数量、抽取规则及存档ID不变；其他三个目标版本保留原格式。当前修复位于独立开发分支，尚未合入main或发布。
 
-沿用0.6.5的八系配方、自然原料和巨构箱奖调整，以及0.6.4的空无晶核兼容清理；现有存档ID及fffZ/FOS、ψ/Z稳定机制不变。0.6.6已合入真正的main，[本版发行说明](docs/RELEASE-0.6.6.md)汇总自0.6.3以来的更新，[工作记录](docs/WORK-066.md)说明实际验证范围。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。[当前生存指南](docs/SURVIVAL-GUIDE.md) · [生存引导](docs/ADVANCEMENTS-057.md)
+沿用0.6.6的配方书「晶核」「果糕逻辑」专页、主Logo分类图标及精准采集经验修复，以及0.6.5的八系配方、自然原料和巨构箱奖调整、0.6.4的空无晶核兼容清理。fffZ/FOS、ψ/Z稳定机制不变。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。[已发布版发行说明](docs/RELEASE-0.6.6.md) · [当前工作记录](docs/WORK-067.md) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [生存引导](docs/ADVANCEMENTS-057.md)
 
 三个相连的世界：接近原版尺度的大数表界、巨大记号景观与遗迹构成的大数里界，以及阴森的果糕地府。表界提供四档装备矿物和七类普通生物；里界与地府提供群系原料和序数晶矿，用于合成晶核。可逆强化台强化装备，副手手稿可通过背包「手稿」按钮镶嵌，关闭界面后生效。暂无 Boss。
 
@@ -25,9 +25,9 @@
 | 26.2 | 25 | 0.153.0+26.2 |
 | 26.3 | 25 | 0.161.0+26.3 |
 
-四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；0.6.6保留现有存档ID和0.6.4的一级空无晶核组件兼容清理。不提供更早`googology`命名空间的迁移或旧ID别名。
+四个版本分别生成 JAR。选择与游戏版本匹配的一份，与对应 Fabric API 放进 `mods`，客户端与服务器使用同一版本。模组内部 ID 自0.5.0起统一为 `guogaology`；0.6.7保留现有存档ID和0.6.4的一级空无晶核组件兼容清理。不提供更早`googology`命名空间的迁移或旧ID别名。
 
-0.6.6四版构建、资源／语言检查及88项Python检查通过。最终26.2成品在隐藏隔离环境中完成中英文回归，每次1546次真实生存破坏及配方书分类／搜索／筛选／窄屏／背包检查通过；精准回收不再产生经验。已备份并更新关闭状态的正常fo262，fo263_2未动。其他版本本轮只构建，Connector仅核对缓存字节码，未重新运行；范围见[0.6.6记录](docs/WORK-066.md)。
+0.6.7四版构建与94项Python检查通过。实际26.3测试复现了旧包失败，并验证新世界、正式0.6.0创建的隔离存档升级和保存后重开；每轮8196次箱奖填充通过。26.2补充经验／配方书回归通过，已备份更新关闭状态的fo262；正常fo263_2和存档未动。具体范围见[当前验证记录](docs/WORK-067.md)；这不是对用户报告中完整存档的恢复认证。
 
 历史验证：0.6.5四版构建及88项Python检查通过。该版隔离26.2中英文实测1900次合成、8192次开箱、6144次怪物掉落抽取、原生配方页搜索／筛选／窄屏／2×2背包通过；其他版本当时只构建。原料稳定类和旧资源入口逐包核对保持兼容，0.6.4的真实旧存档升级属于此前验证。见[0.6.5记录](docs/WORK-065.md)和[0.6.4记录](docs/WORK-064.md)。
 
@@ -96,9 +96,9 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 ./build-all.ps1
 ```
 
-产物、版本清单与 SHA-256 写入 `build/releases/0.6.6/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
+产物、版本清单与 SHA-256 写入 `build/releases/0.6.7/`。也可以逐版构建，详见[构建说明](docs/BUILDING.md)。源码中的模型、材质和记号数据已经齐备，不依赖原作者电脑上的表格或历史文件。
 
-0.6.3 的范围与实际验证结果记录在[工作记录](docs/WORK-063.md)。[v0.6.0 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)及其[历史验证记录](docs/WORK-060.md)仍可查阅；旧版测试结果不代表本版重新测试过相同环境。
+0.6.7的范围与实际验证进展记录在[工作记录](docs/WORK-067.md)。[v0.6.0 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)及其[历史验证记录](docs/WORK-060.md)仍可查阅；旧版测试结果不代表本版重新测试过相同环境。
 
 此仓库不包含临时晶核展厅、飞行调速工具、开发存档、缓存和历史备选设计。当前资源经过引用检查，检查器在 CI 中继续运行。[资源清理记录](docs/RESOURCE-CLEANUP.json) · [验证记录](docs/VALIDATION.md)
 
@@ -112,4 +112,4 @@ $env:JAVA25_HOME = '你的 JDK 25 路径'
 
 [GPL v3 全文](LICENSE) · [版权与适用范围](COPYRIGHT) · [第三方与数据说明](THIRD_PARTY.md)
 
-[0.6.6进度](docs/WORK-066.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.6.3更新](docs/RELEASE-0.6.3.md)
+[0.6.7进度](docs/WORK-067.md) · [强化模拟器](docs/enhancement-simulator.html) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [0.6.6发行说明](docs/RELEASE-0.6.6.md)

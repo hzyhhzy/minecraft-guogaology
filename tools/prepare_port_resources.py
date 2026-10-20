@@ -185,6 +185,12 @@ def convert_263_loot(value):
     if isinstance(value,list):return [convert_263_loot(v) for v in value]
     if not isinstance(value,dict):return value
     result={k:convert_263_loot(v) for k,v in value.items()}
+    if result.get('type')=='minecraft:tag' and 'name' in result:
+        # 26.3 TagEntry uses an item HolderSet; a named set has the '#' prefix.
+        # Item entries still use name, and already-modern tag entries stay intact.
+        tag='#'+result.pop('name').lstrip('#')
+        assert 'items' not in result or result['items']==tag,'Conflicting loot tag formats'
+        result['items']=tag
     for old in ('function','condition'):
         if old in result and isinstance(result[old],str):result['type']=result.pop(old)
     if 'functions' in result:result['modifier']=result.pop('functions')
