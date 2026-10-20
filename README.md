@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.8（本地修复版）· Minecraft Java / Fabric** · [已发布版本](https://github.com/hzyhhzy/minecraft-guogaology/releases)
+**v0.6.8 · Minecraft Java / Fabric** · [0.6.8／0.6.1a 下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8)
 
 0.6.8修复Minecraft26.3客户端使用不同JEI版本连接旧服务端时，标签被原版配方回退覆盖、首次拾取枝石／数字刻石解锁配方后断线的问题。保护按JEI实际字节码结构判断，不再只支持31.14.0.72；没有JEI时不启用可选客户端补丁。另修复葛立恒等八种物品的掉落／手持尺寸、紫菜门和双层台阶掉落，以及紫菜／冥杉告示牌的原版编辑、保存和旧版渲染接入。保留0.6.7的世界加载修复；配方、装备数值、生成与存档ID不变。另有基于原0.6.1的窄回补版0.6.1a。
 

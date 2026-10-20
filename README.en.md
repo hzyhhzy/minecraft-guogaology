@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.8 (local repair build) · Minecraft Java / Fabric** · [Published releases](https://github.com/hzyhhzy/minecraft-guogaology/releases)
+**v0.6.8 · Minecraft Java / Fabric** · [0.6.8 / 0.6.1a downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8)
 
 Version 0.6.8 fixes Minecraft 26.3 disconnects when first picking up Branch/Numeric Stone with JEI connected to an older server. The optional client guard checks JEI's actual fallback bytecode instead of accepting only version 31.14.0.72. It preserves synchronized tags without replacing JEI's temporary WORLD loading. This update also fixes dropped/held transforms for Graham and seven similar items, Laver door/double-slab drops, and native editing, persistence and older-engine rendering of Laver/Dread Fir signs. The 0.6.7 world-loading fix remains included; recipes, equipment balance, generation and saved IDs are unchanged. A separate 0.6.1a build backports these narrow repairs to the original 0.6.1 source line.
 
