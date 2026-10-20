@@ -153,8 +153,8 @@ public final class GuogaologyBlocks {
     public static final Block ASTRA_CLOUD = block("astra_cloud", new Block(dev.guogaology.survival.BlockBalance.apply("astra_cloud",AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).mapColor(MapColor.WHITE).luminance(s -> 6))));
     public static final Block ASTRA_CLOUD_SHADE = block("astra_cloud_shade", new Block(dev.guogaology.survival.BlockBalance.apply("astra_cloud_shade",AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).mapColor(MapColor.PALE_GREEN).luminance(s -> 6))));
     public static final Block OFFICE_DESK = block("office_desk",new Block(dev.guogaology.survival.BlockBalance.apply("office_desk",AbstractBlock.Settings.copy(Blocks.QUARTZ_BLOCK).nonOpaque())));
-    public static final Block OFFICE_MONITOR = block("office_monitor",new Block(dev.guogaology.survival.BlockBalance.apply("office_monitor",AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque().luminance(s->4))));
-    public static final Block SERVER_RACK = block("server_rack",new Block(dev.guogaology.survival.BlockBalance.apply("server_rack",AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).luminance(s->3))));
+    public static final Block OFFICE_MONITOR = block("office_monitor",new dev.guogaology.block.HorizontalDecorBlock(dev.guogaology.survival.BlockBalance.apply("office_monitor",AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).nonOpaque().luminance(s->4))));
+    public static final Block SERVER_RACK = block("server_rack",new dev.guogaology.block.HorizontalDecorBlock(dev.guogaology.survival.BlockBalance.apply("server_rack",AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).luminance(s->3))));
     public static final Block Y_SEQUENCE_STONE = block("y_sequence_stone", new Block(dev.guogaology.survival.BlockBalance.apply("y_sequence_stone",AbstractBlock.Settings.copy(Blocks.STONE).mapColor(MapColor.PALE_PURPLE))));
 
     public static final Block ORDINAL_BRICKS = block("ordinal_bricks",new OrdinalBrickBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_bricks",AbstractBlock.Settings.copy(Blocks.STONE))));

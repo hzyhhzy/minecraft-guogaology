@@ -63,6 +63,7 @@ def allowed(lib):
     return result and not any(x in lib['name'] for x in ('natives-windows-arm64','natives-windows-x86'))
 
 def run(a):
+    assert not a.repair069 or (a.item068_only and a.audit068_focus and a.fresh_world), 'Repair069 requires fresh focused item/native observations'
     instance=a.instance.resolve();assert instance.name=='fo262','Runtime scope is fo262 only'
     metadata=json.loads((instance/'fo262.json').read_text('utf-8-sig'));minecraft=instance.parent.parent
     assert bool(a.fixture) != a.fresh_world,'Choose exactly one of --fixture or --fresh-world'
@@ -189,11 +190,15 @@ def run(a):
     if a.item068_only:
         verification=verify_item068_outputs(game)
         (game/'item068-runner-verification.json').write_text(json.dumps(verification,indent=2)+'\n','utf8')
+        if a.repair069:
+            from verify_repair_069_runtime import verify
+            verify(game,'26.2')
     print((game/'port-client-ok.txt').read_text(),flush=True)
     print('PRODUCTION_PORT_OK 26.2',flush=True)
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True)
+    p.add_argument('--repair069',action='store_true',help='Require fixed facing, stripping, boat naming and real extra-hit damage in focused native QA')
     p.add_argument('--fresh-world',action='store_true',help='Create a new default normal world; copy no fixture')
     p.add_argument('--seed',type=int,help='Signed 64-bit seed for a fresh world; omitted uses a new random seed')
     p.add_argument('--jar-import-only',action='store_true',help='Check reconstructed 0.5.4.1 jars, loot and surface shafts')

@@ -164,8 +164,8 @@ public final class GuogaologyBlocks {
     public static final Block ASTRA_CLOUD = block("astra_cloud", new Block(dev.guogaology.survival.BlockBalance.apply("astra_cloud",BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).mapColor(MapColor.SNOW).lightLevel(s -> 6))));
     public static final Block ASTRA_CLOUD_SHADE = block("astra_cloud_shade", new Block(dev.guogaology.survival.BlockBalance.apply("astra_cloud_shade",BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).mapColor(MapColor.GRASS).lightLevel(s -> 6))));
     public static final Block OFFICE_DESK = block("office_desk",new Block(dev.guogaology.survival.BlockBalance.apply("office_desk",BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK).noOcclusion())));
-    public static final Block OFFICE_MONITOR = block("office_monitor",new Block(dev.guogaology.survival.BlockBalance.apply("office_monitor",BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().lightLevel(s->4))));
-    public static final Block SERVER_RACK = block("server_rack",new Block(dev.guogaology.survival.BlockBalance.apply("server_rack",BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).lightLevel(s->3))));
+    public static final Block OFFICE_MONITOR = block("office_monitor",new dev.guogaology.block.HorizontalDecorBlock(dev.guogaology.survival.BlockBalance.apply("office_monitor",BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().lightLevel(s->4))));
+    public static final Block SERVER_RACK = block("server_rack",new dev.guogaology.block.HorizontalDecorBlock(dev.guogaology.survival.BlockBalance.apply("server_rack",BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).lightLevel(s->3))));
     public static final Block Y_SEQUENCE_STONE = block("y_sequence_stone", new Block(dev.guogaology.survival.BlockBalance.apply("y_sequence_stone",BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.ICE))));
 
     public static final Block ORDINAL_BRICKS = block("ordinal_bricks",new OrdinalBrickBlock(dev.guogaology.survival.BlockBalance.apply("ordinal_bricks",BlockBehaviour.Properties.ofFullCopy(Blocks.STONE))));

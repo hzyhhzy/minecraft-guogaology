@@ -31,11 +31,12 @@ final class General068Focus {
         try{p.setPos(Vec3.atCenterOf(pos).add(0,1,3));w.setBlock(pos.below(),Blocks.STONE.defaultBlockState(),3);
             for(String id:List.of("server_rack","office_monitor","chair","nuke_chair","snake_head"))for(float turn:new float[]{0,90,180,270}){
                 w.setBlock(pos,Blocks.AIR.defaultBlockState(),3);p.setYRot(turn);p.setXRot(0);p.setItemSlot(EquipmentSlot.MAINHAND,item(id));var used=p.getMainHandItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(pos.below()).add(0,.5,0),Direction.UP,pos.below(),false)));
-                var row=new JsonObject();row.addProperty("block",id);row.addProperty("yaw",turn);row.addProperty("action",used.toString());row.addProperty("placed",w.getBlockState(pos).is(block(id)));row.addProperty("state",w.getBlockState(pos).toString());facing.add(row);
+                var state=w.getBlockState(pos);var row=new JsonObject();row.addProperty("block",id);row.addProperty("yaw",turn);row.addProperty("action",used.toString());row.addProperty("placed",state.is(block(id)));row.addProperty("state",state.toString());
+                var property=net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;if(state.hasProperty(property)){row.addProperty("facing",state.getValue(property).getName());row.addProperty("rotatedFacing",state.rotate(Rotation.CLOCKWISE_90).getValue(property).getName());row.addProperty("mirroredFacing",state.mirror(Mirror.FRONT_BACK).getValue(property).getName());}facing.add(row);
             }
-            for(String id:List.of("laver_vein","laver_wood","dread_log","dread_wood")){
-                w.setBlock(pos,block(id).defaultBlockState(),3);p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_AXE));var used=p.getMainHandItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(pos).add(0,0,.5),Direction.SOUTH,pos,false)));
-                var row=new JsonObject();row.addProperty("block",id);row.addProperty("action",used.toString());row.addProperty("result",BuiltInRegistries.BLOCK.getKey(w.getBlockState(pos).getBlock()).toString());stripping.add(row);
+            for(String id:List.of("laver_vein","laver_wood","dread_log","dread_wood"))for(var axis:Direction.Axis.values()){
+                w.setBlock(pos,block(id).defaultBlockState().setValue(RotatedPillarBlock.AXIS,axis),3);p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_AXE));var used=p.getMainHandItem().useOn(new UseOnContext(p,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(pos).add(0,0,.5),Direction.SOUTH,pos,false)));
+                var row=new JsonObject();row.addProperty("block",id);row.addProperty("axis",axis.getName());row.addProperty("resultAxis",w.getBlockState(pos).getValue(RotatedPillarBlock.AXIS).getName());row.addProperty("action",used.toString());row.addProperty("result",BuiltInRegistries.BLOCK.getKey(w.getBlockState(pos).getBlock()).toString());stripping.add(row);
             }
         }finally{w.setBlock(pos,Blocks.AIR.defaultBlockState(),3);p.setPos(oldPos);p.setYRot(yaw);p.setXRot(pitch);p.setItemSlot(EquipmentSlot.MAINHAND,held);}
         out.addProperty("completed",true);out.add("placements",facing);out.add("axeStripping",stripping);write("audit068-server-focus.json",out);

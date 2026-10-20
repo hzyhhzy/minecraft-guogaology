@@ -87,6 +87,12 @@ def verify_wood_loot_policy(archive, target):
             assert actual==expected,f'Stale/overwritten wooden door/slab loot: {target}/{name}'
 
 
+def verify_decor_orientation(archive, target):
+    """All final furniture states rotate while retaining the original north/item art."""
+    from generate_decor_orientation import verify_archive
+    verify_archive(archive, target)
+
+
 def verify_ore_policy(archive, target):
     """Resource imports must not restore donor counts after the host overlay."""
     from generate_ore_distribution import COUNTS, TOPS
@@ -293,6 +299,7 @@ def package(targets, output_dir=None):
             verify_client_hooks(archive, metadata)
             verify_jei_compat(archive, metadata, target)
             verify_wood_loot_policy(archive, target)
+            verify_decor_orientation(archive, target)
             from prepare_sign_resources import verify_archive as verify_sign_resources
             verify_sign_resources(archive, target)
             verify_namespace(archive)

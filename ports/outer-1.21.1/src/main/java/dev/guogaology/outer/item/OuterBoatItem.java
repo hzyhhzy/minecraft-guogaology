@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.stats.Stats;
+import net.minecraft.server.level.ServerLevel;
 
 /** Vanilla boat placement, with the registered outer-world hull type. */
 public final class OuterBoatItem extends Item {
@@ -26,7 +27,9 @@ public final class OuterBoatItem extends Item {
             if(entity.getBoundingBox().inflate(entity.getPickRadius()).contains(eye))return InteractionResultHolder.pass(stack);
         }
         var boat=type.create(world);if(boat==null)return InteractionResultHolder.fail(stack);
-        var p=hit.getLocation();boat.moveTo(p.x,p.y,p.z,player.getYRot(),0);
+        var p=hit.getLocation();boat.setPos(p.x,p.y,p.z);
+        if(world instanceof ServerLevel server)EntityType.<Boat>createDefaultStackConfig(server,stack,player).accept(boat);
+        boat.setYRot(player.getYRot());
         if(!world.noCollision(boat,boat.getBoundingBox().deflate(.1)))return InteractionResultHolder.fail(stack);
         if(!world.isClientSide){
             world.addFreshEntity(boat);world.gameEvent(player,GameEvent.ENTITY_PLACE,p);

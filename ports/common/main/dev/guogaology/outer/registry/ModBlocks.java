@@ -112,8 +112,10 @@ public final class ModBlocks {
          net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(wood(family,"leaves"),30,60);
          net.fabricmc.fabric.api.registry.FlammableBlockRegistry.getDefaultInstance().add(wood(family,"sapling"),5,20);
       }
-      net.fabricmc.fabric.api.registry.StrippableBlockRegistry.register(wood("dread","log"),wood("dread","stripped_log"));
-      net.fabricmc.fabric.api.registry.StrippableBlockRegistry.register(wood("dread","wood"),wood("dread","stripped_wood"));
+      for (String family : WOOD_IDS) {
+         net.fabricmc.fabric.api.registry.StrippableBlockRegistry.register(wood(family,"log"),wood(family,"stripped_log"));
+         net.fabricmc.fabric.api.registry.StrippableBlockRegistry.register(wood(family,"wood"),wood(family,"stripped_wood"));
+      }
       for (String family : WOOD_IDS) {
          if (family.equals("dread")) continue;
          for (var entry : BY_ID.entrySet()) {

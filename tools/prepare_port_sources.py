@@ -172,10 +172,11 @@ def adapt(text, target, name):
             # Emitting invokeinterface also matches the received 0.5.4.1 fix.
             text = text.replace('context.levelState().setData(', '((net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState)context.levelState()).setData(')
             text = text.replace('context.levelState().getDataOrDefault(', '((net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState)context.levelState()).getDataOrDefault(')
-        if name == 'BowEffects.java':
-            text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
-        if name == 'MiningEffects.java':
-            text = text.replace('int timer=other.invulnerableTime;', 'int timer=other.getInvulnerableTime();').replace('other.invulnerableTime=0;', 'other.setInvulnerableTime(0);').replace('other.invulnerableTime=timer;', 'other.setInvulnerableTime(timer);')
+        if name in ('BowEffects.java', 'MiningEffects.java'):
+            # Since26.3 LivingEntity's ordinary hurt cooldown is separate from
+            # Entity's true temporary invulnerability. Only bypass the former
+            # for our extra hit; the shared try/finally restores it and lastHurt.
+            text = text.replace('other.invulnerableTime', 'other.damageCooldownTime')
         if name == 'CoreFallbackPart.java':
             text = text.replace('new BakedQuad.MaterialInfo(sprite,ChunkSectionLayer.TRANSLUCENT,RenderTypes.translucentMovingBlock(),-1,false,0)',
                                 'BakedQuad.MaterialInfo.of(material,com.mojang.blaze3d.platform.Transparency.TRANSLUCENT,-1,Direction.UP,0)')

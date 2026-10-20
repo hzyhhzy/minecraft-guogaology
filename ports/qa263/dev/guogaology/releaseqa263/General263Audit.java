@@ -87,13 +87,14 @@ final class General263Audit {
         try{player.setPos(38.5,286,41.5);worldSupport(player,facingPos);for(String id:List.of("server_rack","office_monitor","chair","nuke_chair","snake_head"))for(float yaw:new float[]{0,90,180,270}){
             player.level().setBlock(facingPos,Blocks.AIR.defaultBlockState(),3);player.setYRot(yaw);player.setXRot(0);player.setItemSlot(EquipmentSlot.MAINHAND,item(id));
             var result=player.getMainHandItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(facingPos.below()).add(0,.5,0),Direction.UP,facingPos.below(),false)));
-            var row=new JsonObject();row.addProperty("block",id);row.addProperty("playerYaw",yaw);row.addProperty("action",result.toString());row.addProperty("placed",player.level().getBlockState(facingPos).is(block(id)));row.addProperty("actualState",player.level().getBlockState(facingPos).toString());facing.add(row);
+            var state=player.level().getBlockState(facingPos);var row=new JsonObject();row.addProperty("block",id);row.addProperty("playerYaw",yaw);row.addProperty("action",result.toString());row.addProperty("placed",state.is(block(id)));row.addProperty("actualState",state.toString());
+            recordDirections(row,state);facing.add(row);
         }}finally{player.level().setBlock(facingPos,Blocks.AIR.defaultBlockState(),3);player.setPos(oldLocation);player.setYRot(oldFacing);player.setItemSlot(EquipmentSlot.MAINHAND,heldFacing);}
         var wood=new JsonArray();var pos=new BlockPos(40,285,40);var world=player.level();var old=world.getBlockState(pos);var oldHeld=player.getMainHandItem();float oldYaw=player.getYRot();
-        try{for(String id:List.of("laver_vein","laver_wood","dread_log","dread_wood")){
-            world.setBlock(pos,block(id).defaultBlockState(),3);player.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_AXE));player.setYRot(0);
+        try{for(String id:List.of("laver_vein","laver_wood","dread_log","dread_wood"))for(var axis:Direction.Axis.values()){
+            world.setBlock(pos,block(id).defaultBlockState().setValue(RotatedPillarBlock.AXIS,axis),3);player.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_AXE));player.setYRot(0);
             var result=player.getMainHandItem().useOn(new UseOnContext(player,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(pos).add(0,0,.5),Direction.SOUTH,pos,false)));
-            var row=new JsonObject();row.addProperty("input",id);row.addProperty("action",result.toString());row.addProperty("result",BuiltInRegistries.BLOCK.getKey(world.getBlockState(pos).getBlock()).toString());wood.add(row);
+            var row=new JsonObject();row.addProperty("input",id);row.addProperty("axis",axis.getName());row.addProperty("resultAxis",world.getBlockState(pos).getValue(RotatedPillarBlock.AXIS).getName());row.addProperty("action",result.toString());row.addProperty("result",BuiltInRegistries.BLOCK.getKey(world.getBlockState(pos).getBlock()).toString());wood.add(row);
         }}finally{world.setBlock(pos,old,3);player.setItemSlot(EquipmentSlot.MAINHAND,oldHeld);player.setYRot(oldYaw);}
         var codecs=new JsonObject();int states=0;var failures=new JsonArray();
         for(var entry:BuiltInRegistries.BLOCK.entrySet())if(entry.getKey().identifier().getNamespace().equals("guogaology"))for(var state:entry.getValue().getStateDefinition().getPossibleStates()){
@@ -102,6 +103,12 @@ final class General263Audit {
         codecs.addProperty("states",states);codecs.add("failures",failures);out.addProperty("completed",true);out.add("suites",suites);out.add("numericMismatches",DEVIATIONS);out.add("nativeFourWayPlacements",facing);out.add("axeStripping",wood);out.add("stateCodecRoundTrips",codecs);write("audit068-server.json",out);System.out.println("GENERAL263_SERVER_AUDIT completed suites="+suites.size()+" numericMismatches="+DEVIATIONS.size());
     }
     private static void worldSupport(ServerPlayer player,BlockPos pos){player.level().setBlock(pos.below(),Blocks.STONE.defaultBlockState(),3);}
+    private static void recordDirections(JsonObject row,net.minecraft.world.level.block.state.BlockState state){
+        var property=net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;if(!state.hasProperty(property))return;
+        row.addProperty("facing",state.getValue(property).getName());
+        row.addProperty("rotatedFacing",state.rotate(Rotation.CLOCKWISE_90).getValue(property).getName());
+        row.addProperty("mirroredFacing",state.mirror(Mirror.FRONT_BACK).getValue(property).getName());
+    }
     private static ItemStack ingredient(JsonElement element){
         if(element.isJsonArray())return ingredient(element.getAsJsonArray().get(0));
         String token;if(element.isJsonPrimitive())token=element.getAsString();else{var data=element.getAsJsonObject();token=data.has("tag")?"#"+data.get("tag").getAsString():data.get("item").getAsString();}

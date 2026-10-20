@@ -47,6 +47,62 @@ def arguments(text):
     return result
 
 
+def java_sources(root):
+    directories = [root / 'src/main/java', root / 'src/client/java', root / 'ports/common']
+    directories.extend((root / 'ports').glob('*/src'))
+    paths = set()
+    for directory in directories:
+        for path in directory.rglob('*.java'):
+            if not any(part.lower().startswith('qa') for part in path.relative_to(directory).parts):
+                paths.add(path)
+    return {path: JAVA_TOKEN.sub(lambda m: m[0] if m[0].startswith('"') else ' ',
+                               path.read_text(encoding='utf-8')) for path in sorted(paths)}
+
+
+def registered_entity_names(sources):
+    """Resolve current literal and finite-loop entity registrations, not item names.
+
+    Shared registrations and target overrides are both checked. Unknown dynamic
+    ID expressions fail instead of silently creating another coverage blind spot.
+    """
+    sources = {path: JAVA_TOKEN.sub(lambda m: m[0] if m[0].startswith('"') else ' ', source)
+               for path, source in sources.items()}
+    lists = {}
+    for path, source in sources.items():
+        for match in re.finditer(r'List\s*<\s*String\s*>\s+(\w+)\s*=\s*List\.of\(([^)]*)\)', source):
+            literals = re.findall(JAVA_STRING, match[2])
+            if re.sub(JAVA_STRING, '', match[2]).replace(',', '').strip():
+                continue
+            lists.setdefault(f'{path.stem}.{match[1]}', set()).update(json.loads(s) for s in literals)
+
+    names = {}
+    for path, source in sources.items():
+        if not re.search(r'Registry\.register\(\s*(?:BuiltInRegistries|Registries)\.ENTITY_TYPE\b', source):
+            continue
+        resolved = set(re.findall(r'\bEntityType(?:\s*<[^;=]+>)?\s+\w+\s*=\s*register\(\s*"([a-z0-9_./-]+)"', source))
+        parameters = set(re.findall(r'\bregister\(\s*String\s+(\w+)\s*[,)]', source)) if resolved else set()
+        loops = {}
+        for variable, values in re.findall(r'for\s*\(\s*String\s+(\w+)\s*:\s*(\w+\.\w+)\s*\)', source):
+            if values not in lists:
+                raise ValueError(f'Cannot resolve entity registration list {values} in {path}')
+            loops[variable] = lists[values]
+        for expression in re.findall(r'GuogaologyMod\.id\(([^()]*)\)', source):
+            expression = expression.strip()
+            if re.fullmatch(JAVA_STRING, expression):
+                resolved.add(json.loads(expression))
+                continue
+            suffix = re.fullmatch(r'(\w+)\s*\+\s*(' + JAVA_STRING + ')', expression)
+            if suffix and suffix[1] in loops:
+                resolved.update(value + json.loads(suffix[2]) for value in loops[suffix[1]])
+            elif expression not in parameters:
+                raise ValueError(f'Cannot resolve entity registration ID {expression!r} in {path}')
+        if not resolved:
+            raise ValueError(f'No audited entity IDs resolved from {path}')
+        for name in resolved:
+            names.setdefault(name, path)
+    return names
+
+
 def audit(root):
     root = root.resolve()
     assets = root / 'src/main/resources/assets/guogaology'
@@ -108,29 +164,25 @@ def audit(root):
             if 'subtitle' in event:
                 require(event['subtitle'], sounds)
 
-    source_roots = [root / 'src/main/java', root / 'src/client/java', root / 'ports/common']
-    source_roots.extend((root / 'ports').glob('*/src'))
+    sources = java_sources(root)
+    entities = registered_entity_names(sources)
+    for name, path in sorted(entities.items()):
+        require('entity.guogaology.' + name, path)
     java_files = 0
-    for directory in source_roots:
-        for path in directory.rglob('*.java'):
-            if any(part.lower().startswith('qa') for part in path.relative_to(directory).parts):
-                continue
-            java_files += 1
-            source = path.read_text(encoding='utf-8')
-            # Preserve string contents while excluding commented-out historical code.
-            source = JAVA_TOKEN.sub(lambda m: m[0] if m[0].startswith('"') else ' ', source)
-            for literal in re.findall(JAVA_STRING, source):
-                if HAN.search(literal):
-                    raise ValueError(f'Hardcoded Chinese Java string: {path.relative_to(root)}')
-            for match in re.finditer(r'(?:Text|Component)\.translatable\(\s*"([^"]+)"', source):
-                if '.guogaology.' in match[1]:
-                    require(match[1], path, prefix=True)
-            if '"mining.guogaology."+key' in source:
-                for match in re.finditer(r'\btr\(\s*"([^"]+)"', source):
-                    require('mining.guogaology.' + match[1], path, prefix=True)
-            for match in re.finditer(r'(?:Text|Component)\.literal\(\s*"([^"]+)"', source):
-                if re.search(r'[A-Za-z\u3400-\u9fff]', match[1]):
-                    raise ValueError(f'Untranslated player-facing literal in {path.relative_to(root)}: {match[1]}')
+    for path, source in sources.items():
+        java_files += 1
+        for literal in re.findall(JAVA_STRING, source):
+            if HAN.search(literal):
+                raise ValueError(f'Hardcoded Chinese Java string: {path.relative_to(root)}')
+        for match in re.finditer(r'(?:Text|Component)\.translatable\(\s*"([^"]+)"', source):
+            if '.guogaology.' in match[1]:
+                require(match[1], path, prefix=True)
+        if '"mining.guogaology."+key' in source:
+            for match in re.finditer(r'\btr\(\s*"([^"]+)"', source):
+                require('mining.guogaology.' + match[1], path, prefix=True)
+        for match in re.finditer(r'(?:Text|Component)\.literal\(\s*"([^"]+)"', source):
+            if re.search(r'[A-Za-z\u3400-\u9fff]', match[1]):
+                raise ValueError(f'Untranslated player-facing literal in {path.relative_to(root)}: {match[1]}')
 
     for kind in ('name', 'summary', 'description'):
         require(f'modmenu.{kind}Translation.guogaology', 'Mod Menu')
@@ -138,7 +190,7 @@ def audit(root):
     if not re.search(r'[A-Za-z]{3}', metadata['description']) or not HAN.search(metadata['description']):
         raise ValueError('Static launcher description must remain readable in English and Chinese')
     return {'languages': list(locales), 'keys_per_language': len(en), 'block_names': len(blocks),
-            'non_block_item_names': len(items), 'java_files_checked': java_files,
+            'non_block_item_names': len(items), 'entity_names': len(entities), 'java_files_checked': java_files,
             'referenced_keys_or_prefixes': len(references), 'missing_translations': 0,
             'format_mismatches': 0, 'hardcoded_chinese_ui': 0}
 

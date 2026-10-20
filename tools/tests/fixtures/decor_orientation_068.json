@@ -1,0 +1,103 @@
+{
+  "baseline": "Released 0.6.8 / c122ac5; north appearance before adding two machine facing properties",
+  "oldBlockstates": {
+    "chair": {
+      "variants": {
+        "facing=north": {
+          "model": "guogaology:block/chair"
+        },
+        "facing=east": {
+          "model": "guogaology:block/chair",
+          "y": 90
+        },
+        "facing=south": {
+          "model": "guogaology:block/chair",
+          "y": 180
+        },
+        "facing=west": {
+          "model": "guogaology:block/chair",
+          "y": 270
+        }
+      }
+    },
+    "nuke_chair": {
+      "variants": {
+        "facing=north": {
+          "model": "guogaology:block/nuke_chair"
+        },
+        "facing=east": {
+          "model": "guogaology:block/nuke_chair",
+          "y": 90
+        },
+        "facing=south": {
+          "model": "guogaology:block/nuke_chair",
+          "y": 180
+        },
+        "facing=west": {
+          "model": "guogaology:block/nuke_chair",
+          "y": 270
+        }
+      }
+    },
+    "snake_head": {
+      "variants": {
+        "facing=north": {
+          "model": "guogaology:block/snake_head"
+        },
+        "facing=east": {
+          "model": "guogaology:block/snake_head",
+          "y": 90
+        },
+        "facing=south": {
+          "model": "guogaology:block/snake_head",
+          "y": 180
+        },
+        "facing=west": {
+          "model": "guogaology:block/snake_head",
+          "y": 270
+        }
+      }
+    },
+    "server_rack": {
+      "variants": {
+        "": {
+          "model": "guogaology:block/server_rack"
+        }
+      }
+    },
+    "office_monitor": {
+      "variants": {
+        "": {
+          "model": "guogaology:block/office_monitor"
+        }
+      }
+    }
+  },
+  "canonicalModelSha256": {
+    "models/block/chair.json": "00a22a2c57a6a5703d02755c3ba6c63e63bfcf682fc082b7798c1b6e57740725",
+    "models/item/chair.json": "e62c5d862bf18f9d78d45adda9944e64edd0d1760e36893935869a7b7007d2da",
+    "models/block/nuke_chair.json": "0b10aed21ec3876a7c3e90b85bb5e0306b430cb7a5efc8b2f6defc3415bea34f",
+    "models/item/nuke_chair.json": "e5ddbb003b8dbfb15af82b6d444640d27df9fda2d2a0c4be84f15c962b929351",
+    "models/block/snake_head.json": "77cf564cb5e12e1f0cb403b26b3e4668594b8ed097801b12ef61baf334df5a65",
+    "models/item/snake_head.json": "96a274e78455ede40c8aefef35bffff2b82e716f1c73a6b0333e8d2fcce3bc70",
+    "models/block/server_rack.json": "3bbf17d606a713b7656952daaedcc45edbb3e6917cff0259e10a279a20ab61cf",
+    "models/item/server_rack.json": "544d653e8ee835ec6266dffcbbeee5c4f370c8fc6c8de247c7789398e294b276",
+    "models/block/office_monitor.json": "59cf6f498310b2b3ac0b149c7ffc2f9d7a4cbb5af37c95ec8e36b0bc5ae699e5",
+    "models/item/office_monitor.json": "f09399d49d16899162ea2cb5615887be70d7bb4371a7d34f5fe51d8910872bad"
+  },
+  "canonicalItemSelectorSha256": {
+    "items/chair.json": "75e59415601c42bb6717736b033c3983e2b027c4e576dd583e72a094b651c5f5",
+    "items/nuke_chair.json": "b95e7b26a23e5cae3738bf613847f688f5eb3451b9e20106950ae5b99547a2a9",
+    "items/snake_head.json": "07616f268be8c3664986a232b2e91df184c002b916b73f71a76a56aa8658fcc4"
+  },
+  "textureSha256": {
+    "textures/block/astra_equipment_metal.png": "c88d402a3a6b79a05d85b0655a025c6684a22c45c994e59a40856ec7c05603f9",
+    "textures/block/chair_side.png": "d059ff4d3db6aad495319ac94b8170477b70c01cdd84b9f2ae40bac95065dbd4",
+    "textures/block/chair_top.png": "19f8806a4f67786ebd5d3697cc715d4f16c0e4638720ad621b2cea28ab25a396",
+    "textures/block/nuke_chair_top.png": "49dd9dba6311dc953634e82e32f4658877637ccc578e91e223331f237d5fac1d",
+    "textures/block/office_monitor.png": "35896094ae18a0ab844682a1aa953e45da7c93818340afc99dca8d6e9a7ef5b2",
+    "textures/block/server_rack.png": "899cbcd93f14165e2de08cf9daa621795b181cd7f4a57bb78b526fe5a25503b8",
+    "textures/block/snake_head.png": "7d54eb95387a0ff9af7a7ce84b83a352d4e38a3dd4bcfed5a40692ec203f83bf"
+  },
+  "chairCollisionConstantsSha256": "8f9d8b40a27b8ff616b6401cc9371fa8fc1f2d1fca46105a591386a0d58a0c9d"
+}

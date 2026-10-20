@@ -155,6 +155,8 @@ def java_executable(java_home):
 
 
 def prepare(args):
+    if args.repair069:
+        args.general_audit = True
     require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", args.label) is not None,
             "--label must be one new directory name using letters, digits, '.', '_' or '-'")
     require(not args.label.endswith((".", " ")) and args.label.upper().split(".")[0]
@@ -316,6 +318,9 @@ def verify_result(game, release, args):
             "QA must report all seven native screenshots")
     for name in pictures:
         verify_png(game, name)
+    if args.repair069:
+        from verify_repair_069_runtime import verify
+        verify(game, TARGET)
     return result, len(set(pictures))
 
 
@@ -365,6 +370,7 @@ def run(args):
 
 def parser():
     argument_parser = argparse.ArgumentParser(description=__doc__)
+    argument_parser.add_argument("--repair069", action="store_true", help="Require every repaired observation and full bow suite to pass")
     argument_parser.add_argument("--general-audit", action="store_true", help="Opt-in observation-first native registry/model/menu/mining/enchantment/bow audit of the exact release")
     argument_parser.add_argument("--instance", type=Path, required=True,
                                  help="Read-only .minecraft/versions/fo263_2 directory")
