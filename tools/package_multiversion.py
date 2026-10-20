@@ -50,11 +50,26 @@ def verify_jei_compat(archive, metadata, target):
         return
     assert entry in metadata['mixins'], 'JEI hook must be client-only'
     config=json.loads(archive.read(config_name))
-    assert config['plugin']=='dev.guogaology.client.compat.jei.JeiTagCompatPlugin', 'Missing JEI version guard'
+    assert config['plugin']=='dev.guogaology.client.compat.jei.JeiTagCompatPlugin', 'Missing JEI structural guard'
     assert config['client']==['JeiVanillaTagsMixin'] and not config.get('mixins'), 'JEI hook must be client-only'
-    assert prefix+'JeiTagCompatPlugin.class' in archive.namelist(), 'Missing JEI version guard class'
+    for name in ('JeiTagCompatPlugin','JeiTagCompatShape','JeiTagCompatShape$Flow'):
+        assert prefix+name+'.class' in archive.namelist(), 'Missing JEI structural guard class: '+name
     assert sync in archive.namelist(), 'Missing recipe synchronization'
     assert metadata['entrypoints']['main'].index('dev.guogaology.compat.RecipeSyncCompat') > metadata['entrypoints']['main'].index('dev.guogaology.GuogaologyMod'), 'Recipe synchronization must follow serializer registration'
+
+
+def verify_wood_loot_policy(archive, target):
+    """A final donor overlay must not duplicate doors or lose double slabs."""
+    from generate_wood_loot import FAMILIES, STRUCTURAL_SHAPES, wood_loot
+    for family in FAMILIES:
+        for shape in STRUCTURAL_SHAPES:
+            expected=wood_loot(family,shape)
+            if target=='26.3':
+                from prepare_port_resources import convert_263_loot
+                expected=convert_263_loot(expected)
+            name=family+'_'+shape
+            actual=json.loads(archive.read('data/guogaology/loot_table/blocks/'+name+'.json'))
+            assert actual==expected,f'Stale/overwritten wooden door/slab loot: {target}/{name}'
 
 
 def verify_ore_policy(archive, target):
@@ -190,6 +205,9 @@ def package(targets, output_dir=None):
             entries=archive.namelist()
             verify_client_hooks(archive, metadata)
             verify_jei_compat(archive, metadata, target)
+            verify_wood_loot_policy(archive, target)
+            from prepare_sign_resources import verify_archive as verify_sign_resources
+            verify_sign_resources(archive, target)
             verify_namespace(archive)
             verify_ore_policy(archive, target)
             verify_crystal_ore_policy(archive, target)

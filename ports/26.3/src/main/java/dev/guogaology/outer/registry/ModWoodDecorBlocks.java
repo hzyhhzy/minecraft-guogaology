@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
@@ -60,6 +61,9 @@ public final class ModWoodDecorBlocks {
       Block var6 = register(var5.block(), var1x -> new StandingSignBlock(var3, var1x), signProperties());
       StandingAndWallBlockItem var7 = new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1).useBlockDescriptionPrefix().setId(var5.item()));
       Registry.register(BuiltInRegistries.ITEM, var5.item(), var7);
+       // 26.3 opens the editor in SignBlock.setPlacedBy; keep its native entity valid.
+       BlockEntityTypes.SIGN.addValidBlock(var6);
+       BlockEntityTypes.SIGN.addValidBlock(var4);
       ModBlocks.registerExternal(var1, var6);
    }
 

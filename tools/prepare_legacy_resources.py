@@ -7,6 +7,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
+from prepare_sign_resources import legacy_sign_model
 
 
 def plant(name):
@@ -57,7 +58,7 @@ def adapt(value):
     if "textures" in result:
         result["textures"] = {k: v["sprite"] if isinstance(v, dict) else v
                               for k, v in result["textures"].items()}
-    return result
+    return legacy_sign_model(result)
 
 
 def prepare(root):
@@ -70,6 +71,8 @@ def prepare(root):
                 path.write_text(json.dumps(after, ensure_ascii=False, indent=2) + "\n", "utf-8")
                 changed += 1
     print(f"1.21.1 resource adapter: {changed} resources")
+    from prepare_sign_resources import prepare as prepare_signs
+    prepare_signs(root, '1.21.1')
 
 
 if __name__ == "__main__":

@@ -4,7 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.0 · Minecraft Java / Fabric** · [Download Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)
+**v0.6.1a (local compatibility backport) · Minecraft Java / Fabric** · [Published releases](https://github.com/hzyhhzy/minecraft-guogaology/releases)
+
+This directory starts from the exact 0.6.1 source and backports the optional Minecraft 26.3 JEI tag protection, plus the newly requested plant item-display, wooden door/slab drop and native-sign compatibility fixes. It does not include portal, recipe, generation or other mechanism changes from 0.6.2 or later. All 101 Python checks, four offline builds and the exact artifact-change audit pass. This backport passes 10/10 real Minecraft 26.3 TCP cases: 20 first-pickup stages, 59 JEI queries, 70 native item/wood behavior checks and 56 native model checks. See the [0.6.1a work record](docs/WORK-061A.md) for provenance, final artifact hashes and validation scope. This local backport has not been merged into main or published.
 
 Version 0.6.0 brings together resource-acquisition changes, biome-core recipes, survival advancements, row-based Laver table playback and landscape artwork. It includes Alice (AliceLdl)'s original 0.5.4.1 changes and four-version integration. Astra firs retain a straight axis, SCG Junctions use vivid rose-purple with gold and ivory, and the woven crown keeps its 64-stage cyclic gradient. See [release notes](docs/RELEASE-0.6.0.md), [the current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 

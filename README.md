@@ -4,7 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.0 · Minecraft Java / Fabric** · [下载 Release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.0)
+**v0.6.1a（本地兼容回补版）· Minecraft Java / Fabric** · [历史发行版本](https://github.com/hzyhhzy/minecraft-guogaology/releases)
+
+此目录基于精确 0.6.1 源码，回补 Minecraft 26.3 的可选 JEI 标签保护，以及本轮追加的植物物品显示、木门／半砖掉落和原版告示牌兼容修复。不包含 0.6.2 及以后版本的传送门、配方、生成或其他机制改动。101 项 Python 检查、四版离线构建及精确成品差异审计已通过；26.3 实际 TCP 回归中，本回补版 10/10 例通过，含 20 次真实首拾、59 次 JEI 查询及 70 项木制品／物品行为、56 项原生模型检查。来源、最终成品哈希与验证范围见 [0.6.1a 工作记录](docs/WORK-061A.md)。本地回补尚未合入 main 或发布。
 
 0.6.0 汇集此前的资源获取重制、群系晶核配方、生存进度引导、紫菜桌逐行演奏和场景美术调整。包含 Alice（AliceLdl）的0.5.4.1修改及四版本适配；Astra圣诞树保持直轴，SCG结点采用鲜艳玫紫与金白配色，编织冠保留64阶循环渐变。见[发行说明](docs/RELEASE-0.6.0.md)、[当前生存指南](docs/SURVIVAL-GUIDE.md)和[生存引导](docs/ADVANCEMENTS-057.md)。
 

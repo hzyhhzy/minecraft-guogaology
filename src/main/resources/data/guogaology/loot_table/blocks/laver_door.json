@@ -7,14 +7,26 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:laver_door",
-          "conditions": [
+          "functions": []
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:all_of",
+          "terms": [
             {
               "condition": "minecraft:survives_explosion"
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "guogaology:laver_door",
+              "properties": {
+                "half": "lower"
+              }
             }
           ]
         }
       ]
     }
-  ],
-  "random_sequence": "guogaology:laver_door"
+  ]
 }

@@ -36,14 +36,15 @@ class ClientHookValidationTests(unittest.TestCase):
 
 
 class OptionalJeiValidationTests(unittest.TestCase):
-    def archive(self, include=True):
+    def archive(self, include=True, missing=None):
         stream=io.BytesIO()
         with ZipFile(stream,'w') as out:
             if include:
                 out.writestr('guogaology.jei-compat.mixins.json',json.dumps({
                     'plugin':'dev.guogaology.client.compat.jei.JeiTagCompatPlugin',
                     'client':['JeiVanillaTagsMixin']}))
-                out.writestr('dev/guogaology/client/compat/jei/JeiTagCompatPlugin.class',b'fixture')
+                for name in ('JeiTagCompatPlugin','JeiTagCompatShape','JeiTagCompatShape$Flow'):
+                    if name!=missing:out.writestr('dev/guogaology/client/compat/jei/'+name+'.class',b'fixture')
                 out.writestr('dev/guogaology/compat/RecipeSyncCompat.class',b'fixture')
         return ZipFile(stream)
 
@@ -52,6 +53,12 @@ class OptionalJeiValidationTests(unittest.TestCase):
 
     def test_263_optional_client_patch_is_allowed(self):
         with self.archive() as archive:verify_jei_compat(archive,self.metadata(),'26.3')
+
+    def test_missing_structural_guard_classes_are_rejected(self):
+        for name in ('JeiTagCompatPlugin','JeiTagCompatShape','JeiTagCompatShape$Flow'):
+            with self.subTest(name=name),self.archive(missing=name) as archive:
+                with self.assertRaisesRegex(AssertionError,'structural guard class: '+name.replace('$',r'\$')):
+                    verify_jei_compat(archive,self.metadata(),'26.3')
 
     def test_hook_on_dedicated_server_is_rejected(self):
         metadata=self.metadata();metadata['mixins']=['guogaology.jei-compat.mixins.json']

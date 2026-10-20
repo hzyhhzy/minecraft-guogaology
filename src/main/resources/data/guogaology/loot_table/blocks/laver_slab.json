@@ -7,14 +7,28 @@
         {
           "type": "minecraft:item",
           "name": "guogaology:laver_slab",
-          "conditions": [
+          "functions": [
             {
-              "condition": "minecraft:survives_explosion"
+              "function": "minecraft:set_count",
+              "count": 2,
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "guogaology:laver_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ]
             }
           ]
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
-  ],
-  "random_sequence": "guogaology:laver_slab"
+  ]
 }

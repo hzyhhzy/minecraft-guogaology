@@ -14,7 +14,7 @@ import net.minecraft.core.registries.Registries;
 import dev.guogaology.outer.registry.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
@@ -58,8 +59,11 @@ public final class ModWoodDecorBlocks {
       ModBlocks.registerExternal(var2, var4);
       BlockItemId var5 = BlockItemId.create(GuogaologyMod.id(var1), GuogaologyMod.id(var1));
       Block var6 = register(var5.block(), var1x -> new StandingSignBlock(var3, var1x), signProperties());
-      StandingAndWallBlockItem var7 = new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1).useBlockDescriptionPrefix().setId(var5.item()));
+       SignItem var7 = new SignItem(ModBlocks.woodItemProperties(var1).useBlockDescriptionPrefix().setId(var5.item()), var6, var4, Direction.DOWN);
       Registry.register(BuiltInRegistries.ITEM, var5.item(), var7);
+       // Both placements use the native sign entity, text persistence and renderer.
+       BlockEntityType.SIGN.addSupportedBlock(var6);
+       BlockEntityType.SIGN.addSupportedBlock(var4);
       ModBlocks.registerExternal(var1, var6);
    }
 

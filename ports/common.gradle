@@ -57,6 +57,8 @@ tasks.register('preparePortResources', Exec) {
     inputs.dir(repositoryRoot.toPath().resolve('src/client/resources'))
     inputs.file(repositoryRoot.toPath().resolve('tools/prepare_port_resources.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/prepare_outer_resources.py'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/prepare_sign_resources.py'))
+    inputs.file(repositoryRoot.toPath().resolve('tools/generate_wood_loot.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/import_outer_content.py'))
     inputs.file(repositoryRoot.toPath().resolve('tools/outer_content_ids.json'))
     inputs.file(repositoryRoot.toPath().resolve('tools/outer_generated_resources.json'))

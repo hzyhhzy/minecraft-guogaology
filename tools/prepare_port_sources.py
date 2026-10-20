@@ -51,6 +51,11 @@ def adapt(text, target, name):
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
+    if name == 'ModWoodDecorBlocks.java':
+        # Fabric renamed this native block-entity extension in 26.x.
+        text = text.replace('.addSupportedBlock(', '.addValidBlock(')
+        text = text.replace('block.entity.BlockEntityType;', 'block.entity.BlockEntityTypes;')
+        text = text.replace('BlockEntityType.SIGN', 'BlockEntityTypes.SIGN')
     if target == '26.3' and name == 'GuideLayoutMixin.java':
         #26.3 moved the mutable display coordinates onto AdvancementNode.
         text=text.replace('node.advancement().display().ifPresent(display->display.setLocation(pos.x(),pos.y()))',
