@@ -4,11 +4,11 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**0.6.7 development fix · Minecraft Java / Fabric** · [Latest published release: v0.6.6](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.6)
+**v0.6.7 · Minecraft Java / Fabric** · [Download and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.7)
 
-Version 0.6.7 fixes legacy loot-tag entries that prevented Minecraft 26.3 from parsing four landmark chest loot tables and blocked world loading. It converts only the tag format required by 26.3; item counts, selection rules and saved IDs are unchanged. The other three targets retain their existing format. This fix is on an independent development branch and has not been merged into main or published.
+Version 0.6.7 fixes legacy loot-tag entries that prevented Minecraft 26.3 from parsing four landmark chest loot tables and blocked new and existing worlds from loading. It converts only the tag format required by 26.3; item counts, selection rules, saved IDs and Java classes are unchanged. The other three targets retain their existing format.
 
-The update retains 0.6.6's Cores and Guogaology recipe-book sections, main-logo tab icon and Silk Touch experience fix, alongside 0.6.5's core recipes, natural materials and landmark rewards and 0.6.4's Absence Core compatibility cleanup. FFFZ/FOS and ψ/Z stability mechanics are unchanged. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See the [published release notes](docs/RELEASE-0.6.6.md), [current work record](docs/WORK-067.md), [current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+The update retains 0.6.6's Cores and Guogaology recipe-book sections, main-logo tab icon and Silk Touch experience fix, alongside 0.6.5's core recipes, natural materials and landmark rewards and 0.6.4's Absence Core compatibility cleanup. FFFZ/FOS and ψ/Z stability mechanics are unchanged. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See the [release notes](docs/RELEASE-0.6.7.md), [current work record](docs/WORK-067.md), [current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -37,7 +37,7 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 
 The internal mod ID is `guogaology` starting with 0.5.0. Version 0.6.7 retains current saved IDs and 0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
 
-All four 0.6.7 targets build and 94 Python checks pass. Actual 26.3 runs reproduce the old failure and verify a fresh world, an isolated save created by the released 0.6.0 build, its upgrade and its reopening after saving; each fixed run passes 8196 chest fills. A focused 26.2 experience/recipe-book regression also passes. The closed normal fo262 instance is backed up and updated; normal fo263_2 and normal saves are untouched. See the [current record](docs/WORK-067.md) for scope; these tests do not certify recovery of the reporter's complete world.
+All four 0.6.7 targets build and 94 Python checks pass. Actual 26.3 runs reproduce the old failure and verify a fresh world, an isolated save created by the exact released 0.6.0 artifact, its upgrade and its reopening after saving; the three fixed runs pass 24,588 chest fills in total. A focused 26.2 experience/recipe-book regression also passes. The closed normal fo262 instance is backed up and updated; normal fo263_2 and normal saves are untouched. The 1.21.x targets have build coverage only this round; dedicated-server, Connector, JEI and Voxy runtime tests were not rerun. See the [current record](docs/WORK-067.md) for scope; these tests do not certify recovery of the reporter's complete world.
 
 Historical validation: all four 0.6.5 targets built and 88 Python checks passed. Isolated 26.2 tests for that version in both languages verified 1900 crafts, 8192 native chest fills, 6144 entity-loot draws, recipe-book search/filtering, narrow layout and the 2×2 inventory. Other targets were built only then. Raw stability classes and existing resource entrypoints were preserved; the real saved-world upgrade tests from 0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
 
@@ -126,4 +126,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.6.7 work record](docs/WORK-067.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.6 release notes](docs/RELEASE-0.6.6.md)
+[0.6.7 work record](docs/WORK-067.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [0.6.7 release notes](docs/RELEASE-0.6.7.md)
