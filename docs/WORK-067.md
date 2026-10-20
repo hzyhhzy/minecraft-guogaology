@@ -59,3 +59,7 @@
 确认游戏关闭后，已按长期授权更新正常fo262到同一已测SHA的0.6.7，旧0.6.6备份在`build/backups/fo262-before-0.6.7/`，收据`build/install-067.json`。安装前后校验369份正常实例文件哈希（其中只允许该主Mod文件名／SHA改变），22489份正常存档文件的大小和mtime不变；55其他fo262模组、两个实例的配置和正常fo263_2均未动。新包唯一主Mod及SHA核对通过；安装出错则恢复精确旧JAR，不动其他文件。保护证据`build/loot-067/protected-before-install.json`与`protected-after-install.json`。
 
 保持独立开发分支，本地提交；不合并main、不push、不发Release。对应完整源码从最终本地提交导出，与四个JAR及许可证一起放在上述交付目录。
+
+## 后续推送授权
+
+2026-10-20用户随后明确要求“0.6.7 push上去”，授权推送当前`codex/0.6.7-loot-263-compat`分支，覆盖上文当时的no-push限制。未要求合并main、创建标签或发布Release。本次推送保持已实测四版二进制不变，对应源码从最终推送提交导出。
