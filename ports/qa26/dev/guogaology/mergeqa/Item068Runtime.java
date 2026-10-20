@@ -80,9 +80,9 @@ public final class Item068Runtime {
             c.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);c.gui.toastManager().clear();
             if(c.level==null){if(!opening&&c.isGameLoadFinished()&&c.gui.overlay()==null){opening=true;c.createWorldOpenFlows().openWorld("port-qa",c::stop);}return;}
             if(c.player==null||c.getSingleplayerServer()==null||c.gui.overlay()!=null)return;
-            if(!audited){auditModels(c);audited=true;}
+            if(!audited){auditModels(c);if(General068Focus.enabled())General068Focus.client(c);audited=true;}
             if(stage==0){
-                if(!queued){queue(c,p->result.add("actualPlayerHarvest",Item068Checks.run(p)));return;}
+                if(!queued){queue(c,p->{result.add("actualPlayerHarvest",Item068Checks.run(p));if(General068Focus.enabled())General068Focus.server(p);});return;}
                 if(ready){check(result.getAsJsonObject("actualPlayerHarvest").get("caseCount").getAsInt()==50,"50 real door/slab cases");advance();}return;
             }
             if(stage<=4){
@@ -103,7 +103,7 @@ public final class Item068Runtime {
                 if(captured){screen.onClose();closing=true;ticks=0;}return;
             }
             if(stage==5){
-                if(!queued){c.gui.setScreen(null);queue(c,p->Item068Checks.scene(p,result));return;}
+                if(!queued){c.gui.setScreen(null);queue(c,p->{if(General068Focus.enabled())General068Focus.combat(p);Item068Checks.scene(p,result);});return;}
             }else if(stage==6){
                 if(!queued){queue(c,p->{p.closeContainer();var inventory=new SimpleContainer(54);int n=0;for(String id:ITEMS)inventory.setItem(n++,item(id));p.openMenu(new SimpleMenuProvider((id,slots,who)->ChestMenu.sixRows(id,slots,inventory),Component.literal("Item display / GUI unchanged")));});return;}
             }else if(stage==7){

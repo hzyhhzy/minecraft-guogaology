@@ -162,7 +162,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
+             f'-Dguogaology.qa.general068={str(a.audit068_focus).lower()}',f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
              f'-Dguogaology.qa.material065={str(a.material065_only).lower()}',
              f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
@@ -206,6 +206,7 @@ if __name__=='__main__':
     p.add_argument('--core515-only',action='store_true',help='Native0.5.15 recipes/scenery and nine settled art scenes, including all six Guogao faces and exact production firs; requires --fresh-world')
     p.add_argument('--building063-only',action='store_true',help='Native fixed-digit palettes and legitimate Guogao building material regression')
     p.add_argument('--item068-only',action='store_true',help='Focused actual door/slab/sign placement, NBT and eight item-context regression in a fresh disposable flat world')
+    p.add_argument('--audit068-focus',action='store_true',help='Add boat-name, four-way placement and native axe-stripping observations to isolated item068 QA')
     p.add_argument('--recipebook066-only',action='store_true',help='Focused native0.6.6 survival XP and exclusive branded recipe-book UI; fresh world only')
     p.add_argument('--recipebook066-baseline',action='store_true',help='Reproduce BranchSilk XP with the exact preserved0.6.5JAR, no UI or normal save')
     p.add_argument('--material065-only',action='store_true',help='Native0.6.5 recipes/chests/mobLooting/Stellar16x and actual core/GGG recipe-book groups; requires --fresh-world')

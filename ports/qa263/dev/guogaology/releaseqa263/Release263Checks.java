@@ -69,6 +69,9 @@ public final class Release263Checks implements ClientModInitializer {
     private volatile float yaw, pitch;
     private int scene, ticks, checks;
     private int motionBlocksAudited;
+    private boolean auditWarmQueued;
+    private volatile boolean auditWarmReady;
+    private int auditWarmTicks;
 
     @Override public void onInitializeClient() {
         var directory=FabricLoader.getInstance().getGameDir();
@@ -101,7 +104,11 @@ public final class Release263Checks implements ClientModInitializer {
                 return;
             }
             if (client.player==null || client.getSingleplayerServer()==null || client.gui.overlay()!=null) return;
-            if (!audited) { auditModels(client); audited=true; }
+            if(General263Audit.enabled()&&!auditWarmReady){
+                if(!auditWarmQueued){auditWarmQueued=true;client.getSingleplayerServer().execute(()->{try{General263Audit.prepare(client.getSingleplayerServer().overworld());auditWarmReady=true;}catch(Throwable error){failure=error;}});}return;
+            }
+            if(General263Audit.enabled()&&auditWarmTicks++<100)return;
+            if (!audited) { auditModels(client); if(General263Audit.enabled())General263Audit.client(client); audited=true; }
             if (!queued) {
                 queued=true;
                 int current=scene;
@@ -155,7 +162,7 @@ public final class Release263Checks implements ClientModInitializer {
         check(!Files.exists(path.resolve("saves").resolve(WORLD)), "QA never reopens a normal or previous world");
         long seed=Long.getLong("guogaology.qa263.seed", 651600L);
         Files.writeString(path.resolve("fresh-world-seed.txt"), Long.toString(seed), StandardOpenOption.CREATE_NEW);
-        var settings=new LevelSettings("Guogaology 0.6.0 isolated 26.3 smoke", GameType.CREATIVE,
+        var settings=new LevelSettings("Guogaology "+System.getProperty("guogaology.qa263.release")+" isolated 26.3 smoke", GameType.CREATIVE,
                 LevelSettings.DifficultySettings.DEFAULT, true, WorldDataConfiguration.DEFAULT);
         client.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(seed, true, false),
                 WorldPresets::createNormalWorldDimensions, new TitleScreen());
@@ -205,6 +212,7 @@ public final class Release263Checks implements ClientModInitializer {
         player.closeContainer();
         player.setGameMode(GameType.CREATIVE);
         if (current==0) {
+            if(General263Audit.enabled())General263Audit.server(player);
             auditMotionTags(server.overworld());
             for (var key:REALMS) check(server.getLevel(key)!=null, "registered dimension "+key.identifier());
             check(PortalTravel.destination(Level.OVERWORLD, PortalKind.OUTER).equals(GuogaologyMod.OUTER), "Outer travel mapping");
@@ -234,7 +242,7 @@ public final class Release263Checks implements ClientModInitializer {
             var inventory=new SimpleContainer(54);
             for (int i=0;i<cores.size();i++) inventory.setItem(i,new ItemStack(cores.get(i)));
             player.openMenu(new SimpleMenuProvider((id,slots,who)->ChestMenu.sixRows(id,slots,inventory),
-                    Component.literal("Guogaology 0.6.0 / Cores")));
+                    Component.literal("Guogaology "+System.getProperty("guogaology.qa263.release")+" / Cores")));
             player.containerMenu.broadcastChanges();
         } else if (current>=3 && current<=5) {
             var world=server.getLevel(REALMS.get(current-3));

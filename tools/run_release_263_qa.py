@@ -233,6 +233,7 @@ def prepare(args):
                f"-XX:ErrorFile={game / 'hs_err_pid%p.log'}", "-Dfile.encoding=UTF-8",
                "-Dfabric.development=false", "-Dguogaology.qa263=true",
                f"-Dguogaology.qa263.control={str(args.startup_control).lower()}",
+               f"-Dguogaology.qa263.generalAudit={str(args.general_audit).lower()}",
                f"-Dguogaology.qa263.seed={args.seed}", f"-Dguogaology.qa263.release={release}",
                f"-Djava.io.tmpdir={temp}", f"-Djna.tmpdir={temp}",
                f"-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}",
@@ -364,6 +365,7 @@ def run(args):
 
 def parser():
     argument_parser = argparse.ArgumentParser(description=__doc__)
+    argument_parser.add_argument("--general-audit", action="store_true", help="Opt-in observation-first native registry/model/menu/mining/enchantment/bow audit of the exact release")
     argument_parser.add_argument("--instance", type=Path, required=True,
                                  help="Read-only .minecraft/versions/fo263_2 directory")
     argument_parser.add_argument("--java-home", type=Path, required=True, help="Installed Java 25 home")
