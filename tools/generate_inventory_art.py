@@ -223,12 +223,15 @@ def bow_icon(tier, stage):
     else:
         cx,cy = ((9,9),(11,10),(13,11))[stage]
         d.line((15,4,cx,cy,3,14), fill='#d0d9e5')
-        # Clearly visible arrow and white fletching at every draw stage.
+        # The arrow points out of the bow at the upper left, just like vanilla.
+        # Its nock/fletching stays by the pulled string at the lower right;
+        # the previous sprite accidentally drew the arrowhead toward the player.
         d.line((cx-8,cy-8,cx+1,cy+1), fill='#a59473')
         d.line((cx-7,cy-8,cx+2,cy+1), fill='#f2e6cb')
-        d.line((cx-8,cy-8,cx-7,cy-8,cx-7,cy-7), fill='#f1f7ff',width=2)
-        d.polygon([(cx+1,cy),(min(15,cx+3),cy+1),(min(15,cx+2),cy+3)],fill=light)
-        d.point((cx+2,cy+1),fill=white)
+        d.polygon([(cx-8,cy-8),(cx-5,cy-7),(cx-7,cy-5)],fill=white)
+        d.point((cx-7,cy-7),fill=light)
+        d.line((cx,cy+1,min(15,cx+2),min(15,cy+3)),fill='#d0d9e5')
+        d.line((cx+1,cy,min(15,cx+3),min(15,cy+2)),fill='#f1f7ff')
     if tier >= 1: d.point((7,4),fill=white)
     if tier >= 2: d.point((3,11),fill=white)
     if tier == 3: d.point((11,2),fill='#deabf5'); d.point((2,12),fill='#deabf5')

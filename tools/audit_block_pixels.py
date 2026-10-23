@@ -303,7 +303,7 @@ def registry_inventory():
     decor_shapes=re.findall(r'"([a-z0-9_]+)"',(ROOT/decor).read_text('utf8').split('DECOR_SHAPES = List.of(',1)[1].split(');',1)[0])
     for family in strings('WOOD_IDS'):
         for shape in strings('WOOD_SHAPES'):add(family+'_'+shape,outer+' wood loop')
-        for shape in decor_shapes+['sign','wall_sign']:add(family+'_'+shape,decor+' decor loop')
+        for shape in decor_shapes+['sign','wall_sign','hanging_sign','wall_hanging_sign']:add(family+'_'+shape,decor+' decor loop')
     for family in strings('FOLIAGE_IDS'):
         for shape in ('leaves','sapling'):add(family+'_'+shape,outer+' foliage loop')
     mining='src/main/java/dev/guogaology/mining/MiningContent.java'

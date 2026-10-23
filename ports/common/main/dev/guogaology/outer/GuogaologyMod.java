@@ -138,6 +138,7 @@ public final class GuogaologyMod {
         dev.guogaology.outer.registry.ModItems.initialize();
         dev.guogaology.outer.registry.ModEntities.initialize();
         dev.guogaology.outer.registry.ModBoats.initialize();
+        dev.guogaology.outer.registry.ModWoodFuels.initialize();
         dev.guogaology.outer.registry.ModSpawnPlacements.initialize();
         dev.guogaology.outer.registry.ModSpawnEggs.initialize();
         dev.guogaology.outer.registry.ModChunkGenerators.initialize();

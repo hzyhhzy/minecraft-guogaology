@@ -6,7 +6,7 @@
       "item": "guogaology:nuke_mushroom"
     },
     "#": {
-      "item": "minecraft:sand"
+      "tag": "minecraft:sand"
     }
   },
   "pattern": [

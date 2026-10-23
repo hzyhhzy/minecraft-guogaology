@@ -27,6 +27,10 @@ OLD_SHA256 = {"baseline060": "a101bfd94cdf5cb27646bba2b10f881665bad89e180e6e59cf
               "baseline068": "c15eb5f74ee645ab6253ec5333fd35fd9760cd97faf5e9ed408ac0d85beeabff"}
 
 
+def expected_version(args):
+    return EXPECTED_VERSION[args.mode] if args.mode.startswith("baseline") else args.target_release
+
+
 def in_build(path, description):
     value = path.resolve()
     base.require(value.is_relative_to(BUILD) and value != BUILD,
@@ -119,12 +123,18 @@ def source_fixture(args):
     marker = base.read_json(source.parent.parent / "save069-ok.json")
     base.require(marker.get("success") is True and marker.get("serverStopped") is True,
                  "Source fixture must come from an actual clean-stop QA pass")
-    if args.mode == "upgrade":
+    if args.mode == "upgrade" and args.target_release == "0.6.10":
+        base.require(marker.get("mode") in ("upgrade", "reopen") and marker.get("version") == "0.6.9",
+                     "0610 requires an actual cleanly saved069 upgrade fixture")
+        prior = base.read_json(source.parent.parent / "save069-inputs.json")
+        base.require(prior.get("productionVersion") == "0.6.9" and prior.get("productionSha256") == "c9ce1751caaeb5fecc448de2c5003d9d1ec51ddbd9ae6e07004c65f3671bc92e",
+                     "Source must have been last saved with exact published069")
+    elif args.mode == "upgrade":
         base.require(marker.get("mode") in ("baseline060", "baseline068") and marker.get("version") in ("0.6.0", "0.6.8"),
                      "Upgrade requires an exact old-production writer output")
     else:
-        base.require(marker.get("mode") == "upgrade" and marker.get("version") == "0.6.9",
-                     "Reopen requires the real cleanly saved0.6.9 upgrade output")
+        base.require(marker.get("mode") == "upgrade" and marker.get("version") == args.target_release,
+                     "Reopen requires the actual same-target cleanly saved upgrade output")
     fixture = base.read_json(source / "save069-fixture.json")
     base.require(fixture.get("fixtureOnly") is True and len(fixture.get("dimensions", [])) == 4,
                  "Source must contain all four written fixture dimensions")
@@ -144,11 +154,11 @@ def prepare(args):
     with ZipFile(instance / "fo263_2.jar") as archive:
         base.require(json.loads(archive.read("version.json"))["id"] == "26.3", "Expected actual26.3 client")
     source, source_hashes = source_fixture(args)
-    production = (args.artifact or ROOT / "build/releases" / EXPECTED_VERSION[args.mode] / f"guogaology-dimension-26.3-{EXPECTED_VERSION[args.mode]}.jar").resolve()
-    production_metadata = base.validate_mod(production, "guogaology", EXPECTED_VERSION[args.mode])
+    production = (args.artifact or ROOT / "build/releases" / expected_version(args) / f"guogaology-dimension-26.3-{expected_version(args)}.jar").resolve()
+    production_metadata = base.validate_mod(production, "guogaology", expected_version(args))
     if args.mode in OLD_SHA256:
         base.require(base.sha256(production) == OLD_SHA256[args.mode], "Old writer must use the exact independently recorded release SHA-256")
-    helper = (args.helper or ROOT / "ports/26.3/build/qa/guogaology-release-263-qa-0.6.9.jar").resolve()
+    helper = (args.helper or ROOT / f"ports/26.3/build/qa/guogaology-release-263-qa-{args.target_release}.jar").resolve()
     base.require(helper.is_file(), f"Missing separate QA helper: {helper}")
     classpath, loader_version, loader_override = launcher_libraries(metadata, instance, args)
     java = base.java_executable(args.java_home)
@@ -198,7 +208,7 @@ def prepare(args):
     command = [str(java), "-Xmx4G", "-XX:StackShadowPages=32", "--enable-native-access=ALL-UNNAMED",
                "--add-exports", "java.base/jdk.internal.misc=ALL-UNNAMED", "-Dfile.encoding=UTF-8",
                f"-XX:ErrorFile={game / 'hs_err_pid%p.log'}", "-Dfabric.development=false", "-Dguogaology.qa263=true",
-               "-Dguogaology.save069=true", f"-Dguogaology.qa263.seed={args.seed}",
+               "-Dguogaology.save069=true", f"-Dguogaology.save069.target={args.target_release}", f"-Dguogaology.qa263.seed={args.seed}",
                f"-Djava.io.tmpdir={temp}", f"-Djna.tmpdir={temp}", f"-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}",
                "-cp", ";".join(map(str, classpath)), metadata["mainClass"],
                "--username", "GuogaologyQA", "--version", "26.3", "--gameDir", str(game),
@@ -215,7 +225,7 @@ def verify_positive(game, args):
     base.require(not (game / "save069-failed.txt").exists() and (game / "save069-world-started.json").is_file(), "Actual world must start without QA failure")
     result = base.read_json(game / "save069-ok.json")
     base.require(result.get("success") is True and result.get("serverStopped") is True and result.get("nativeSaveCompleted") is True, "Positive marker requires native save and SERVER_STOPPED")
-    base.require(result.get("mode") == args.mode and result.get("version") == EXPECTED_VERSION[args.mode] and result.get("minecraft") == "26.3", "Wrong positive result identity")
+    base.require(result.get("mode") == args.mode and result.get("version") == expected_version(args) and result.get("minecraft") == "26.3", "Wrong positive result identity")
     base.require(result.get("fixtureDimensions") == 4 and result.get("persistedBlockStates") == 96
                  and result.get("persistedPlayerStacks") == 3 and result.get("persistedChestStacks") == 24
                  and result.get("persistedBoats") == 8 and result.get("rawLhoNativeControls") == 16,
@@ -280,6 +290,7 @@ def parser():
     result.add_argument("--label", required=True, help="New build/runtime-qa263 child directory")
     result.add_argument("--mode", choices=tuple(EXPECTED_VERSION), required=True)
     result.add_argument("--artifact", type=Path, help="Exact old/fixed26.3 production JAR")
+    result.add_argument("--target-release", choices=("0.6.9", "0.6.10"), default="0.6.9")
     result.add_argument("--helper", type=Path, help="Separate current releaseQa263Jar")
     result.add_argument("--source-world", type=Path, help="Earlier clean-stop build-only saves/save069-fixture")
     result.add_argument("--api-jar", type=Path, help="Optional build-only Fabric API override")

@@ -13,11 +13,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.vehicle.boat.Boat;
+import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item.Properties;
 
 public final class ModBoats {
    private static final Map<String, EntityType<Boat>> BOATS = new LinkedHashMap<>();
+   private static final Map<String, EntityType<ChestBoat>> CHEST_BOATS = new LinkedHashMap<>();
    private static boolean registered;
 
    private ModBoats() {
@@ -36,6 +38,13 @@ public final class ModBoats {
             EntityType var4 = (EntityType)Registry.register(BuiltInRegistries.ENTITY_TYPE,var3,hull.build(var3));
             BOATS.put(var1, var4);
             ModItems.registerTracked(var1 + "_boat", var1x -> new BoatItem(var4, var1x), ModBlocks.woodItemProperties(var1+"_boat").stacksTo(1));
+            var chestKey = ResourceKey.<EntityType<?>>create(Registries.ENTITY_TYPE, GuogaologyMod.id(var1 + "_chest_boat"));
+            Builder<ChestBoat> chestHull = Builder.<ChestBoat>of((type, level) -> new ChestBoat(type, level, () -> ModItems.get(var1 + "_chest_boat")), MobCategory.MISC)
+               .sized(1.375F, 0.5625F).clientTrackingRange(10);
+            if (var1.equals("dread")) chestHull.fireImmune();
+            EntityType<ChestBoat> chestType = Registry.register(BuiltInRegistries.ENTITY_TYPE, chestKey, chestHull.build(chestKey));
+            CHEST_BOATS.put(var1, chestType);
+            ModItems.registerTracked(var1 + "_chest_boat", settings -> new BoatItem(chestType, settings), ModBlocks.woodItemProperties(var1+"_chest_boat").stacksTo(1));
          }
       }
    }
@@ -48,6 +57,8 @@ public final class ModBoats {
          return var1;
       }
    }
+
+   public static EntityType<ChestBoat> chestBoat(String wood) { return java.util.Objects.requireNonNull(CHEST_BOATS.get(wood), wood); }
 
    public static Map<String, EntityType<Boat>> all() {
       return Collections.unmodifiableMap(BOATS);

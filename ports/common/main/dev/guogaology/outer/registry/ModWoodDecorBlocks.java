@@ -14,6 +14,9 @@ import net.minecraft.core.registries.Registries;
 import dev.guogaology.outer.registry.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HangingSignItem;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
@@ -47,6 +50,7 @@ public final class ModWoodDecorBlocks {
 
          for (String var5 : ModBlocks.WOOD_IDS) {
             registerSign(var5);
+            registerHangingSign(var5);
          }
       }
    }
@@ -67,8 +71,25 @@ public final class ModWoodDecorBlocks {
       ModBlocks.registerExternal(var1, var6);
    }
 
+   private static void registerHangingSign(String family) {
+      String name = ModBlocks.woodBlockId(family, "hanging_sign");
+      String wallName = ModBlocks.woodBlockId(family, "wall_hanging_sign");
+      WoodType wood = ModWoodTypes.woodType(family);
+      Block wall = register(ResourceKey.create(Registries.BLOCK, GuogaologyMod.id(wallName)),
+         settings -> new WallHangingSignBlock(wood, settings), signProperties());
+      ModBlocks.registerExternal(wallName, wall);
+      BlockItemId var5 = BlockItemId.create(GuogaologyMod.id(name), GuogaologyMod.id(name));
+      Block ceiling = register(var5.block(), settings -> new CeilingHangingSignBlock(wood, settings), signProperties());
+      HangingSignItem item = new HangingSignItem(ceiling, wall,
+         ModBlocks.woodItemProperties(name).stacksTo(16).useBlockDescriptionPrefix().setId(var5.item()));
+      Registry.register(BuiltInRegistries.ITEM, var5.item(), item);
+      BlockEntityType.HANGING_SIGN.addSupportedBlock(ceiling);
+      BlockEntityType.HANGING_SIGN.addSupportedBlock(wall);
+      ModBlocks.registerExternal(name, ceiling);
+   }
+
    private static net.minecraft.world.level.block.state.BlockBehaviour.Properties signProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.WOOD).noOcclusion();
+      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.WOOD).noCollision().noOcclusion();
    }
 
    private static void registerDecor(String var0, String var1) {

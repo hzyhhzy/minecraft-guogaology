@@ -80,9 +80,9 @@ public final class Item068Runtime {
             c.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);c.gui.toastManager().clear();
             if(c.level==null){if(!opening&&c.isGameLoadFinished()&&c.gui.overlay()==null){opening=true;c.createWorldOpenFlows().openWorld("port-qa",c::stop);}return;}
             if(c.player==null||c.getSingleplayerServer()==null||c.gui.overlay()!=null)return;
-            if(!audited){auditModels(c);if(General068Focus.enabled())General068Focus.client(c);audited=true;}
+            if(!audited){auditModels(c);if(General068Focus.enabled())General068Focus.client(c);if(Repairs0610Checks.enabled())Repairs0610Checks.client(c);audited=true;}
             if(stage==0){
-                if(!queued){queue(c,p->{result.add("actualPlayerHarvest",Item068Checks.run(p));if(General068Focus.enabled())General068Focus.server(p);});return;}
+                if(!queued){queue(c,p->{result.add("actualPlayerHarvest",Item068Checks.run(p));if(General068Focus.enabled())General068Focus.server(p);if(Repairs0610Checks.enabled())Repairs0610Checks.server(p);});return;}
                 if(ready){check(result.getAsJsonObject("actualPlayerHarvest").get("caseCount").getAsInt()==50,"50 real door/slab cases");advance();}return;
             }
             if(stage<=4){

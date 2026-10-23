@@ -37,7 +37,6 @@
     "dread_fence_gate",
     "dread_log",
     "dread_planks",
-    "dread_sign",
     "dread_slab",
     "dread_stairs",
     "dread_stripped_log",
@@ -88,7 +87,6 @@
     "laver_inlay",
     "laver_mat",
     "laver_planks",
-    "laver_sign",
     "laver_slab",
     "laver_stairs",
     "laver_stripped_log",
@@ -101,8 +99,6 @@
     "lho_letter_h",
     "lho_letter_l",
     "lho_letter_o",
-    "lho_trace_lv2",
-    "lho_trace_lv3",
     "lime_guogao",
     "lime_guogao_lantern",
     "lime_light",
@@ -202,8 +198,11 @@
   "legacy_non_motion": [
     "chair",
     "dread_button",
+    "dread_hanging_sign",
     "dread_pressure_plate",
     "dread_sapling",
+    "dread_sign",
+    "dread_wall_hanging_sign",
     "dread_wall_sign",
     "emoji_flower",
     "epsilon_bloom",
@@ -219,10 +218,15 @@
     "hydra_sprig",
     "inner_portal",
     "laver_button",
+    "laver_hanging_sign",
     "laver_pressure_plate",
     "laver_sapling",
+    "laver_sign",
+    "laver_wall_hanging_sign",
     "laver_wall_sign",
     "lho_trace",
+    "lho_trace_lv2",
+    "lho_trace_lv3",
     "loquat_sapling",
     "matrix_sheet",
     "nuke_chair",
@@ -233,6 +237,10 @@
     "zeta_vine"
   ],
   "native_inherited_exceptions": {
-    "dread_pressure_plate": "Already included through the vanilla minecraft:pressure_plates parent tag in26.3; preserve that platform classification."
+    "dread_pressure_plate": "Already included through the vanilla minecraft:pressure_plates parent tag in26.3; preserve that platform classification.",
+    "laver_hanging_sign": "Native minecraft:all_hanging_signs is included in the26.3 motion tag tree even though the sign has no entity collision; preserve vanilla classification.",
+    "laver_wall_hanging_sign": "Native minecraft:all_hanging_signs is included in the26.3 motion tag tree even though the sign has no entity collision; preserve vanilla classification.",
+    "dread_hanging_sign": "Native minecraft:all_hanging_signs is included in the26.3 motion tag tree even though the sign has no entity collision; preserve vanilla classification.",
+    "dread_wall_hanging_sign": "Native minecraft:all_hanging_signs is included in the26.3 motion tag tree even though the sign has no entity collision; preserve vanilla classification."
   }
 }

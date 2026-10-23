@@ -70,7 +70,7 @@ def legacy(s,name):
     s=s.replace('new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1))','new StandingAndWallBlockItem(var6, var4, ModBlocks.woodItemProperties(var1), Direction.DOWN)')
     s=re.sub(r'\.getRandomOrThrow\((\w+)\)',r'.getRandomValue(\1).orElseThrow()',s)
     s=s.replace('Monster::checkMonsterSpawnRules','(type, world, reason, pos, random) -> Monster.checkMonsterSpawnRules((EntityType)type, world, reason, pos, random)')
-    s=s.replace('net.minecraft.client.model.object.boat.BoatModel','net.minecraft.client.model.BoatModel').replace('BoatModel::createBoatModel','BoatModel::createBodyModel')
+    s=s.replace('net.minecraft.client.model.object.boat.BoatModel','net.minecraft.client.model.BoatModel').replace('BoatModel::createBoatModel','BoatModel::createBodyModel').replace('BoatModel::createChestBoatModel','net.minecraft.client.model.ChestBoatModel::createBodyModel')
     s=s.replace('net.minecraft.client.model.animal.pig.PigModel','net.minecraft.client.model.PigModel')
     entities={'Beaver':'BusyBeaverEntity','Whale':'DeepSeekWhaleEntity','Snake':'SnakeEntity','FlyY':'FlyYEntity','FruitCakeSlime':'FruitCakeSlimeEntity','FruitSlime':'FruitSlimeEntity','EvilPig':'EvilPigEntity'}
     for stem,entity in entities.items():

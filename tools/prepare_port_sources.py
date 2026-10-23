@@ -56,6 +56,7 @@ def adapt(text, target, name):
         text = text.replace('.addSupportedBlock(', '.addValidBlock(')
         text = text.replace('block.entity.BlockEntityType;', 'block.entity.BlockEntityTypes;')
         text = text.replace('BlockEntityType.SIGN', 'BlockEntityTypes.SIGN')
+        text = text.replace('BlockEntityType.HANGING_SIGN', 'BlockEntityTypes.HANGING_SIGN')
     if target == '26.3' and name == 'GuideLayoutMixin.java':
         #26.3 moved the mutable display coordinates onto AdvancementNode.
         text=text.replace('node.advancement().display().ifPresent(display->display.setLocation(pos.x(),pos.y()))',
@@ -133,9 +134,9 @@ def adapt(text, target, name):
             'Material.Baked particleIcon()': 'Material.Baked particleMaterial()',
             'Map<String,TextureAtlasSprite> textures': 'Map<String,Material.Baked> textures',
             'new Material(ATLAS,Identifier.parse(e.getValue().getAsString()))': 'new Material(Identifier.parse(e.getValue().getAsString()),true)',
-            'Surface(JsonObject q,TextureAtlasSprite sprite){': 'final Material.Baked material;\n        Surface(JsonObject q,Material.Baked material){\n            this.material=material;var sprite=material.sprite();',
+            'Surface(JsonObject q,TextureAtlasSprite sprite){': 'final Material.Baked material;\n        Surface(JsonObject q,Material.Baked material){\n            // Native postMaterialBake resets both chunk/item layers from this flag.\n            this.material=q.has("part")&&q.get("part").getAsInt()==0&&q.has("render_layer")&&q.get("render_layer").getAsString().equals("solid")?new Material.Baked(material.sprite(),false):material;var sprite=this.material.sprite();',
             'Surface(Surface source,org.joml.Matrix4f pose){': 'Surface(Surface source,org.joml.Matrix4f pose){\n            this.material=source.material;',
-            '.renderLayer(ChunkSectionLayer.TRANSLUCENT)': '.chunkLayer(ChunkSectionLayer.TRANSLUCENT)',
+            '.renderLayer(': '.chunkLayer(',
             'emitter.emit();': 'emitter.postMaterialBake(material);emitter.emit();',
             '@Override public void collectParts': '@Override public int materialFlags(){return new MeshQuadCollection(geometry.fixed).materialFlags();}\n        @Override public void collectParts',
         }.items():

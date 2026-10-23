@@ -85,7 +85,9 @@ public final class Save069Checks implements ClientModInitializer {
             mode = input.get("mode").getAsString();
             version = FabricLoader.getInstance().getModContainer("guogaology").orElseThrow().getMetadata().getVersion().getFriendlyString();
             check(version.equals(input.get("productionVersion").getAsString()), "requested exact production version");
-            check(version.equals(mode.equals("baseline060") ? "0.6.0" : mode.equals("baseline068") ? "0.6.8" : "0.6.9"), "old/fixed production boundary");
+            String candidate = System.getProperty("guogaology.save069.target", "0.6.9");
+            check(Set.of("0.6.9", "0.6.10").contains(candidate), "explicit supported candidate target");
+            check(version.equals(mode.equals("baseline060") ? "0.6.0" : mode.equals("baseline068") ? "0.6.8" : candidate), "old/fixed production boundary");
             check(FabricLoader.getInstance().getModContainer("fabricloader").orElseThrow().getMetadata().getVersion().getFriendlyString().equals(input.get("loaderVersion").getAsString()), "actual Loader version");
             check(FabricLoader.getInstance().getModContainer("fabric-api").orElseThrow().getMetadata().getVersion().getFriendlyString().equals(input.get("apiVersion").getAsString()), "actual API version");
             report.add("inputs", input);

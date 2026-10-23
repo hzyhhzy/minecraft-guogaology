@@ -135,7 +135,9 @@ public final class CoreMeshModels {
         final float[] xyz=new float[12],normal=new float[12],uv=new float[8];
         final int[] argb=new int[4];
         final Direction cull,face;
+        final boolean opaque;
         Surface(JsonObject q,TextureAtlasSprite sprite){
+            opaque=q.has("part")&&q.get("part").getAsInt()==0&&q.has("render_layer")&&q.get("render_layer").getAsString().equals("solid");
             float nx=0,ny=0,nz=0;
             for(int i=0;i<4;i++){
                 var vertex=q.getAsJsonArray("v").get(i).getAsJsonArray();
@@ -152,7 +154,7 @@ public final class CoreMeshModels {
             cull=q.has("cull")?Direction.byName(q.get("cull").getAsString()):null;
         }
         Surface(Surface source,org.joml.Matrix4f pose){
-            cull=source.cull;face=source.face;System.arraycopy(source.uv,0,uv,0,8);System.arraycopy(source.argb,0,argb,0,4);
+            opaque=source.opaque;cull=source.cull;face=source.face;System.arraycopy(source.uv,0,uv,0,8);System.arraycopy(source.argb,0,argb,0,4);
             var normals=pose.normal(new org.joml.Matrix3f());
             for(int i=0;i<4;i++){
                 var point=new org.joml.Vector3f(source.xyz[i*3],source.xyz[i*3+1],source.xyz[i*3+2]);pose.transformPosition(point);
@@ -162,7 +164,7 @@ public final class CoreMeshModels {
         }
         float radius(){float r=0;for(int i=0;i<4;i++){float x=xyz[i*3]-.5f,y=xyz[i*3+1]-.5f,z=xyz[i*3+2]-.5f;r=Math.max(r,(float)Math.sqrt(x*x+y*y+z*z));}return r;}
         void emit(QuadEmitter emitter){
-            emitter.cullFace(cull).nominalFace(face).renderLayer(ChunkSectionLayer.TRANSLUCENT).diffuseShade(false).ambientOcclusion(TriState.FALSE);
+            emitter.cullFace(cull).nominalFace(face).renderLayer(opaque?ChunkSectionLayer.SOLID:ChunkSectionLayer.TRANSLUCENT).diffuseShade(false).ambientOcclusion(TriState.FALSE);
             for(int i=0;i<4;i++)emitter.pos(i,xyz[i*3],xyz[i*3+1],xyz[i*3+2]).normal(i,normal[i*3],normal[i*3+1],normal[i*3+2]).color(i,argb[i]).uv(i,uv[i*2],uv[i*2+1]);
             emitter.emit();
         }

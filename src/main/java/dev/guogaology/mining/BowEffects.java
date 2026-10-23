@@ -40,7 +40,10 @@ public final class BowEffects {
             ArrowItem type=round.getItem() instanceof ArrowItem a?a:(ArrowItem)Items.ARROW;
             PersistentProjectileEntity arrow=type.createArrow(world,round,player,bow.copy());
             var access=(ArrowShotAccess)arrow;access.guogaology$shot(shot.copy());if(branch>=3)access.guogaology$setPierceLevel((byte)1);
-            arrow.setCritical(draw>=1);if(i>0||free)arrow.pickupType=PersistentProjectileEntity.PickupPermission.DISALLOWED;
+            // Native free projectiles are collectible only in creative mode.
+            // This also lets creative players clear free/multishot arrows without
+            // returning ammunition to survival players or duplicating paid shots.
+            arrow.setCritical(draw>=1);if(i>0||free)arrow.pickupType=PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
             float spread=i==0?0:i==1?-10:10;
             arrow.setVelocity(player,player.getPitch(),player.getYaw()+spread,0,(float)(3*draw*EquipmentRules.arrowSpeedMultiplier(tier)),1);
             arrows.add(arrow);BowVolleyLedger.get(world.getServer()).register(shot.volley,arrow.getUuid());

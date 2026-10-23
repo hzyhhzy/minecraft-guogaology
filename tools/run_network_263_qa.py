@@ -130,7 +130,7 @@ def run(a):
     digest=sha256(release);before=normal_inventory(instance)
     if a.candidate_regression:
         assert not a.client_mods_full,'Candidate regression isolates the four explicit JEI placements'
-        assert version in ('0.6.8','0.6.1a','0.6.9'),'Explicit candidate regression accepts068/061a/069 client artifacts'
+        assert version in ('0.6.8','0.6.1a','0.6.9','0.6.10'),'Explicit candidate regression accepts068/061a/069/0610 client artifacts'
         if server_meta['version']!=version:
             assert a.server_release_jar and server_digest==TRUSTED_LEGACY.get(server_meta['version']),'Mixed candidate controls require an explicit exact published060/061/067 server'
     elif branch_control:
@@ -400,7 +400,7 @@ if __name__=='__main__':
     parser.add_argument('--qa-jar',type=Path)
     mode=parser.add_mutually_exclusive_group()
     mode.add_argument('--branch-pickup',action='store_true',help='Strict exact061 client-only JEI baseline; one first pickup, no candidate binaries')
-    mode.add_argument('--candidate-regression',action='store_true',help='Explicit068/061a/069 candidate: branch then Numeric Stone on one connection; preserves strict old baseline mode')
+    mode.add_argument('--candidate-regression',action='store_true',help='Explicit068/061a/069/0610 candidate: branch then Numeric Stone on one connection; preserves strict old baseline mode')
     parser.add_argument('--pickup-item',choices=(*BRANCH_ITEMS,'ordinal_stone'),help='One real pickup per new world/player; run each six branches in its own fresh --label')
     parser.add_argument('--item-regression',choices=('observe','verify'),help='Opt-in identical-candidate native door/slab/sign and item-display checks; observe records all old defects, verify requires the fixes; ordinary JEI matrix defaults off')
     parser.add_argument('--jei-jar',type=Path,help='Explicit build-only JEI override; otherwise use installed31.14.0.72')

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "hanging_sign",
+  "pattern": [
+    "C C",
+    "###",
+    "###"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "#": {
+      "item": "guogaology:dread_stripped_log"
+    }
+  },
+  "result": {
+    "id": "guogaology:dread_hanging_sign",
+    "count": 6
+  }
+}

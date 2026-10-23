@@ -99,11 +99,13 @@ public final class CoreMeshModels {
         final float animationRadius,staticRadius;
         private final List<BakedQuad> shell;
         private final List<BakedQuad> fallback;
-        private final RenderMaterial material;
+        private final RenderMaterial material,opaqueMaterial;
+        private final Set<BakedQuad> opaque=Collections.newSetFromMap(new IdentityHashMap<>());
         private final Map<Direction,List<BakedQuad>> culled=new EnumMap<>(Direction.class);
         GemModel(BakedModel base,JsonObject mesh,Function<SpriteIdentifier,Sprite> sprites,boolean portable){
             this.base=base;var all=new ArrayList<BakedQuad>();var fixed=new ArrayList<BakedQuad>();var distant=new ArrayList<BakedQuad>();
             material=RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(BlendMode.TRANSLUCENT).find();
+            opaqueMaterial=RendererAccess.INSTANCE.getRenderer().materialFinder().blendMode(BlendMode.SOLID).find();
             motion=mesh.has("motion")?mesh.get("motion").getAsString():"rotate";
             motionScale=mesh.has("motion_scale")?mesh.get("motion_scale").getAsFloat():1;
             extended=mesh.has("extended")&&mesh.get("extended").getAsBoolean();
@@ -125,6 +127,7 @@ public final class CoreMeshModels {
                 }
                 var quad=new BakedQuad(packed,-1,Direction.getFacing(nx,ny,nz),sprite,false);
                 int part=q.has("part")?q.get("part").getAsInt():1;
+                if(part==0&&q.has("render_layer")&&q.get("render_layer").getAsString().equals("solid"))opaque.add(quad);
                 if(part<10){
                     var fallbackSprite=textures.get(q.get(q.has("lod_t")?"lod_t":"t").getAsString());
                     var fallbackUv=q.getAsJsonArray(q.has("lod_uv")?"lod_uv":"uv");int[] lod=packed.clone();
@@ -193,11 +196,11 @@ public final class CoreMeshModels {
         }
         @Override public boolean isVanillaAdapter(){return false;}
         @Override public void emitBlockQuads(BlockRenderView view,BlockState state,BlockPos pos,Supplier<Random> random,RenderContext context){
-            var emitter=context.getEmitter();for(var quad:shell)emitter.fromVanilla(quad,material,null).emit();
+            var emitter=context.getEmitter();for(var quad:shell)emitter.fromVanilla(quad,opaque.contains(quad)?opaqueMaterial:material,null).emit();
         }
         @Override public void emitItemQuads(ItemStack stack,Supplier<Random> random,RenderContext context){
-            var emitter=context.getEmitter();for(var quad:general)emitter.fromVanilla(quad,material,null).emit();
-            for(var list:culled.values())for(var quad:list)emitter.fromVanilla(quad,material,null).emit();
+            var emitter=context.getEmitter();for(var quad:general)emitter.fromVanilla(quad,opaque.contains(quad)?opaqueMaterial:material,null).emit();
+            for(var list:culled.values())for(var quad:list)emitter.fromVanilla(quad,opaque.contains(quad)?opaqueMaterial:material,null).emit();
         }
         @Override public boolean useAmbientOcclusion(){return false;}
         @Override public boolean hasDepth(){return true;}

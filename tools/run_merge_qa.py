@@ -63,7 +63,7 @@ def allowed(lib):
     return result and not any(x in lib['name'] for x in ('natives-windows-arm64','natives-windows-x86'))
 
 def run(a):
-    assert not a.repair069 or (a.item068_only and a.audit068_focus and a.fresh_world), 'Repair069 requires fresh focused item/native observations'
+    assert not (a.repair069 or a.repair0610) or (a.item068_only and a.audit068_focus and a.fresh_world), 'Repair069 requires fresh focused item/native observations'
     instance=a.instance.resolve();assert instance.name=='fo262','Runtime scope is fo262 only'
     metadata=json.loads((instance/'fo262.json').read_text('utf-8-sig'));minecraft=instance.parent.parent
     assert bool(a.fixture) != a.fresh_world,'Choose exactly one of --fixture or --fresh-world'
@@ -163,7 +163,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.general068={str(a.audit068_focus).lower()}',f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
+             f'-Dguogaology.qa.general068={str(a.audit068_focus).lower()}', f'-Dguogaology.repair0610={str(a.repair0610).lower()}',f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
              f'-Dguogaology.qa.material065={str(a.material065_only).lower()}',
              f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
@@ -190,6 +190,9 @@ def run(a):
     if a.item068_only:
         verification=verify_item068_outputs(game)
         (game/'item068-runner-verification.json').write_text(json.dumps(verification,indent=2)+'\n','utf8')
+        if a.repair0610:
+            from verify_repair_0610_runtime import verify
+            verify(game,"26.2")
         if a.repair069:
             from verify_repair_069_runtime import verify
             verify(game,'26.2')
@@ -198,6 +201,7 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True)
+    p.add_argument('--repair0610',action='store_true',help='Require current0610 strict focused native checks')
     p.add_argument('--repair069',action='store_true',help='Require fixed facing, stripping, boat naming and real extra-hit damage in focused native QA')
     p.add_argument('--fresh-world',action='store_true',help='Create a new default normal world; copy no fixture')
     p.add_argument('--seed',type=int,help='Signed 64-bit seed for a fresh world; omitted uses a new random seed')

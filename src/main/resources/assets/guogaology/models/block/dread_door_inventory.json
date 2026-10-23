@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "guogaology:block/dread_door_bottom"
+    "layer0": "guogaology:item/dread_door"
   }
 }

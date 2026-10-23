@@ -58,15 +58,15 @@ public final class Bow047Checks {
             for(int grade=1;grade<=3;grade++){
                 var s=bow("hydra_bud"+(grade==1?"":"_lv"+grade));ammo=new ItemStack(Items.ARROW);var arrows=fire(p,s,ammo,20,entities);
                 check(arrows.size()==(grade==1?1:3)&&ammo.getCount()==1,"branch grade enables Infinity / three-arrow volley");
-                for(var a:arrows)check(a.pickup==AbstractArrow.Pickup.DISALLOWED&&a.getPierceLevel()==(grade==3?1:0),"free arrows not recoverable; Lv3 hits two creatures");clear(entities);
+                for(var a:arrows)check(a.pickup==AbstractArrow.Pickup.CREATIVE_ONLY&&a.getPierceLevel()==(grade==3?1:0),"free arrows creative-only; Lv3 hits two creatures");clear(entities);
             }
             for(var special:List.of(Items.TIPPED_ARROW,Items.SPECTRAL_ARROW)){
                 ammo=new ItemStack(special,2);var arrows=fire(p,bow("hydra_bud_lv3"),ammo,20,entities);check(arrows.size()==3&&ammo.getCount()==1,"special ammunition consumes one per volley");
                 check(arrows.stream().filter(a->a.getPickupItemStackOrigin().is(special)).count()==1,"only central arrow retains special ammunition");
-                check(arrows.stream().filter(a->a.pickup==AbstractArrow.Pickup.DISALLOWED).count()==2,"only paid central special arrow can be recovered");clear(entities);
+                check(arrows.stream().filter(a->a.pickup==AbstractArrow.Pickup.CREATIVE_ONLY).count()==2,"only paid central special arrow can be recovered");clear(entities);
             }
             p.getInventory().clearContent();var empty=bow("hydra_bud_lv3");p.setItemSlot(EquipmentSlot.MAINHAND,empty);check(!BowEffects.release(empty,world,p,1,4),"Infinity requires an arrow in inventory");
-            p.setGameMode(GameType.CREATIVE);var creative=fire(p,new ItemStack(MiningContent.BOWS[0]),ItemStack.EMPTY,20,entities);check(creative.size()==1&&creative.getFirst().pickup==AbstractArrow.Pickup.DISALLOWED,"creative bow uses free fallback arrow from empty inventory");clear(entities);p.setGameMode(GameType.SURVIVAL);
+            p.setGameMode(GameType.CREATIVE);var creative=fire(p,new ItemStack(MiningContent.BOWS[0]),ItemStack.EMPTY,20,entities);check(creative.size()==1&&creative.getFirst().pickup==AbstractArrow.Pickup.CREATIVE_ONLY,"creative bow uses native creative-only fallback arrow from empty inventory");clear(entities);p.setGameMode(GameType.SURVIVAL);
             impacts(p,world,entities);
             System.out.println("BOW047_CHECKS_OK checks="+checks+" real release, charge, ammunition, snapshots, volley budgets and arrow debuffs");
         }finally{

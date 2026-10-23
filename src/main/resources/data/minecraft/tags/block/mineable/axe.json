@@ -49,6 +49,10 @@
     "guogaology:dread_pressure_plate",
     "guogaology:dread_sign",
     "guogaology:dread_wall_sign",
-    "guogaology:amber_light"
+    "guogaology:amber_light",
+    "guogaology:laver_hanging_sign",
+    "guogaology:laver_wall_hanging_sign",
+    "guogaology:dread_hanging_sign",
+    "guogaology:dread_wall_hanging_sign"
   ]
 }

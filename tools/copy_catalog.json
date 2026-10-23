@@ -798,7 +798,15 @@
       "item.guogaology.lho_guide_emblem": "LHO空无之境标志",
       "block.guogaology.guogao_drop": "馃槹",
       "gui.guogaology.recipebook.cores": "晶核",
-      "gui.guogaology.recipebook.ggg": "果糕逻辑"
+      "gui.guogaology.recipebook.ggg": "果糕逻辑",
+      "block.guogaology.laver_hanging_sign": "紫菜悬挂式告示牌",
+      "block.guogaology.laver_wall_hanging_sign": "墙上紫菜悬挂式告示牌",
+      "block.guogaology.dread_hanging_sign": "冥杉悬挂式告示牌",
+      "block.guogaology.dread_wall_hanging_sign": "墙上冥杉悬挂式告示牌",
+      "item.guogaology.laver_chest_boat": "紫菜木运输船",
+      "item.guogaology.dread_chest_boat": "冥杉木运输船",
+      "entity.guogaology.laver_chest_boat": "紫菜木运输船",
+      "entity.guogaology.dread_chest_boat": "冥杉木运输船"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1445,7 +1453,15 @@
       "item.guogaology.lho_guide_emblem": "LHO Realm Emblem",
       "block.guogaology.guogao_drop": "Guogao",
       "gui.guogaology.recipebook.cores": "Cores",
-      "gui.guogaology.recipebook.ggg": "Guogaology"
+      "gui.guogaology.recipebook.ggg": "Guogaology",
+      "block.guogaology.laver_hanging_sign": "Laver Hanging Sign",
+      "block.guogaology.laver_wall_hanging_sign": "Laver Wall Hanging Sign",
+      "block.guogaology.dread_hanging_sign": "Dread Fir Hanging Sign",
+      "block.guogaology.dread_wall_hanging_sign": "Dread Fir Wall Hanging Sign",
+      "item.guogaology.laver_chest_boat": "Laver Boat with Chest",
+      "item.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
+      "entity.guogaology.laver_chest_boat": "Laver Boat with Chest",
+      "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest"
     }
   }
 }

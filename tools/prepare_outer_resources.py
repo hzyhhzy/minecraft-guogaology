@@ -311,6 +311,9 @@ def prepare(target,out):
     # Run after clear_generated and every donor write, with target-native loot keys.
     apply_current_entity_loot(out,target)
     apply_current_wood_loot(out,target)
+    # Current explicit repairs must survive the immutable donor's original sand-only recipe.
+    from generate_gameplay_fixes_0610 import apply_pack
+    apply_pack(out,target)
 
 if __name__=='__main__':
     import argparse

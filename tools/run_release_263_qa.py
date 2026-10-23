@@ -155,7 +155,7 @@ def java_executable(java_home):
 
 
 def prepare(args):
-    if args.repair069:
+    if args.repair069 or args.repair0610:
         args.general_audit = True
     require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", args.label) is not None,
             "--label must be one new directory name using letters, digits, '.', '_' or '-'")
@@ -236,6 +236,7 @@ def prepare(args):
                "-Dfabric.development=false", "-Dguogaology.qa263=true",
                f"-Dguogaology.qa263.control={str(args.startup_control).lower()}",
                f"-Dguogaology.qa263.generalAudit={str(args.general_audit).lower()}",
+               f"-Dguogaology.repair0610={str(args.repair0610).lower()}",
                f"-Dguogaology.qa263.seed={args.seed}", f"-Dguogaology.qa263.release={release}",
                f"-Djava.io.tmpdir={temp}", f"-Djna.tmpdir={temp}",
                f"-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}",
@@ -292,7 +293,7 @@ def verify_result(game, release, args):
             f"Invalid QA result: {result_file}")
     require(result.get("cores") == 28, "QA must verify all 28 core appearances and GUI items")
     require(result.get("movingBodiesSubmitted", 0) > 0, "QA rendered no animated core bodies")
-    require(result.get("motionBlocksAudited") == 226,
+    require(result.get("motionBlocksAudited") == (230 if args.repair0610 else 226),
             "QA must compare all 226 registered blocks against native collision/heightmap tags")
     require(result.get("sodium") is (not args.without_sodium)
             and result.get("voxy") is args.voxy, "QA renderer combination differs from the staged mods")
@@ -320,6 +321,9 @@ def verify_result(game, release, args):
         verify_png(game, name)
     if args.repair069:
         from verify_repair_069_runtime import verify
+        verify(game, TARGET)
+    if args.repair0610:
+        from verify_repair_0610_runtime import verify
         verify(game, TARGET)
     return result, len(set(pictures))
 
@@ -370,6 +374,7 @@ def run(args):
 
 def parser():
     argument_parser = argparse.ArgumentParser(description=__doc__)
+    argument_parser.add_argument("--repair0610", action="store_true", help="Strict0610 bow/wood/recipes/loot/collision native cases")
     argument_parser.add_argument("--repair069", action="store_true", help="Require every repaired observation and full bow suite to pass")
     argument_parser.add_argument("--general-audit", action="store_true", help="Opt-in observation-first native registry/model/menu/mining/enchantment/bow audit of the exact release")
     argument_parser.add_argument("--instance", type=Path, required=True,

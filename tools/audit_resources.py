@@ -80,6 +80,8 @@ def audit(root, prune=False):
     for wood in ('laver','dread'):
         add(imported/f'textures/entity/boat/{wood}_boat.png')
         add(imported/f'textures/gui/signs/{wood}.png')
+        add(imported/f'textures/entity/chest_boat/{wood}.png')
+        add(imported/f'textures/gui/hanging_signs/{wood}.png')
     while pending:
         walk(json.loads(pending.pop().read_text(encoding='utf8')))
     candidates = {p for assetroot in (assets,) for directory in ('blockstates', 'models', 'textures', 'equipment', 'core_meshes')

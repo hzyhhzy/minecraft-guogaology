@@ -33,7 +33,7 @@ FACES = (
 def legacy_sign_model(value):
     textures = value.get('textures', {})
     if (value.get('parent', '').startswith('minecraft:block/template_')
-            and textures.get('all') in ('guogaology:block/laver_sign', 'guogaology:block/dread_sign')):
+            and textures.get('all') in tuple('guogaology:block/'+family+suffix for family in FAMILIES for suffix in ('_sign','_hanging_sign'))):
         # Native 1.21.x oak_sign has only a particle texture: its BE draws the board.
         return {'textures': {'particle': textures['particle']}}
     return value
@@ -49,6 +49,28 @@ def legacy_sign_texture(source):
         if flip_y:
             pixels = pixels.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
         result.paste(pixels, position)
+    return result
+
+
+def legacy_hanging_texture(source):
+    """Map native32x32 hanging faces onto the older64x32 entity atlas."""
+    if source.size != (32,32): raise ValueError('Expected32x32 hanging-sign atlas')
+    source=source.convert('RGBA'); result=Image.new('RGBA',(64,32))
+    mappings=(
+        ((18,16,32,26),(2,14),False), ((2,16,16,26),(18,14),False),
+        ((16,16,18,26),(0,14),False), ((0,16,2,26),(16,14),False),
+        ((2,14,16,16),(2,12),False), ((2,26,16,28),(16,12),True),
+        ((0,4,16,6),(4,4),False), ((0,7,16,9),(24,4),False),
+        ((16,4,20,6),(0,4),False), ((16,7,20,9),(20,4),False),
+        ((0,0,16,4),(4,0),False), ((0,9,16,13),(20,0),True))
+    for rect,pos,flip in mappings:
+        pixels=source.crop(rect)
+        if flip:pixels=pixels.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+        result.paste(pixels,pos)
+    # Two crossed chain strips and a V strip. These are alpha-cut native planes.
+    chain=source.crop((22,7,25,13))
+    for x in (0,3,6,9):result.paste(chain,(x,6))
+    v=source.crop((20,0,32,6));result.paste(v,(14,6));result.paste(v,(26,6))
     return result
 
 
@@ -72,6 +94,15 @@ def prepare(out, target):
         destination = assets / f'textures/entity/signs/{family}.png'
         destination.parent.mkdir(parents=True, exist_ok=True)
         texture.save(destination)
+        hanging=assets/f'textures/block/{family}_hanging_sign.png'
+        if hanging.exists():
+            for shape in ('hanging_sign_rot_0','hanging_sign_rot_1','hanging_sign_rot_2','hanging_sign_rot_3',
+                          'hanging_sign_attached_rot_0','hanging_sign_attached_rot_1','hanging_sign_attached_rot_2','hanging_sign_attached_rot_3','wall_hanging_sign'):
+                path=assets/'models/block'/f'{family}_{shape}.json'
+                value=json.loads(path.read_text('utf8'));path.write_text(json.dumps(legacy_sign_model(value),indent=2)+'\n',encoding='utf8')
+            with Image.open(hanging) as source:texture=legacy_hanging_texture(source)
+            destination=assets/f'textures/entity/signs/hanging/{family}.png';destination.parent.mkdir(parents=True,exist_ok=True);texture.save(destination)
+
 
 
 def verify_archive(archive, target):

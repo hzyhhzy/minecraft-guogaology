@@ -59,6 +59,7 @@ public class GuogaologyClient implements ClientModInitializer {
 
       for (String var1 : ModBlocks.WOOD_IDS) {
          ModelLayerRegistry.registerModelLayer(boatLayer(var1), BoatModel::createBoatModel);
+         ModelLayerRegistry.registerModelLayer(chestBoatLayer(var1), BoatModel::createChestBoatModel);
       }
    }
 
@@ -77,8 +78,12 @@ public class GuogaologyClient implements ClientModInitializer {
          EntityRendererRegistry.register(
             ModBoats.boat(var1), var2x -> new GuogaologyBoatRenderer(var2x, var2, GuogaologyMod.id("textures/entity/boat/" + var1 + "_boat.png"))
          );
+         EntityRendererRegistry.register(ModBoats.chestBoat(var1), context -> new GuogaologyBoatRenderer(context,
+            chestBoatLayer(var1), GuogaologyMod.id("textures/entity/chest_boat/" + var1 + ".png")));
       }
    }
+
+   private static ModelLayerLocation chestBoatLayer(String wood) { return new ModelLayerLocation(GuogaologyMod.id(wood + "_chest_boat"), "main"); }
 
    private static ModelLayerLocation boatLayer(String var0) {
       return new ModelLayerLocation(GuogaologyMod.id(var0 + "_boat"), "main");

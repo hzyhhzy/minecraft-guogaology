@@ -20,16 +20,17 @@ class MotionTags263(unittest.TestCase):
     def test_catalog_covers_actual_registrations_and_physical_exceptions(self):
         data=classification()
         groups=[set(data[key]) for key in ('motion_no_leaves','leaf_blocks','legacy_non_motion')]
-        self.assertEqual([len(group) for group in groups],[193,2,31])
+        self.assertEqual([len(group) for group in groups],[189,2,39])
         self.assertEqual(set.union(*groups),set(registry_inventory()))
         self.assertEqual(groups[1],{'dread_leaves','y_leaves'})
         for name in ('ordinal_stone','ordinal_stone_9','set_glass','set_membrane','cloud_pearl','guogao_drop',
-                     'guogao_lamp_shaper','dread_sign','laver_sign','giant_laver','christmas_leaves'):
+                     'guogao_lamp_shaper','giant_laver','christmas_leaves'):
             self.assertIn(name,groups[0])
         for name in ('matrix_sheet','hydra_sprig','chair','nuke_chair','snake_head','graham','fruit_portal',
-                     'lho_trace','fffz_trace','fos_trace','dread_wall_sign','laver_wall_sign'):
+                     'lho_trace','lho_trace_lv2','lho_trace_lv3','fffz_trace','fos_trace','dread_sign','laver_sign','dread_wall_sign','laver_wall_sign',
+                     'laver_hanging_sign','laver_wall_hanging_sign','dread_hanging_sign','dread_wall_hanging_sign'):
             self.assertIn(name,groups[2])
-        self.assertEqual(set(data['native_inherited_exceptions']),{'dread_pressure_plate'})
+        self.assertEqual(set(data['native_inherited_exceptions']),{'dread_pressure_plate','laver_hanging_sign','laver_wall_hanging_sign','dread_hanging_sign','dread_wall_hanging_sign'})
 
     def test_last_overlay_preserves_donor_additions_and_is_idempotent(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'build') as directory:
@@ -44,7 +45,7 @@ class MotionTags263(unittest.TestCase):
             self.assertFalse(result['replace'])
             self.assertIn('minecraft:stone',result['values'])
             self.assertEqual(result['values'].count('guogaology:ordinal_bricks'),1)
-            self.assertEqual(len(result['values']),194)
+            self.assertEqual(len(result['values']),190)
             data=classification()
             for key in ('leaf_blocks','legacy_non_motion'):
                 self.assertFalse({'guogaology:'+name for name in data[key]}&set(result['values']))

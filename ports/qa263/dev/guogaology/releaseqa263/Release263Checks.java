@@ -108,7 +108,7 @@ public final class Release263Checks implements ClientModInitializer {
                 if(!auditWarmQueued){auditWarmQueued=true;client.getSingleplayerServer().execute(()->{try{General263Audit.prepare(client.getSingleplayerServer().overworld());auditWarmReady=true;}catch(Throwable error){failure=error;}});}return;
             }
             if(General263Audit.enabled()&&auditWarmTicks++<100)return;
-            if (!audited) { auditModels(client); if(General263Audit.enabled())General263Audit.client(client); audited=true; }
+            if (!audited) { auditModels(client); if(General263Audit.enabled())General263Audit.client(client); if(Repairs0610Checks.enabled())Repairs0610Checks.client(client); audited=true; }
             if (!queued) {
                 queued=true;
                 int current=scene;
@@ -213,6 +213,7 @@ public final class Release263Checks implements ClientModInitializer {
         player.setGameMode(GameType.CREATIVE);
         if (current==0) {
             if(General263Audit.enabled())General263Audit.server(player);
+            if(Repairs0610Checks.enabled())Repairs0610Checks.server(player);
             auditMotionTags(server.overworld());
             for (var key:REALMS) check(server.getLevel(key)!=null, "registered dimension "+key.identifier());
             check(PortalTravel.destination(Level.OVERWORLD, PortalKind.OUTER).equals(GuogaologyMod.OUTER), "Outer travel mapping");

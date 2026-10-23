@@ -643,5 +643,13 @@
   "item.guogaology.lho_guide_emblem": "LHO Realm Emblem",
   "block.guogaology.guogao_drop": "Guogao",
   "gui.guogaology.recipebook.cores": "Cores",
-  "gui.guogaology.recipebook.ggg": "Guogaology"
+  "gui.guogaology.recipebook.ggg": "Guogaology",
+  "block.guogaology.laver_hanging_sign": "Laver Hanging Sign",
+  "block.guogaology.laver_wall_hanging_sign": "Laver Wall Hanging Sign",
+  "block.guogaology.dread_hanging_sign": "Dread Fir Hanging Sign",
+  "block.guogaology.dread_wall_hanging_sign": "Dread Fir Wall Hanging Sign",
+  "item.guogaology.laver_chest_boat": "Laver Boat with Chest",
+  "item.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
+  "entity.guogaology.laver_chest_boat": "Laver Boat with Chest",
+  "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest"
 }

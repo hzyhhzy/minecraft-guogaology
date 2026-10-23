@@ -14,7 +14,7 @@ import com.mojang.math.Axis;
 public final class GuogaologyBoatRenderer extends EntityRenderer<Boat> {
     private final BoatModel model;private final ResourceLocation texture;
     public GuogaologyBoatRenderer(EntityRendererProvider.Context c,ModelLayerLocation layer,ResourceLocation texture){
-        super(c);model=new BoatModel(c.bakeLayer(layer));this.texture=texture;shadowRadius=.8F;
+        super(c);model=layer.getModel().getPath().endsWith("_chest_boat")?new net.minecraft.client.model.ChestBoatModel(c.bakeLayer(layer)):new BoatModel(c.bakeLayer(layer));this.texture=texture;shadowRadius=.8F;
     }
     @Override public ResourceLocation getTextureLocation(Boat boat){return texture;}
     @Override public void render(Boat b,float yaw,float delta,PoseStack pose,MultiBufferSource buffers,int light){

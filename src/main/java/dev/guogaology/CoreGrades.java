@@ -25,7 +25,10 @@ public final class CoreGrades {
             if(levels.getFirst()==Blocks.AIR)throw new IllegalStateException("Missing base core: "+root);
             for(int level=2;level<=(root.equals("ordinal_crystal")?4:3);level++){
                 var name=root+"_lv"+level;
-                var block=new AnimatedCoreBlock(BlockBalance.apply(name,dev.guogaology.survival.BlockBalance.amethystSettings().nonOpaque()));
+                var settings=BlockBalance.apply(name,dev.guogaology.survival.BlockBalance.amethystSettings().nonOpaque());
+                // Finished Absence Cores remain selectable/mineable but never obstruct movement.
+                if(root.equals("lho_trace"))settings.noCollision();
+                var block=new AnimatedCoreBlock(settings);
                 Registry.register(Registries.BLOCK,GuogaologyMod.id(name),block);
                 Registry.register(Registries.ITEM,GuogaologyMod.id(name),new BlockItem(block,
                         new Item.Settings().fireproof().rarity(rarity(root,level))));

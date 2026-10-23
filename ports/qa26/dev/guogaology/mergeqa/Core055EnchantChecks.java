@@ -83,7 +83,7 @@ public final class Core055EnchantChecks {
             var priorArrows=new HashSet<UUID>();for(var arrow:world.getEntitiesOfClass(AbstractArrow.class,player.getBoundingBox().inflate(8)))priorArrows.add(arrow.getUUID());
             check(BowEffects.release(bow,world,player,1,4),"native enchanted ordinal bow releases");
             for(var arrow:world.getEntitiesOfClass(AbstractArrow.class,player.getBoundingBox().inflate(8),a->!priorArrows.contains(a.getUUID())))arrows.add(arrow);
-            check(arrows.size()==1&&ammo.getCount()==2,"native Infinity keeps real ammunition");check(arrows.getFirst().isOnFire()&&arrows.getFirst().pickup==AbstractArrow.Pickup.DISALLOWED,"native Flame and free-arrow pickup policy");
+            check(arrows.size()==1&&ammo.getCount()==2,"native Infinity keeps real ammunition");check(arrows.getFirst().isOnFire()&&arrows.getFirst().pickup==AbstractArrow.Pickup.CREATIVE_ONLY,"native Flame and free-arrow creative-only pickup policy");
             System.out.println("CORE055_ENCHANT_CHECKS_OK checks="+checks+" native table categories/anvil/grindstone/sockets/cache/Infinity/Flame");
         }finally{
             for(var arrow:arrows)arrow.discard();player.closeContainer();player.containerMenu=player.inventoryMenu;world.setBlock(pos,prior,2);
