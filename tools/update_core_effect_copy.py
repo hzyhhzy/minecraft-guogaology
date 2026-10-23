@@ -70,6 +70,7 @@ EXTRA = {
     'silk_off': ('精准采集：关闭', 'Silk Touch: OFF'),
     'bow_speed': ('箭初速度：×%s', 'Arrow launch speed: ×%s'),
     'bow_native_damage': ('箭伤随实际速度与蓄力变化', 'Arrow damage varies with speed and charge'),
+    'bow_damage_coefficient': ('基础＋晶核系数：%s', 'Base + core coefficient: %s'),
     'status_stealth': ('普通索敌抑制：Lv%s', 'Mob targeting: Lv%s'),
     'status_food': ('饥饿下限：%s/20', 'Food floor: %s/20'),
     'status_mining_flat': ('挖速加值：+%s', 'Mining speed: +%s'),

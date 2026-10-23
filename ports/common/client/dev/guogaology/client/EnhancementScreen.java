@@ -58,11 +58,11 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
         var preview=menu.preview();var values=preview.effects();
         var profile=GearData.profile(gear);
         double wear=EquipmentRules.wearFactor(spec.kind(),profile);
-        if(spec.kind()==7){line(graphics,tr("bow_speed",EquipmentRules.format(new double[]{1.1,1.2,1.3,1.5}[spec.tier()-1])),y,0xffc2d9d0);y+=12;line(graphics,tr("bow_native_damage"),y,0xffc2d9d0);y+=12;}
+        if(spec.kind()==EquipmentRules.BOW){line(graphics,tr("bow_speed",EquipmentRules.format(EquipmentRules.arrowSpeedMultiplier(spec.tier()))),y,0xffc2d9d0);y+=12;line(graphics,tr("bow_damage_coefficient",EquipmentRules.format(EquipmentRules.arrowDamageCoefficient(spec.tier(),profile,preview.deep()))),y,0xffc2d9d0);y+=12;}
         if(spec.kind()<2){line(graphics,tr("status_base_attack",EquipmentRules.format(EquipmentRules.baseAttack(spec.tier(),spec.kind(),GearData.digit(gear)))),y,0xffc2d9d0);y+=12;}
         var current=new EquipmentRules.Gear(spec.tier(),spec.kind(),GearData.digit(gear),profile);
         var attackTerms=EquipmentRules.attackPreviewTerms(current,preview.deep());
-        if(!attackTerms.isEmpty()){
+        if(spec.kind()!=EquipmentRules.BOW&&!attackTerms.isEmpty()){
             String expression=preview.deep()?attackTerms.stream().map(value->"×"+EquipmentRules.format(value)).collect(java.util.stream.Collectors.joining(" ")):"+"+EquipmentRules.format(attackTerms.stream().mapToDouble(Double::doubleValue).sum());
             line(graphics,tr(preview.deep()?"status_attack_factor":"status_attack",expression),y,0xffc2d9d0);y+=12;
         }

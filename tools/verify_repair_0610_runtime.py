@@ -36,12 +36,12 @@ def verify_wood(server, client):
     assert all(row['wholeDoorIcon'] and row['guiMatchesLightFacePixels'] == 288 for row in textures)
 
 
-def verify(game, target):
+def verify(game, target, release='0.6.10'):
     game = Path(game)
     evidence = {}
     for role in ('server', 'client'):
         result = read(game / f'repair0610-{role}-ok.json')
-        assert result['success'] and result['version'] == '0.6.10', role
+        assert result['success'] and result['version'] == release, role
         assert result['wood']['passed'], role
         evidence[role] = result
     verify_wood(evidence['server']['wood'], evidence['client']['wood'])
@@ -85,7 +85,7 @@ def verify(game, target):
         assert len(server['allNativeCraftingRecipes']) == 149
         assert all(row['matched'] and row['outputMatches'] and 'error' not in row
                    for row in server['allNativeCraftingRecipes'])
-    result = {'passed': True, 'minecraft': target, 'version': '0.6.10',
+    result = {'passed': True, 'minecraft': target, 'version': release,
               'creativeAndSurvivalArrowPickup': True, 'nativeBowDrawCases': 280,
               'sandMixtures': 16, 'rejectedCraftingGrids': 288,
               'actualGummyJarBreaks': 360, 'extraMiningStoneBreaks': 56,

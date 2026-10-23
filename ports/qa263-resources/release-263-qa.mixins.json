@@ -2,6 +2,14 @@
   "required": true,
   "package": "dev.guogaology.releaseqa263.mixin",
   "compatibilityLevel": "JAVA_25",
-  "client": ["HiddenWindowMixin", "UnlockedMouseMixin"],
-  "injectors": {"defaultRequire": 1}
+  "client": [
+    "HiddenWindowMixin",
+    "UnlockedMouseMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "Combat0611SpawnMixin"
+  ]
 }

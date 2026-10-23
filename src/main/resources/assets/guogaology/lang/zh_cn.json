@@ -651,5 +651,6 @@
   "item.guogaology.laver_chest_boat": "紫菜木运输船",
   "item.guogaology.dread_chest_boat": "冥杉木运输船",
   "entity.guogaology.laver_chest_boat": "紫菜木运输船",
-  "entity.guogaology.dread_chest_boat": "冥杉木运输船"
+  "entity.guogaology.dread_chest_boat": "冥杉木运输船",
+  "mining.guogaology.bow_damage_coefficient": "基础＋晶核系数：%s"
 }

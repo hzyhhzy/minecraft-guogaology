@@ -46,7 +46,7 @@ public final class Bow047Checks {
         try{
             p.teleport(new TeleportTransition(world,new Vec3(8.5,290,24.5),Vec3.ZERO,0,0,TeleportTransition.DO_NOTHING));p.hasChangedDimension();if(!p.connection.hasClientLoaded())p.connection.handleAcceptPlayerLoad(new net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket());
             p.setOnGround(true);p.setGameMode(GameType.SURVIVAL);p.setDeltaMovement(Vec3.ZERO);
-            int[] durability={768,1152,1536,2304},slots={2,4,6,8},caps={3,3,3,3};double[] speed={3.3,3.6,3.9,4.5};
+            int[] durability={768,1152,1536,2304},slots={2,4,6,8},caps={3,3,3,3};double[] speed={3,3.9,4.8,6};
             for(int i=0;i<4;i++){
                 var s=new ItemStack(MiningContent.BOWS[i]);GearData.refresh(s);check(s.getItem() instanceof OrdinalBowItem,"four registered vanilla-bow subclasses");
                 check(s.getMaxDamage()==durability[i]&&GearData.capacity(s)==slots[i]&&EquipmentRules.grade(i+1)==caps[i],"bow durability / sockets / regional cap tier"+(i+1));
@@ -54,7 +54,7 @@ public final class Bow047Checks {
                 var ammo=new ItemStack(Items.ARROW,2);var arrows=fire(p,s,ammo,20,entities);check(arrows.size()==1&&ammo.getCount()==1&&s.getDamageValue()==1,"plain bow consumes one arrow and one durability");
                 near(arrows.getFirst().getDeltaMovement().length(),speed[i],.1,"vanilla full-draw launch speed multiplier (native inaccuracy retained)");check(arrows.getFirst().isCritArrow(),"native full-draw critical flag retained");clear(entities);
             }
-            var ammo=new ItemStack(Items.ARROW,2);var half=fire(p,new ItemStack(MiningContent.BOWS[3]),ammo,10,entities);near(half.getFirst().getDeltaMovement().length(),4.5*BowItem.getPowerForTime(10),.04,"native half-draw speed curve");check(!half.getFirst().isCritArrow(),"half draw has no native random critical");clear(entities);
+            var ammo=new ItemStack(Items.ARROW,2);var half=fire(p,new ItemStack(MiningContent.BOWS[3]),ammo,10,entities);near(half.getFirst().getDeltaMovement().length(),6*BowItem.getPowerForTime(10),.04,"native half-draw speed curve");check(!half.getFirst().isCritArrow(),"half draw has no native random critical");clear(entities);
             for(int grade=1;grade<=3;grade++){
                 var s=bow("hydra_bud"+(grade==1?"":"_lv"+grade));ammo=new ItemStack(Items.ARROW);var arrows=fire(p,s,ammo,20,entities);
                 check(arrows.size()==(grade==1?1:3)&&ammo.getCount()==1,"branch grade enables Infinity / three-arrow volley");
@@ -98,7 +98,7 @@ public final class Bow047Checks {
         // Swapping weapons after firing cannot grant/remove in-flight effects.
         p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_SWORD));p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);
         for(var a:arrows){a.setCritArrow(false);a.setDeltaMovement(3,0,0);}
-        double direct=snapshot.damage(6),burst=direct*snapshot.burst;
+        double direct=snapshot.damage(11),burst=direct*snapshot.burst;
         check(world.getEntitiesOfClass(Cow.class,first.getBoundingBox().inflate(3)).contains(first),"first actual target is query-visible before burst");System.out.println("BOW_AUDIT_TARGETS before="+world.getEntitiesOfClass(Cow.class,first.getBoundingBox().inflate(3)).size()+" burst="+snapshot.burst);invokeHit(arrows.getFirst(),first);System.out.println("BOW_AUDIT_TARGETS after directHealth="+first.getHealth()+" neighborHealth="+neighbor.getHealth()+" firstLedger="+BowVolleyLedger.get(world.getServer()).burstSeen(snapshot.volley,first.getUUID())+" neighborLedger="+BowVolleyLedger.get(world.getServer()).burstSeen(snapshot.volley,neighbor.getUUID()));near(100-first.getHealth(),direct+burst,.003,"first direct target gets one direct and one burst");near(100-neighbor.getHealth(),burst,.003,"neighbor receives one explosion");
         near(ally.getHealth(),100,.001,"volley explosion excludes ally");near(p.getHealth(),playerHealth,.001,"volley explosion excludes shooter");
         check(first.hasEffect(MobEffects.WITHER)&&first.hasEffect(MobEffects.SLOWNESS),"arrow applies Guogao directly");check(!neighbor.hasEffect(MobEffects.WITHER),"explosion never spreads Guogao");check(((ArrowShotAccess)arrows.getFirst()).guogaology$shot().burstUsed,"per-arrow first burst consumed");

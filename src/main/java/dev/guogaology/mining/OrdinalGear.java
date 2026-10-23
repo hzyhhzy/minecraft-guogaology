@@ -3,8 +3,6 @@ package dev.guogaology.mining;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.entity.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -24,11 +22,6 @@ public class OrdinalGear extends Item {
     }
     @Override public boolean postMine(ItemStack stack,World world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClient)stack.damage(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
     @Override public boolean postHit(ItemStack stack,LivingEntity target,LivingEntity attacker){if(kind==1){MiningEffects.burst(stack,target,attacker);MiningEffects.control(stack,target,attacker);}stack.damage(kind==1?1:2,attacker,EquipmentSlot.MAINHAND);return true;}
-    @Override public float getBonusAttackDamage(Entity target,float current,DamageSource source){
-        if(!(source.getAttacker() instanceof PlayerEntity p)||p.getMainHandStack().getItem()!=this)return 0;
-        double actual=Math.max(.1,GearData.attackWithBook(p.getMainHandStack(),p));
-        return (float)(current*(actual/Math.min(2048,actual)-1));
-    }
     @Override public int getEnchantability(){return 15;}
     @Override public boolean canRepair(ItemStack gear,ItemStack ingredient){return tier>0&&ingredient.isOf(MiningContent.MATERIALS[tier-1]);}
     @Override public void appendTooltip(ItemStack s,TooltipContext context,java.util.List<Text> out,TooltipType flag){

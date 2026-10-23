@@ -30,8 +30,8 @@ public final class BowEffects {
         int ammoCost=player.hasInfiniteMaterials()||branch>0&&ammo.is(Items.ARROW)?0:EnchantmentHelper.processAmmoUse(world,bow,ammo,1);
         if(ammoCost>ammo.getCount())return false;boolean free=ammoCost==0;
         var shot=new BowShotData(UUID.randomUUID().toString(),player.getUUID().toString(),player.getTeam()==null?"":player.getTeam().getName(),
-            deep?0:EquipmentRules.attack(0,own,book,false,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)),
-            deep?EquipmentRules.attack(1,own,book,true,EquipmentRules.bookBase(bookTier),EquipmentRules.bookAttackHp(bookTier)):1,
+            deep?0:EquipmentRules.attack(0,List.of(),book,false,EquipmentRules.bookAttackBase(bookTier),EquipmentRules.bookAttackHp(bookTier)),
+            deep?EquipmentRules.attack(1,List.of(),book,true,EquipmentRules.bookAttackBase(bookTier),EquipmentRules.bookAttackHp(bookTier)):1,
             draw,EquipmentRules.criticalCoefficient(own,List.of(),deep),EquipmentRules.highest(own,7),
             EquipmentRules.controlDuration(own,book,EquipmentRules.bookDurationBase(bookTier)));
         int count=branch>=2?3:1;var arrows=new ArrayList<AbstractArrow>();
@@ -39,6 +39,9 @@ public final class BowEffects {
             ItemStack round=i==0?ammo.copyWithCount(1):new ItemStack(Items.ARROW);
             ArrowItem type=round.getItem() instanceof ArrowItem a?a:(ArrowItem)Items.ARROW;
             AbstractArrow arrow=type.createArrow(world,round,player,bow.copy());
+            // Bow cores belong before native speed, rounding, Power and criticals;
+            // only manuscript additions/factors remain in the saved hit snapshot.
+            arrow.setBaseDamage(EquipmentRules.arrowDamageCoefficient(tier,own,deep));
             var access=(ArrowShotAccess)arrow;access.guogaology$shot(shot.copy());if(branch>=3)access.guogaology$setPierceLevel((byte)1);
             // Native free projectiles are collectible only in creative mode.
             // This also lets creative players clear free/multishot arrows without

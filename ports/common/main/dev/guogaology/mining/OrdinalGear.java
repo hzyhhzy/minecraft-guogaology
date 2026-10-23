@@ -3,8 +3,6 @@ package dev.guogaology.mining;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
@@ -24,11 +22,6 @@ public final class OrdinalGear extends Item {
     }
     @Override public boolean mineBlock(ItemStack stack,Level world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClientSide())stack.hurtAndBreak(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
     @Override public void hurtEnemy(ItemStack stack,LivingEntity target,LivingEntity attacker){if(kind==1){MiningEffects.burst(stack,target,attacker);MiningEffects.control(stack,target,attacker);}stack.hurtAndBreak(kind==1?1:2,attacker,EquipmentSlot.MAINHAND);}
-    @Override public float getAttackDamageBonus(Entity target,float current,DamageSource source){
-        if(!(source.getEntity() instanceof Player p)||p.getMainHandItem().getItem()!=this)return 0;
-        double actual=Math.max(.1,GearData.attackWithBook(p.getMainHandItem(),p));
-        return (float)(current*(actual/Math.min(2048,actual)-1));
-    }
     @Override public void appendHoverText(ItemStack s,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
         if(kind>=2)out.accept(Component.translatable("mining.guogaology.native_armor",EquipmentRules.format(EquipmentRules.nativeArmor(tier,kind)),EquipmentRules.format(EquipmentRules.nativeToughness(tier,kind))));
         if(kind==0)out.accept(Component.translatable("mining.guogaology.mining_speed",EquipmentRules.format(GearData.denxi(s))));

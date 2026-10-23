@@ -17,7 +17,7 @@ for (const item of payload.cases) {
   for (const [key, expected] of Object.entries(snapshot.effects)) near(actual[key], expected, item.id + '.' + key);
 }
 // Independent channel and ranged checks accompany the Java golden comparison.
-assert.equal(payload.rules.revision,49,'Latest production rules required');
+assert.equal(payload.rules.revision,50,'Latest production rules required');
 assert.deepStrictEqual(payload.rules.regionalGrades,[1,3,3,3,3],'numeric Lv1, four equipment tiers Lv3');
 assert.deepStrictEqual(payload.rules.bookRegionalGrades,[0,3,3,3,3],'four manuscripts allow regional Lv3');
 assert.deepStrictEqual(payload.rules.bookOrdinalGrades,[0,4,4,4,4],'four manuscripts allow Ordinal raw stage4 / displayed Lv3');
@@ -33,13 +33,39 @@ for(const deep of [false,true]){
  state.offhand.cores=[{type:5,level:3}];near(engine.calculate(state).projectileCoefficient,0,'no manuscript Criticality channel');assert(!engine.misc(state).fireResistance,'Criticality does not grant fire resistance');
  state.offhand.cores=[{type:6,level:2}];assert(engine.misc(state).fireResistance,'Boundary II grants fire resistance');
  const bow=engine.defaults();bow.deep=deep;bow.mainhand={tier:4,kind:7,cores:[{type:2,level:3},{type:5,level:3}]};
- const shot=engine.ranged(bow,{bowCharge:1});near(shot.launchSpeed,4.5,'Omega bow launch speed');near(shot.vanillaBase,9,'velocity-based damage');near(shot.directRaw,9,'bare bow ordinary minimum');near(shot.directMaximum,14,'full-draw random damage bound');near(shot.burstRaw,2.7,'bow owns burst without extra deep scale');
- assert.equal(shot.arrowCount,3,'multishot');assert.equal(shot.targetsPerArrow,2,'piercing');near(shot.totalHealthDamage,11.7,'three arrows do not multiply one target damage');
+ const shot=engine.ranged(bow,{bowCharge:1});near(shot.launchSpeed,6,'Omega bow launch speed');near(shot.vanillaBase,12,'velocity-based damage');near(shot.directRaw,12,'bare bow ordinary minimum');near(shot.directMaximum,19,'full-draw random damage bound');near(shot.burstRaw,3.6,'bow owns burst without extra deep scale');
+ assert.equal(shot.arrowCount,3,'multishot');assert.equal(shot.targetsPerArrow,2,'piercing');near(shot.totalHealthDamage,15.6,'three arrows do not multiply one target damage');
  const changed=engine.ranged(bow,{impactSpeed:2,bowCharge:.5,arrowCriticalBonus:100});near(changed.vanillaBase,4,'impact velocity overrides launch');near(changed.criticalBonus,0,'partial draw cannot retain full-draw crit');
  const unreleased=engine.ranged(bow,{bowCharge:.05});near(unreleased.totalHealthDamage,0,'vanilla minimum draw is required');assert.equal(unreleased.arrowCount,0,'no arrow below minimum draw');
  bow.mainhand.cores=[{type:1,level:3}];bow.offhand={tier:4,kind:6,cores:[{type:8,level:4}]};
- const charged=engine.ranged(bow,{bowCharge:.5,impactSpeed:2});near(charged.directRaw,deep?4*1.2*1.4*2:4+(3+2.5+2)*.5,'charge and realm enhancement match launch payload');
+ const charged=engine.ranged(bow,{bowCharge:.5,impactSpeed:2});near(charged.directRaw,deep?12*1.4*1.4:7+(2.5+4)*.5,'charge and realm enhancement match launch payload');
 }
+
+// Independent agreed combat cases: coefficient changes precede native ceil;
+// manuscript changes follow it, and protection is not doubled with attack.
+for(const deep of [false,true]) {
+ const s=engine.defaults();s.deep=deep;s.mainhand={tier:4,kind:1,cores:Array.from({length:8},()=>({type:1,level:3}))};s.offhand={tier:4,kind:6,cores:Array.from({length:6},()=>({type:1,level:3}))};
+ near(engine.calculate(s).attack,deep?1627.0982297193164:60.15278257941478,'Agreed maximum Tower sword '+deep);
+ near(engine.calculate(s).protectionFactor,1.2,'Attack changes leave book protection unchanged '+deep);
+ s.mainhand.kind=7;
+ near(engine.ranged(s).directRaw,deep?660.6857023834318:56.696938456699066,'Agreed maximum Tower bow '+deep);
+ near(engine.calculate(s).attack,engine.ranged(s).directRaw,'Bow preview is nominal noncritical hit '+deep);
+ s.mainhand.cores=[];s.mainhand.nativePower=5;
+ near(engine.ranged(s).arrowCoefficient,5,'Power V native coefficient');
+ near(engine.ranged(s).directRaw,deep?247.75713839378693:48.696938456699066,'Agreed Power V Omega bow with book '+deep);
+ s.offhand=engine.empty(6);near(engine.ranged(s).directRaw,30,'Power V Omega bow without manuscript '+deep);
+ for(let tier=1;tier<=4;tier++){s.mainhand={tier,kind:7,cores:[]};near(engine.ranged(s).directRaw,[6,8,10,12][tier-1],'New bare bow tier '+tier+' realm '+deep);}
+}
+
+// Exact native float-to-double order at an integer ceil boundary.
+const gammaBoundary=engine.defaults();gammaBoundary.mainhand={tier:3,kind:7,cores:[{type:1,level:1}]};
+const gammaHit=engine.ranged(gammaBoundary,{bowCharge:1});
+near(gammaHit.launchSpeed,Math.fround(4.8),'Gamma native launch float');
+near(gammaHit.nativeImpactSpeed,Math.fround(4.8),'Gamma native impact float');
+near(gammaHit.arrowCoefficient,2.5,'Gamma Lv1 coefficient');
+near(gammaHit.directRaw,13,'Native separate-float promoted-double product ceils to13');
+near(engine.calculate(gammaBoundary).attack,13,'Java/JS nominal preview keeps native float boundary');
+near(engine.ranged(gammaBoundary,{impactSpeed:4.799999}).directRaw,12,'Below-boundary actual impact is not rounded up by tolerance');
 near(engine.damage(10, 'player_attack', { armor: 20, toughness: 8 }).healthDamage, 3, 'vanilla armor/toughness');
 // Only the Inner realm changes landing physics; the Underworld shares enhancement
 // scaling but must not silently inherit the new environmental fall reduction.
@@ -85,6 +111,23 @@ near(engine.damage(4, 'out_of_world', { armor: 20, toughness: 12, resistance: 5,
 near(engine.damage(10, 'sonic_boom', { armor: 20, resistance: 1, epf: 20, factor: 4 }).healthDamage, 2, 'sonic ignores armor and EPF');
 near(engine.damage(10, 'fall', { fallFactor: .25, factor: 2 }).healthDamage, 1.25, 'Absence fall factor applies once');
 near(engine.damage(10, 'lava', { fireResistance: true }).healthDamage, 0, 'fire resistance');
+
+// Independent agreed combat cases: coefficient changes precede native ceil;
+// manuscript changes follow it, and protection is not doubled with attack.
+for(const deep of [false,true]) {
+ const s=engine.defaults();s.deep=deep;s.mainhand={tier:4,kind:1,cores:Array.from({length:8},()=>({type:1,level:3}))};s.offhand={tier:4,kind:6,cores:Array.from({length:6},()=>({type:1,level:3}))};
+ near(engine.calculate(s).attack,deep?1627.0982297193164:60.15278257941478,'Agreed maximum Tower sword '+deep);
+ near(engine.calculate(s).protectionFactor,1.2,'Attack changes leave book protection unchanged '+deep);
+ s.mainhand.kind=7;
+ near(engine.ranged(s).directRaw,deep?660.6857023834318:56.696938456699066,'Agreed maximum Tower bow '+deep);
+ near(engine.calculate(s).attack,engine.ranged(s).directRaw,'Bow preview is nominal noncritical hit '+deep);
+ s.mainhand.cores=[];s.mainhand.nativePower=5;
+ near(engine.ranged(s).arrowCoefficient,5,'Power V native coefficient');
+ near(engine.ranged(s).directRaw,deep?247.75713839378693:48.696938456699066,'Agreed Power V Omega bow with book '+deep);
+ s.offhand=engine.empty(6);near(engine.ranged(s).directRaw,30,'Power V Omega bow without manuscript '+deep);
+ for(let tier=1;tier<=4;tier++){s.mainhand={tier,kind:7,cores:[]};near(engine.ranged(s).directRaw,[6,8,10,12][tier-1],'New bare bow tier '+tier+' realm '+deep);}
+}
+
 near(engine.damage(10, 'player_attack', { factor: 2, absorption: 3 }).healthDamage, 2, 'absorption follows protection');
 near(engine.combat({attack:10,criticalCoefficient:0},{cooldown:.5,critical:true}).directRaw,4,'low cooldown cannot produce a vanilla critical');
 near(engine.combat({attack:10,criticalCoefficient:0},{cooldown:1,critical:true}).directRaw,15,'full cooldown critical');
@@ -221,6 +264,21 @@ const coreType=elements.get('cores').children[0].children[1];assert(!coreType.di
 assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.cores.length,1,'socket installs after native enchantments removed');
 elements.get('nativeYield').value='3';elements.get('nativeYield').oninput();
 assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.nativeYield,0,'native event handler cannot bypass occupied sockets');
+
+const powerBow=context.GuogaologySimulator.getState();powerBow.selected='mainhand';powerBow.snapshot.mainhand={tier:4,kind:7,cores:[],nativePower:5};powerBow.snapshot.offhand={tier:-1,kind:6,cores:[]};
+elements.get('jsonText').value=JSON.stringify(powerBow);elements.get('importJson').onclick();
+near(context.GuogaologySimulator.engine.ranged(context.GuogaologySimulator.getCalculationSnapshot()).directRaw,30,'Power V bow UI calculation');
+assert(elements.get('cores').children[0].children[1].disabled,'Power enchantment disables bow sockets');
+elements.get('nativePower').value='0';elements.get('nativePower').oninput();
+const bowCoreType=elements.get('cores').children[0].children[1];bowCoreType.value='1';bowCoreType.onchange();
+assert(elements.get('nativePower').disabled,'Socketed bow disables Power input');
+elements.get('nativePower').value='5';elements.get('nativePower').oninput();
+assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.nativePower,0,'Power handler cannot bypass occupied bow sockets');
+const conflictBow=context.GuogaologySimulator.getState();conflictBow.snapshot.mainhand.nativePower=5;
+elements.get('jsonText').value=JSON.stringify(conflictBow);elements.get('importJson').onclick();
+assert(elements.get('configConflict').textContent.includes('暂停计算'),'Imported Power/core conflict pauses calculation');
+elements.get('keepSockets').onclick();assert.equal(context.GuogaologySimulator.getState().snapshot.mainhand.nativePower,0,'Explicit socket path clears Power');
+
 const invalidText=context.GuogaologySimulator.getState();elements.get('jsonText').value='{bad';elements.get('importJson').onclick();assert(elements.get('jsonError').textContent,'bad JSON reported');
 assert(storage.size>0 && context.location.hash.startsWith('#config='),'local/hash persistence');
 console.log('ENHANCEMENT_SIMULATOR_OK cases='+payload.cases.length+' comparisons='+comparisons+'; damage, fall, limits and local UI checks passed');

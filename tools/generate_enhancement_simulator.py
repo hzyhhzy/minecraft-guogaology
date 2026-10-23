@@ -45,7 +45,7 @@ def main() -> None:
     parser.add_argument("--node", default=shutil.which("node"), help="Node executable for verification")
     args = parser.parse_args()
     if args.health_preview:
-        parser.error("The old health preview is retired; run without --health-preview for production revision49.")
+        parser.error("The old health preview is retired; run without --health-preview for production revision50.")
     if not args.node:
         raise SystemExit("Node is required for the Java/JavaScript comparison.")
     work = ROOT / "build/enhancement-simulator"
@@ -59,8 +59,8 @@ def main() -> None:
         classes.mkdir(parents=True, exist_ok=True)
         run([str(home / ("bin/javac" + suffix)), "--release", "21", "-encoding", "UTF-8", "-d", str(classes), str(source)])
     exported = json.loads(run([java, "-cp", str(classes), "dev.guogaology.mining.EquipmentRules", "cases"]))
-    if not exported.get("cases") or exported["rules"].get("revision") != 49:
-        raise SystemExit("EquipmentRules revision49 golden cases are required.")
+    if not exported.get("cases") or exported["rules"].get("revision") != 50:
+        raise SystemExit("EquipmentRules revision50 golden cases are required.")
     rules = dict(exported["rules"])
     rules["coreNames"] = {}
     rules["coreStageNames"] = {}
@@ -82,13 +82,14 @@ def main() -> None:
     engine = engine_path.read_text(encoding="utf-8")
     if engine != (ROOT / "tools/enhancement_proposal_engine.js").read_text(encoding="utf-8"):
         raise SystemExit("Legacy engine alias differs from production; synchronize it before generation.")
+    production_version = re.search(r"^mod_version=(.+)$", (ROOT / "gradle.properties").read_text(encoding="utf-8"), re.M).group(1).strip()
     build = {"caseCount": len(exported["cases"]), "ruleSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
              "engineSha256": hashlib.sha256(engine.encode("utf-8")).hexdigest(), "revision": rules["revision"],
-             "healthPreview": False, "proposalPreview": False, "productionVersion": "0.5.7"}
+             "healthPreview": False, "proposalPreview": False, "productionVersion": production_version}
     template = (ROOT / "tools/enhancement_simulator_current.template.html").read_text(encoding="utf-8")
-    html = template.replace("__MODE_ZH__", "0.5.7 · 当前Mod规则").replace("__MODE_EN__", "0.5.7 · Current Mod rules")
+    html = template.replace("__MODE_ZH__", production_version + " · 当前Mod规则").replace("__MODE_EN__", production_version + " · Current Mod rules")
     html = html.replace("__RULES_JSON__", json.dumps(rules, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"))
-    html = html.replace("__ENGINE_JS__", engine).replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":")))
+    html = html.replace("__ENGINE_JS__", engine).replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":"))).replace("__PRODUCTION_VERSION__", production_version)
     if re.search(r"__[A-Z_]+__", html):
         raise SystemExit("Unresolved template marker.")
     candidate = work / "enhancement-simulator.html"
@@ -102,7 +103,7 @@ def main() -> None:
     print(f"Generated {output} ({len(html.encode('utf-8')):,} bytes; Java golden cases: {len(exported['cases'])})")
     reference = (ROOT / "tools/enhancement_reference.template.html").read_text(encoding="utf-8")
     reference = reference.replace("__RULES_JSON__", json.dumps(rules, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"))
-    reference = reference.replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":")))
+    reference = reference.replace("__BUILD_JSON__", json.dumps(build, separators=(",", ":"))).replace("__PRODUCTION_VERSION__", production_version)
     reference_path = output.with_name("core-effects-reference.html")
     reference_path.write_text(reference, encoding="utf-8", newline="\n")
     print(f"Generated {reference_path} (9 core types, 28 grade entries, ordinal bows)")

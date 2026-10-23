@@ -1,1 +1,17 @@
-{"required":true,"package":"dev.guogaology.qa.mixin","compatibilityLevel":"JAVA_25","client":["HiddenWindowMixin","UnlockedMouseMixin","FixtureLoaderMixin","VoxyWorldgenProbeMixin"],"injectors":{"defaultRequire":1}}
+{
+  "required": true,
+  "package": "dev.guogaology.qa.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "HiddenWindowMixin",
+    "UnlockedMouseMixin",
+    "FixtureLoaderMixin",
+    "VoxyWorldgenProbeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "Combat0611SpawnMixin"
+  ]
+}

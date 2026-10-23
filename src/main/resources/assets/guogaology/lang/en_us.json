@@ -651,5 +651,6 @@
   "item.guogaology.laver_chest_boat": "Laver Boat with Chest",
   "item.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
   "entity.guogaology.laver_chest_boat": "Laver Boat with Chest",
-  "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest"
+  "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
+  "mining.guogaology.bow_damage_coefficient": "Base + core coefficient: %s"
 }

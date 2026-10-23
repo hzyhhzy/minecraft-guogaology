@@ -1,4 +1,4 @@
-/* Reproducible offline extrema audit of production revision49.
+/* Reproducible offline extrema audit of production revision50.
  * Run from any directory with Node; no Minecraft, browser, or third-party package.
  * Legacy proposal filenames are aliases of the production rules and engine.
  */
@@ -17,7 +17,7 @@ for (const file of [rulesPath, enginePath]) {
 }
 const payload = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
 const rules = payload.rules || payload;
-assert.equal(rules.revision, 49, 'Current production rules are required');
+assert.equal(rules.revision, 50, 'Current production rules are required');
 const engine = require(enginePath);
 assert.equal(typeof engine.calculate, 'function', 'Proposal engine calculate API');
 assert.equal(typeof engine.defaults, 'function', 'Proposal engine defaults API');
@@ -373,7 +373,7 @@ function lowerGradeProtection(deep) {
 const objectives = { normal: auditObjectives(false), deep: auditObjectives(true) };
 const output = {
   schemaVersion: 3,
-  scope: 'Production revision49 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
+  scope: 'Production revision50 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
   assumptions: {
     tier: 4, swordSlots: 8, manuscriptSlots: 6, armorSlotsPerPiece: 8,
     regionalLevel: 3, ordinalLevel: 4,
@@ -405,16 +405,28 @@ output.rangedExamples = [false, true].flatMap(deep => [1, 2, 3, 4].map(tier => {
   const shot = engine.ranged(s, {bowCharge: 1});
   return {deep, tier, configuration: s, shot};
 }));
+
+output.combatBalanceExamples = [false,true].flatMap(deep => [
+ {kind:1,cores:crystals(T.power,8),labelZh:'Ω剑 · 8颗Lv3幂塔',labelEn:'Omega sword · 8Lv3 Tower'},
+ {kind:7,cores:crystals(T.power,8),labelZh:'Ω弓 · 8颗Lv3幂塔',labelEn:'Omega bow · 8Lv3 Tower'},
+ {kind:7,cores:[],nativePower:5,labelZh:'Ω弓 · 力量Ⅴ',labelEn:'Omega bow · PowerV'}
+].map(row=>{
+ const s=snapshot(deep);s.mainhand=item(row.kind,row.cores,{nativePower:row.nativePower||0});s.offhand=engine.empty(6);
+ const hit=()=>row.kind===7?engine.ranged(s).directRaw:engine.calculate(s).attack,withoutBook=hit();
+ s.offhand=item(6,crystals(T.power,6));
+ return {deep,labelZh:row.labelZh,labelEn:row.labelEn,withoutBook,withBook:hit(),configuration:s};
+}));
+
 output.balanceCalibration={
   attackRatio:output.deep.maximumAttack.value/output.normal.maximumAttack.value,
   protectionRatio:output.deep.maximumProtection.value/output.normal.maximumProtection.value,
   normalUnchanged:false,deepMaximumProtectionUnchanged:false,
-  goal:'Production revision49; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
+  goal:'Production revision50; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
 };
 const close = (a, b, label) => assert(Math.abs(a - b) < 1e-8 * Math.max(1, Math.abs(b)), label + ': ' + a + ' vs ' + b);
 const R = Math.sqrt(8), armorF = 1 + 2 * R;
-close(output.normal.maximumAttack.value, 16 + 2 + 3 * R + 6 + 2.5 * Math.sqrt(2), 'Normal independent peak');
-close(output.deep.maximumAttack.value, 16 * 1.2 * 3 * (1 + .4 * Math.sqrt(2)) * (1 + R), 'Deep independent peak');
+close(output.normal.maximumAttack.value, 16 + 4 + 9 * R + 6 * Math.sqrt(5) + 2.5, 'Normal independent peak');
+close(output.deep.maximumAttack.value, 16 * 1.4 * 5 * (1 + .4 * Math.sqrt(2)) * (1 + 4 * R), 'Deep independent peak');
 close(output.normal.maximumProtection.value, armorF * (1.2 + Math.sqrt(5) + .4), 'Normal extra defense independent peak');
 close(output.deep.maximumProtection.value, armorF * 1.2 * 3 * (1 + .4 * Math.sqrt(2)), 'Deep extra defense independent peak');
 close(output.normal.maximumHealth.value, 20 + 12 * Math.sqrt(6), 'Maximum health');

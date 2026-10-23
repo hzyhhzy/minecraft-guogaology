@@ -1,4 +1,4 @@
-/* Independent production revision49 channel requirements; no Minecraft/game execution. */
+/* Independent production revision50 channel requirements; no Minecraft/game execution. */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
 const root=path.resolve(__dirname,'../..');
@@ -18,7 +18,7 @@ function calc(s){const copy=JSON.parse(JSON.stringify(s)),e=E.calculate(s);eq(s,
 function equipArmor(s,cores=[],tier=4){armorKeys.forEach((key,i)=>s[key]=gear(i+2,JSON.parse(JSON.stringify(cores)),tier));return s;}
 function withoutSlot(e){const r={...e};delete r.activeBookSlot;delete r.totalMinedBlocks;return r;}
 
-eq(rules.proposalRevision,49,'Current production revision');
+eq(rules.proposalRevision,50,'Current production revision');
 for(let kind=0;kind<6;kind++)eq(rules.compatibility[kind][8],false,'Ordinal incompatible with gear kind '+kind);
 eq(rules.compatibility[6][8],true,'Ordinal remains manuscript-compatible');
 eq(rules.nativeArmorByTier,[15,20,24,30],'Native armor totals');
@@ -32,10 +32,10 @@ eq(rules.efficiencyGrades,undefined,'Retired manuscript Efficiency grades remove
 for(const deep of[false,true])for(let tier=1;tier<=4;tier++){
  const s=state(deep);s.offhand.tier=tier;const e=calc(s),b=.05*tier;
  near(e.bookBase,b,'Manuscript innate attack/protection tier '+tier);
- near(e.bookInnateAttackHp,.5*tier,'Manuscript normal HP tier '+tier);
+ near(e.bookInnateAttackHp,tier,'Manuscript normal HP tier '+tier);
  near(e.bookHealingBase,.1*tier,'Manuscript healing baseline tier '+tier);
  near(e.bookDurationBase,.25*tier,'Manuscript duration baseline tier '+tier);
- near(e.attack,deep?12*(1+b):12+.5*tier,'Empty manuscript actual attack');
+ near(e.attack,deep?12*(1+.1*tier):12+tier,'Empty manuscript actual attack');
  near(e.protectionFactor,1+b,'Empty manuscript extra protection');
  near(e.regeneration,0,'Empty manuscript cannot heal');
  near(e.controlSeconds,0,'Empty manuscript cannot inflict a debuff');
@@ -49,16 +49,16 @@ for(const deep of[false,true])for(let tier=1;tier<=4;tier++){
 // Every attack/protection grade is applied before same-item RSS.
 for(const deep of[false,true]){
  for(let level=1;level<=3;level++){
-  const s=state(deep,[],[core(1,level)]),p=[.25,.5,1][level-1];
-  near(calc(s).attack,deep?12*1.2*(1+p):14+level,'Book Power grade '+level);
+  const s=state(deep,[],[core(1,level)]),p=[.5,1,2][level-1],swordP=[1,2,4][level-1],q=[.25,.5,1][level-1];
+  near(calc(s).attack,deep?12*1.4*(1+p):16+2*level,'Book Power grade '+level);
   s.mainhand=gear(1,[core(1,level)]);
-  near(calc(s).attack,deep?16*1.2*(1+p)**2:18+2*level,'Distinct sword/book Power sources');
+  near(calc(s).attack,deep?16*1.4*(1+p)*(1+swordP):20+5*level,'Distinct sword/book Power sources');
   s.offhand.cores=[core(6,level)];
-  near(calc(s).protectionFactor,deep?1.2*(1+p):1.2+p,'Book Boundary grade '+level);
+  near(calc(s).protectionFactor,deep?1.2*(1+q):1.2+q,'Book Boundary grade '+level);
  }
  for(let level=1;level<=4;level++){
   const s=state(deep,[],[core(8,level)]),u=[.05,.1,.2,.4][level-1],e=calc(s);
-  near(e.attack,deep?12*1.2*(1+u):14+[.5,1,1.5,2.5][level-1],'Ordinal attack grade '+level);
+  near(e.attack,deep?12*1.4*(1+u):16+[.5,1,1.5,2.5][level-1],'Ordinal attack grade '+level);
   near(e.protectionFactor,deep?1.2*(1+u):1.2+u,'Ordinal protection grade '+level);
   s.offhand.cores.push(core(4,1));
   near(calc(s).regeneration,1*(1+.4+[.1,.2,.3,.5][level-1]),'Ordinal healing grade '+level);
@@ -67,8 +67,8 @@ for(const deep of[false,true]){
  }
  const s=state(deep,[core(1,2),core(1,3),core(8,4)],[core(1,1),core(1,3),core(8,1),core(8,4)]);
  s.mainhand.kind=1;
- near(calc(s).attack,deep?16*1.2*(1+Math.hypot(.05,.4))*(1+Math.hypot(.25,1))*(1+Math.hypot(.5,1))
-   :18+Math.hypot(2,3)+Math.hypot(1,3)+Math.hypot(.5,2.5),'Per-item RSS before cross-source aggregation');
+ near(calc(s).attack,deep?16*1.4*(1+Math.hypot(.05,.4))*(1+Math.hypot(.5,2))*(1+Math.hypot(2,4))
+   :20+Math.hypot(6,9)+Math.hypot(2,6)+Math.hypot(.5,2.5),'Per-item RSS before cross-source aggregation');
  const d=state(deep,[],[core(6,1),core(6,3),core(8,1),core(8,4)]);
  near(calc(d).protectionFactor,deep?1.2*(1+Math.hypot(.25,1))*(1+Math.hypot(.05,.4))
    :1.2+Math.hypot(.25,1)+Math.hypot(.05,.4),'Book Boundary and Ordinal remain separate sources');
@@ -253,7 +253,7 @@ const htmlPath=process.argv[3];
 if(htmlPath){
  const html=fs.readFileSync(htmlPath,'utf8');ok(html.startsWith('<!doctype html>'),'Standalone HTML');ok(!/<script\b[^>]*\bsrc=/i.test(html),'No external scripts');
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
- const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision49 mirror'));
+ const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision50 mirror'));
  ok(script,'Production engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
  vm.createContext(context);new vm.Script(script[2]).runInContext(context);context.EnhancementEngine.setRules(rules);
  for(const c of recorded)eq(JSON.parse(JSON.stringify(context.EnhancementEngine.calculate(c.snapshot))),c.effects,'Embedded engine parity');

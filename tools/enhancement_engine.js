@@ -1,4 +1,4 @@
-/* Production revision49 mirror of EquipmentRules, verified against Java golden cases. */
+/* Production revision50 mirror of EquipmentRules, verified against Java golden cases. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -46,10 +46,10 @@
     return g.tier===0?4+5*clamp(Math.floor(g.digit),0,9)/9:(rules.baseMining||[9,11,14,18])[g.tier-1];
   }
   function attack(base,gear,book,deep,b=0,innateHp=0) {
-    if(!deep)return base+innateHp+rss(gear,1,'normalPowerAttackGrades')
-      +rss(book,1,'normalPowerAttackGrades')+rss(book,8,'normalOrdinalAttackGrades');
-    return base*(1+b)*(1+universal(book))*(1+rss(book,1,'powerPercentGrades'))
-      *(1+rss(gear,1,'powerPercentGrades'));
+    if(!deep)return base+innateHp+rss(gear,1,'swordPowerAttackGrades')
+      +rss(book,1,'bookPowerAttackGrades')+rss(book,8,'normalOrdinalAttackGrades');
+    return base*(1+b)*(1+universal(book))*(1+rss(book,1,'bookPowerPercentGrades'))
+      *(1+rss(gear,1,'swordPowerPercentGrades'));
   }
   function miningMultiplier(gear,book,deep,b=0) {return 1+b+rss(book,0,'manuscriptMiningRateGrades');}
   function spreadBudget(gear,book,deep) {const grades=deep?(rules.deepSpreadGrades||[1,4,9]):[1,2,3];return Math.floor(Math.sqrt(gear.reduce((n,c)=>c.type===0?n+(grades[c.level-1]||0)**2:n,0)));}
@@ -114,7 +114,7 @@
     const silkTouch=pick&&highest(gear,2)>0&&!!m.silkTouch;
     const nativeYield=m.tier<=0?clamp(m.nativeYield,0,255):0;
     const effects={
-      attack:attack(baseAttack(m),(sword||bow)?gear:gear.filter(c=>c.type!==1),book,deep,b,innateHp),
+      attack:bow?ranged(s,{bowCharge:1}).directRaw:attack(baseAttack(m),sword?gear:gear.filter(c=>c.type!==1),book,deep,bookChannelBase(bg,'bookInnateAttackPercent'),innateHp),
       miningMultiplier:miningMultiplierValue,efficiencyLevel,efficiencyBonus,
       miningBase:baseSpeed,bookMiningBase,manuscriptMiningFlat,manuscriptMiningRate,hasteRate,fatigueMultiplier,otherMiningPenalty,
       rawMining:baseSpeed+efficiencyBonus+manuscriptMiningFlat,
@@ -204,12 +204,21 @@
   }
   function ranged(snapshot,params={}) {
     const s={...defaults(),...snapshot},bow=s.mainhand,bg=activeBook(s),book=list(bg),gear=bow.kind===7?list(bow):[];
-    const draw=clamp(params.bowCharge===undefined?1:params.bowCharge,0,1),speedMultiplier=(rules.bowSpeedMultipliers||[1.1,1.2,1.3,1.5])[bow.tier-1]||1;
-    const launchSpeed=3*draw*speedMultiplier,impactSpeed=params.impactSpeed>0?Number(params.impactSpeed):launchSpeed;
-    const released=bow.kind===7&&bow.tier>0&&draw>=.1,vanillaBase=released?Math.ceil(Math.max(0,impactSpeed)*2):0,criticalMaximum=released&&draw>=1?Math.floor(vanillaBase/2)+1:0;
-    const criticalBonus=clamp(Math.floor(Number(params.arrowCriticalBonus)||0),0,criticalMaximum),tier=bg.tier;
-    const extra=attack(0,gear,book,false,bookBase(bg),bookChannelBase(bg,'bookInnateAttackHp'));
-    const factor=attack(1,gear,book,true,bookBase(bg),bookChannelBase(bg,'bookInnateAttackHp'));
+    const draw=Math.fround(clamp(params.bowCharge===undefined?1:params.bowCharge,0,1)),speedMultiplier=(rules.bowSpeedMultipliers||[1,1.3,1.6,2])[bow.tier-1]||1;
+    const launchSpeed=Math.fround(Math.fround(3*draw)*speedMultiplier),impactSpeed=params.impactSpeed>0?Number(params.impactSpeed):launchSpeed;
+    const baseCoefficient=(rules.bowBaseDamageCoefficients||[2,2,2,2])[bow.tier-1]||2;
+    const nativePower=gear.length?0:clamp(Math.floor(bow.nativePower),0,5),powerBonus=nativePower>0?(nativePower+1)/2:0;
+    // Bow-owned cores modify the native coefficient BEFORE impact-speed ceil and
+    // the native critical bonus. Manuscript channels still apply AFTER that hit.
+    const bowCoefficient=s.deep?baseCoefficient*(1+rss(gear,1,'bowPowerPercentGrades')):baseCoefficient+rss(gear,1,'bowPowerCoefficientGrades');
+    const arrowCoefficient=Math.fround(Math.fround(bowCoefficient)+powerBonus),nativeImpactSpeed=Math.fround(Math.max(0,impactSpeed));
+    // Vanilla casts velocity length and the enchantment-modified coefficient to
+    // float separately, then promotes BOTH to double for multiplication/ceil.
+    // Do not round the product: Gamma 4.8f × 2.5f is slightly above12, hence13.
+    const released=bow.kind===7&&bow.tier>0&&draw>=.1,vanillaBase=released?Math.ceil(nativeImpactSpeed*arrowCoefficient):0,criticalMaximum=released&&draw>=1?Math.floor(vanillaBase/2)+1:0;
+    const criticalBonus=clamp(Math.floor(Number(params.arrowCriticalBonus)||0),0,criticalMaximum);
+    const extra=attack(0,[],book,false,bookChannelBase(bg,'bookInnateAttackPercent'),bookChannelBase(bg,'bookInnateAttackHp'));
+    const factor=attack(1,[],book,true,bookChannelBase(bg,'bookInnateAttackPercent'),bookChannelBase(bg,'bookInnateAttackHp'));
     const enhance=raw=>!released?0:s.deep?raw*factor:raw+extra*draw;
     const directRaw=enhance(vanillaBase+criticalBonus),coefficient=criticalCoefficient(gear),burstRaw=directRaw*coefficient;
     const target={armor:params.targetArmor,toughness:params.targetToughness,resistance:params.targetResistance,epf:params.targetEpf,factor:params.targetFactor};
@@ -217,7 +226,7 @@
     const total=direct.beforeAbsorption+burst.beforeAbsorption,absorbed=Math.min(total,Math.max(0,Number(params.targetAbsorption)||0));
     const branch=highest(gear,2);
     return {directRaw,burstRaw,direct,burst,totalHealthDamage:total-absorbed,absorbed,released,draw,launchSpeed,impactSpeed,vanillaBase,criticalBonus,criticalMaximum,
-      directMinimum:enhance(vanillaBase),directMaximum:enhance(vanillaBase+criticalMaximum),speedMultiplier,
+      directMinimum:enhance(vanillaBase),directMaximum:enhance(vanillaBase+criticalMaximum),speedMultiplier,baseCoefficient,bowCoefficient,arrowCoefficient,nativeImpactSpeed,nativePower,powerBonus,
       normalBonus:extra,deepFactor:factor,infinity:branch>=1,arrowCount:!released?0:branch>=2?3:1,targetsPerArrow:branch>=3?2:1,
       controlSeconds:controlDuration(gear,book,bookChannelBase(bg,'bookInnateDuration')),durability:(rules.durabilityBows||[768,1152,1536,2304])[bow.tier-1]||384};
   }

@@ -6,6 +6,8 @@
 
 **v0.6.9 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.9)
 
+本地开发版 **0.6.11** 更新了四档弓箭速、剑／弓／手稿各自的幂塔攻击参数与裸手稿攻击，并同步离线模拟器。它包含0.6.10修复，保留旧存档标识和箭矢保存格式，目前位于独立分支，尚未发布。详见[0.6.11工作记录](docs/WORK-0611.md)及[强化模拟器](docs/enhancement-simulator.html)。
+
 0.6.9修复26.3核爆之心剑／弓追加伤害、紫菜船实体名称、五种家具放置朝向和紫菜木去皮映射，并补齐1.21.1船摔毁木材与命名放置。旧机柜／终端默认朝北保持原外观，注册ID、组件codec、配方、生成和数值不变。0.6.8的JEI结构兼容、首次拾取断线、物品显示、木门／台阶／告示牌修复及0.6.7世界加载修复继续保留。当前完整版本已合并main；独立回补版0.6.1a仍可在[上一份发行包](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8)下载。
 
 沿用0.6.6的配方书「晶核」「果糕逻辑」专页、主Logo分类图标及精准采集经验修复，以及0.6.5的八系配方、自然原料和巨构箱奖调整、0.6.4的空无晶核兼容清理。fffZ/FOS、ψ/Z稳定机制不变。此前的巨构编号、传送门和JEI修复，以及Alice（AliceLdl）的0.5.4.1原始修改与四版本适配继续保留。[当前工作记录](docs/WORK-069.md) · [当前生存指南](docs/SURVIVAL-GUIDE.md) · [生存引导](docs/ADVANCEMENTS-057.md)

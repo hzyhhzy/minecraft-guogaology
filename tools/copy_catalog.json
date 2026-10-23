@@ -806,7 +806,8 @@
       "item.guogaology.laver_chest_boat": "紫菜木运输船",
       "item.guogaology.dread_chest_boat": "冥杉木运输船",
       "entity.guogaology.laver_chest_boat": "紫菜木运输船",
-      "entity.guogaology.dread_chest_boat": "冥杉木运输船"
+      "entity.guogaology.dread_chest_boat": "冥杉木运输船",
+      "mining.guogaology.bow_damage_coefficient": "基础＋晶核系数：%s"
     },
     "en_us": {
       "dimension.guogaology.guogaology": "Inner Guogaology",
@@ -1461,7 +1462,8 @@
       "item.guogaology.laver_chest_boat": "Laver Boat with Chest",
       "item.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
       "entity.guogaology.laver_chest_boat": "Laver Boat with Chest",
-      "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest"
+      "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
+      "mining.guogaology.bow_damage_coefficient": "Base + core coefficient: %s"
     }
   }
 }

@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Render the production revision49 audit as an offline bilingual report."""
+"""Render the production revision50 audit as an offline bilingual report."""
 from pathlib import Path
 import base64
 import html
 import json
 import math
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
+PRODUCTION_VERSION = re.search(r"^mod_version=(.+)$", (ROOT / "gradle.properties").read_text(encoding="utf-8"), re.M).group(1).strip()
 DATA = json.loads((ROOT / "build/enhancement-simulator/proposal-audit.json").read_text(encoding="utf-8"))
-if DATA["rules"]["revision"] != 49:
-    raise SystemExit("Regenerate the production revision49 audit before rendering.")
+if DATA["rules"]["revision"] != 50:
+    raise SystemExit("Regenerate the production revision50 audit before rendering.")
 
 
 def esc(value):
@@ -102,7 +104,7 @@ def section(lang):
     book_rows = []
     for tier in range(1, 5):
         r = DATA["rules"]
-        book_rows.append([["ω", "ε", "Γ", "Ω"][tier - 1], number(r["bookInnateAttackHp"][tier]) + "HP", number(100 * r["bookInnateAttackProtection"][tier]) + "%", number(100 * r["bookInnateHealing"][tier]) + "%", number(100 * r["bookInnateDuration"][tier]) + "%", number(100 * r["bookInnateMiningRate"][tier]) + "%"])
+        book_rows.append([["ω", "ε", "Γ", "Ω"][tier - 1], number(r["bookInnateAttackHp"][tier]) + "HP", number(100 * r["bookInnateAttackPercent"][tier]) + "%", number(100 * r["bookInnateAttackProtection"][tier]) + "%", number(100 * r["bookInnateHealing"][tier]) + "%", number(100 * r["bookInnateDuration"][tier]) + "%", number(100 * r["bookInnateMiningRate"][tier]) + "%"])
     ordinal_rows = []
     r = DATA["rules"]
     for i in range(4):
@@ -113,6 +115,7 @@ def section(lang):
         ranged_rows.append([realm_names["deep" if example["deep"] else "normal"], ["ω", "ε", "Γ", "Ω"][example["tier"] - 1],
                             number(shot["launchSpeed"]), str(shot["vanillaBase"]),
                             f'<a href="{esc(link(example, lang))}">{number(shot["directMinimum"])}–{number(shot["directMaximum"])} HP</a>', str(shot["durability"])])
+    combat_rows = [[realm_names["deep" if e["deep"] else "normal"], e["labelZh"] if lang == "zh" else e["labelEn"], number(e["withoutBook"]), number(e["withBook"])] for e in DATA["combatBalanceExamples"]]
     examples = DATA.get("protectionCounterexamples", [])
     monotonic_rows = []
     for example in examples[:8] + [e for e in examples if e["targetPiece"] == "offhand"]:
@@ -152,8 +155,8 @@ def section(lang):
     compare_rows = [[tr("直接攻击／下界合金锋利V", "Direct attack / Netherite SharpnessV"), number(v["attackRatio"]["normal"]) + "×", number(v["attackRatio"]["deep"]) + "×"], [tr("固定80%最大承伤／四件保护IV", "Fixed80% hit capacity / four ProtectionIV"), number(v["fixed80ThresholdRatio"]["normal"]) + "×", number(v["fixed80ThresholdRatio"]["deep"]) + "×"]]
     return f'''<section class="language" data-lang="{lang}">
 <h1>{tr("强化系统 · 数值审计", "Enhancement system · Numerical audit")}</h1>
-<p class="notice">{tr("0.5.7生产规则revision49。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", "Production0.5.7 rules, revision49. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
-<nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=1,2,3,4">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
+<p class="notice">{tr(f"{PRODUCTION_VERSION}生产规则revision50。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", f"Production{PRODUCTION_VERSION} rules, revision50. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
+<nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=0,1,2,3">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
 <p>{tr("Ω装备每件8槽、手稿6槽；群系晶核Lv3／序数晶核Lv3。序数晶体与晶核只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regional Core Lv3 / Ordinal Core Lv3. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>
 {table([tr("指标", "Metric"), realm_names["normal"], realm_names["deep"]], metric_rows)}
@@ -172,17 +175,21 @@ def section(lang):
 </article>
 <article><h2>{tr("当前公式与逐级输入", "Current formulas and per-grade inputs")}</h2>
 <p>{tr("同一件内同种攻防贡献先平方求和开根号。武器与手稿分开算；四件甲各算RSS后按20%／40%／25%／15%加权相加，禁止跨甲整体RSS或逐件相乘。", "Same-family attack/defense contributions use per-item root-sum-square. Weapon and book remain separate. ComputeRSS per armor piece, then weighted-sum20% /40% /25% /15%; never global armorRSS or per-piece multiplication.")}</p>
-<code>{tr("表攻击", "Outer attack")}: A=B+a+P剑HP+P书HP+U书HP<br>{tr("里攻击", "Inner attack")}: A=B(1+b)(1+P剑%)(1+P书%)(1+U书%)<br>S甲=Σwᵢ RSS(界限ᵢ%)<br>F甲=1+2S甲<br>{tr("表手稿防护", "Outer book protection")}: F书=1+b+Q书+U书<br>{tr("里手稿防护", "Inner book protection")}: F书=(1+b)(1+Q书)(1+U书)<br>F额外=F甲×F书; H=20+4RSS(果糕等级)</code>
-<p>{tr("表攻击幂塔单颗加1／2／3HP，表攻击序数单颗加0.5／1／1.5／2.5HP；里攻击幂塔为25%／50%／100%，序数为5%／10%／20%／40%。界限防护两界单颗都是25%／50%／100%。没有旧的裸甲本体倍率，没有装备序数乘区。", "Outer Power adds1 /2 /3HP per core; Ordinal adds0.5 /1 /1.5 /2.5HP. Inner Power contributes25% /50% /100%, Ordinal5% /10% /20% /40%. Boundary protection is25% /50% /100% in both realms. Old bare-armor multipliers and gear Ordinal channels are removed.")}</p>
-<h3>{tr("四档裸手稿（里外一样的输入）", "Four bare manuscripts (identical inputs across realms)")}</h3>
-{table([tr("档位", "Tier"), tr("表攻击a", "Outer attack a"), tr("里攻击／防护b", "Inner attack / protection b"), tr("治疗放大", "Healing amplification"), tr("果糕剑延时", "Guogao extension"), tr("固有挖速百分比", "Innate mining rate")], book_rows)}
+<code>{tr("表攻击", "Outer attack")}: A=B+a+P剑HP+P书HP+U书HP<br>{tr("里攻击", "Inner attack")}: A=B(1+b攻)(1+P剑%)(1+P书%)(1+U书%)<br>S甲=Σwᵢ RSS(界限ᵢ%)<br>F甲=1+2S甲<br>{tr("表手稿防护", "Outer book protection")}: F书=1+b+Q书+U书<br>{tr("里手稿防护", "Inner book protection")}: F书=(1+b)(1+Q书)(1+U书)<br>F额外=F甲×F书; H=20+4RSS(果糕等级)</code>
+<p>{tr("表界剑幂塔单颗加3／6／9HP，书幂塔加2／4／6HP；里界剑幂塔增量100%／200%／400%，书幂塔50%／100%／200%。序数表界加0.5／1／1.5／2.5HP，里界增量5%／10%／20%／40%。界限防护两界单颗都是25%／50%／100%。没有旧的裸甲本体倍率，没有装备序数乘区。", "Outer sword Power adds3/6/9HP;book Power adds2/4/6HP. Inner sword Power increments100/200/400%;book Power50/100/200%. Ordinal adds0.5/1/1.5/2.5HP outside and5/10/20/40% inside. Boundary protection is25% /50% /100% in both realms. Old bare-armor multipliers and gear Ordinal channels are removed.")}</p>
+<h3>{tr("四档裸手稿（攻击与防护分开）", "Four bare manuscripts (attack separate from protection)")}</h3>
+{table([tr("档位", "Tier"), tr("表攻击a", "Outer attack a"), tr("里攻击增幅b攻", "Inner attack increment"), tr("防护b（保持不变）", "Protection b (unchanged)"), tr("治疗放大", "Healing amplification"), tr("果糕剑延时", "Guogao extension"), tr("固有挖速百分比", "Innate mining rate")], book_rows)}
 <h3>{tr("仅手稿序数晶体与晶核", "Manuscript-only Ordinal Crystal and Cores")}</h3>
 {table([tr("等级", "Level"), tr("表攻击", "Outer attack"), tr("里攻击／防护", "Inner attack / protection"), tr("治疗量", "Healing amount"), tr("果糕剑延时", "Guogao extension")], ordinal_rows)}
 <p><code>{tr("紫菜每4秒治疗", "Laver healing every4s")}=RSS(紫菜等级)×(1+治疗基础+RSS(序数治疗%))<br>{tr("果糕剑秒数", "Guogao sword seconds")}=2×(1+延时基础+RSS(序数延时%))</code></p>
 <p>{tr("没有紫菜核就不回血；没有果糕剑就不产生负面状态。序数只保留攻、防、治疗乘算和状态延时，不加生命、挖速、耐久或触距。延时不提高状态等级或失明触发率。", "No Laver means no healing; no Guogao sword means no debuff. Ordinal retains only attack, protection, multiplicative healing and debuff duration. It grants no health, mining, wear or reach. Extension changes neither status potency nor blindness chance.")}</p>
 </article>
+<article><h2>{tr("已确认方案的单次非暴击对比", "Agreed single-hit noncritical comparisons")}</h2>
+<p>{tr("固定满蓄初速、无目标减伤；幂塔路线为武器8颗Lv3，手稿为Ω手稿6颗Lv3幂塔，不含序数核。力量Ⅴ弓自身不镶嵌。此表不是任意晶核组合的全局最优，也不是实际飞行后的保证伤害。", "Fixed full-draw launch speed and no target mitigation. Tower routes use8Lv3 weapon cores;the manuscript isOmega with6Lv3Tower and noOrdinal. PowerV bows have no sockets installed. These are agreed comparisons,not global loadout optima or guaranteed post-flight damage.")}</p>
+{table([tr("环境", "Realm"), tr("武器", "Weapon"), tr("无手稿HP", "Without manuscript HP"), tr("同手稿HP", "With manuscript HP")], combat_rows)}
+</article>
 <article><h2>{tr("弓：速度相关的伤害范围", "Bows: velocity-dependent damage ranges")}</h2>
-<p>{tr("示例为同档裸弓＋裸手稿、满弦、碰撞速度等于初速、目标无防护；未加入任何晶核。保留原版箭系数2、ceil取整及满弦随机加伤，飞行阻力和射手速度可在模拟器的碰撞速度字段输入。表界固定HP加成随蓄力比例缩放，里界乘区施加于原版实际箭伤。", "Examples use matching bare bow/manuscript tiers, full draw, impact speed equal to launch speed and an unprotected target; no cores. Vanilla coefficient2, ceil and full-draw random damage remain. Enter impact speed in the simulator to account for drag or shooter motion. Outer fixedHP bonuses scale with charge; inner factors multiply actual native arrow damage.")}</p>
+<p>{tr("示例为同档裸弓＋裸手稿、满弦、碰撞速度等于初速、目标无防护；未加入任何晶核。保留原版箭系数2、速度与系数各自转float后以double相乘ceil取整及满弦随机加伤，飞行阻力和射手速度可在模拟器的碰撞速度字段输入。弓幂塔先作用于箭系数，表界加0.5／1／1.5的RSS，里界乘1+RSS(50%／100%／200%)；手稿加伤随后随蓄力比例缩放，里界书乘区随后作用于原版实际箭伤。", "Examples use matching bare bow/manuscript tiers, full draw, impact speed equal to launch speed and an unprotected target; no cores. Vanilla coefficient2,separate float casts of speed/coefficient followed by double multiplication/ceil,and full-draw random damage remain. Enter impact speed in the simulator to account for drag or shooter motion. Bow-owned Power first changes the coefficient:normal adds RSS(0.5/1/1.5),deep multiplies by1+RSS(50/100/200%). Manuscript fixedHP then scales with charge outside;deep book factors then multiply native arrow damage.")}</p>
 {table([tr("环境", "Realm"), tr("档位", "Tier"), tr("初速 格/刻", "Launch blocks/tick"), tr("原版取整伤害", "Native ceil damage"), tr("含手稿直击范围", "Direct range with manuscript"), tr("基础耐久", "Base durability")], ranged_rows)}
 <p>{tr("分枝Lv1无限，Lv2三箭，Lv3每箭最多命中两个生物。三箭不把单目标伤害乘3；同轮同目标最多承受一次直击和一次爆裂。每箭仅首次有效生物命中产生爆裂，第二目标仍可获得果糕状态。特殊箭每轮消耗一支，仅中央保留特殊效果，侧箭不能回收；生存普通箭无限仍须背包有箭，创造空背包可发普通箭。核爆之心禁止放入手稿，防火由界限手稿Lv2／3提供。", "BranchLv1 Infinity, Lv2 three arrows, Lv3 up to two living targets per arrow. Three arrows never triple one target's damage; each target gets at most one direct hit and one burst per volley. Each arrow bursts only on its first valid living hit; its second target can receive Guogao effects. Special ammo consumes one per volley; only the centre keeps special effects and side arrows cannot be picked up. Survival Infinity still requires an arrow; Creative may fire ordinary arrows from an empty inventory. Nuclear Awe cannot fit manuscripts; Boundary manuscriptsLv2/3 provide fire resistance.")}</p>
 </article>

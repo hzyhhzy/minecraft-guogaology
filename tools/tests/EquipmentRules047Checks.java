@@ -14,7 +14,7 @@ public final class EquipmentRules047Checks {
     private static List<Gear> armor(int tier,List<Core> cores){return List.of(new Gear(tier,2,0,cores),new Gear(tier,3,0,cores),new Gear(tier,4,0,cores),new Gear(tier,5,0,cores));}
     private static Snapshot state(Gear main,Gear off,boolean deep){return new Snapshot(main,off,Gear.empty(2),Gear.empty(3),Gear.empty(4),Gear.empty(5),deep);}
     public static void main(String[] args){
-        check(EquipmentRules.REVISION==49,"production revision");
+        check(EquipmentRules.REVISION==50,"production revision");
         for(int kind=0;kind<=7;kind++)check(EquipmentRules.compatible(kind,8)==(kind==6),"Ordinal manuscript only "+kind);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(6,type)==(type!=5),"Criticality forbidden in manuscripts "+type);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(7,type)==EquipmentRules.compatible(1,type),"bow compatibility follows sword "+type);
@@ -23,14 +23,14 @@ public final class EquipmentRules047Checks {
         for(int tier=1;tier<=4;tier++){
             check(EquipmentRules.slots(tier,7)==new int[]{2,4,6,8}[tier-1],"bow sockets "+tier);
             check(EquipmentRules.durability(tier,7)==new int[]{768,1152,1536,2304}[tier-1],"bow durability "+tier);
-            near(EquipmentRules.arrowSpeedMultiplier(tier),new double[]{1.1,1.2,1.3,1.5}[tier-1],"bow launch speed "+tier);
+            near(EquipmentRules.arrowSpeedMultiplier(tier),new double[]{1,1.3,1.6,2}[tier-1],"bow launch speed "+tier);
             double a=0,t=0;for(int kind=2;kind<=5;kind++){a+=EquipmentRules.nativeArmor(tier,kind);t+=EquipmentRules.nativeToughness(tier,kind);}
             near(a,new double[]{15,20,24,30}[tier-1],"full native armor "+tier);
             near(t,new double[]{0,8,12,16}[tier-1],"full native toughness "+tier);
             near(EquipmentRules.protectionFactor(armor(tier,NONE),NONE,false),1,"bare armor has no custom multiplier "+tier);
         }
         for(boolean deep:new boolean[]{false,true}){
-            near(EquipmentRules.attack(16,core(1,3,3),core(1,3),deep,0,0),deep?16*(1+Math.sqrt(2))*2:16+3*Math.sqrt(2)+3,"separate weapon/book Power RSS "+deep);
+            near(EquipmentRules.attack(16,core(1,3,3),core(1,3),deep,0,0),deep?16*(1+4*Math.sqrt(2))*3:16+9*Math.sqrt(2)+6,"separate weapon/book Power RSS "+deep);
             near(EquipmentRules.attack(16,core(8,4),NONE,deep),16,"equipment Ordinal never attacks "+deep);
             near(EquipmentRules.universal(core(8,4,4),deep),.4*Math.sqrt(2),"Ordinal same-item RSS in both realms "+deep);
             near(EquipmentRules.bonusHealth(armor(4,core(8,4,4)),core(7,1,3),deep),4*Math.sqrt(10),"health is only manuscript Guogao "+deep);
@@ -39,8 +39,8 @@ public final class EquipmentRules047Checks {
             check(EquipmentRules.spreadBudget(Collections.nCopies(8,new Core(0,3)),core(8,4),deep)==(deep?25:8),"extra-mining max budget "+deep);
             near(EquipmentRules.projectileCoefficient(core(5,3)),0,"obsolete manuscript projectile channel removed");
         }
-        near(EquipmentRules.attack(16,core(1,3),EquipmentRules.join(core(1,2),core(8,4)),false,.2,2),25.5,"normal attack independent HP source sum");
-        near(EquipmentRules.attack(16,core(1,3),EquipmentRules.join(core(1,2),core(8,4)),true,.2,2),16*1.2*1.4*1.5*2,"deep attack independent source product");
+        near(EquipmentRules.attack(16,core(1,3),EquipmentRules.join(core(1,2),core(8,4)),false,.4,4),35.5,"normal attack independent HP source sum");
+        near(EquipmentRules.attack(16,core(1,3),EquipmentRules.join(core(1,2),core(8,4)),true,.4,4),16*1.4*1.4*2*5,"deep attack independent source product");
         near(EquipmentRules.regen(core(8,4),.4),0,"Ordinal and bare book cannot create healing");
         near(EquipmentRules.regen(EquipmentRules.join(core(4,1,3),core(8,4)),.4),Math.sqrt(10)*1.9,"healing channel own coefficients");
         near(EquipmentRules.controlDuration(NONE,core(8,4),1),0,"Ordinal cannot create debuffs");
@@ -58,9 +58,9 @@ public final class EquipmentRules047Checks {
             var terms=EquipmentRules.attackPreviewTerms(previewBook,deep);
             check(terms.size()==3,"book shows separate innate/Power/Ordinal terms");
             double bonus=deep?1:0;for(double term:terms)bonus=deep?bonus*term:bonus+term;
-            near(bonus,EquipmentRules.attack(deep?1:0,NONE,previewBook.cores(),deep,.2,2),"preview operators match actual attack "+deep);
+            near(bonus,EquipmentRules.attack(deep?1:0,NONE,previewBook.cores(),deep,.4,4),"preview operators match actual attack "+deep);
             var sword=new Gear(4,1,0,core(1,3,3));var swordTerms=EquipmentRules.attackPreviewTerms(sword,deep);
-            near(swordTerms.getFirst(),deep?1+Math.sqrt(2):3*Math.sqrt(2),"weapon excludes both base damage and other sources");
+            near(swordTerms.getFirst(),deep?1+4*Math.sqrt(2):9*Math.sqrt(2),"weapon excludes both base damage and other sources");
             var preview=EquipmentRules.itemPreview(sword,deep);
             check(preview.book().isEmpty()&&preview.armor().stream().allMatch(g->g.tier()<0),"single-item preview cannot leak worn gear or held manuscript");
             var helmet=EquipmentRules.itemPreview(new Gear(4,2,0,core(6,3)),deep);
