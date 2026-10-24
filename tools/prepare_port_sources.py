@@ -107,6 +107,15 @@ def adapt(text, target, name):
     if name == 'GuogaologyClient.java':
         # 26.x determines block transparency from sprite alpha, including modded blocks.
         text = '\n'.join(line for line in text.splitlines() if 'BlockRenderLayerMap' not in line and 'ChunkSectionLayer' not in line) + '\n'
+    if name == 'OrdinalBowHandSelectionMixin.java':
+        #26.x erased ItemStack.is(Item) to is(Object); keep the native call.
+        text=text.replace('is(Lnet/minecraft/world/item/Item;)Z','is(Ljava/lang/Object;)Z')
+        text=text.replace('ItemStack stack,Item item,','ItemStack stack,Object item,')
+        if target == '26.3':
+            #26.3 moved first-person state extraction and inlined its helper.
+            text=text.replace('net.minecraft.client.renderer.ItemInHandRenderer','net.minecraft.client.player.FirstPersonHandsAndItems')
+            text=text.replace('@Mixin(ItemInHandRenderer.class)','@Mixin(FirstPersonHandsAndItems.class)')
+            text=text.replace('{"evaluateWhichHandsToRender","selectionUsingItemWhileHoldingBowLike"}', '"evaluateWhichHandsToRender"')
     if name == 'EnhancementScreen.java':
         text=text.replace('super(menu,inventory,title);imageWidth=362;imageHeight=238;', 'super(menu,inventory,title,362,238);')
         text=text.replace('GuiGraphics','GuiGraphicsExtractor').replace('void render(', 'void extractRenderState(').replace('super.render(', 'super.extractRenderState(').replace('renderTooltip(', 'extractTooltip(').replace('renderLabels(', 'extractLabels(').replace('renderSlots(', 'extractSlots(').replace('graphics.drawString(', 'graphics.text(')

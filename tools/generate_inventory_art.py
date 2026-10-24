@@ -203,39 +203,64 @@ def core_icon(family, level):
 
 
 def bow_icon(tier, stage):
+    """Mineral bow with paired limbs and one fixed NW--SE shooting axis.
+
+    Pixel coordinates are mirrored around x==y, not independently nudged at
+    each tip. The nock and entire arrow move equally in x/y while drawing, so
+    the arrow stays through the grip and the fletching remains inside16px.
+    """
     im = Image.new('RGBA', (16, 16)); d = ImageDraw.Draw(im)
     dark, mid, light, white = BOW_PALETTES[tier]
-    # The familiar diagonal bow silhouette, angular mineral limbs and bright facets.
-    limb = [(2,14),(2,11),(3,8),(5,5),(8,3),(12,2),(14,2)]
-    if stage >= 0:
-        limb = [(2,14),(2,11),(3,8),(5,5),(8,4),(12,3),(15,3)]
-    d.line(limb, fill=dark, width=3)
-    d.line(limb, fill=mid, width=2)
-    d.line([(2,13),(3,9),(5,6),(8,4),(12,3),(14,3)], fill=light)
-    d.line((3,10,4,8), fill=white)
-    d.line((9,4,12,3), fill=white)
-    d.rectangle((4,6,6,8), fill=dark)
-    d.line((5,6,6,7), fill=light)
-    # A pale, taut string; draw stages pull its centre away from the mineral grip.
+    tip_y = (2, 2, 3, 4)[stage+1]
+    arm = ((5,5),(8,3),(11,2),(14,2)) if stage <= 0 else (
+        ((5,5),(8,4),(11,3),(14,3)) if stage == 1 else
+        ((5,5),(8,4),(11,4),(14,4)))
+
+    def paired_line(points, color, width=1):
+        # Mirroring the raster mask avoids direction-dependent line rounding.
+        layer = Image.new('RGBA', im.size)
+        ImageDraw.Draw(layer).line(points, fill=color, width=width)
+        im.alpha_composite(layer)
+        im.alpha_composite(layer.transpose(Image.Transpose.TRANSPOSE))
+
+    # Draw string behind limbs and arrow. Its endpoints share the same bend.
     if stage < 0:
-        d.line((14,3,3,14), fill='#abb5c7')
-        d.point((14,2), fill=white); d.point((2,14),fill=white)
+        paired_line(((14,tip_y),(tip_y,14)), '#abb5c7')
     else:
-        cx,cy = ((9,9),(11,10),(13,11))[stage]
-        d.line((15,4,cx,cy,3,14), fill='#d0d9e5')
-        # The arrow points out of the bow at the upper left, just like vanilla.
-        # Its nock/fletching stays by the pulled string at the lower right;
-        # the previous sprite accidentally drew the arrowhead toward the player.
-        d.line((cx-8,cy-8,cx+1,cy+1), fill='#a59473')
-        d.line((cx-7,cy-8,cx+2,cy+1), fill='#f2e6cb')
-        d.polygon([(cx-8,cy-8),(cx-5,cy-7),(cx-7,cy-5)],fill=white)
-        d.point((cx-7,cy-7),fill=light)
-        d.line((cx,cy+1,min(15,cx+2),min(15,cy+3)),fill='#d0d9e5')
-        d.line((cx+1,cy,min(15,cx+3),min(15,cy+2)),fill='#f1f7ff')
-    if tier >= 1: d.point((7,4),fill=white)
-    if tier >= 2: d.point((3,11),fill=white)
-    if tier == 3: d.point((11,2),fill='#deabf5'); d.point((2,12),fill='#deabf5')
+        nock = 9+stage
+        paired_line(((14,tip_y),(nock,nock)), '#d0d9e5')
+    paired_line(arm, dark, 3)
+    paired_line(arm, mid)
+    paired_line(tuple((x,y-1) for x,y in arm[1:]), light)
+    d.rectangle((4,4,6,6), fill=dark)
+    d.point((5,5),fill=light)
+    d.point((11,tip_y),fill=white); d.point((tip_y,11),fill=white)
+    if tier >= 1:
+        d.point((8,3 if stage <= 0 else 4),fill=white)
+        d.point((3 if stage <= 0 else 4,8),fill=white)
+    if tier == 3:
+        d.point((13,tip_y),fill='#deabf5'); d.point((tip_y,13),fill='#deabf5')
+    if stage >= 0:
+        head, nock = stage, 9+stage
+        # One arrow translates backward along its own axis; no sideward drift.
+        for k in range(head+2,nock+1):
+            d.point((k,k),fill='#f2e6cb')
+            d.point((k+1,k),fill='#a59473'); d.point((k,k+1),fill='#a59473')
+        d.polygon(((head,head),(head+2,head),(head,head+2)),fill=white)
+        d.point((head+1,head+1),fill=light)
+        for k in (1,2):
+            d.point((nock+k,nock+k+1),fill='#d0d9e5')
+            d.point((nock+k+1,nock+k),fill='#d0d9e5')
     return im
+
+
+def update_bows():
+    """Regenerate only existing bow PNGs; core models/art remain untouched."""
+    for tier, metal in enumerate(METALS):
+        for stage in (-1,0,1,2):
+            suffix = '' if stage < 0 else f'_pulling_{stage}'
+            bow_icon(tier,stage).save(T/f'{metal}_bow{suffix}.png')
+    print('BOW_ART_OK images=16; core art and all item models unchanged')
 
 
 def generate():
@@ -346,7 +371,11 @@ if __name__ == '__main__':
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--badges-only',action='store_true')
-    if parser.parse_args().badges_only:
+    parser.add_argument('--bows-only',action='store_true')
+    args=parser.parse_args()
+    if args.bows_only:
+        update_bows()
+    elif args.badges_only:
         update_badges()
     else:
         generate()

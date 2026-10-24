@@ -1,4 +1,11 @@
-"""Generate the lamp-shaping bench from compact Minecraft-style model elements."""
+"""Generate the lamp-shaping bench with its exact union exterior.
+
+The authored cuboids remain the source of the silhouette and face artwork.
+Only exposed faces are emitted; intersecting trestles and the die handle do
+not retain hidden sheets or coplanar duplicates. Clipped faces retain the
+matching part of their original UVs rather than stretching the artwork.
+"""
+from collections import defaultdict
 import json
 from pathlib import Path
 
@@ -14,7 +21,7 @@ def element(a,b,texture,top=None):
     return {'from':a,'to':b,'faces':faces}
 
 
-def resources():
+def bench_boxes():
     elements=[]
     # Dark copper trestles, a clean quartz worktop and the two face dies.
     for x in (1,12):
@@ -24,10 +31,70 @@ def resources():
         element([0,10,0],[16,13,16],'body','top'),
         element([1,13,1],[15,14,15],'top'),
         element([2,14,3],[8,15,9],'die'),
-        element([9,14,3],[14,15,9],'other'),
+        element([9,14,3],[15,15,9],'other'),
         element([3,14,12],[13,15,13],'trim'),
         element([11,14,11],[13,16,13],'frame'),
     ])
+    return elements
+
+
+def face_uv(box,side,lo,hi):
+    """Subsection of an original full-face UV, in native face orientation."""
+    a,b=box['from'],box['to']
+    if side=='up':
+        values=(lo[0]-a[0],lo[2]-a[2],hi[0]-a[0],hi[2]-a[2])
+        spans=(b[0]-a[0],b[2]-a[2])
+    elif side=='down':
+        values=(lo[0]-a[0],b[2]-hi[2],hi[0]-a[0],b[2]-lo[2])
+        spans=(b[0]-a[0],b[2]-a[2])
+    elif side=='north':
+        values=(b[0]-hi[0],b[1]-hi[1],b[0]-lo[0],b[1]-lo[1])
+        spans=(b[0]-a[0],b[1]-a[1])
+    elif side=='south':
+        values=(lo[0]-a[0],b[1]-hi[1],hi[0]-a[0],b[1]-lo[1])
+        spans=(b[0]-a[0],b[1]-a[1])
+    elif side=='west':
+        values=(lo[2]-a[2],b[1]-hi[1],hi[2]-a[2],b[1]-lo[1])
+        spans=(b[2]-a[2],b[1]-a[1])
+    else:
+        values=(b[2]-hi[2],b[1]-hi[1],b[2]-lo[2],b[1]-lo[1])
+        spans=(b[2]-a[2],b[1]-a[1])
+    return [round(value*16/spans[i%2],8) for i,value in enumerate(values)]
+
+
+def exterior_elements(boxes):
+    # Later authored details own a shared exposed patch, such as the handle
+    # crossing the copper trim. This is deterministic and emits it only once.
+    occupied={}
+    for index,box in enumerate(boxes):
+        a,b=box['from'],box['to']
+        for x in range(a[0],b[0]):
+            for y in range(a[1],b[1]):
+                for z in range(a[2],b[2]):occupied[x,y,z]=index
+    directions=(('west',0,-1,2,1),('east',0,1,2,1),('down',1,-1,0,2),
+                ('up',1,1,0,2),('north',2,-1,0,1),('south',2,1,0,1))
+    surfaces=defaultdict(set)
+    for p,index in sorted(occupied.items()):
+        for side,axis,sign,u,v in directions:
+            neighbor=list(p);neighbor[axis]+=sign
+            if tuple(neighbor) not in occupied:
+                surfaces[index,side,axis,p[axis]+(sign>0),u,v].add((p[u],p[v]))
+    result=[]
+    for (index,side,axis,plane,u,v),cells in sorted(surfaces.items()):
+        while cells:
+            x,y=min(cells,key=lambda p:(p[1],p[0]));width=height=1
+            while (x+width,y) in cells:width+=1
+            while all((xx,y+height) in cells for xx in range(x,x+width)):height+=1
+            cells.difference_update((xx,yy) for xx in range(x,x+width) for yy in range(y,y+height))
+            lo=[0,0,0];hi=[0,0,0];lo[axis]=hi[axis]=plane
+            lo[u]=x;hi[u]=x+width;lo[v]=y;hi[v]=y+height
+            box=boxes[index]
+            face={'texture':box['faces'][side]['texture'],'uv':face_uv(box,side,lo,hi)}
+            result.append({'from':lo,'to':hi,'faces':{side:face}})
+    return result
+
+
+def resources():
     model={'parent':'minecraft:block/block','textures':{
         'frame':'minecraft:block/oxidized_copper',
         'body':'minecraft:block/quartz_block_side',
@@ -35,7 +102,7 @@ def resources():
         'trim':'minecraft:block/copper_block',
         'die':'guogaology:block/guogao_lantern',
         'other':'guogaology:block/guogao_lantern_sad',
-        'particle':'minecraft:block/quartz_block_side'},'elements':elements}
+        'particle':'minecraft:block/quartz_block_side'},'elements':exterior_elements(bench_boxes())}
     return {
         f'assets/guogaology/blockstates/{ID}.json':{'variants':{'':{'model':f'guogaology:block/{ID}'}}},
         f'assets/guogaology/models/block/{ID}.json':model,

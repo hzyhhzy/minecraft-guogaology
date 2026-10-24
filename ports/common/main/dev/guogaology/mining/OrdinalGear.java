@@ -30,6 +30,5 @@ public final class OrdinalGear extends Item {
         var hint=GearData.modificationHint(s);if(hint!=null)out.accept(Component.translatable("mining.guogaology."+hint));
         if(GearData.points(s,3)>0)out.accept(Component.translatable("mining.guogaology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
         for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable(EquipmentRules.coreEffectKey(kind,GearData.type(c),GearData.level(c)))));
-        if(kind==0)out.accept(Component.translatable("mining.guogaology.sneak"));
     }
 }

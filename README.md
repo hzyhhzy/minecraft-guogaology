@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**本地候选0.6.12**：竖直5×5自定义挖掘图案，矩阵晶核额外预算1／2／4；上限变化自动重置为默认图案。独立分支`codex/0.6.12-mining-pattern`，未合并main、未发布。操作与验证见[本轮记录](docs/WORK-0612.md)。
+**本地0.6.13**：修正序数弓拉弓图案及果糕灯塑形台外观，移除潜行挖掘的物品提示；保留0.6.12的竖直5×5自定义挖掘图案。已验证并合并本地main，未push、未发布。修正与验证见[本轮记录](docs/WORK-0613.md)，挖掘操作见[0.6.12记录](docs/WORK-0612.md)。
 
 **v0.6.11 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 

@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**Local candidate0.6.12**: vertical5×5 mining patterns, Matrix budgets1/2/4, and exact preset resets whenever capacity changes. Branch`codex/0.6.12-mining-pattern`; main and public releases remain unchanged. See[implementation and verification](docs/WORK-0612.md).
+**Local0.6.13**: ordinal bow draw art and Lamp Shaper geometry repairs, with the sneak-mining item hint removed. Retains0.6.12's vertical5×5 mining patterns. Verified and integrated into local main; not pushed or published. See[repairs and verification](docs/WORK-0613.md) and[pattern controls](docs/WORK-0612.md).
 
 **v0.6.11 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 
