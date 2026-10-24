@@ -24,8 +24,8 @@ public final class Item068Runtime {
     private static final List<String> ITEMS=List.of("graham","graham_flower","graham_vine","dread_sapling","laver_sapling","loquat_sapling","hell_loquat_sapling","gummy_jar");
     private final JsonObject result=new JsonObject();
     private final JsonArray signs=new JsonArray(),models=new JsonArray(),screenshots=new JsonArray();
-    private boolean opening,queued,done,capturing,closing,verifyQueued,audited;
-    private volatile boolean ready,captured,verified;
+    private boolean opening,queued,done,capturing,closing,verifyQueued,audited,signPlaced,signAuthorityQueued;
+    private volatile boolean ready,captured,verified,signAuthorityVerified;
     private volatile Throwable failure;
     private int stage,ticks,checks;
     private final long deadline=System.nanoTime()+600_000_000_000L;
@@ -66,7 +66,7 @@ public final class Item068Runtime {
     }
     private void queue(Minecraft c,Checked action){queued=true;ready=false;var uuid=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{action.run(c.getSingleplayerServer().getPlayerList().getPlayer(uuid));ready=true;}catch(Throwable error){failure=error;}});}
     private interface Checked{void run(ServerPlayer p)throws Exception;}
-    private void advance(){stage++;queued=false;ready=false;capturing=false;captured=false;closing=false;verifyQueued=false;verified=false;ticks=0;}
+    private void advance(){stage++;queued=false;ready=false;capturing=false;captured=false;closing=false;verifyQueued=false;verified=false;signPlaced=signAuthorityQueued=signAuthorityVerified=false;ticks=0;}
     private void photo(Minecraft c,String name)throws Exception{
         capturing=true;var folder=c.gameDirectory.toPath().resolve("screenshots");Files.createDirectories(folder);
         Screenshot.takeScreenshot(c.gameRenderer.mainRenderTarget(),image->{try(image){image.writeToFile(folder.resolve(name));screenshots.add(name);captured=true;}catch(Throwable error){failure=error;}});
@@ -87,17 +87,24 @@ public final class Item068Runtime {
             }
             if(stage<=4){
                 int index=stage-1;
-                if(!queued){c.gui.setScreen(null);queue(c,p->Item068Checks.prepareSign(p,index));return;}
+                if(!queued){c.gui.setScreen(null);queue(c,p->Item068Checks.prepareSignSupport(p,index));return;}
                 if(!ready)return;
                 if(closing){
                     if(++ticks<12)return;
                     if(!verifyQueued){verifyQueued=true;var uuid=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{signs.add(Item068Checks.verifySign(c.getSingleplayerServer().getPlayerList().getPlayer(uuid),index));verified=true;}catch(Throwable error){failure=error;}});return;}
                     if(verified)advance();return;
                 }
+                if(!signPlaced){
+                    c.player.getInventory().setSelectedSlot(0);var target=Item068Checks.signPosition();var support=Item068Checks.signHit(index).getBlockPos();String name=(index<2?"laver":"dread")+"_sign";
+                    if(!c.level.getBlockState(target).isAir()||c.level.getBlockEntity(target)!=null||!c.level.getBlockState(support).is(net.minecraft.world.level.block.Blocks.SMOOTH_STONE)||!c.player.getMainHandItem().is(item(name).getItem())||c.player.position().distanceToSqr(new net.minecraft.world.phys.Vec3(12.5,250,2.5))>.25){if(++ticks>200)throw new AssertionError("sign support/item/player sync did not finish "+name);return;}
+                    var result=c.gameMode.useItemOn(c.player,net.minecraft.world.InteractionHand.MAIN_HAND,Item068Checks.signHit(index));check(result.consumesAction(),"native client predicts sign placement "+name);signPlaced=true;ticks=0;return;
+                }
                 if(!(c.gui.screen() instanceof AbstractSignEditScreen screen)){if(++ticks>200)throw new AssertionError("native sign editor did not open "+Item068Checks.signId(index)+" screen="+c.gui.screen());return;}
                 var field=AbstractSignEditScreen.class.getDeclaredField("sign");field.setAccessible(true);var sign=(net.minecraft.world.level.block.entity.SignBlockEntity)field.get(screen);
                 check(sign.getBlockPos().equals(Item068Checks.signPosition()),"native editor actual placed sign position");
                 check(BuiltInRegistries.BLOCK.getKey(sign.getBlockState().getBlock()).toString().equals("guogaology:"+Item068Checks.signId(index)),"native editor actual placed sign type");
+                if(!signAuthorityQueued){signAuthorityQueued=true;var uuid=c.player.getUUID();c.getSingleplayerServer().execute(()->{try{Item068Checks.verifySignAuthority(c.getSingleplayerServer().getPlayerList().getPlayer(uuid),index);signAuthorityVerified=true;}catch(Throwable error){failure=error;}});return;}
+                if(!signAuthorityVerified)return;
                 if(++ticks<30)return;
                 if(!capturing){photo(c,"item068-sign-"+Item068Checks.signId(index)+".png");return;}
                 if(captured){screen.onClose();closing=true;ticks=0;}return;
@@ -109,9 +116,10 @@ public final class Item068Runtime {
             }else if(stage==7){
                 if(!queued){c.gui.setScreen(null);queue(c,p->{p.closeContainer();p.setGameMode(GameType.SURVIVAL);p.setItemSlot(EquipmentSlot.MAINHAND,item("graham"));p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.inventoryMenu.broadcastFullState();});return;}
             }else{
+                if(MiningPattern0612Checks.enabled()&&!MiningPattern0612Visual.tick(c))return;
                 check(signs.size()==4,"four native automatic sign editors and NBT roundtrips");check(screenshots.size()==7,"seven completed native screenshots");
                 result.add("signPlacementAndPersistence",signs);result.add("screenshots",screenshots);result.addProperty("checks",checks);result.addProperty("status","PASS");result.addProperty("minecraft","26.2");
-                result.addProperty("scope","50 actual player door/slab breaks; four actual sign-item placements, automatic native editor, authorized both-side text update and compressed NBT disk reload; eight item native context transforms. Disposable flat world; not full-world reopen or survival coverage.");
+                result.addProperty("scope","50 actual player door/slab breaks; four actual client-predicted sign-item placements over native inventory/use-on packets, automatic native editor, authorized both-side text update and compressed NBT disk reload; eight item native context transforms. Disposable flat world; not full-world reopen or survival coverage.");
                 result.add("inputs",JsonParser.parseString(Files.readString(Path.of("item068-run-input.json"))));
                 Files.writeString(Path.of("item068-results.json"),new GsonBuilder().setPrettyPrinting().create().toJson(result)+"\n");
                 Files.writeString(Path.of("port-client-ok.txt"),"ITEM068_RUNTIME_OK checks="+checks+" harvestCases=50 signs=4 itemContexts=56 screenshots=7\n");done=true;c.stop();return;

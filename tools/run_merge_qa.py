@@ -63,7 +63,7 @@ def allowed(lib):
     return result and not any(x in lib['name'] for x in ('natives-windows-arm64','natives-windows-x86'))
 
 def run(a):
-    if a.combat0611:
+    if a.combat0611 or a.mining0612:
         a.repair0610=a.item068_only=a.audit068_focus=a.fresh_world=True
     assert not (a.repair069 or a.repair0610) or (a.item068_only and a.audit068_focus and a.fresh_world), 'Repair069 requires fresh focused item/native observations'
     instance=a.instance.resolve();assert instance.name=='fo262','Runtime scope is fo262 only'
@@ -165,7 +165,7 @@ def run(a):
     (game/'options.txt').write_text('pauseOnLostFocus:false\nfullscreen:false\nrenderDistance:5\nsimulationDistance:5\nsoundCategory_master:0.0\nlang:'+a.language+'\n','utf8')
     temp=game/'temp';temp.mkdir()
     command=[str(a.java_home/'bin/java.exe'),'-Xmx4G','--enable-native-access=ALL-UNNAMED','-Dfile.encoding=UTF-8',
-             f'-Dguogaology.qa.general068={str(a.audit068_focus).lower()}', f'-Dguogaology.repair0610={str(a.repair0610).lower()}',f'-Dguogaology.combat0611={str(a.combat0611).lower()}',f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
+             f'-Dguogaology.qa.general068={str(a.audit068_focus).lower()}', f'-Dguogaology.repair0610={str(a.repair0610).lower()}',f'-Dguogaology.combat0611={str(a.combat0611).lower()}',f'-Dguogaology.mining0612={str(a.mining0612).lower()}',f'-Dguogaology.qa.item068={str(a.item068_only).lower()}',f'-Dguogaology.qa.recipebook066={str(a.recipebook066_only).lower()}',f'-Dguogaology.qa.recipebook066Baseline={str(a.recipebook066_baseline).lower()}',
              f'-Dguogaology.qa.material065={str(a.material065_only).lower()}',
              f'-Dguogaology.qa.absence064={str(a.absence064_only).lower()}',f'-Dguogaology.qa.absence064Baseline={str(a.absence064_baseline).lower()}',
              f'-Dguogaology.qa.building063={str(a.building063_only).lower()}',f'-Dguogaology.qa.core515={str(a.core515_only or a.astra516_only).lower()}',f'-Dguogaology.qa.astra516={str(a.astra516_only).lower()}',f'-Dguogaology.qa.core514={str(a.core514_only).lower()}',f'-Dguogaology.qa.astra512={str(a.astra512_only).lower()}',f'-Dguogaology.qa.lamps058={str(a.lamps058_only).lower()}',
@@ -201,11 +201,15 @@ def run(a):
     if a.combat0611:
         from verify_combat_0611_runtime import verify
         verify(game,'26.2')
+    if a.mining0612:
+        from verify_mining_0612_runtime import verify
+        verify(game,'26.2',release)
     print((game/'port-client-ok.txt').read_text(),flush=True)
     print('PRODUCTION_PORT_OK 26.2',flush=True)
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True)
+    p.add_argument('--mining0612',action='store_true',help='Native 5x5 editor, mining START/STOP, strict targets, death ownership and pattern disk checks')
     p.add_argument('--combat0611',action='store_true',help='Current battle balance plus existing focused native regressions; disposable new world only')
     p.add_argument('--repair0610',action='store_true',help='Require current0610 strict focused native checks')
     p.add_argument('--repair069',action='store_true',help='Require fixed facing, stripping, boat naming and real extra-hit damage in focused native QA')

@@ -40,12 +40,12 @@ public final class Experience066Checks {
     }
     private static Harvest harvest(ServerPlayer player,Block type,ItemStack tool,boolean extra,long seed)throws Exception{
         var world=player.level();clear(world);world.getRandom().setSeed(WorldNoise.mix(seed));
-        player.setItemSlot(EquipmentSlot.MAINHAND,tool);player.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);player.setShiftKeyDown(false);player.setYRot(0);player.setXRot(0);
+        player.setItemSlot(EquipmentSlot.MAINHAND,tool);player.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);player.setShiftKeyDown(false);player.setYRot(extra?180:0);player.setXRot(0);
         world.setBlock(TEST,type.defaultBlockState(),2);
         if(extra){world.setBlock(TEST.west(),type.defaultBlockState(),2);world.setBlock(TEST.below(),type.defaultBlockState(),2);}
-        var before=tool.copy();check(player.gameMode.destroyBlock(TEST),"native survival destruction "+BuiltInRegistries.BLOCK.getKey(type));breaks++;
+        if(extra)GearData.setMiningPattern(tool,new MiningPattern(12,1<<11));var before=tool.copy();if(extra)MiningEffects.captureStart(player,TEST);check(player.gameMode.destroyBlock(TEST),"native survival destruction "+BuiltInRegistries.BLOCK.getKey(type));breaks++;
         check(world.getBlockState(TEST).isAir(),"primary block actually removed");
-        if(extra){check(world.getBlockState(TEST.west()).isAir(),"actual AFTER event excavates one extra neighbor");check(world.getBlockState(TEST.below()).is(type),"extra mining never moves below selected Y");}
+        if(extra){check(world.getBlockState(TEST.west()).isAir(),"actual AFTER event excavates one extra neighbor");check(world.getBlockState(TEST.below()).is(type),"unselected lower ore remains intact");}
         var after=tool.copy();after.setDamageValue(before.getDamageValue());check(ItemStack.matches(before,after),"owned tool components/cores/enchantments/count unchanged except ordinary wear");
         int xp=0;var countField=ExperienceOrb.class.getDeclaredField("count");countField.setAccessible(true);
         for(var e:world.getEntitiesOfClass(ExperienceOrb.class,AREA)){xp+=e.getValue()*countField.getInt(e);e.discard();}

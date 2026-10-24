@@ -556,7 +556,7 @@
   "advancement.guogaology.guide.core_matrix_2.title": "Parallel Excavation",
   "advancement.guogaology.guide.core_matrix_2.description": "Obtain Matrix Core Lv2. A stronger matrix expands extra excavation and both manuscript mining bonuses.",
   "advancement.guogaology.guide.core_matrix_3.title": "The Matrix Unfolds",
-  "advancement.guogaology.guide.core_matrix_3.description": "Obtain Matrix Core Lv3. Reach third-grade excavation. Extra mining never targets blocks below the selected block.",
+  "advancement.guogaology.guide.core_matrix_3.description": "Obtain Matrix Core Lv3. A single core provides 4 extra blocks. Configure a vertical 5×5 mining pattern at an enhancement table.",
   "advancement.guogaology.guide.biome_power.title": "Visit Power Tower Desert",
   "advancement.guogaology.guide.biome_power.description": "Enter Power Tower Desert in Inner to discover its materials and megastructure.",
   "advancement.guogaology.guide.material_power.title": "Arrows and Colored Tips",
@@ -652,5 +652,17 @@
   "item.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
   "entity.guogaology.laver_chest_boat": "Laver Boat with Chest",
   "entity.guogaology.dread_chest_boat": "Dread Fir Boat with Chest",
-  "mining.guogaology.bow_damage_coefficient": "Base + core coefficient: %s"
+  "mining.guogaology.bow_damage_coefficient": "Base + core coefficient: %s",
+  "mining.guogaology.pattern.button": "Pattern",
+  "mining.guogaology.pattern.title": "Mining pattern",
+  "mining.guogaology.pattern.capacity": "Extra blocks %s / %s",
+  "mining.guogaology.pattern.hint": "Left: select · Right: set reference",
+  "mining.guogaology.pattern.reference": "Reference (manually mined)",
+  "mining.guogaology.pattern.selected": "Enabled",
+  "mining.guogaology.pattern.empty": "Not selected",
+  "mining.guogaology.pattern.clear": "Clear",
+  "mining.guogaology.pattern.reset": "Reset",
+  "mining.guogaology.pattern.back": "Back",
+  "mining.guogaology.pattern.vertical_hint": "Always vertical; top is world up",
+  "mining.guogaology.pattern.reset_hint": "Capacity changes reset the pattern"
 }

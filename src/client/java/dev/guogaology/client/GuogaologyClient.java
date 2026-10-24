@@ -21,6 +21,7 @@ public final class GuogaologyClient implements ClientModInitializer {
         DecorItemModels.initialize();
         OrdinalBowModels.initialize();
         GuogaologyAtmosphere.initialize();
+        MiningPatternPreview.initialize();
         DimensionRenderingRegistry.registerDimensionEffects(GuogaologyMod.id("guogaology"),new GuogaologyDimensionEffects());
         DimensionRenderingRegistry.registerDimensionEffects(GuogaologyMod.id("guogao"),new GuogaologyDimensionEffects());
         // The world-height landmarks provide their own cloud sculptures.

@@ -40,6 +40,7 @@ def adapt(text, target, name):
         'PayloadTypeRegistry.playS2C()': 'PayloadTypeRegistry.clientboundPlay()',
         'PayloadTypeRegistry.playC2S()': 'PayloadTypeRegistry.serverboundPlay()',
         'ServerTickEvents.END_WORLD_TICK': 'ServerTickEvents.END_LEVEL_TICK',
+        'ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD': 'ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL',
         'DensityFunction.HOLDER_HELPER_CODEC': 'DensityFunction.CODEC',
         'net.minecraft.world.entity.EntityType.OCELOT': 'net.minecraft.world.entity.EntityTypes.OCELOT',
         'net.minecraft.world.entity.EntityType.PARROT': 'net.minecraft.world.entity.EntityTypes.PARROT',
@@ -158,17 +159,20 @@ def adapt(text, target, name):
                             'frameFrustum=null; // Use the camera snapshot during submission below.')
         text = text.replace('frameFrustum!=null&&!frameFrustum.isVisible(state.bounds)',
                             'camera.cullFrustum!=null&&!camera.cullFrustum.isVisible(state.bounds)')
-    if name == 'GuogaologyAtmosphere.java':
+    if name in ('GuogaologyAtmosphere.java', 'MiningPatternPreview.java'):
         text = text.replace('.client.rendering.v1.world.World', '.client.rendering.v1.level.Level')
         text = text.replace('WorldExtractionContext', 'LevelExtractionContext').replace('WorldRenderContext','LevelRenderContext').replace('WorldRenderEvents','LevelRenderEvents')
         text = text.replace('LevelRenderEvents.AFTER_ENTITIES', 'LevelRenderEvents.COLLECT_SUBMITS')
         text = text.replace('context.worldState()', 'context.levelState()').replace('context.world()', 'context.level()').replace('context.tickCounter()', 'context.deltaTracker()')
         text = text.replace('var out = context.consumers().getBuffer(RenderTypes.debugQuads());\n        var pose = context.matrices().last();',
                             'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out) -> drawQuads(pose,out,quads));\n    }\n    private static void drawQuads(com.mojang.blaze3d.vertex.PoseStack.Pose pose,VertexConsumer out,List<Quad> quads) {')
+        if name == 'MiningPatternPreview.java':
+            text = text.replace('var out=context.consumers().getBuffer(RenderTypes.debugQuads());\n        for(var q:outlines)outline(context.matrices().last(),out,q);',
+                                'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out)->{for(var q:outlines)outline(pose,out,q);});')
     if target == '26.3':
         if name == 'GrahamGrowth.java':
             text = text.replace('PushReaction.DESTROY', 'PushReaction.POPPED')
-        if name == 'GuogaologyAtmosphere.java':
+        if name in ('GuogaologyAtmosphere.java', 'MiningPatternPreview.java'):
             # The extension belongs to FabricRenderState, not the Minecraft class.
             # Emitting invokeinterface also matches the received 0.5.4.1 fix.
             text = text.replace('context.levelState().setData(', '((net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState)context.levelState()).setData(')

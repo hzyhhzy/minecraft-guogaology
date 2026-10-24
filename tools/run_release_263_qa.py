@@ -155,7 +155,7 @@ def java_executable(java_home):
 
 
 def prepare(args):
-    if args.combat0611:
+    if args.combat0611 or args.mining0612:
         args.repair0610 = True
     if args.repair069 or args.repair0610:
         args.general_audit = True
@@ -240,6 +240,7 @@ def prepare(args):
                f"-Dguogaology.qa263.generalAudit={str(args.general_audit).lower()}",
                f"-Dguogaology.repair0610={str(args.repair0610).lower()}",
                f"-Dguogaology.combat0611={str(args.combat0611).lower()}",
+               f"-Dguogaology.mining0612={str(args.mining0612).lower()}",
                f"-Dguogaology.qa263.seed={args.seed}", f"-Dguogaology.qa263.release={release}",
                f"-Djava.io.tmpdir={temp}", f"-Djna.tmpdir={temp}",
                f"-Dorg.lwjgl.system.SharedLibraryExtractPath={temp}",
@@ -331,6 +332,9 @@ def verify_result(game, release, args):
     if args.combat0611:
         from verify_combat_0611_runtime import verify
         verify(game, TARGET)
+    if args.mining0612:
+        from verify_mining_0612_runtime import verify
+        verify(game,TARGET,release)
     return result, len(set(pictures))
 
 
@@ -380,6 +384,7 @@ def run(args):
 
 def parser():
     argument_parser = argparse.ArgumentParser(description=__doc__)
+    argument_parser.add_argument("--mining0612", action="store_true", help="Native custom5x5 editor/mining/disk/death cases")
     argument_parser.add_argument("--combat0611", action="store_true", help="Current combat balance: real arrows/melee in four realms plus compressed legacy-arrow/item NBT controls")
     argument_parser.add_argument("--repair0610", action="store_true", help="Strict0610 bow/wood/recipes/loot/collision native cases")
     argument_parser.add_argument("--repair069", action="store_true", help="Require every repaired observation and full bow suite to pass")

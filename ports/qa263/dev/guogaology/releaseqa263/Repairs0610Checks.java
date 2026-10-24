@@ -16,6 +16,7 @@ public final class Repairs0610Checks {
   player.level().getChunk(new net.minecraft.core.BlockPos(12,240,12));
   Bow0610Checks.run(player);Small0610Checks.run(player);
   if(Combat0611Checks.enabled())Combat0611Checks.run(player);
+  if(MiningPattern0612Checks.enabled())MiningPattern0612Checks.run(player);
   var out=new JsonObject();out.add("wood",Wood0610Checks.run(player));
   out.addProperty("bowPickupAndSurvivalControls",true);out.addProperty("actualRecipesDropsCollision",true);
   write("repair0610-server-ok.json",out);

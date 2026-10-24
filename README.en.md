@@ -4,6 +4,8 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
+**Local candidate0.6.12**: vertical5×5 mining patterns, Matrix budgets1/2/4, and exact preset resets whenever capacity changes. Branch`codex/0.6.12-mining-pattern`; main and public releases remain unchanged. See[implementation and verification](docs/WORK-0612.md).
+
 **v0.6.11 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 
 **0.6.11** updates bow speeds, separate Tower attack values for swords, bows and manuscripts, and innate manuscript attack, with matching equipment previews and offline simulation. It includes 0.6.10's arrow pickup, draw icons, wooden products, red-sand TNT, Silk Touch gummy jars, and core rendering/collision changes. See the [release notes](docs/RELEASE-0.6.11.md#english), [validation record](docs/WORK-0611.md) and [enhancement simulator](docs/enhancement-simulator.html?lang=en). After its initial publication from a separate branch, this release has been integrated into `main` under subsequent authorization; the `v0.6.11` tag and published assets remain unchanged.

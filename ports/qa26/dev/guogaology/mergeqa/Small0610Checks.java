@@ -54,7 +54,7 @@ public final class Small0610Checks {
     private static ItemStack tool(ServerLevel world,int mode){
         var tool=mode<3?new ItemStack(Items.NETHERITE_PICKAXE):item("true_omega_pickaxe");
         if(mode==1||mode==2)tool.enchant(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(mode==1?Enchantments.SILK_TOUCH:Enchantments.FORTUNE),mode==1?1:3);
-        if(mode>=3){var cores=new ArrayList<ItemStack>();cores.add(item("hydra_bud"));if(mode>=5)cores.add(item("sequence_core"));GearData.setCores(tool,cores);GearData.setSilkTouch(tool,mode==4||mode==5);GearData.refresh(tool);check(GearData.silkTouch(tool)==(mode==4||mode==5),"actual Branch silk toggle mode="+mode);}
+        if(mode>=3){var cores=new ArrayList<ItemStack>();cores.add(item("hydra_bud"));if(mode>=5)cores.add(item("sequence_core"));GearData.setCores(tool,cores);GearData.setSilkTouch(tool,mode==4||mode==5);GearData.refresh(tool);if(mode>=5)GearData.setMiningPattern(tool,new MiningPattern(12,1<<13));check(GearData.silkTouch(tool)==(mode==4||mode==5),"actual Branch silk toggle mode="+mode);}
         return tool;
     }
     private static Map<String,Integer> harvest(ServerPlayer player,ItemStack tool,boolean extra){
@@ -63,11 +63,11 @@ public final class Small0610Checks {
         var made=new ArrayList<Entity>();
         try{
             for(var pos:CELLS)level.setBlock(pos,Blocks.AIR.defaultBlockState(),2);
-            player.setItemSlot(EquipmentSlot.MAINHAND,tool);player.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);player.setShiftKeyDown(false);player.setYRot(0);player.setXRot(0);
+            player.setItemSlot(EquipmentSlot.MAINHAND,tool);player.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);player.setShiftKeyDown(false);player.setYRot(extra?180:0);player.setXRot(0);
             level.setBlock(TEST,block("gummy_jar").defaultBlockState(),2);
             if(extra){level.setBlock(TEST.west(),block("gummy_jar").defaultBlockState(),2);level.setBlock(TEST.below(),block("gummy_jar").defaultBlockState(),2);level.setBlock(TEST.east(),Blocks.STONE.defaultBlockState(),2);}
-            var original=tool.copy();check(player.gameMode.destroyBlock(TEST),"actual survival destroyBlock of gummy jar");breaks++;check(level.getBlockState(TEST).isAir(),"jar primary really removed");
-            if(extra){check(level.getBlockState(TEST.west()).is(block("gummy_jar")),"spread cannot harvest a second jar");check(level.getBlockState(TEST.below()).is(block("gummy_jar")),"spread leaves the jar below primary Y");check(level.getBlockState(TEST.east()).isAir(),"spread AFTER hook really ran and harvested eligible adjacent stone");extraBreaks++;}
+            var original=tool.copy();if(extra)MiningEffects.captureStart(player,TEST);check(player.gameMode.destroyBlock(TEST),"actual survival destroyBlock of gummy jar");breaks++;check(level.getBlockState(TEST).isAir(),"jar primary really removed");
+            if(extra){check(level.getBlockState(TEST.west()).is(block("gummy_jar")),"spread cannot harvest a second jar");check(level.getBlockState(TEST.below()).is(block("gummy_jar")),"unselected lower jar is preserved");check(level.getBlockState(TEST.east()).isAir(),"spread AFTER hook really ran and harvested eligible adjacent stone");extraBreaks++;}
             var after=tool.copy();after.setDamageValue(original.getDamageValue());check(ItemStack.matches(original,after),"owned tool components, enchantments and silk toggle unchanged except wear");
             var drops=new TreeMap<String,Integer>();for(var e:level.getEntitiesOfClass(ItemEntity.class,AREA))if(!beforeEntities.contains(e.getUUID())){made.add(e);drops.merge(BuiltInRegistries.ITEM.getKey(e.getItem().getItem()).toString(),e.getItem().getCount(),Integer::sum);}
             for(var e:level.getEntitiesOfClass(ExperienceOrb.class,AREA))if(!beforeOrbs.contains(e.getUUID()))made.add(e);

@@ -1,4 +1,4 @@
-/* Reproducible offline extrema audit of production revision50.
+/* Reproducible offline extrema audit of production revision51.
  * Run from any directory with Node; no Minecraft, browser, or third-party package.
  * Legacy proposal filenames are aliases of the production rules and engine.
  */
@@ -17,7 +17,7 @@ for (const file of [rulesPath, enginePath]) {
 }
 const payload = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
 const rules = payload.rules || payload;
-assert.equal(rules.revision, 50, 'Current production rules are required');
+assert.equal(rules.revision, 51, 'Current production rules are required');
 const engine = require(enginePath);
 assert.equal(typeof engine.calculate, 'function', 'Proposal engine calculate API');
 assert.equal(typeof engine.defaults, 'function', 'Proposal engine defaults API');
@@ -373,7 +373,7 @@ function lowerGradeProtection(deep) {
 const objectives = { normal: auditObjectives(false), deep: auditObjectives(true) };
 const output = {
   schemaVersion: 3,
-  scope: 'Production revision50 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
+  scope: 'Production revision51 formulas, offline audit; sword extrema and velocity-dependent bow examples. No game execution.',
   assumptions: {
     tier: 4, swordSlots: 8, manuscriptSlots: 6, armorSlotsPerPiece: 8,
     regionalLevel: 3, ordinalLevel: 4,
@@ -421,7 +421,7 @@ output.balanceCalibration={
   attackRatio:output.deep.maximumAttack.value/output.normal.maximumAttack.value,
   protectionRatio:output.deep.maximumProtection.value/output.normal.maximumProtection.value,
   normalUnchanged:false,deepMaximumProtectionUnchanged:false,
-  goal:'Production revision50; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
+  goal:'Production revision51; independent per-source RSS, manuscript-only Ordinal, native armor and independent set/book protection.'
 };
 const close = (a, b, label) => assert(Math.abs(a - b) < 1e-8 * Math.max(1, Math.abs(b)), label + ': ' + a + ' vs ' + b);
 const R = Math.sqrt(8), armorF = 1 + 2 * R;

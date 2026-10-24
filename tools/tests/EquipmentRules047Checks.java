@@ -14,7 +14,7 @@ public final class EquipmentRules047Checks {
     private static List<Gear> armor(int tier,List<Core> cores){return List.of(new Gear(tier,2,0,cores),new Gear(tier,3,0,cores),new Gear(tier,4,0,cores),new Gear(tier,5,0,cores));}
     private static Snapshot state(Gear main,Gear off,boolean deep){return new Snapshot(main,off,Gear.empty(2),Gear.empty(3),Gear.empty(4),Gear.empty(5),deep);}
     public static void main(String[] args){
-        check(EquipmentRules.REVISION==50,"production revision");
+        check(EquipmentRules.REVISION==51,"production revision");
         for(int kind=0;kind<=7;kind++)check(EquipmentRules.compatible(kind,8)==(kind==6),"Ordinal manuscript only "+kind);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(6,type)==(type!=5),"Criticality forbidden in manuscripts "+type);
         for(int type=0;type<9;type++)check(EquipmentRules.compatible(7,type)==EquipmentRules.compatible(1,type),"bow compatibility follows sword "+type);
@@ -36,7 +36,7 @@ public final class EquipmentRules047Checks {
             near(EquipmentRules.bonusHealth(armor(4,core(8,4,4)),core(7,1,3),deep),4*Math.sqrt(10),"health is only manuscript Guogao "+deep);
             near(EquipmentRules.bonusHealth(armor(4,core(7,3)),core(8,4),deep),0,"no armor/Ordinal health "+deep);
             near(EquipmentRules.miningMultiplier(core(0,3),core(8,4),deep),1,"no Ordinal mining multiplier "+deep);
-            check(EquipmentRules.spreadBudget(Collections.nCopies(8,new Core(0,3)),core(8,4),deep)==(deep?25:8),"extra-mining max budget "+deep);
+            check(EquipmentRules.spreadBudget(Collections.nCopies(8,new Core(0,3)),core(8,4),deep)==11,"extra-mining max budget "+deep);
             near(EquipmentRules.projectileCoefficient(core(5,3)),0,"obsolete manuscript projectile channel removed");
         }
         near(EquipmentRules.attack(16,core(1,3),EquipmentRules.join(core(1,2),core(8,4)),false,.4,4),35.5,"normal attack independent HP source sum");

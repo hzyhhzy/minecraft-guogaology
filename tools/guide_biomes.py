@@ -13,7 +13,7 @@ THEME_GUIDES = {
   ('从山脉晶页采集矩阵薄片。平面的矩阵，也能展开成立体山脉。','Gather a Matrix Sheet from a mountain page. A flat matrix can unfold into a mountain.'),
   [('多挖一格','One More Block','镶入镐可额外开采；装入手稿则同时增加挖速加值和急迫乘区。','Socket into a pick for extra excavation, or a manuscript for flat and multiplicative mining speed.'),
    ('并行开采','Parallel Excavation','更高阶的矩阵扩大额外开采能力，也加强手稿的两项挖速。','A stronger matrix expands extra excavation and both manuscript mining bonuses.'),
-   ('矩阵展开','The Matrix Unfolds','将开采能力推进到三级；额外开采不会向选中方块下方延伸。','Reach third-grade excavation. Extra mining never targets blocks below the selected block.')]),
+   ('矩阵展开','The Matrix Unfolds','额外开采单颗预算4格；可在强化台设置竖直5×5挖掘图案。','A single core provides 4 extra blocks. Configure a vertical 5×5 mining pattern at an enhancement table.')]),
  'power': ('power_desert','power_bricks',[['power_bricks'],['tree_node_red','tree_node_green','tree_node_blue']],
   ('箭头与三色枝端','Arrows and Colored Tips'),
   ('收集幂塔铭木与任一种TREE彩色节点，辨认荒漠中箭头、树与图的踪迹。','Collect Power Tower Wood and any colored TREE node: traces of arrows, trees and graphs in the desert.'),

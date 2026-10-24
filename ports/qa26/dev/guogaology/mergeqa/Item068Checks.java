@@ -122,14 +122,20 @@ final class Item068Checks {
     private static List<String> lines(SignBlockEntity sign,boolean front){return java.util.Arrays.stream(sign.getText(front).getMessages(false)).map(value->value.getString()).toList();}
     static String signId(int index){return (index<2?"laver":"dread")+(index%2==1?"_wall_sign":"_sign");}
     static BlockPos signPosition(){return TEST;}
-    static void prepareSign(ServerPlayer p,int index){
-        clear(p);p.closeContainer();boolean wall=index%2==1;String itemId=(index<2?"laver":"dread")+"_sign";
-        var qa=new Item068Checks();boolean placed;
-        if(wall){p.level().setBlock(TEST.south(),Blocks.SMOOTH_STONE.defaultBlockState(),3);placed=qa.place(p,itemId,TEST.south(),Direction.NORTH,new Vec3(TEST.getX()+.5,TEST.getY()+.5,TEST.getZ()+1),1);}
-        else placed=qa.place(p,itemId,TEST.below(),Direction.UP,Vec3.atCenterOf(TEST.below()).add(0,.5,0),1);
+    static BlockHitResult signHit(int index){
+        return index%2==1?new BlockHitResult(new Vec3(TEST.getX()+.5,TEST.getY()+.5,TEST.getZ()+1),Direction.NORTH,TEST.south(),false):new BlockHitResult(Vec3.atCenterOf(TEST.below()).add(0,.5,0),Direction.UP,TEST.below(),false);
+    }
+    /** Prepare server support and ownership; the client performs native predicted placement after sync. */
+    static void prepareSignSupport(ServerPlayer p,int index){
+        clear(p);p.closeContainer();p.setNoGravity(true);p.setDeltaMovement(Vec3.ZERO);
+        p.teleport(new TeleportTransition(p.level(),new Vec3(12.5,250,2.5),Vec3.ZERO,0,0,TeleportTransition.DO_NOTHING));
+        if(index%2==1)p.level().setBlock(TEST.south(),Blocks.SMOOTH_STONE.defaultBlockState(),3);
+        p.setItemSlot(EquipmentSlot.MAINHAND,item((index<2?"laver":"dread")+"_sign"));p.inventoryMenu.broadcastFullState();
+    }
+    static void verifySignAuthority(ServerPlayer p,int index){
         var state=p.level().getBlockState(TEST);
-        if(!placed||!state.is(block(signId(index)))||!BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(Identifier.parse("minecraft:sign")).isValid(state)||!(p.level().getBlockEntity(TEST) instanceof SignBlockEntity sign)||!p.getUUID().equals(sign.getPlayerWhoMayEdit()))
-            throw new AssertionError("Item068: actual sign placement/editor authorization "+signId(index)+" state="+state);
+        if(!state.is(block(signId(index)))||!BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(Identifier.parse("minecraft:sign")).isValid(state)||!(p.level().getBlockEntity(TEST) instanceof SignBlockEntity sign)||!p.getUUID().equals(sign.getPlayerWhoMayEdit())||p.position().distanceToSqr(Vec3.atCenterOf(TEST))>16)
+            throw new AssertionError("Item068: native client-predicted sign placement/editor authorization "+signId(index)+" state="+state+" player="+p.position());
     }
     static JsonObject verifySign(ServerPlayer p,int index)throws Exception{
         var qa=new Item068Checks();String id=signId(index);var state=p.level().getBlockState(TEST);var entity=p.level().getBlockEntity(TEST);

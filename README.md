@@ -4,6 +4,8 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
+**本地候选0.6.12**：竖直5×5自定义挖掘图案，矩阵晶核额外预算1／2／4；上限变化自动重置为默认图案。独立分支`codex/0.6.12-mining-pattern`，未合并main、未发布。操作与验证见[本轮记录](docs/WORK-0612.md)。
+
 **v0.6.11 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 
 **0.6.11** 更新四档弓箭速、剑／弓／手稿各自的幂塔攻击参数和裸手稿攻击，并同步强化界面与离线模拟器。包含0.6.10的拾箭、蓄力贴图、木制品、红沙TNT、软糖罐精准采集及晶核渲染／碰撞修复。详见[本版发行说明](docs/RELEASE-0.6.11.md)、[验证记录](docs/WORK-0611.md)及[强化模拟器](docs/enhancement-simulator.html)。本版从独立分支发布后，已按后续授权合并到`main`；`v0.6.11`标签和发布附件保持不变。

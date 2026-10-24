@@ -20,6 +20,7 @@
     "AnvilCoreRepairMixin",
     "GrindstoneCoreRepairMixin",
     "ManuscriptMiningMixin",
+    "MiningPatternStartMixin",
     "ManuscriptAttackOverflowMixin",
     "ManuscriptFlightMixin",
     "ManuscriptStatusMixin",

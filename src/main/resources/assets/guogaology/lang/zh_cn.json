@@ -556,7 +556,7 @@
   "advancement.guogaology.guide.core_matrix_2.title": "并行开采",
   "advancement.guogaology.guide.core_matrix_2.description": "获得2级矩阵晶核。更高阶的矩阵扩大额外开采能力，也加强手稿的两项挖速。",
   "advancement.guogaology.guide.core_matrix_3.title": "矩阵展开",
-  "advancement.guogaology.guide.core_matrix_3.description": "获得3级矩阵晶核。将开采能力推进到三级；额外开采不会向选中方块下方延伸。",
+  "advancement.guogaology.guide.core_matrix_3.description": "获得3级矩阵晶核。额外开采单颗预算4格；可在强化台设置竖直5×5挖掘图案。",
   "advancement.guogaology.guide.biome_power.title": "走进幂塔荒漠",
   "advancement.guogaology.guide.biome_power.description": "进入里界的幂塔荒漠，寻找本地材料与巨构。",
   "advancement.guogaology.guide.material_power.title": "箭头与三色枝端",
@@ -652,5 +652,17 @@
   "item.guogaology.dread_chest_boat": "冥杉木运输船",
   "entity.guogaology.laver_chest_boat": "紫菜木运输船",
   "entity.guogaology.dread_chest_boat": "冥杉木运输船",
-  "mining.guogaology.bow_damage_coefficient": "基础＋晶核系数：%s"
+  "mining.guogaology.bow_damage_coefficient": "基础＋晶核系数：%s",
+  "mining.guogaology.pattern.button": "范围设置",
+  "mining.guogaology.pattern.title": "挖掘图案",
+  "mining.guogaology.pattern.capacity": "额外方块 %s / %s",
+  "mining.guogaology.pattern.hint": "左键选格 · 右键设置参考格",
+  "mining.guogaology.pattern.reference": "参考格（直接挖掘）",
+  "mining.guogaology.pattern.selected": "启用",
+  "mining.guogaology.pattern.empty": "未选择",
+  "mining.guogaology.pattern.clear": "清空",
+  "mining.guogaology.pattern.reset": "重置",
+  "mining.guogaology.pattern.back": "返回",
+  "mining.guogaology.pattern.vertical_hint": "始终竖直，上方为世界上方",
+  "mining.guogaology.pattern.reset_hint": "上限改变时自动重置图案"
 }

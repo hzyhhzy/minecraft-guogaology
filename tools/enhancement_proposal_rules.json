@@ -1,6 +1,6 @@
 {
-  "revision": 50,
-  "proposalRevision": 50,
+  "revision": 51,
+  "proposalRevision": 51,
   "universal": [
     0.05,
     0.1,
@@ -295,10 +295,15 @@
     0.2
   ],
   "armorBoundaryScale": 2,
+  "spreadGrades": [
+    1,
+    2,
+    4
+  ],
   "deepSpreadGrades": [
     1,
-    4,
-    9
+    2,
+    4
   ],
   "baseControlSeconds": 2,
   "healthModel": "guogao_only_realm_invariant_rms",

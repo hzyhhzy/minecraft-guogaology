@@ -28,6 +28,36 @@ public final class GearData {
     private static final String SILK_MODE="guogaology_silk_touch";
     public static boolean silkTouch(ItemStack stack){var spec=MiningContent.GEAR.get(stack.getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(profile(stack),2)>0&&stack.getOrDefault(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.DEFAULT).copyNbt().getBoolean(SILK_MODE);}
     public static void setSilkTouch(ItemStack stack,boolean enabled){var spec=MiningContent.GEAR.get(stack.getItem());if(spec==null||spec.kind()!=0)return;var tag=stack.getOrDefault(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.DEFAULT).copyNbt();tag.putBoolean(SILK_MODE,enabled&&EquipmentRules.highest(profile(stack),2)>0);stack.set(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.of(tag));}
+    private static final String MINING_REFERENCE="guogaology_mining_reference", MINING_MASK="guogaology_mining_mask", MINING_CAPACITY="guogaology_mining_capacity";
+    private static int miningPatternBudget(ItemStack stack){
+        var spec=MiningContent.GEAR.get(stack.getItem());
+        return spec!=null&&spec.kind()==0?EquipmentRules.spreadBudget(profile(stack),List.of(),false):0;
+    }
+    /** Read-only fallback for old, malformed or stale layouts. Deliberate empty layouts remain valid. */
+    public static MiningPattern miningPattern(ItemStack stack){
+        int budget=miningPatternBudget(stack);var fallback=MiningPattern.defaultForBudget(budget);
+        var tag=stack.getOrDefault(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.DEFAULT).copyNbt();
+        if(!tag.contains(MINING_CAPACITY,3)||tag.getInt(MINING_CAPACITY)!=budget||!tag.contains(MINING_REFERENCE,3)||!tag.contains(MINING_MASK,3))return fallback;
+        int reference=tag.getInt(MINING_REFERENCE),mask=tag.getInt(MINING_MASK);
+        if(!MiningPattern.validCell(reference)||(mask&~MiningPattern.ALL_CELLS_MASK)!=0||(mask&(1<<reference))!=0||Integer.bitCount(mask)>budget)return fallback;
+        return new MiningPattern(reference,mask);
+    }
+    public static void setMiningPattern(ItemStack stack,MiningPattern pattern){
+        var spec=MiningContent.GEAR.get(stack.getItem());if(spec==null||spec.kind()!=0||pattern==null)return;
+        int budget=miningPatternBudget(stack);
+        if(pattern.count()>budget)pattern=MiningPattern.defaultForBudget(budget);
+        var tag=stack.getOrDefault(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.DEFAULT).copyNbt();
+        tag.putInt(MINING_REFERENCE,pattern.reference());tag.putInt(MINING_MASK,pattern.mask());tag.putInt(MINING_CAPACITY,budget);
+        stack.set(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.of(tag));
+    }
+    /** Only owned-item mutation paths call this, so a capacity decrease then increase cannot revive a prior layout. */
+    private static void normalizeMiningPattern(ItemStack stack){
+        var spec=MiningContent.GEAR.get(stack.getItem());if(spec==null||spec.kind()!=0)return;
+        var pattern=miningPattern(stack);
+        var tag=stack.getOrDefault(DataComponentTypes.CUSTOM_DATA,net.minecraft.component.type.NbtComponent.DEFAULT).copyNbt();
+        if(tag.contains(MINING_CAPACITY,3)&&tag.getInt(MINING_CAPACITY)==miningPatternBudget(stack)&&tag.contains(MINING_REFERENCE,3)&&tag.getInt(MINING_REFERENCE)==pattern.reference()&&tag.contains(MINING_MASK,3)&&tag.getInt(MINING_MASK)==pattern.mask())return;
+        setMiningPattern(stack,pattern);
+    }
     public static double healing(LivingEntity owner){return owner==null?0:EquipmentRules.regen(profile(ManuscriptEffects.held(owner)),EquipmentRules.bookHealingBase(bookTier(owner)));}
     public static double controlDuration(ItemStack weapon,LivingEntity owner){return EquipmentRules.controlDuration(profile(weapon),owner==null?List.of():profile(ManuscriptEffects.held(owner)),EquipmentRules.bookDurationBase(bookTier(owner)));}
     public static double bonusHealth(LivingEntity owner){var state=snapshot(owner);return EquipmentRules.bonusHealth(state.armor(),state.book(),state.deep());}
@@ -71,7 +101,7 @@ public final class GearData {
         slots=AbsenceCoreItems.normalizedInstalled(slots);
         var prior=coreSlots(s);boolean same=prior.size()==slots.size();
         for(int i=0;same&&i<slots.size();i++)same=ItemStack.areEqual(prior.get(i),slots.get(i));
-        if(same)return;
+        if(same){normalizeMiningPattern(s);return;}
         s.set(MiningContent.CORES,slots.stream().map(c->c.isEmpty()?ItemStack.EMPTY:c.copyWithCount(1)).toList());if(EquipmentRules.highest(profile(s),2)==0)setSilkTouch(s,false);refresh(s);
     }
     public static int type(ItemStack s){var id=Registries.ITEM.getId(s.getItem());return id.getNamespace().equals("guogaology")?EquipmentRules.coreType(id.getPath()):-1;}
@@ -104,6 +134,7 @@ public final class GearData {
     }
     public static void refresh(ItemStack s){
         var spec=MiningContent.GEAR.get(s.getItem());if(spec==null)return;
+        normalizeMiningPattern(s);
         if(spec.kind()==6){s.set(MiningContent.RULES,EquipmentRules.REVISION);return;}
         if(spec.tier()==0)s.set(MiningContent.DIGIT,(double)digit(s));
         int priorMax=s.getMaxDamage(),damage=s.getDamage();

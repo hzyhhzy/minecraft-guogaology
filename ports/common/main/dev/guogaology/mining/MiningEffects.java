@@ -27,24 +27,77 @@ public final class MiningEffects {
         Blocks.LAPIS_ORE, Blocks.DEEPSLATE_LAPIS_ORE, Blocks.REDSTONE_ORE, Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.DEEPSLATE_EMERALD_ORE,
         Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ANCIENT_DEBRIS);
     private static final ThreadLocal<Boolean> EXTRA=ThreadLocal.withInitial(()->false);
+    private record MiningStart(net.minecraft.world.level.Level world,BlockPos pos,ItemStack tool,BlockState original,Direction facing,MiningPattern pattern,List<EquipmentRules.Core> profile){}
+    private static final Map<ServerPlayer,MiningStart> STARTS=new WeakHashMap<>();
     private MiningEffects(){}
+    /** Called on the server's native START_DESTROY_BLOCK action, before a successful break. */
+    public static void captureStart(ServerPlayer player,BlockPos pos){
+        cancelStart(player);
+        net.minecraft.world.level.Level world=player.level();
+        if(!player.isAlive()||player.isCreative()||player.isShiftKeyDown()||player.isSpectator()||!world.hasChunkAt(pos))return;
+        var tool=player.getMainHandItem();var spec=MiningContent.GEAR.get(tool.getItem());
+        if(spec==null||spec.kind()!=0||EquipmentRules.spreadBudget(GearData.profile(tool),List.of(),false)<=0)return;
+        var original=world.getBlockState(pos);
+        if(!originAvailable(world,player,pos))return;
+        STARTS.put(player,new MiningStart(world,pos.immutable(),tool,original,player.getDirection(),GearData.miningPattern(tool),GearData.profile(tool)));
+    }
+    public static void cancelStart(ServerPlayer player){STARTS.remove(player);}
     public static void initialize(){
+        net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register((handler,server)->cancelStart(handler.player));
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(server->STARTS.clear());
+        net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player,origin,destination)->cancelStart(player));
         PlayerBlockBreakEvents.AFTER.register((world,player,pos,state,entity)->{
-            if(EXTRA.get()||!(player instanceof ServerPlayer p)||p.isCreative()||p.isShiftKeyDown()||entity!=null)return;
-            var tool=p.getMainHandItem();var spec=MiningContent.GEAR.get(tool.getItem());if(spec==null||spec.kind()!=0)return;
-            int budget=EquipmentRules.spreadBudget(GearData.profile(tool),GearData.profile(ManuscriptEffects.held(p)),ManuscriptEffects.deep(world));if(budget==0)return;
-            var look=p.getLookAngle();Direction normal=Direction.getApproximateNearest(look.x,look.y,look.z);
-            var candidates=new ArrayList<BlockPos>();
-            for(int a=-4;a<=4;a++)for(int b=-4;b<=4;b++)if(a!=0||b!=0)candidates.add(switch(normal.getAxis()){case X->pos.offset(0,a,b);case Y->pos.offset(a,0,b);case Z->pos.offset(a,b,0);});
-            candidates.sort(Comparator.comparingDouble(pos::distSqr));
+            if(EXTRA.get()||!(player instanceof ServerPlayer p))return;
+            var start=STARTS.remove(p);
+            // Native attack may change properties (notably redstone LIT) before the same block is mined.
+            if(start==null||!p.isAlive()||p.isCreative()||p.isShiftKeyDown()||entity!=null||start.world()!=world||!start.pos().equals(pos)||start.original().getBlock()!=state.getBlock())return;
+            var tool=p.getMainHandItem();
+            if(start.tool()!=tool||tool.isEmpty()||!start.pattern().equals(GearData.miningPattern(tool))||!start.profile().equals(GearData.profile(tool)))return;
+            int budget=EquipmentRules.spreadBudget(GearData.profile(tool),List.of(),false);
+            // Freeze the selected cells first: skipped air/protected blocks never recruit replacements.
+            var candidates=patternTargets(pos,start.pattern(),budget,start.facing());
             EXTRA.set(true);
-            try{for(var q:candidates){if(budget<=0||p.getMainHandItem()!=tool||tool.isEmpty())break;if(q.getY()<pos.getY())continue;if(!world.hasChunkAt(q))continue;var other=world.getBlockState(q);
-                if(!eligible(state,other)||world.getBlockEntity(q)!=null||!world.getWorldBorder().isWithinBounds(q))continue;
-                if(other.getDestroySpeed(world,q)<0||!tool.isCorrectToolForDrops(other))continue;
-                if(!world.mayInteract(p,q))continue;
-                if(p.gameMode.destroyBlock(q))budget--;
+            try{for(var q:candidates){
+                if(p.getMainHandItem()!=tool||tool.isEmpty())break;
+                if(canBreak(world,p,state,q,tool))p.gameMode.destroyBlock(q);
             }}finally{EXTRA.set(false);}
         });
+    }
+    /** Player-facing horizontal yaw fixes a vertical stencil even when looking at a floor or ceiling. */
+    public static List<BlockPos> patternTargets(BlockPos origin,MiningPattern pattern,int budget,Direction facing){
+        if(facing.getAxis()==Direction.Axis.Y)return List.of();
+        var right=facing.getClockWise();var targets=new ArrayList<BlockPos>();
+        for(int cell:pattern.active(budget)){
+            int horizontal=pattern.horizontal(cell),vertical=pattern.vertical(cell);
+            targets.add(origin.offset(right.getStepX()*horizontal,vertical,right.getStepZ()*horizontal));
+        }
+        return List.copyOf(targets);
+    }
+    /** Read-only client preview. The server repeats every permission and tool check before mining. */
+    public static List<BlockPos> previewTargets(net.minecraft.world.level.Level world,net.minecraft.world.entity.player.Player player,BlockPos origin,Direction facing,ItemStack tool){
+        var spec=MiningContent.GEAR.get(tool.getItem());
+        if(spec==null||spec.kind()!=0||!player.isAlive()||player.isCreative()||player.isShiftKeyDown()||!world.hasChunkAt(origin))return List.of();
+        if(!originAvailable(world,player,origin))return List.of();
+        var original=world.getBlockState(origin);
+        int budget=EquipmentRules.spreadBudget(GearData.profile(tool),List.of(),false);
+        return patternTargets(origin,GearData.miningPattern(tool),budget,facing).stream().filter(q->canBreak(world,player,original,q,tool)).toList();
+    }
+    public static boolean previewEligible(net.minecraft.world.level.Level world,net.minecraft.world.entity.player.Player player,BlockPos origin,BlockPos target){
+        if(!world.hasChunkAt(origin))return false;
+        var original=world.getBlockState(origin);
+        return originAvailable(world,player,origin)&&canBreak(world,player,original,target,player.getMainHandItem());
+    }
+    private static boolean originAvailable(net.minecraft.world.level.Level world,net.minecraft.world.entity.player.Player player,BlockPos pos){
+        if(!world.hasChunkAt(pos)||!world.getWorldBorder().isWithinBounds(pos))return false;
+        var state=world.getBlockState(pos);
+        return !state.isAir()&&world.getBlockEntity(pos)==null&&state.getDestroySpeed(world,pos)>=0&&world.mayInteract(player,pos);
+    }
+    private static boolean canBreak(net.minecraft.world.level.Level world,net.minecraft.world.entity.player.Player player,BlockState original,BlockPos target,ItemStack tool){
+        if(!world.hasChunkAt(target)||!world.getWorldBorder().isWithinBounds(target))return false;
+        var next=world.getBlockState(target);
+        if(!eligible(original,next)||world.getBlockEntity(target)!=null)return false;
+        if(next.getDestroySpeed(world,target)<0||!tool.isCorrectToolForDrops(next))return false;
+        return world.mayInteract(player,target);
     }
     private static boolean eligible(BlockState original,BlockState next){
         if(!next.is(BlockTags.MINEABLE_WITH_PICKAXE))return false;

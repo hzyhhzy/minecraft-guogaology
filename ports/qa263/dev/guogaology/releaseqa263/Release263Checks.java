@@ -89,6 +89,7 @@ public final class Release263Checks implements ClientModInitializer {
         if (done) return;
         try {
             if (failure!=null) throw new RuntimeException(failure);
+            if(scene==SCENES.length&&MiningPattern0612Checks.enabled()){if(MiningPattern0612Visual.tick(client))finish(client);return;}
             if (System.nanoTime()>deadline) throw new AssertionError("26.3 smoke timed out at "+SCENES[scene]);
             client.options.pauseOnLostFocus=false;
             client.options.renderDistance().set(4);
@@ -146,7 +147,7 @@ public final class Release263Checks implements ClientModInitializer {
             }
             if (!captured) return;
             System.out.println("RELEASE263_SCENE_OK "+SCENES[scene]+" dimension="+expectedDimension.identifier());
-            if (++scene==SCENES.length) { finish(client); return; }
+            if (++scene==SCENES.length) { if(!MiningPattern0612Checks.enabled())finish(client); return; }
             queued=false; ready=false; capturing=false; captured=false; ticks=0;
         } catch (Throwable error) {
             done=true;

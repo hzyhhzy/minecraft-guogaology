@@ -17,6 +17,7 @@ public final class GuogaologyClient implements ClientModInitializer {
         CoreMeshModels.initialize();
         CoreAnimationRenderer.initialize();
         GuogaologyAtmosphere.initialize();
+        MiningPatternPreview.initialize();
         GuogaologyBlocks.TRANSLUCENT.forEach(block -> BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT));
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GuogaologyBlocks.DREAD_LEAVES, GuogaologyBlocks.Y_LEAVES, GuogaologyBlocks.GIANT_LAVER);
         BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT, GuogaologyBlocks.EPSILON_BLOOM);

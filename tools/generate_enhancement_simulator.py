@@ -45,7 +45,7 @@ def main() -> None:
     parser.add_argument("--node", default=shutil.which("node"), help="Node executable for verification")
     args = parser.parse_args()
     if args.health_preview:
-        parser.error("The old health preview is retired; run without --health-preview for production revision50.")
+        parser.error("The old health preview is retired; run without --health-preview for production revision51.")
     if not args.node:
         raise SystemExit("Node is required for the Java/JavaScript comparison.")
     work = ROOT / "build/enhancement-simulator"
@@ -59,8 +59,8 @@ def main() -> None:
         classes.mkdir(parents=True, exist_ok=True)
         run([str(home / ("bin/javac" + suffix)), "--release", "21", "-encoding", "UTF-8", "-d", str(classes), str(source)])
     exported = json.loads(run([java, "-cp", str(classes), "dev.guogaology.mining.EquipmentRules", "cases"]))
-    if not exported.get("cases") or exported["rules"].get("revision") != 50:
-        raise SystemExit("EquipmentRules revision50 golden cases are required.")
+    if not exported.get("cases") or exported["rules"].get("revision") != 51:
+        raise SystemExit("EquipmentRules revision51 golden cases are required.")
     rules = dict(exported["rules"])
     rules["coreNames"] = {}
     rules["coreStageNames"] = {}

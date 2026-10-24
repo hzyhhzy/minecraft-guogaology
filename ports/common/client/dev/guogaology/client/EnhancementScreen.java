@@ -13,13 +13,32 @@ import net.minecraft.world.entity.player.Inventory;
 /** Ten real sockets with live, server-authoritative equipment statistics. */
 public final class EnhancementScreen extends AbstractContainerScreen<EnhancementMenu> {
     private static final Identifier TEXTURE=GuogaologyMod.id("textures/gui/enhancement.png");
-    private Button silkButton;
+    private Button silkButton,patternButton;
+    private boolean openingPattern,closingPattern;
     public EnhancementScreen(EnhancementMenu menu,Inventory inventory,Component title){super(menu,inventory,title);imageWidth=362;imageHeight=238;inventoryLabelX=12;inventoryLabelY=138;}
-    @Override protected void init(){super.init();silkButton=addRenderableWidget(Button.builder(tr("silk_off"),button->{if(minecraft.gameMode!=null)minecraft.gameMode.handleInventoryButtonClick(menu.containerId,0);}).bounds(leftPos+18,topPos+122,154,14).build());}
+    @Override protected void init(){
+        super.init();
+        silkButton=addRenderableWidget(Button.builder(tr("silk_off"),button->send(0)).bounds(leftPos+18,topPos+122,154,14).build());
+        patternButton=addRenderableWidget(Button.builder(tr("pattern.button"),button->{openingPattern=true;closingPattern=false;send(1);}).bounds(leftPos+110,topPos+122,62,14).build());
+    }
+    private void send(int button){if(minecraft.gameMode!=null)minecraft.gameMode.handleInventoryButtonClick(menu.containerId,button);}
+
     private static Component tr(String key,Object... args){return Component.translatable("mining.guogaology."+key,args);}
     @Override public void render(GuiGraphics graphics,int mouseX,int mouseY,float delta){
-        if(silkButton!=null){silkButton.visible=menu.canToggleSilk();silkButton.active=silkButton.visible;silkButton.setMessage(tr(menu.silkTouch()?"silk_on":"silk_off"));}
-        super.render(graphics,mouseX,mouseY,delta);renderTooltip(graphics,mouseX,mouseY);
+        if(menu.patternEditorOpen())openingPattern=false;
+        if(!menu.patternEditorOpen())closingPattern=false;
+        boolean modal=patternModal();
+        if(silkButton!=null){
+            silkButton.visible=!modal&&menu.canToggleSilk();silkButton.active=silkButton.visible;
+            silkButton.setWidth(menu.canEditPattern()?88:154);silkButton.setMessage(tr(menu.silkTouch()?"silk_on":"silk_off"));
+        }
+        if(patternButton!=null){
+            patternButton.visible=!modal&&menu.canEditPattern();patternButton.active=patternButton.visible&&menu.getCarried().isEmpty();
+            patternButton.setX(leftPos+(menu.canToggleSilk()?110:18));patternButton.setWidth(menu.canToggleSilk()?62:154);
+        }
+        super.render(graphics,mouseX,mouseY,delta);
+        if(modal){drawPattern(graphics,mouseX,mouseY);return;}
+        renderTooltip(graphics,mouseX,mouseY);
         if(hoveredSlot!=null&&!hoveredSlot.hasItem()&&hoveredSlot.index>=EnhancementMenu.FIRST_CORE&&hoveredSlot.index<EnhancementMenu.INVENTORY)
             graphics.setTooltipForNextFrame(font,tr(hoveredSlot.index-EnhancementMenu.FIRST_CORE>=menu.capacity()?"locked_slot":"empty_slot"),mouseX,mouseY);
     }
@@ -42,13 +61,80 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
             if(slot.hasItem()&&!menu.canSelectInventoryItem(slot.getItem()))graphics.fill(slot.x,slot.y,slot.x+16,slot.y+16,0xbd383c40);
         }
     }
+    public boolean patternModal(){return openingPattern||!closingPattern&&menu.patternEditorOpen();}
+    private void closePattern(){openingPattern=false;closingPattern=true;setDragging(false);send(2);}
+    private int panelX(){return leftPos+39;}
+    private int panelY(){return topPos+8;}
+    private int gridCell(double mouseX,double mouseY){
+        int gx=panelX()+16,gy=panelY()+60;
+        if(mouseX<gx||mouseY<gy||mouseX>=gx+120||mouseY>=gy+120)return -1;
+        return ((int)(mouseY-gy)/24)*5+(int)(mouseX-gx)/24;
+    }
+    private boolean patternClick(double mouseX,double mouseY,int button){
+        if(!patternModal())return false;
+        if(button==0&&mouseX>=panelX()+192&&mouseX<panelX()+268&&mouseY>=panelY()+194&&mouseY<panelY()+212){closePattern();return true;}
+        if(!menu.patternEditorOpen())return true;
+        int cell=gridCell(mouseX,mouseY);
+        if(cell>=0){if(button==0||button==1)send((button==0?100:200)+cell);return true;}
+        if(button==0&&mouseY>=panelY()+194&&mouseY<panelY()+212){
+            int dx=(int)mouseX-panelX();
+            if(dx>=16&&dx<92)send(3);
+            else if(dx>=104&&dx<180)send(4);
+            else if(dx>=192&&dx<268)closePattern();
+        }
+        return true;
+    }
+    private void patternButton(GuiGraphics graphics,int x,int y,int mouseX,int mouseY,String label){
+        boolean hover=mouseX>=x&&mouseX<x+76&&mouseY>=y&&mouseY<y+18;
+        graphics.fill(x,y,x+76,y+18,hover?0xff63877a:0xff3b5b50);
+        graphics.drawString(font,tr(label),x+(76-font.width(tr(label)))/2,y+5,0xfff2f7f2,false);
+    }
+    private void patternText(GuiGraphics graphics,String key,int x,int y,int color){
+        var lines=font.split(tr(key),116);int row=0;
+        for(var line:lines){graphics.drawString(font,line,x,y+row*10,color,false);row++;}
+    }
+    private void drawPattern(GuiGraphics graphics,int mouseX,int mouseY){
+        graphics.nextStratum();
+        graphics.fill(leftPos,topPos,leftPos+362,topPos+238,0xd90a1513);
+        int px=panelX(),py=panelY();
+        graphics.fill(px-1,py-1,px+285,py+223,0xff97c2aa);
+        graphics.fill(px,py,px+284,py+222,0xff172d29);
+        graphics.drawString(font,tr("pattern.title"),px+12,py+11,0xfff1e3b7,false);
+        var pattern=menu.miningPattern();
+        graphics.drawString(font,tr("pattern.capacity",pattern.count(),menu.patternBudget()),px+12,py+28,0xffc7dfd3,false);
+        graphics.drawString(font,tr("pattern.hint"),px+12,py+43,0xffa8c6bb,false);
+        for(int cell=0;cell<25;cell++){
+            int cx=px+16+(cell%5)*24,cy=py+60+(cell/5)*24;
+            boolean reference=cell==pattern.reference(),saved=pattern.contains(cell);
+            int edge=reference?0xfff2d47d:saved?0xff86ebc5:0xff4c6861;
+            int fill=reference?0xff8d7335:saved?0xff286e5b:0xff203e36;
+            graphics.fill(cx,cy,cx+23,cy+23,edge);graphics.fill(cx+1,cy+1,cx+22,cy+22,fill);
+            if(reference){graphics.fill(cx+6,cy+10,cx+17,cy+13,0xffffefb8);graphics.fill(cx+10,cy+6,cx+13,cy+17,0xffffefb8);}
+            else if(saved)graphics.fill(cx+8,cy+8,cx+15,cy+15,0xffbaf8de);
+            if(gridCell(mouseX,mouseY)==cell){graphics.fill(cx+1,cy+1,cx+22,cy+3,0xfff3f7e8);graphics.fill(cx+1,cy+20,cx+22,cy+22,0xfff3f7e8);}
+        }
+        patternText(graphics,"pattern.reference",px+151,py+64,0xfff2d47d);
+        patternText(graphics,"pattern.selected",px+151,py+95,0xff86ebc5);
+        patternText(graphics,"pattern.reset_hint",px+151,py+115,0xffb8d5c9);
+        patternText(graphics,"pattern.vertical_hint",px+151,py+148,0xffb8d5c9);
+        patternButton(graphics,px+16,py+194,mouseX,mouseY,"pattern.clear");
+        patternButton(graphics,px+104,py+194,mouseX,mouseY,"pattern.reset");
+        patternButton(graphics,px+192,py+194,mouseX,mouseY,"pattern.back");
+
+    }
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){return patternClick(event.x(),event.y(),event.button())||super.mouseClicked(event,doubleClick);}
+    @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){return patternModal()||super.mouseReleased(event);}
+    @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){return patternModal()||super.mouseDragged(event,dx,dy);}
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){if(patternModal()){if(event.key()==256)closePattern();return true;}return super.keyPressed(event);}
+    @Override public void onClose(){if(patternModal())closePattern();else super.onClose();}
+    @Override public boolean mouseScrolled(double mouseX,double mouseY,double horizontal,double vertical){return patternModal()||super.mouseScrolled(mouseX,mouseY,horizontal,vertical);}
     private void line(GuiGraphics graphics,Component text,int y,int color){graphics.drawString(font,font.plainSubstrByWidth(text.getString(),156),194,y,color,false);}
     @Override protected void renderLabels(GuiGraphics graphics,int mouseX,int mouseY){
         graphics.drawString(font,title,12,12,0xffe5eee9,false);
         var gearLabel=tr(menu.manuscript()?"manuscript_label":"gear_label");
         graphics.drawString(font,gearLabel,78-font.width(gearLabel),42,0xff445753,false);
         graphics.drawString(font,tr("socket_count",menu.installed(),menu.capacity()),18,64,0xff354e4a,false);
-        if(!menu.canToggleSilk())graphics.drawString(font,tr(GearData.forbidsSockets(menu.gear())?"enchanted_no_sockets":menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
+        if(!menu.canToggleSilk()&&!menu.canEditPattern())graphics.drawString(font,tr(GearData.forbidsSockets(menu.gear())?"enchanted_no_sockets":menu.manuscript()?"manuscript_drag_hint":"drag_hint"),14,124,0xff59716d,false);
         graphics.drawString(font,playerInventoryTitle,inventoryLabelX,inventoryLabelY,0xff445753,false);
         line(graphics,tr("manuscript.preview"),34,0xffecdec0);
         var gear=menu.gear();var spec=MiningContent.GEAR.get(gear.getItem());

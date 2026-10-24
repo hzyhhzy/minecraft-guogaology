@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the production revision50 audit as an offline bilingual report."""
+"""Render the production revision51 audit as an offline bilingual report."""
 from pathlib import Path
 import base64
 import html
@@ -10,8 +10,8 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCTION_VERSION = re.search(r"^mod_version=(.+)$", (ROOT / "gradle.properties").read_text(encoding="utf-8"), re.M).group(1).strip()
 DATA = json.loads((ROOT / "build/enhancement-simulator/proposal-audit.json").read_text(encoding="utf-8"))
-if DATA["rules"]["revision"] != 50:
-    raise SystemExit("Regenerate the production revision50 audit before rendering.")
+if DATA["rules"]["revision"] != 51:
+    raise SystemExit("Regenerate the production revision51 audit before rendering.")
 
 
 def esc(value):
@@ -155,7 +155,7 @@ def section(lang):
     compare_rows = [[tr("直接攻击／下界合金锋利V", "Direct attack / Netherite SharpnessV"), number(v["attackRatio"]["normal"]) + "×", number(v["attackRatio"]["deep"]) + "×"], [tr("固定80%最大承伤／四件保护IV", "Fixed80% hit capacity / four ProtectionIV"), number(v["fixed80ThresholdRatio"]["normal"]) + "×", number(v["fixed80ThresholdRatio"]["deep"]) + "×"]]
     return f'''<section class="language" data-lang="{lang}">
 <h1>{tr("强化系统 · 数值审计", "Enhancement system · Numerical audit")}</h1>
-<p class="notice">{tr(f"{PRODUCTION_VERSION}生产规则revision50。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", f"Production{PRODUCTION_VERSION} rules, revision50. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
+<p class="notice">{tr(f"{PRODUCTION_VERSION}生产规则revision51。每行独立求最优，不能把不同配装的上限相乘。攻击上限表审计剑；弓另用速度伤害示例，不假定固定基础HP。", f"Production{PRODUCTION_VERSION} rules, revision51. Each row is independently optimal; peaks from different loadouts cannot be multiplied. Attack maxima use swords; bows have separate velocity-based examples with no fixed baseHP.")}</p>
 <nav><a href="enhancement-simulator.html">{tr("强化模拟器", "Simulator")}</a><a href="core-effects-reference.html?lang={lang}&realm=both&levels=0,1,2,3">{tr("九核作用与逐级数值", "Core effects and grade values")}</a></nav>
 <article><h2>{tr("最高档合法配装的上限", "Legal highest-tier maxima")}</h2>
 <p>{tr("Ω装备每件8槽、手稿6槽；群系晶核Lv3／序数晶核Lv3。序数晶体与晶核只能放手稿。攻击值为原始HP；防护F仅是晶核与手稿的额外因子，不包含裸甲。", "Omega gear has8 sockets each; manuscript6, regional Core Lv3 / Ordinal Core Lv3. Ordinal is manuscript-only. Attack is rawHP. F is only extra core/manuscript protection, excluding bare armor.")}</p>

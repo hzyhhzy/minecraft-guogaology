@@ -12,7 +12,7 @@ import java.util.*;
 public class EnhancementMenu extends AbstractContainerMenu {
     public static final int GEAR=0,FIRST_CORE=1,INVENTORY=11;
     private final SimpleContainer contents=new SimpleContainer(INVENTORY){@Override public void setChanged(){super.setChanged();synchronizeCores();}};
-    private final ContainerData data=new SimpleContainerData(4);
+    private final ContainerData data=new SimpleContainerData(8);
     private final Level world;
     private final BlockPos pos;
     private final Player owner;
@@ -20,19 +20,19 @@ public class EnhancementMenu extends AbstractContainerMenu {
     private final ItemStack boundBook;
     // Read-only effect snapshots: never insert these copies into slots or drops.
     private final ItemStack openingMain,openingOff;
-    private ItemStack trackedGear=ItemStack.EMPTY;
+    private ItemStack trackedGear=ItemStack.EMPTY,patternGear=ItemStack.EMPTY;
     private boolean closed,syncing;
     public EnhancementMenu(int id,Inventory inventory){this(id,inventory,null,BlockPos.ZERO,1);}
     public EnhancementMenu(int id,Inventory inventory,Level world,BlockPos pos,int rank){this(MiningContent.ENHANCEMENT_MENU,id,inventory,world,pos,rank,-1,ItemStack.EMPTY);}
     protected EnhancementMenu(MenuType<?> type,int id,Inventory inventory,Level world,BlockPos pos,int rank,int boundSlot,ItemStack book){
         super(type,id);this.world=world;this.pos=pos.immutable();owner=inventory.player;this.boundSlot=boundSlot;boundBook=book;
         openingMain=owner.getMainHandItem().copy();openingOff=owner.getOffhandItem().copy();
-        data.set(0,rank);data.set(2,boundSlot);data.set(1,world!=null&&ManuscriptEffects.deep(world)?1:0);addDataSlots(data);
+        data.set(5,MiningPattern.DEFAULT_REFERENCE);data.set(0,rank);data.set(2,boundSlot);data.set(1,world!=null&&ManuscriptEffects.deep(world)?1:0);addDataSlots(data);
         for(int i=0;i<INVENTORY;i++){
             final int n=i;int x=i==0?84:28+((i-FIRST_CORE)%5)*28,y=i==0?38:78+((i-FIRST_CORE)/5)*26;
             addSlot(new Slot(contents,i,x,y){
-                @Override public boolean mayPlace(ItemStack s){return n==GEAR?!manuscript()&&MiningContent.GEAR.containsKey(s.getItem()):accepts(n-FIRST_CORE,s);}
-                @Override public boolean mayPickup(Player p){return n!=GEAR||!manuscript();}
+                @Override public boolean mayPlace(ItemStack s){return !patternEditorOpen()&&(n==GEAR?!manuscript()&&MiningContent.GEAR.containsKey(s.getItem()):accepts(n-FIRST_CORE,s));}
+                @Override public boolean mayPickup(Player p){return !patternEditorOpen()&&(n!=GEAR||!manuscript());}
                 @Override public int getMaxStackSize(){return 1;}
             });
         }
@@ -42,8 +42,8 @@ public class EnhancementMenu extends AbstractContainerMenu {
     }
     private void addPlayerSlot(Inventory inventory,int index,int x,int y){
         addSlot(new Slot(inventory,index,x,y){
-            @Override public boolean mayPlace(ItemStack s){return index!=lockedSlot()&&super.mayPlace(s);}
-            @Override public boolean mayPickup(Player p){return index!=lockedSlot()&&super.mayPickup(p);}
+            @Override public boolean mayPlace(ItemStack s){return !patternEditorOpen()&&index!=lockedSlot()&&super.mayPlace(s);}
+            @Override public boolean mayPickup(Player p){return !patternEditorOpen()&&index!=lockedSlot()&&super.mayPickup(p);}
         });
     }
     public boolean manuscript(){return this instanceof ManuscriptMenu;}
@@ -58,7 +58,7 @@ public class EnhancementMenu extends AbstractContainerMenu {
     private int lockedSlot(){return data.get(2);}
     public boolean locksHotbar(){return manuscript()&&lockedSlot()!=40;}
     public boolean blocksSelection(int selected){return locksHotbar()&&selected!=lockedSlot();}
-    private boolean locked(Slot slot){return manuscript()&&(slot.index==GEAR||slot.index>=INVENTORY&&slot.getContainerSlot()==lockedSlot());}
+    private boolean locked(Slot slot){return patternEditorOpen()||manuscript()&&(slot.index==GEAR||slot.index>=INVENTORY&&slot.getContainerSlot()==lockedSlot());}
     public boolean deep(){return data.get(1)!=0;}
     public ItemStack gear(){return contents.getItem(GEAR);}
     public int rank(){return data.get(0);}
@@ -72,9 +72,46 @@ public class EnhancementMenu extends AbstractContainerMenu {
     }
     public boolean canToggleSilk(){var spec=MiningContent.GEAR.get(gear().getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(GearData.profile(gear()),2)>0;}
     public boolean silkTouch(){return data.get(3)!=0;}
+    /** The editor is a modal page of this same menu: the real equipment never moves. */
+    public boolean canEditPattern(){
+        var spec=MiningContent.GEAR.get(gear().getItem());
+        return !manuscript()&&spec!=null&&spec.kind()==0&&patternBudget()>0;
+    }
+    public int patternBudget(){return EquipmentRules.spreadBudget(GearData.profile(gear()),List.of(),deep());}
+    public boolean patternEditorOpen(){return data.get(4)!=0;}
+    public MiningPattern miningPattern(){return new MiningPattern(data.get(5),(data.get(6)&32767)|((data.get(7)&1023)<<15));}
+    private void synchronizePattern(){
+        if(patternEditorOpen()&&(gear()!=patternGear||!canEditPattern())){data.set(4,0);patternGear=ItemStack.EMPTY;}
+        var pattern=GearData.miningPattern(gear());
+        data.set(5,pattern.reference());data.set(6,pattern.mask()&32767);data.set(7,(pattern.mask()>>>15)&1023);
+    }
     @Override public boolean clickMenuButton(Player player,int button){
-        if(button!=0||!stillValid(player)||!canToggleSilk())return false;
-        GearData.setSilkTouch(gear(),!GearData.silkTouch(gear()));data.set(3,GearData.silkTouch(gear())?1:0);broadcastChanges();return true;
+        if(player!=owner||!player.isAlive()||!stillValid(player))return false;
+        synchronizeCores();
+        if(button==0){
+            if(patternEditorOpen()||!canToggleSilk())return false;
+            GearData.setSilkTouch(gear(),!GearData.silkTouch(gear()));data.set(3,GearData.silkTouch(gear())?1:0);broadcastChanges();return true;
+        }
+        if(button==1){
+            if(patternEditorOpen()||!canEditPattern()||!getCarried().isEmpty())return false;
+            patternGear=gear();synchronizePattern();data.set(4,1);broadcastChanges();return true;
+        }
+        if(button==2){
+            if(!patternEditorOpen())return false;
+            data.set(4,0);patternGear=ItemStack.EMPTY;broadcastChanges();return true;
+        }
+        if(!patternEditorOpen()||!canEditPattern()||gear()!=patternGear)return false;
+        var pattern=GearData.miningPattern(gear());
+        if(button==3)pattern=new MiningPattern(pattern.reference(),0);
+        else if(button==4)pattern=MiningPattern.defaultForBudget(patternBudget());
+        else if(button>=100&&button<125){
+            int cell=button-100;
+            if(cell!=pattern.reference()&&!pattern.contains(cell)&&pattern.count()>=patternBudget())return false;
+            pattern=pattern.toggle(cell);
+        }
+        else if(button>=200&&button<225)pattern=pattern.withReference(button-200);
+        else return false;
+        GearData.setMiningPattern(gear(),pattern);synchronizePattern();broadcastChanges();return true;
     }
     public boolean canInsertCore(ItemStack stack){
         if(stack.isEmpty())return false;for(int i=0;i<capacity();i++)if(contents.getItem(FIRST_CORE+i).isEmpty()&&accepts(i,stack))return true;return false;
@@ -117,11 +154,11 @@ public class EnhancementMenu extends AbstractContainerMenu {
             }else{
                 var saved=new ArrayList<ItemStack>();for(int i=0;i<capacity();i++)saved.add(contents.getItem(FIRST_CORE+i).copy());GearData.setCores(current,saved);
             }
-            data.set(3,GearData.silkTouch(gear())?1:0);
+            data.set(3,GearData.silkTouch(gear())?1:0);synchronizePattern();
         }finally{syncing=false;}
     }
     @Override public void clicked(int slot,int button,ClickType type,Player player){
-        if(!stillValid(player))return;
+        if(!stillValid(player)||patternEditorOpen())return;
         if(manuscript()&&(slot==GEAR||(type==ClickType.SWAP&&(button==40||button==lockedSlot()))))return;
         if(slot>=INVENTORY&&slot<slots.size()&&slots.get(slot).getContainerSlot()==lockedSlot())return;
         super.clicked(slot,button,type,player);synchronizeCores();
@@ -129,7 +166,7 @@ public class EnhancementMenu extends AbstractContainerMenu {
     @Override public boolean canTakeItemForPickAll(ItemStack stack,Slot slot){return !locked(slot)&&super.canTakeItemForPickAll(stack,slot);}
     @Override public boolean canDragTo(Slot slot){return !locked(slot)&&super.canDragTo(slot);}
     @Override public ItemStack quickMoveStack(Player player,int index){
-        if(!stillValid(player)||index<0||index>=slots.size()||manuscript()&&(index==GEAR||index>=INVENTORY&&slots.get(index).getContainerSlot()==lockedSlot()))return ItemStack.EMPTY;
+        if(!stillValid(player)||patternEditorOpen()||index<0||index>=slots.size()||manuscript()&&(index==GEAR||index>=INVENTORY&&slots.get(index).getContainerSlot()==lockedSlot()))return ItemStack.EMPTY;
         var slot=slots.get(index);var stack=slot.getItem();if(stack.isEmpty())return ItemStack.EMPTY;var copy=stack.copy();
         boolean moved=index<INVENTORY?moveItemStackTo(stack,INVENTORY,slots.size(),true):!manuscript()&&MiningContent.GEAR.containsKey(stack.getItem())?moveItemStackTo(stack,GEAR,GEAR+1,false):(GearData.type(stack)>=0||GearData.isSocketTotem(gear(),stack))&&moveItemStackTo(stack,FIRST_CORE,FIRST_CORE+capacity(),false);
         // Keep enhancement inputs first, then allow ordinary main-inventory/hotbar sorting.

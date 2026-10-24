@@ -13,7 +13,7 @@ import java.util.*;
 public class EnhancementMenu extends ScreenHandler {
     public static final int GEAR=0,FIRST_CORE=1,INVENTORY=11;
     private final SimpleInventory contents=new SimpleInventory(INVENTORY){@Override public void markDirty(){super.markDirty();synchronizeCores();}};
-    private final PropertyDelegate data=new ArrayPropertyDelegate(4);
+    private final PropertyDelegate data=new ArrayPropertyDelegate(8);
     private final World world;
     private final BlockPos pos;
     private final PlayerEntity owner;
@@ -21,19 +21,19 @@ public class EnhancementMenu extends ScreenHandler {
     private final ItemStack boundBook;
     // Read-only effect snapshots: never insert these copies into slots or drops.
     private final ItemStack openingMain,openingOff;
-    private ItemStack trackedGear=ItemStack.EMPTY;
+    private ItemStack trackedGear=ItemStack.EMPTY,patternGear=ItemStack.EMPTY;
     private boolean closed,syncing;
     public EnhancementMenu(int id,PlayerInventory inventory){this(id,inventory,null,BlockPos.ORIGIN,1);}
     public EnhancementMenu(int id,PlayerInventory inventory,World world,BlockPos pos,int rank){this(MiningContent.ENHANCEMENT_MENU,id,inventory,world,pos,rank,-1,ItemStack.EMPTY);}
     protected EnhancementMenu(ScreenHandlerType<?> type,int id,PlayerInventory inventory,World world,BlockPos pos,int rank,int boundSlot,ItemStack book){
         super(type,id);this.world=world;this.pos=pos.toImmutable();owner=inventory.player;this.boundSlot=boundSlot;boundBook=book;
         openingMain=owner.getMainHandStack().copy();openingOff=owner.getOffHandStack().copy();
-        data.set(0,rank);data.set(2,boundSlot);data.set(1,world!=null&&ManuscriptEffects.deep(world)?1:0);addProperties(data);
+        data.set(5,MiningPattern.DEFAULT_REFERENCE);data.set(0,rank);data.set(2,boundSlot);data.set(1,world!=null&&ManuscriptEffects.deep(world)?1:0);addProperties(data);
         for(int i=0;i<INVENTORY;i++){
             final int n=i;int x=i==0?84:28+((i-FIRST_CORE)%5)*28,y=i==0?38:78+((i-FIRST_CORE)/5)*26;
             addSlot(new Slot(contents,i,x,y){
-                @Override public boolean canInsert(ItemStack s){return n==GEAR?!manuscript()&&MiningContent.GEAR.containsKey(s.getItem()):accepts(n-FIRST_CORE,s);}
-                @Override public boolean canTakeItems(PlayerEntity p){return n!=GEAR||!manuscript();}
+                @Override public boolean canInsert(ItemStack s){return !patternEditorOpen()&&(n==GEAR?!manuscript()&&MiningContent.GEAR.containsKey(s.getItem()):accepts(n-FIRST_CORE,s));}
+                @Override public boolean canTakeItems(PlayerEntity p){return !patternEditorOpen()&&(n!=GEAR||!manuscript());}
                 @Override public int getMaxItemCount(){return 1;}
             });
         }
@@ -43,8 +43,8 @@ public class EnhancementMenu extends ScreenHandler {
     }
     private void addPlayerSlot(PlayerInventory inventory,int index,int x,int y){
         addSlot(new Slot(inventory,index,x,y){
-            @Override public boolean canInsert(ItemStack s){return index!=lockedSlot()&&super.canInsert(s);}
-            @Override public boolean canTakeItems(PlayerEntity p){return index!=lockedSlot()&&super.canTakeItems(p);}
+            @Override public boolean canInsert(ItemStack s){return !patternEditorOpen()&&index!=lockedSlot()&&super.canInsert(s);}
+            @Override public boolean canTakeItems(PlayerEntity p){return !patternEditorOpen()&&index!=lockedSlot()&&super.canTakeItems(p);}
         });
     }
     public boolean manuscript(){return this instanceof ManuscriptMenu;}
@@ -59,7 +59,7 @@ public class EnhancementMenu extends ScreenHandler {
     private int lockedSlot(){return data.get(2);}
     public boolean locksHotbar(){return manuscript()&&lockedSlot()!=40;}
     public boolean blocksSelection(int selected){return locksHotbar()&&selected!=lockedSlot();}
-    private boolean locked(Slot slot){return manuscript()&&(slot.id==GEAR||slot.id>=INVENTORY&&slot.getIndex()==lockedSlot());}
+    private boolean locked(Slot slot){return patternEditorOpen()||manuscript()&&(slot.id==GEAR||slot.id>=INVENTORY&&slot.getIndex()==lockedSlot());}
     public boolean deep(){return data.get(1)!=0;}
     public ItemStack gear(){return contents.getStack(GEAR);}
     public int rank(){return data.get(0);}
@@ -73,9 +73,46 @@ public class EnhancementMenu extends ScreenHandler {
     }
     public boolean canToggleSilk(){var spec=MiningContent.GEAR.get(gear().getItem());return spec!=null&&spec.kind()==0&&EquipmentRules.highest(GearData.profile(gear()),2)>0;}
     public boolean silkTouch(){return data.get(3)!=0;}
+    /** The editor is a modal page of this same menu: the real equipment never moves. */
+    public boolean canEditPattern(){
+        var spec=MiningContent.GEAR.get(gear().getItem());
+        return !manuscript()&&spec!=null&&spec.kind()==0&&patternBudget()>0;
+    }
+    public int patternBudget(){return EquipmentRules.spreadBudget(GearData.profile(gear()),List.of(),deep());}
+    public boolean patternEditorOpen(){return data.get(4)!=0;}
+    public MiningPattern miningPattern(){return new MiningPattern(data.get(5),(data.get(6)&32767)|((data.get(7)&1023)<<15));}
+    private void synchronizePattern(){
+        if(patternEditorOpen()&&(gear()!=patternGear||!canEditPattern())){data.set(4,0);patternGear=ItemStack.EMPTY;}
+        var pattern=GearData.miningPattern(gear());
+        data.set(5,pattern.reference());data.set(6,pattern.mask()&32767);data.set(7,(pattern.mask()>>>15)&1023);
+    }
     @Override public boolean onButtonClick(PlayerEntity player,int button){
-        if(button!=0||!canUse(player)||!canToggleSilk())return false;
-        GearData.setSilkTouch(gear(),!GearData.silkTouch(gear()));data.set(3,GearData.silkTouch(gear())?1:0);sendContentUpdates();return true;
+        if(player!=owner||!player.isAlive()||!canUse(player))return false;
+        synchronizeCores();
+        if(button==0){
+            if(patternEditorOpen()||!canToggleSilk())return false;
+            GearData.setSilkTouch(gear(),!GearData.silkTouch(gear()));data.set(3,GearData.silkTouch(gear())?1:0);sendContentUpdates();return true;
+        }
+        if(button==1){
+            if(patternEditorOpen()||!canEditPattern()||!getCursorStack().isEmpty())return false;
+            patternGear=gear();synchronizePattern();data.set(4,1);sendContentUpdates();return true;
+        }
+        if(button==2){
+            if(!patternEditorOpen())return false;
+            data.set(4,0);patternGear=ItemStack.EMPTY;sendContentUpdates();return true;
+        }
+        if(!patternEditorOpen()||!canEditPattern()||gear()!=patternGear)return false;
+        var pattern=GearData.miningPattern(gear());
+        if(button==3)pattern=new MiningPattern(pattern.reference(),0);
+        else if(button==4)pattern=MiningPattern.defaultForBudget(patternBudget());
+        else if(button>=100&&button<125){
+            int cell=button-100;
+            if(cell!=pattern.reference()&&!pattern.contains(cell)&&pattern.count()>=patternBudget())return false;
+            pattern=pattern.toggle(cell);
+        }
+        else if(button>=200&&button<225)pattern=pattern.withReference(button-200);
+        else return false;
+        GearData.setMiningPattern(gear(),pattern);synchronizePattern();sendContentUpdates();return true;
     }
     public boolean canInsertCore(ItemStack stack){
         if(stack.isEmpty())return false;for(int i=0;i<capacity();i++)if(contents.getStack(FIRST_CORE+i).isEmpty()&&accepts(i,stack))return true;return false;
@@ -118,11 +155,11 @@ public class EnhancementMenu extends ScreenHandler {
             }else{
                 var saved=new ArrayList<ItemStack>();for(int i=0;i<capacity();i++)saved.add(contents.getStack(FIRST_CORE+i).copy());GearData.setCores(current,saved);
             }
-            data.set(3,GearData.silkTouch(gear())?1:0);
+            data.set(3,GearData.silkTouch(gear())?1:0);synchronizePattern();
         }finally{syncing=false;}
     }
     @Override public void onSlotClick(int slot,int button,SlotActionType type,PlayerEntity player){
-        if(!canUse(player))return;
+        if(!canUse(player)||patternEditorOpen())return;
         if(manuscript()&&(slot==GEAR||(type==SlotActionType.SWAP&&(button==40||button==lockedSlot()))))return;
         if(slot>=INVENTORY&&slot<slots.size()&&slots.get(slot).getIndex()==lockedSlot())return;
         super.onSlotClick(slot,button,type,player);synchronizeCores();
@@ -130,7 +167,7 @@ public class EnhancementMenu extends ScreenHandler {
     @Override public boolean canInsertIntoSlot(ItemStack stack,Slot slot){return !locked(slot)&&super.canInsertIntoSlot(stack,slot);}
     @Override public boolean canInsertIntoSlot(Slot slot){return !locked(slot)&&super.canInsertIntoSlot(slot);}
     @Override public ItemStack quickMove(PlayerEntity player,int index){
-        if(!canUse(player)||index<0||index>=slots.size()||manuscript()&&(index==GEAR||index>=INVENTORY&&slots.get(index).getIndex()==lockedSlot()))return ItemStack.EMPTY;
+        if(!canUse(player)||patternEditorOpen()||index<0||index>=slots.size()||manuscript()&&(index==GEAR||index>=INVENTORY&&slots.get(index).getIndex()==lockedSlot()))return ItemStack.EMPTY;
         var slot=slots.get(index);var stack=slot.getStack();if(stack.isEmpty())return ItemStack.EMPTY;var copy=stack.copy();
         boolean moved=index<INVENTORY?insertItem(stack,INVENTORY,slots.size(),true):!manuscript()&&MiningContent.GEAR.containsKey(stack.getItem())?insertItem(stack,GEAR,GEAR+1,false):(GearData.type(stack)>=0||GearData.isSocketTotem(gear(),stack))&&insertItem(stack,FIRST_CORE,FIRST_CORE+capacity(),false);
         // Keep enhancement inputs first, then allow ordinary main-inventory/hotbar sorting.

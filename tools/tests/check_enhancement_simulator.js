@@ -17,7 +17,7 @@ for (const item of payload.cases) {
   for (const [key, expected] of Object.entries(snapshot.effects)) near(actual[key], expected, item.id + '.' + key);
 }
 // Independent channel and ranged checks accompany the Java golden comparison.
-assert.equal(payload.rules.revision,50,'Latest production rules required');
+assert.equal(payload.rules.revision,51,'Latest production rules required');
 assert.deepStrictEqual(payload.rules.regionalGrades,[1,3,3,3,3],'numeric Lv1, four equipment tiers Lv3');
 assert.deepStrictEqual(payload.rules.bookRegionalGrades,[0,3,3,3,3],'four manuscripts allow regional Lv3');
 assert.deepStrictEqual(payload.rules.bookOrdinalGrades,[0,4,4,4,4],'four manuscripts allow Ordinal raw stage4 / displayed Lv3');

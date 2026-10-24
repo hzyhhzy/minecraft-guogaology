@@ -16,7 +16,7 @@ public final class EquipmentRules0611Checks {
         return new Snapshot(new Gear(4,kind,0,own),hasBook?new Gear(4,6,0,book):Gear.empty(6),Gear.empty(2),Gear.empty(3),Gear.empty(4),Gear.empty(5),deep);
     }
     public static void main(String[] args){
-        check(EquipmentRules.REVISION==50,"refresh existing equipment onto the current rules");
+        check(EquipmentRules.REVISION==51,"refresh existing equipment onto the current rules");
         for(int tier=1;tier<=4;tier++){
             near(EquipmentRules.arrowSpeedMultiplier(tier),new double[]{1,1.3,1.6,2}[tier-1],"tier arrow speed "+tier);
             near(EquipmentRules.bowBaseDamageCoefficient(tier),2,"all arrows keep native coefficient2 "+tier);
@@ -81,7 +81,7 @@ public final class EquipmentRules0611Checks {
             near(EquipmentRules.universal(copies(8,4,2),deep),.4*Math.sqrt(2),"Ordinal attack multiplier unchanged "+deep);
             near(EquipmentRules.criticalCoefficient(List.of(new Core(5,3)),six,deep),.3,"nuclear burst core unchanged "+deep);
             near(EquipmentRules.bonusHealth(List.of(),List.of(new Core(7,3)),deep),12,"heart HP unchanged "+deep);
-            check(EquipmentRules.spreadBudget(copies(0,3,8),six,deep)==(deep?25:8),"mining spread unchanged "+deep);
+            check(EquipmentRules.spreadBudget(copies(0,3,8),six,deep)==11,"mining spread uniform pattern budget "+deep);
         }
         near(EquipmentRules.regen(List.of(new Core(4,3),new Core(8,4)),.4),5.7,"healing unchanged");
         near(EquipmentRules.wearFactor(copies(3,3,2),six),128,"wear channel unchanged");

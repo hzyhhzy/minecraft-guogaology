@@ -1,4 +1,4 @@
-/* Production revision50 mirror of EquipmentRules, verified against Java golden cases. */
+/* Production revision51 mirror of EquipmentRules, verified against Java golden cases. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -52,7 +52,7 @@
       *(1+rss(gear,1,'swordPowerPercentGrades'));
   }
   function miningMultiplier(gear,book,deep,b=0) {return 1+b+rss(book,0,'manuscriptMiningRateGrades');}
-  function spreadBudget(gear,book,deep) {const grades=deep?(rules.deepSpreadGrades||[1,4,9]):[1,2,3];return Math.floor(Math.sqrt(gear.reduce((n,c)=>c.type===0?n+(grades[c.level-1]||0)**2:n,0)));}
+  function spreadBudget(gear,book,deep) {const grades=rules.spreadGrades||[1,2,4];return Math.floor(Math.sqrt(gear.reduce((n,c)=>c.type===0?n+(grades[c.level-1]||0)**2:n,0)));}
   const yieldLevel = gear => (rules.yieldGrades||[2,4,6])[highest(gear,2)-1]||0;
   const reach = (gear,book) => Math.sqrt(sum(book,2,true));
   function wearFactor(gear,book,b=0) {

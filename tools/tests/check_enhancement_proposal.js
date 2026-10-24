@@ -1,4 +1,4 @@
-/* Independent production revision50 channel requirements; no Minecraft/game execution. */
+/* Independent production revision51 channel requirements; no Minecraft/game execution. */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require('vm');
 const root=path.resolve(__dirname,'../..');
@@ -18,7 +18,7 @@ function calc(s){const copy=JSON.parse(JSON.stringify(s)),e=E.calculate(s);eq(s,
 function equipArmor(s,cores=[],tier=4){armorKeys.forEach((key,i)=>s[key]=gear(i+2,JSON.parse(JSON.stringify(cores)),tier));return s;}
 function withoutSlot(e){const r={...e};delete r.activeBookSlot;delete r.totalMinedBlocks;return r;}
 
-eq(rules.proposalRevision,50,'Current production revision');
+eq(rules.proposalRevision,51,'Current production revision');
 for(let kind=0;kind<6;kind++)eq(rules.compatibility[kind][8],false,'Ordinal incompatible with gear kind '+kind);
 eq(rules.compatibility[6][8],true,'Ordinal remains manuscript-compatible');
 eq(rules.nativeArmorByTier,[15,20,24,30],'Native armor totals');
@@ -119,13 +119,13 @@ for(const deep of[false,true]){
 // Every removed or reordered channel has an independent regression check.
 for(const deep of[false,true]){
  const seq=calc(state(deep,[core(0)],[]));
- near(seq.extraBlocks,deep?9:3,'Sequence pick additional mining');
+ near(seq.extraBlocks,4,'Sequence pick additional mining');
  near(seq.yieldLevel,0,'Sequence does not grant Fortune');
  const branch=calc(state(deep,[core(2)],[]));near(branch.yieldLevel,6,'Branch Fortune VI');near(branch.extraBlocks,0,'Branch no extra mining');
  const absent=calc(state(deep,[core(3)],[]));near(absent.wearFactor,64,'Absence durability');near(absent.reach,0,'Absence gear no reach');
  const laver=calc(state(deep,[core(4)],[]));near(laver.wearFactor,1,'Laver gear no wear');
  const spread=calc(state(deep,[core(0),core(0)],[]));
- near(spread.extraBlocks,Math.floor(Math.sqrt(2)*(deep?9:3)),'Extra mining same-item RSS');
+ near(spread.extraBlocks,Math.floor(Math.sqrt(2)*4),'Extra mining same-item RSS');
 }
 for(let level=1;level<=3;level++){
  const s=state(false,[core(2,level),core(2,level)],[core(0,level),core(0,level)]),e=calc(s);
@@ -147,7 +147,7 @@ vanilla.mainhand=gear(0,[core(2)],0,{nativeYield:3});
 near(calc(vanilla).yieldLevel,9,'Native and crystal yield add');
 vanilla.mainhand=gear(0,[core(2,1),core(0)],4,{silkTouch:true});
 eq(calc(vanilla).silkTouch,true,'Branch I unlocks selected Silk');near(calc(vanilla).yieldLevel,0,'Silk overrides Fortune');
-near(calc(vanilla).extraBlocks,3,'Silk retains extra mining');
+near(calc(vanilla).extraBlocks,4,'Silk retains extra mining');
 vanilla.mainhand.cores=[core(0)];eq(calc(vanilla).silkTouch,false,'Removing Branch disables Silk');
 
 // Passive manuscript fallback and offhand priority cannot duplicate bonuses.
@@ -253,7 +253,7 @@ const htmlPath=process.argv[3];
 if(htmlPath){
  const html=fs.readFileSync(htmlPath,'utf8');ok(html.startsWith('<!doctype html>'),'Standalone HTML');ok(!/<script\b[^>]*\bsrc=/i.test(html),'No external scripts');
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
- const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision50 mirror'));
+ const script=scripts.find(m=>!m[1].includes('application/json')&&m[2].includes('Production revision51 mirror'));
  ok(script,'Production engine embedded');const context={Math,Number,Array,Object,Boolean,String};context.globalThis=context;
  vm.createContext(context);new vm.Script(script[2]).runInContext(context);context.EnhancementEngine.setRules(rules);
  for(const c of recorded)eq(JSON.parse(JSON.stringify(context.EnhancementEngine.calculate(c.snapshot))),c.effects,'Embedded engine parity');

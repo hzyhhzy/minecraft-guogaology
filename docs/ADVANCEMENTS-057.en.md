@@ -29,7 +29,7 @@ Eight branches start with the seven Inner biomes and the Underworld dimension. E
 | `guide/material_matrix` | A Page between Peaks | Gather a Matrix Sheet from a mountain page. A flat matrix can unfold into a mountain. |
 | `guide/core_matrix_1` | One More Block | Obtain Matrix Core Lv1. Socket into a pick for extra excavation, or a manuscript for flat and multiplicative mining speed. |
 | `guide/core_matrix_2` | Parallel Excavation | Obtain Matrix Core Lv2. A stronger matrix expands extra excavation and both manuscript mining bonuses. |
-| `guide/core_matrix_3` | The Matrix Unfolds | Obtain Matrix Core Lv3. Reach third-grade excavation. Extra mining never targets blocks below the selected block. |
+| `guide/core_matrix_3` | The Matrix Unfolds | Obtain Matrix Core Lv3. A single core provides 4 extra blocks. Configure a vertical 5×5 mining pattern at an enhancement table. |
 | `guide/landmark_matrix` | Explore Matrix Folded Keep | Enter the built space of Matrix Folded Keep and explore its paths and exhibits. |
 | `guide/biome_power` | Visit Power Tower Desert | Enter Power Tower Desert in Inner to discover its materials and megastructure. |
 | `guide/material_power` | Arrows and Colored Tips | Collect Power Tower Wood and any colored TREE node: traces of arrows, trees and graphs in the desert. |

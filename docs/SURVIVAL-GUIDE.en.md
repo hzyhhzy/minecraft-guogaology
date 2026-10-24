@@ -1,4 +1,4 @@
-# Three-world survival guide · 0.6.0
+# Three-world survival guide · 0.6.12
 
 [简体中文](SURVIVAL-GUIDE.md) | English
 
@@ -94,7 +94,7 @@ Lv2 grants slow flight and fall immunity, with no sprint boost. Both horizontal 
 
 Fall reduction and immunity follow vanilla's `minecraft:is_fall` tag, including landing on stalagmite tips and ender-pearl fall damage. Boundary manuscript Lv1 and the Inner realm each halve this damage independently; Lv2/3 grants immunity even while flight is switched off. General core protection, vanilla Feather Falling and Resistance continue to stack. A stalactite falling onto the player belongs to a different damage family: ordinary protection still applies, but the fall-specific reduction or immunity does not.
 
-Absence affects ordinary hostile proactive/revenge goals only: appearance and existing targets stay unchanged; special anger/brain mechanics are untouched. Branch yield copies use max. Native enchantments and cores cannot normally coexist on the same item. The table's Silk Touch switch replaces Fortune. Extra excavation selects eligible blocks nearest first in a 9×9 plane perpendicular to the dominant viewing axis, never below the manually broken block's Y. It respects tool and region permissions, excludes containers/relics, and stops while sneaking.
+Absence affects ordinary hostile proactive/revenge goals only: appearance and existing targets stay unchanged; special anger/brain mechanics are untouched. Branch yield copies use max. Native enchantments and cores cannot normally coexist on the same item. The table's Silk Touch switch replaces Fortune. Matrix pickaxe budgets are1/2/4 in every realm, combined by root-sum-squares then rounded down. A pickaxe with Matrix exposes a Pattern button at an enhancement table: left-click extra cells, right-click the unique reference. The5×5 plane always follows world up; horizontal facing at mining START chooses left/right, regardless of pitch or hit face. Cells below the reference are allowed. Only selected positions are attempted, respecting tools, permissions and loaded chunks; skipped cells have no replacements. Sneaking bypasses extra mining. Capacity changes reset to the exact default layout for the new capacity; unchanged capacity preserves custom or deliberately cleared patterns. The reference is manually mined and does not count against the extra budget. Maxedω/ε/Γ/Ω picks add5/8/9/11 blocks.
 
 Core inventory icons are 64×64 native-pixel perspective sketches of each family's actual first-grade form. Family colors and silhouettes remain identical across grades; top-right numerals 1/2/3 identify grades. The ungraded Ordinal Crystal keeps its original item model and white name. All nine core families use yellow/aqua/purple rarity names for Lv1/2/3. World models remain three-dimensional, animated within 64 blocks, cached static beyond that, and approximated statically by Voxy.
 
