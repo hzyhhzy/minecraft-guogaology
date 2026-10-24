@@ -4,13 +4,13 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.6.9 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.9)
+**v0.6.11 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 
-Local development version **0.6.11** updates bow launch speeds, separate sword/bow/manuscript Tower attack values and innate manuscript attack, with matching offline simulation. It includes the 0.6.10 repairs and preserves saved identities and arrow data formats. This work remains on a separate, unpublished branch. See the [0.6.11 work record](docs/WORK-0611.md) and [enhancement simulator](docs/enhancement-simulator.html?lang=en).
+**0.6.11** updates bow speeds, separate Tower attack values for swords, bows and manuscripts, and innate manuscript attack, with matching equipment previews and offline simulation. It includes 0.6.10's arrow pickup, draw icons, wooden products, red-sand TNT, Silk Touch gummy jars, and core rendering/collision changes. See the [release notes](docs/RELEASE-0.6.11.md#english), [validation record](docs/WORK-0611.md) and [enhancement simulator](docs/enhancement-simulator.html?lang=en). This release is published from its separate branch; `main` remains at 0.6.9.
 
-Version 0.6.9 fixes Nuclear Blast Heart sword/bow extra hits on 26.3, the Laver boat entity name, placement directions for five furniture blocks and Laver log/wood stripping. It also fixes native boat fall materials and custom-name placement on 1.21.1. Old racks/monitors default north and retain their appearance. Saved IDs, component codecs, recipes, generation and balance remain unchanged. Earlier JEI structural compatibility, first-pickup disconnect, item transforms, wooden-product and world-loading repairs remain included. The current line is merged into main; the separate 0.6.1a backport remains in the [previous release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8).
+Earlier 0.6.9 repairs for extra hits, boat names, furniture facing, stripping and 1.21.1 boats remain included, alongside 0.6.8 JEI compatibility and 0.6.7 world-loading fixes. Bow balance was deferred in the 0.6.10 report; this update implements the subsequently approved design. Oversized sapling/vine drops were not reproduced in the native comparisons and are not claimed as fixed. The separate 0.6.1a backport remains in the [historical release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8).
 
-The update retains 0.6.6's Cores and Guogaology recipe-book sections, main-logo tab icon and Silk Touch experience fix, alongside 0.6.5's core recipes, natural materials and landmark rewards and 0.6.4's Absence Core compatibility cleanup. FFFZ/FOS and ψ/Z stability mechanics are unchanged. Earlier blueprint, portal and JEI fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See the [current work record](docs/WORK-069.md), [current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+The update retains 0.6.6's Cores and Guogaology recipe-book sections, main-logo tab icon and Silk Touch experience fix, alongside 0.6.5's core recipes, natural materials and landmark rewards and 0.6.4's Absence Core compatibility cleanup. FFFZ/FOS and ψ/Z stability mechanics are unchanged. Earlier blueprint and portal fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See the [current work record](docs/WORK-0611.md), [current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -37,9 +37,11 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID is `guogaology` starting with 0.5.0. Version 0.6.9 retains current saved IDs and 0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with 0.5.0. Version 0.6.11 retains saved identities, arrow data formats and 0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
 
-All four 0.6.9 targets build and pass final-package checks and 125 Python tests. Thirteen native runs cover primary 26.3 tests, focused 26.2 regression, all four JEI installation combinations, and exact 0.6.0/0.6.8 save writing, upgrading, saving and reopening. Native 26.3 checks cover 291 items in seven contexts, 2,722 states and 145 actual crafting recipes; 26.2 passes 569 focused checks. Old furniture directions, complex item components, named boats and original LHO stability/provenance are retained. See the [current validation record](docs/WORK-069.md). The 1.21.x targets have build/static coverage only this round; Connector, Voxy and mixed Mod-version networking were not rerun. Fixture upgrades do not promise recovery of arbitrary damaged saves; update both clients and servers. Earlier 0.6.8 old-server JEI coverage remains in its [historical record](docs/WORK-068.md).
+All four 0.6.11 targets build and pass save-surface audits; 131 Python and 2,321 pure Java checks pass. Primary 26.3 and focused 26.2 runs each pass 1,590 combat checks, including 144 real arrows, 90 melee attacks and 48 native criticals, plus the 0.6.10 repair regressions. Simulator/Java comparisons and real browser checks also pass. Only innate manuscript attack increases: protection, healing, mining and other innate channels remain unchanged. Enchanting and core sockets remain mutually exclusive. See the [current validation record](docs/WORK-0611.md).
+
+The 1.21.x targets have build/static coverage only this round. Version 0.6.11 checks constructed old-item/arrow compressed NBT roundtrips, but does not repeat a whole old-world upgrade. The real old-save upgrade/reopen and two JEI networking modes in 0.6.10 are [historical results](docs/WORK-0610.md), not new 0.6.11 tests. Connector, Voxy and mixed Mod-version networking were not rerun, and arbitrary damaged saves are not promised recoverable. Update both clients and servers.
 
 Historical validation: all four 0.6.5 targets built and 88 Python checks passed. Isolated 26.2 tests for that version in both languages verified 1900 crafts, 8192 native chest fills, 6144 entity-loot draws, recipe-book search/filtering, narrow layout and the 2×2 inventory. Other targets were built only then. Raw stability classes and existing resource entrypoints were preserved; the real saved-world upgrade tests from 0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
 
@@ -72,7 +74,7 @@ The first seven biomes belong to Inner Guogaology. Guogao Dreadwood is in the se
 - Ordinal Crystal Ore uses vanilla iron's average density as its benchmark, with numbered-stone, transparent-island and Dreadstone variants. Mine shards; four shards and one base crystal convert both ways. Mining a crystal block returns the block itself.
 - LHO disappearance, connected decay and anchored harvesting remain. An Ordinal Crystal stabilizes two neighboring rings; ψ, Z, fffZ and FOS visibly change color. Absence Cores are crafted.
 - A Guogao Lamp Shaper converts one lamp into one of 54 shapes of the same color. Ordinary mining gives the basic whole lamp; Silk Touch preserves its expression and tile.
-- Ordinal and numeric equipment can use native enchantments or socketed cores, with the two routes mutually exclusive. Remove all cores or all enchantments to switch. Core combat, gathering and manuscript effects retain their established rules.
+- Ordinal and numeric equipment can use native enchantments or socketed cores, with the two routes mutually exclusive. Remove all cores or all enchantments to switch. See the [0.6.11 release notes](docs/RELEASE-0.6.11.md#english) for combat values; other gathering and manuscript functions remain included.
 
 ## Travel
 
@@ -112,13 +114,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.9/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.11/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.6.9's scope and actual validation progress are tracked in [the work record](docs/WORK-069.md). The published [v0.6.7](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.7) and its [historical validation record](docs/WORK-067.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.6.11's scope and actual validation are tracked in [the work record](docs/WORK-0611.md). The published [v0.6.9](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.9) and its [historical validation record](docs/WORK-069.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -128,4 +130,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.6.9 work record](docs/WORK-069.md) · [Offline enhancement simulator](docs/enhancement-simulator.html) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md) · [Historical0.6.7 release notes](docs/RELEASE-0.6.7.md)
+[0.6.11 release notes](docs/RELEASE-0.6.11.md#english) · [Validation record](docs/WORK-0611.md) · [Offline enhancement simulator](docs/enhancement-simulator.html?lang=en) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md)
