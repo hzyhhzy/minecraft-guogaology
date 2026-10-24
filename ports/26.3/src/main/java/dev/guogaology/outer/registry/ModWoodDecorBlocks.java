@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -59,10 +60,10 @@ public final class ModWoodDecorBlocks {
       String var1 = ModBlocks.woodBlockId(var0, "sign");
       String var2 = ModBlocks.woodBlockId(var0, "wall_sign");
       WoodType var3 = ModWoodTypes.woodType(var0);
-      Block var4 = register(ResourceKey.create(Registries.BLOCK, GuogaologyMod.id(var2)), var1x -> new WallSignBlock(var3, var1x), signProperties());
+      Block var4 = register(ResourceKey.create(Registries.BLOCK, GuogaologyMod.id(var2)), var1x -> new WallSignBlock(var3, var1x), signProperties(var0, false));
       ModBlocks.registerExternal(var2, var4);
       BlockItemId var5 = BlockItemId.create(GuogaologyMod.id(var1), GuogaologyMod.id(var1));
-      Block var6 = register(var5.block(), var1x -> new StandingSignBlock(var3, var1x), signProperties());
+      Block var6 = register(var5.block(), var1x -> new StandingSignBlock(var3, var1x), signProperties(var0, false));
       StandingAndWallBlockItem var7 = new StandingAndWallBlockItem(var6, var4, Direction.DOWN, ModBlocks.woodItemProperties(var1).useBlockDescriptionPrefix().setId(var5.item()));
       Registry.register(BuiltInRegistries.ITEM, var5.item(), var7);
        // 26.3 opens the editor in SignBlock.setPlacedBy; keep its native entity valid.
@@ -76,10 +77,10 @@ public final class ModWoodDecorBlocks {
       String wallName = ModBlocks.woodBlockId(family, "wall_hanging_sign");
       WoodType wood = ModWoodTypes.woodType(family);
       Block wall = register(ResourceKey.create(Registries.BLOCK, GuogaologyMod.id(wallName)),
-         settings -> new WallHangingSignBlock(wood, settings), signProperties());
+         settings -> new WallHangingSignBlock(wood, settings), signProperties(family, true));
       ModBlocks.registerExternal(wallName, wall);
       BlockItemId var5 = BlockItemId.create(GuogaologyMod.id(name), GuogaologyMod.id(name));
-      Block ceiling = register(var5.block(), settings -> new CeilingHangingSignBlock(wood, settings), signProperties());
+      Block ceiling = register(var5.block(), settings -> new CeilingHangingSignBlock(wood, settings), signProperties(family, true));
       HangingSignItem item = new HangingSignItem(ceiling, wall,
          ModBlocks.woodItemProperties(name).stacksTo(16).useBlockDescriptionPrefix().setId(var5.item()));
       Registry.register(BuiltInRegistries.ITEM, var5.item(), item);
@@ -88,56 +89,58 @@ public final class ModWoodDecorBlocks {
       ModBlocks.registerExternal(name, ceiling);
    }
 
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties signProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(1.0F).sound(SoundType.WOOD).noCollision().noOcclusion();
+   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties signProperties(String family, boolean hanging) {
+      // Copy the native item-bearing form, whose loot/description names remain ID-dependent.
+      // Wall variants retain this mod's own separate loot tables and native block classes.
+      Block original = hanging ? (family.equals("dread") ? Blocks.CRIMSON_HANGING_SIGN : Blocks.OAK_HANGING_SIGN)
+         : (family.equals("dread") ? Blocks.CRIMSON_SIGN : Blocks.OAK_SIGN);
+      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.ofFullCopy(original).sound(SoundType.WOOD);
    }
 
    private static void registerDecor(String var0, String var1) {
       String var2 = ModBlocks.woodBlockId(var0, var1);
       BlockSetType var3 = ModWoodTypes.blockSetType(var0);
       WoodType var4 = ModWoodTypes.woodType(var0);
+      var properties = decorProperties(var0, var1);
       switch (var1) {
          case "fence":
-            registerItem(var2, FenceBlock::new, fenceProperties());
+            registerItem(var2, FenceBlock::new, properties);
             break;
          case "fence_gate":
-            registerItem(var2, var1x -> new FenceGateBlock(var4, var1x), fenceProperties());
+            registerItem(var2, var1x -> new FenceGateBlock(var4, var1x), properties);
             break;
          case "door":
-            registerItem(var2, var1x -> new ModDoorBlock(var3, var1x), doorProperties());
+            registerItem(var2, var1x -> new ModDoorBlock(var3, var1x), properties);
             break;
          case "trapdoor":
-            registerItem(var2, var1x -> new ModTrapDoorBlock(var3, var1x), trapdoorProperties());
+            registerItem(var2, var1x -> new ModTrapDoorBlock(var3, var1x), properties);
             break;
          case "button":
-            registerItem(var2, var1x -> new ModButtonBlock(var3, 30, var1x), buttonProperties());
+            registerItem(var2, var1x -> new ModButtonBlock(var3, 30, var1x), properties);
             break;
          case "pressure_plate":
-            registerItem(var2, var1x -> new ModPressurePlateBlock(var3, var1x), pressurePlateProperties());
+            registerItem(var2, var1x -> new ModPressurePlateBlock(var3, var1x), properties);
             break;
          default:
             throw new IllegalArgumentException("Unknown wood decoration shape: " + var1);
       }
    }
 
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties fenceProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.WOOD);
-   }
-
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties doorProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.WOOD).noOcclusion();
-   }
-
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties trapdoorProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.WOOD).noOcclusion();
-   }
-
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties buttonProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().noCollision().strength(0.5F).sound(SoundType.WOOD);
-   }
-
-   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties pressurePlateProperties() {
-      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.of().noCollision().strength(0.5F).sound(SoundType.WOOD);
+   private static net.minecraft.world.level.block.state.BlockBehaviour.Properties decorProperties(String family, String shape) {
+      boolean dread = family.equals("dread");
+      Block original = switch (shape) {
+         case "fence" -> dread ? Blocks.CRIMSON_FENCE : Blocks.OAK_FENCE;
+         case "fence_gate" -> dread ? Blocks.CRIMSON_FENCE_GATE : Blocks.OAK_FENCE_GATE;
+         case "door" -> dread ? Blocks.CRIMSON_DOOR : Blocks.OAK_DOOR;
+         case "trapdoor" -> dread ? Blocks.CRIMSON_TRAPDOOR : Blocks.OAK_TRAPDOOR;
+         case "button" -> dread ? Blocks.CRIMSON_BUTTON : Blocks.OAK_BUTTON;
+         case "pressure_plate" -> dread ? Blocks.CRIMSON_PRESSURE_PLATE : Blocks.OAK_PRESSURE_PLATE;
+         default -> throw new IllegalArgumentException("Unknown wood decoration shape: " + shape);
+      };
+      // Preserve this family's sounds/IDs while inheriting native pressure-plate solidity,
+      // piston reactions, note instruments and trapdoor spawn predicates. Crimson supplies
+      // the existing nonflammable Dread policy, so copying Oak cannot reintroduce fire.
+      return net.minecraft.world.level.block.state.BlockBehaviour.Properties.ofFullCopy(original).sound(SoundType.WOOD);
    }
 
    private static Block registerItem(

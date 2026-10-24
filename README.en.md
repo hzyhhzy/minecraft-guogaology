@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**Local0.6.13**: ordinal bow draw art and Lamp Shaper geometry repairs, with the sneak-mining item hint removed. Retains0.6.12's vertical5×5 mining patterns. Verified and integrated into local main; not pushed or published. See[repairs and verification](docs/WORK-0613.md) and[pattern controls](docs/WORK-0612.md).
+**Local candidate0.6.14**: continuous, spaced Astra/Underworld tree lights, a rough Underworld bedrock floor, and native-path repairs for core Silk Touch and wooden mechanisms. Kept on`codex/0.6.14-tree-lights-bedrock`, outside main; see[work record](docs/WORK-0614.md). Version0.6.13 visual repairs and0.6.12 mining patterns are verified and integrated into local main, without push or publication. See[visual repairs](docs/WORK-0613.md) and[pattern controls](docs/WORK-0612.md).
 
 **v0.6.11 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 

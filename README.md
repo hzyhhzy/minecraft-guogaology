@@ -4,7 +4,7 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**本地0.6.13**：修正序数弓拉弓图案及果糕灯塑形台外观，移除潜行挖掘的物品提示；保留0.6.12的竖直5×5自定义挖掘图案。已验证并合并本地main，未push、未发布。修正与验证见[本轮记录](docs/WORK-0613.md)，挖掘操作见[0.6.12记录](docs/WORK-0612.md)。
+**本地候选0.6.14**：Astra／地府树灯带连续和间距修正、地府基岩底座，以及晶核精准采集／木制机关的原版路径修复；独立分支`codex/0.6.14-tree-lights-bedrock`，不合并main。见[本轮记录](docs/WORK-0614.md)。0.6.13的弓／塑形台修复与0.6.12挖掘图案已验证并合并本地main，未push、未发布；见[外观修复](docs/WORK-0613.md)与[挖掘操作](docs/WORK-0612.md)。
 
 **v0.6.11 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
 

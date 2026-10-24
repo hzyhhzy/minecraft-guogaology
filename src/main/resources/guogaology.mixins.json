@@ -27,6 +27,8 @@
     "ManuscriptLockMixin",
     "ExtraDamageAccessor",
     "BlockYieldMixin",
+    "DecoratedPotSilkMixin",
+    "NativeSilkMiningMixin",
     "LootingCoreMixin",
     "EquipmentEnchantabilityMixin",
     "CoreEnchantmentSelectionMixin",

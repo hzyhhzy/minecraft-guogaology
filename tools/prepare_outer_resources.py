@@ -314,6 +314,8 @@ def prepare(target,out):
     # Current explicit repairs must survive the immutable donor's original sand-only recipe.
     from generate_gameplay_fixes_0610 import apply_pack
     apply_pack(out,target)
+    from generate_wood_mechanisms_0614 import apply_pack as apply_wood_mechanisms
+    apply_wood_mechanisms(out)
 
 if __name__=='__main__':
     import argparse

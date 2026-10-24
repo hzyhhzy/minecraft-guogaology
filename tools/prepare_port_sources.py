@@ -179,6 +179,10 @@ def adapt(text, target, name):
             text = text.replace('var out=context.consumers().getBuffer(RenderTypes.debugQuads());\n        for(var q:outlines)outline(context.matrices().last(),out,q);',
                                 'context.submitNodeCollector().submitCustomGeometry(context.poseStack(),RenderTypes.debugQuads(),(pose,out)->{for(var q:outlines)outline(pose,out,q);});')
     if target == '26.3':
+        if name == 'NativeSilkMiningMixin.java':
+            #26.3 narrows native playerDestroy's player argument to ServerPlayer.
+            text=text.replace('net.minecraft.world.entity.player.Player;', 'net.minecraft.server.level.ServerPlayer;')
+            text=text.replace('Player player)', 'ServerPlayer player)')
         if name == 'GrahamGrowth.java':
             text = text.replace('PushReaction.DESTROY', 'PushReaction.POPPED')
         if name in ('GuogaologyAtmosphere.java', 'MiningPatternPreview.java'):

@@ -37,6 +37,7 @@ dev/guogaology/world/SceneryDistribution.java
 dev/guogaology/world/SceneryPlacement.java
 dev/guogaology/world/TerrainField.java
 dev/guogaology/world/TerrainSamples.java
+dev/guogaology/world/UnderworldFloor.java
 dev/guogaology/world/UnderworldLakes.java
 dev/guogaology/world/UnderworldRegions.java
 dev/guogaology/world/UnderworldLandforms.java

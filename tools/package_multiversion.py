@@ -299,6 +299,8 @@ def package(targets, output_dir=None):
             verify_client_hooks(archive, metadata)
             verify_jei_compat(archive, metadata, target)
             verify_wood_loot_policy(archive, target)
+            from generate_wood_mechanisms_0614 import verify_archive as verify_native_wood_mechanisms
+            verify_native_wood_mechanisms(archive)
             from generate_gameplay_fixes_0610 import verify_archive as verify_small0610
             verify_small0610(archive, target)
             from repair_guogao_render_layers import verify_archive as verify_heart0610

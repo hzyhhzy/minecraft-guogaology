@@ -268,7 +268,8 @@ public final class NaturalScenery {
             for(int k=0;k<patterns.size();k++) {
                 long h=WorldNoise.mix(salt+tier*557L+layer*1777L+k*73L);
                 double angle=WorldNoise.unit(crown.salt())*Math.PI*2+k*Math.PI/2+layer*Math.PI/4;
-                bands.add(HauntedVines.crownBand(crown,patterns.get(k),h,angle,0,reserved));
+                var band=HauntedVines.crownBand(crown,patterns.get(k),h,angle,0,reserved);
+                if(!band.blocks().isEmpty())bands.add(band);
             }
         }
     }
@@ -278,7 +279,8 @@ public final class NaturalScenery {
             double angle=WorldNoise.unit(crown.salt())*Math.PI*2+i*Math.PI/2;
             var p=crown.project(Math.cos(angle)*(crown.radius()+.4),.25,Math.sin(angle)*(crown.radius()+.4));
             var cell=new HauntedVines.LampPosition((int)Math.round(p.x()),(int)Math.round(p.y()),(int)Math.round(p.z()));
-            if(!reserved.add(cell))continue;
+            if(!HauntedVines.lampGap(cell,reserved))continue;
+            reserved.add(cell);
             long h=WorldNoise.mix(crown.salt()+i*733L);
             var lamp=GuogaologyBlocks.LANTERNS[(int)Math.floorMod(h,6L)].getDefaultState().with(EmojiLanternBlock.EMOTION,emotion(h));
             b.set(cell.x(),cell.y(),cell.z(),lamp);
@@ -300,10 +302,12 @@ public final class NaturalScenery {
             boolean clear=true;
             for(int dx=-1;dx<=1;dx++) for(int yy=bottom;yy<=y;yy++) for(int dz=-1;dz<=1;dz++) {
                 var q=new HauntedVines.LampPosition(x+dx,yy,z+dz);
-                if(lights.contains(q)||bells.contains(q)) clear=false;
+                if(!HauntedVines.lampGap(q,lights)||!HauntedVines.lampGap(q,bells)) clear=false;
             }
             if(!clear) continue;
-            for(int dx=-1;dx<=1;dx++) for(int yy=bottom;yy<=y;yy++) for(int dz=-1;dz<=1;dz++) bells.add(new HauntedVines.LampPosition(x+dx,yy,z+dz));
+            for(int dx=-1;dx<=1;dx++) for(int yy=bottom;yy<=y;yy++) for(int dz=-1;dz<=1;dz++) {
+                var q=new HauntedVines.LampPosition(x+dx,yy,z+dz);bells.add(q);lights.add(q);
+            }
             b.line(x,bottom+3,z,x,y,z,0,CHAIN);lantern(b,x-1,bottom,z-1,salt);return;
         }
     }

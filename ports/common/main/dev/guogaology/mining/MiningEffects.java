@@ -137,16 +137,24 @@ public final class MiningEffects {
     public static ItemStack experienceTool(BlockState state,ServerLevel world,Entity owner,ItemStack tool){
         return !tool.isEmpty()&&GearData.silkTouch(tool)?lootTool(state,world,owner,tool):tool;
     }
+    /** A temporary native-enchantment view; never writes to the player's actual tool. */
+    public static ItemStack silkTool(ItemStack tool,net.minecraft.core.RegistryAccess access){
+        if(tool.isEmpty()||!GearData.silkTouch(tool))return tool;
+        var lookup=access.lookupOrThrow(Registries.ENCHANTMENT);
+        var copy=tool.copy();var builder=new ItemEnchantments.Mutable(copy.getOrDefault(DataComponents.ENCHANTMENTS,ItemEnchantments.EMPTY));
+        builder.set(lookup.getOrThrow(Enchantments.FORTUNE),0);builder.set(lookup.getOrThrow(Enchantments.SILK_TOUCH),1);
+        copy.set(DataComponents.ENCHANTMENTS,builder.toImmutable());return copy;
+    }
     /** Modifies a loot-context copy; the real tool and its enchantments are untouched. */
     public static ItemStack lootTool(BlockState state,ServerLevel world,Entity entity,ItemStack tool){
-        if(tool.isEmpty()||!(entity instanceof LivingEntity owner)||state.hasBlockEntity())return tool;
-        var lookup=world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-        var fortune=lookup.getOrThrow(Enchantments.FORTUNE);
+        if(tool.isEmpty()||!(entity instanceof LivingEntity owner))return tool;
         if(GearData.silkTouch(tool)){
             if(state.requiresCorrectToolForDrops()&&!tool.isCorrectToolForDrops(state))return tool;
-            var copy=tool.copy();var builder=new ItemEnchantments.Mutable(copy.getOrDefault(DataComponents.ENCHANTMENTS,ItemEnchantments.EMPTY));
-            builder.set(fortune,0);builder.set(lookup.getOrThrow(Enchantments.SILK_TOUCH),1);copy.set(DataComponents.ENCHANTMENTS,builder.toImmutable());return copy;
+            return silkTool(tool,world.registryAccess());
         }
+        if(state.hasBlockEntity())return tool;
+        var lookup=world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        var fortune=lookup.getOrThrow(Enchantments.FORTUNE);
         var id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(state.getBlock());
         if(id.getNamespace().equals("guogaology")&&(EquipmentRules.coreType(id.getPath())>=0||Arrays.stream(MiningContent.STORAGE).anyMatch(b->b==state.getBlock())))return tool;
         for(var property:state.getProperties())if(property.getName().equals("player_placed")&&Boolean.TRUE.equals(state.getValue(property)))return tool;

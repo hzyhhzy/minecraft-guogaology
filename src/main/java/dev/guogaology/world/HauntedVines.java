@@ -110,43 +110,63 @@ public final class HauntedVines {
             for(int k=0;k<4;k++) {
                 int n=group*4+k,index=Math.min(branch.size()-1,(int)((n+.5)*branch.size()/(groups*4)));
                 long h=WorldNoise.mix(salt+group*433L+k*71L);
-                result.add(crownBand(branch.get(index),patterns.get(k),h,WorldNoise.unit(h)*Math.PI*2,0,reserved));
+                var band=crownBand(branch.get(index),patterns.get(k),h,WorldNoise.unit(h)*Math.PI*2,0,reserved);
+                if(!band.blocks.isEmpty())result.add(band);
             }
         }
     }
 
-    /** Keep each complete notation on one cone, wrapping long sequences around its surface. */
+    /** A complete notation follows one continuous, isolated voxel path on a cone. */
     public static Band crownBand(Crown crown,OrdinalLightBand.Pattern pattern,long salt,double angle,double lift,HashSet<LampPosition> reserved) {
         int count=pattern.digits().size()+4;
-        List<LampPosition> blocks=List.of();
-        for(int attempt=0;attempt<48;attempt++) {
-            var points=new ArrayList<LampPosition>();var occupied=new HashSet<LampPosition>();boolean clear=true;
-            double base=lift+.4+(attempt/12)*.35;
-            double rise=Math.min(.34,Math.max(.035,(crown.length*.68-base)/(count-1)));
-            double midRadius=Math.max(1.6,crown.radius*(1-(base+(count-1)*rise*.5)/crown.length));
-            double arc=(count-1)*1.12/midRadius,heading=angle+attempt*2.399963;
-            for(int i=0;i<count;i++) {
-                double v=base+i*rise,r=Math.max(1,crown.radius*(1-v/crown.length))+.4,theta=heading+arc*.5-i*arc/(count-1);
-                Point p=crown.project(Math.cos(theta)*r,v,Math.sin(theta)*r);
-                var block=new LampPosition((int)Math.round(p.x),(int)Math.round(p.y),(int)Math.round(p.z));
-                if(!occupied.add(block)||reserved.contains(block)) clear=false;
-                points.add(block);
-            }
-            blocks=points;if(clear) break;
+        // Move whole rows to other angles/heights; never scatter an individual digit
+        // after a failed fit. A small crown can omit a whole row, not truncate it.
+        for(int level=0;level<4;level++)for(int shape=0;shape<3;shape++)for(int turn=0;turn<8;turn++) {
+            double base=lift+.4+level*1.5;
+            var points=surfacePath(crown,count,angle+turn*Math.PI/4+level*.27,base,shape*.10,reserved);
+            if(points.isEmpty())continue;
+            reserved.addAll(points);
+            return new Band(pattern.digits(),List.copyOf(crown.axis.y<0?points.reversed():points),pattern.random(),salt);
         }
-        // Rare quantized fork intersections use the nearest free surface voxel without dropping digits.
-        var unique=new ArrayList<LampPosition>();
-        for(var original:blocks) {
-            LampPosition p=original;
-            if(reserved.contains(p)) {
-                search: for(int r=1;r<=3;r++) for(int dx=-r;dx<=r;dx++) for(int dy=-r;dy<=r;dy++) for(int dz=-r;dz<=r;dz++) {
-                    var q=new LampPosition(p.x+dx,p.y+dy,p.z+dz);
-                    if(!reserved.contains(q)) { p=q;break search; }
+        return new Band(pattern.digits(),List.of(),pattern.random(),salt);
+    }
+
+    /** At least one empty voxel separates unrelated strings/bells, including diagonals. */
+    public static boolean lampGap(LampPosition p,java.util.Set<LampPosition> occupied) {
+        for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++)
+            if(occupied.contains(new LampPosition(p.x+dx,p.y+dy,p.z+dz)))return false;
+        return true;
+    }
+
+    private static List<LampPosition> surfacePath(Crown crown,int count,double angle,double base,double grade,java.util.Set<LampPosition> reserved) {
+        var points=new ArrayList<LampPosition>();
+        var indices=new java.util.HashMap<LampPosition,Integer>();
+        double v=base,theta=angle;
+        // Dense samples become a26-neighbour voxel walk after duplicate samples are
+        // removed. This avoids the old1.12-unit samples jumping over air cells.
+        for(int step=0;step<count*24;step++) {
+            if(v>crown.length*.82)return List.of();
+            double r=Math.max(1,crown.radius*(1-v/crown.length))+.4;
+            Point at=crown.project(Math.cos(theta)*r,v,Math.sin(theta)*r);
+            var p=new LampPosition((int)Math.round(at.x),(int)Math.round(at.y),(int)Math.round(at.z));
+            if(points.isEmpty()||!p.equals(points.getLast())) {
+                if(p.y<-62||p.y>317||indices.containsKey(p)||!lampGap(p,reserved))return List.of();
+                if(!points.isEmpty()) {
+                    var last=points.getLast();
+                    if(Math.max(Math.abs(p.x-last.x),Math.max(Math.abs(p.y-last.y),Math.abs(p.z-last.z)))!=1)return List.of();
                 }
+                // A two-step stair corner can touch itself diagonally; distant
+                // parts cannot meet/cross and make a second apparent reading route.
+                for(int dx=-1;dx<=1;dx++)for(int dy=-1;dy<=1;dy++)for(int dz=-1;dz<=1;dz++) {
+                    var prior=indices.get(new LampPosition(p.x+dx,p.y+dy,p.z+dz));
+                    if(prior!=null&&prior<points.size()-2)return List.of();
+                }
+                indices.put(p,points.size());points.add(p);
+                if(points.size()==count)return points;
             }
-            reserved.add(p);unique.add(p);
+            theta-=.14/r;v+=.14*grade;
         }
-        return new Band(pattern.digits(),List.copyOf(crown.axis.y<0?unique.reversed():unique),pattern.random(),salt);
+        return List.of();
     }
 
     /** Separate twisted conifers: each fork carries a broad-based, pointed Christmas crown. */
