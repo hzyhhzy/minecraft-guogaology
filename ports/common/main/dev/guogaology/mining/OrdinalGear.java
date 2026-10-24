@@ -23,12 +23,6 @@ public final class OrdinalGear extends Item {
     @Override public boolean mineBlock(ItemStack stack,Level world,BlockState state,BlockPos pos,LivingEntity owner){if(!world.isClientSide())stack.hurtAndBreak(kind==0?1:2,owner,EquipmentSlot.MAINHAND);return true;}
     @Override public void hurtEnemy(ItemStack stack,LivingEntity target,LivingEntity attacker){if(kind==1){MiningEffects.burst(stack,target,attacker);MiningEffects.control(stack,target,attacker);}stack.hurtAndBreak(kind==1?1:2,attacker,EquipmentSlot.MAINHAND);}
     @Override public void appendHoverText(ItemStack s,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
-        if(kind>=2)out.accept(Component.translatable("mining.guogaology.native_armor",EquipmentRules.format(EquipmentRules.nativeArmor(tier,kind)),EquipmentRules.format(EquipmentRules.nativeToughness(tier,kind))));
-        if(kind==0)out.accept(Component.translatable("mining.guogaology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
-        if(tier==0)out.accept(Component.translatable("mining.guogaology.digit",GearData.digit(s)));
-        out.accept(Component.translatable("mining.guogaology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind)));
-        var hint=GearData.modificationHint(s);if(hint!=null)out.accept(Component.translatable("mining.guogaology."+hint));
-        if(GearData.points(s,3)>0)out.accept(Component.translatable("mining.guogaology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
-        for(var c:GearData.cores(s))out.accept(Component.literal("• ").append(c.getHoverName()).append(" — ").append(Component.translatable(EquipmentRules.coreEffectKey(kind,GearData.type(c),GearData.level(c)))));
+        EquipmentTooltips.append(s,tier,kind,out);
     }
 }

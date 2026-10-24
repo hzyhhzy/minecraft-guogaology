@@ -23,11 +23,6 @@ public final class DenxiManuscript extends Item {
         return net.minecraft.world.InteractionResult.SUCCESS;
     }
     @Override public void appendHoverText(ItemStack stack,TooltipContext context,TooltipDisplay display,Consumer<Component> out,TooltipFlag flag){
-        out.accept(Component.translatable("mining.guogaology.manuscript.passive"));
-        out.accept(Component.translatable("mining.guogaology.manuscript.open"));
-        out.accept(Component.translatable("mining.guogaology.slots",GearData.cores(stack).size(),EquipmentRules.slots(tier,6)));
-
-        for(var core:GearData.cores(stack))out.accept(Component.literal("• ").append(core.getHoverName()).append(" — ").append(Component.translatable(core.is(Items.TOTEM_OF_UNDYING)?"mining.guogaology.manuscript.socket_totem":"mining.guogaology.manuscript.effect."+GearData.type(core))));
-        if(ManuscriptEffects.level(stack,7)>=2)out.accept(Component.translatable("mining.guogaology.manuscript.totem"));
+        EquipmentTooltips.append(stack,tier,EquipmentRules.MANUSCRIPT,out);
     }
 }

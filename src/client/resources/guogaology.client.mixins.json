@@ -10,7 +10,8 @@
     "InventoryOriginAccessor",
     "CoreItemViewMixin",
     "RecipeBookSectionsMixin",
-    "RecipeBookCollectionsMixin"
+    "RecipeBookCollectionsMixin",
+    "EquipmentTooltipAttributesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

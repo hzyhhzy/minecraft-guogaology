@@ -25,11 +25,6 @@ public class OrdinalGear extends Item {
     @Override public int getEnchantability(){return 15;}
     @Override public boolean canRepair(ItemStack gear,ItemStack ingredient){return tier>0&&ingredient.isOf(MiningContent.MATERIALS[tier-1]);}
     @Override public void appendTooltip(ItemStack s,TooltipContext context,java.util.List<Text> out,TooltipType flag){
-        if(kind==0)out.add(Text.translatable("mining.guogaology.mining_speed",EquipmentRules.format(GearData.denxi(s))));
-        if(tier==0)out.add(Text.translatable("mining.guogaology.digit",GearData.digit(s)));
-        out.add(Text.translatable("mining.guogaology.slots",GearData.cores(s).size(),EquipmentRules.slots(tier,kind)));
-        var hint=GearData.modificationHint(s);if(hint!=null)out.add(Text.translatable("mining.guogaology."+hint));
-        if(GearData.points(s,3)>0)out.add(Text.translatable("mining.guogaology.wear_factor",EquipmentRules.format(EquipmentRules.wearFactor(GearData.profile(s),java.util.List.of()))));
-        for(var c:GearData.cores(s))out.add(Text.literal("• ").append(c.getName()).append(" — ").append(Text.translatable(EquipmentRules.coreEffectKey(kind,GearData.type(c),GearData.level(c)))));
+        EquipmentTooltips.append(s,tier,kind,out::add);
     }
 }
