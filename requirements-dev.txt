@@ -1,2 +1,3 @@
-# Asset tests and optional texture generators use the same Pillow version.
+# Asset tests and optional texture generators use the same tested libraries.
 Pillow==11.1.0
+numpy==2.1.3
