@@ -21,7 +21,8 @@ def run(a):
     base.require(a.label.upper().split('.')[0] not in {'CON','PRN','AUX','NUL',*(f'COM{i}' for i in range(1,10)),*(f'LPT{i}' for i in range(1,10))},'Invalid Windows directory label')
     base.require(not(a.baseline_0615 and a.upgrade_from),'Separate genuine-old baseline and new-upgrade launches')
     base.require(not(a.baseline_0615 or a.upgrade_from) or target=='26.3','Focused262 is fresh; genuine old disk upgrade primary263 only')
-    current=re.search(r'^mod_version\s*=\s*(\S+)\s*$',(ROOT/'gradle.properties').read_text('utf-8-sig'),re.M)[1]
+    current=a.release
+    base.require(re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',current),'Explicit numeric release required for artifact paths')
     mode='baseline0615' if a.baseline_0615 else 'upgrade' if a.upgrade_from else 'fresh'
     release='0.6.15' if a.baseline_0615 else current
     production=(a.baseline_jar or ROOT/f'build/releases/0.6.15/guogaology-dimension-{target}-0.6.15.jar') if a.baseline_0615 else ROOT/f'ports/{target}/build/libs/guogaology-dimension-{target}-{current}.jar'
@@ -32,6 +33,7 @@ def run(a):
         if path==production:base.require(meta['version']==release,'Exact requested producer release required')
         else:
             base.require(path.name==f'{helper_id}-{current}.jar','Current release helper filename required')
+            if target=='26.3':base.require(meta['version']==current,'Exact selected263 helper release required')
             with ZipFile(path) as z:base.require(entry.replace('.','/')+'.class' in z.namelist(),'Compile tiny new native helper first')
     with ZipFile(production) as z:archive_catalog=json.loads(z.read(CATALOG))
     selection=json.loads((ROOT/'src/main/resources'/CATALOG).read_text('utf-8'))
@@ -101,7 +103,7 @@ def run(a):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--minecraft',choices=('26.2','26.3'),required=True);p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True);p.add_argument('--label',required=True);p.add_argument('--baseline-0615',action='store_true');p.add_argument('--baseline-jar',type=Path);p.add_argument('--upgrade-from',type=Path);p.add_argument('--focused',action='store_true');p.add_argument('--without-sodium',action='store_true');p.add_argument('--prepare-only',action='store_true');p.add_argument('--timeout',type=int,default=1200);a=p.parse_args();a.voxy=False;run(a)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--minecraft',choices=('26.2','26.3'),required=True);p.add_argument('--release',default='0.6.16',help='Exact producer/helper release; historical0616 remains the default');p.add_argument('--instance',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True);p.add_argument('--label',required=True);p.add_argument('--baseline-0615',action='store_true');p.add_argument('--baseline-jar',type=Path);p.add_argument('--upgrade-from',type=Path);p.add_argument('--focused',action='store_true');p.add_argument('--without-sodium',action='store_true');p.add_argument('--prepare-only',action='store_true');p.add_argument('--timeout',type=int,default=1200);a=p.parse_args();a.voxy=False;run(a)
 
 
 if __name__=='__main__':main()

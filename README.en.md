@@ -4,15 +4,20 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**Local candidate0.6.14**: continuous, spaced Astra/Underworld tree lights, a rough Underworld bedrock floor, and native-path repairs for core Silk Touch and wooden mechanisms. Kept on`codex/0.6.14-tree-lights-bedrock`, outside main; see[work record](docs/WORK-0614.md). Version0.6.13 visual repairs and0.6.12 mining patterns are verified and integrated into local main, without push or publication. See[visual repairs](docs/WORK-0613.md) and[pattern controls](docs/WORK-0612.md).
+**v0.7.0 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.7.0)
 
-**v0.6.11 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.11)
+This release comes from the merged `main` branch and collects the completed 0.6.12–0.6.16 updates since published v0.6.11. Version 0.7.0 rebuilds that verified content under the new number, without additional gameplay or balance changes. See the [release notes](docs/RELEASE-0.7.0.md#english).
 
-**0.6.11** updates bow speeds, separate Tower attack values for swords, bows and manuscripts, and innate manuscript attack, with matching equipment previews and offline simulation. It includes 0.6.10's arrow pickup, draw icons, wooden products, red-sand TNT, Silk Touch gummy jars, and core rendering/collision changes. See the [release notes](docs/RELEASE-0.6.11.md#english), [validation record](docs/WORK-0611.md) and [enhancement simulator](docs/enhancement-simulator.html?lang=en). After its initial publication from a separate branch, this release has been integrated into `main` under subsequent authorization; the `v0.6.11` tag and published assets remain unchanged.
+- **Custom mining patterns:** choose a vertical 5×5 pattern and reference cell in the enhancement station. Matrix grades grant 1/2/4 extra-cell budget in every realm; a changed budget resets to its default pattern.
+- **Bow and Shaper repairs:** correct bow draw sprites, arrow motion and first-person hand selection; make the right die square and clean overlapping faces.
+- **Tree lights and Underworld floor:** continuous, spaced natural-tree strands and a five-layer randomized bedrock floor connected to motherrock in new chunks.
+- **Native behavior repairs:** core Silk Touch correctly handles decorated pots, ice and occupied nests; both wooden families restore native shape properties and tags.
+- **Compact equipment tooltips:** abilities, used/total sockets and two cores per row. Long summaries wrap; quantitative previews remain in the station.
+- **1,000 iBLP patterns:** keep complete representative records spanning 1–69 rows. All 1,070 BMS records and four fixed palace patterns remain unchanged.
 
-Earlier 0.6.9 repairs for extra hits, boat names, furniture facing, stripping and 1.21.1 boats remain included, alongside 0.6.8 JEI compatibility and 0.6.7 world-loading fixes. Bow balance was deferred in the 0.6.10 report; this update implements the subsequently approved design. Oversized sapling/vine drops were not reproduced in the native comparisons and are not claimed as fixed. The separate 0.6.1a backport remains in the [historical release](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.8).
+Combat values retain the [0.6.11 design](docs/RELEASE-0.6.11.md#english). Earlier JEI, world-loading, portal, recipe-book and core-compatibility fixes remain included; fffZ/FOS and ψ/Z stability is unchanged. [Enhancement simulator](docs/enhancement-simulator.html?lang=en) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md)
 
-The update retains 0.6.6's Cores and Guogaology recipe-book sections, main-logo tab icon and Silk Touch experience fix, alongside 0.6.5's core recipes, natural materials and landmark rewards and 0.6.4's Absence Core compatibility cleanup. FFFZ/FOS and ψ/Z stability mechanics are unchanged. Earlier blueprint and portal fixes, Alice (AliceLdl)'s original 0.5.4.1 work and all four target adaptations remain included. See the [current work record](docs/WORK-0611.md), [current survival guide](docs/SURVIVAL-GUIDE.en.md) and [guide milestones](docs/ADVANCEMENTS-057.en.md).
+Thanks to @8266 and others for helping test.
 
 Three connected worlds: natural-scale Outer Guogaology, monumental Inner Guogaology, and the eerie Guogao Underworld. The Outer world supplies four equipment minerals and seven ordinary creatures. The deeper worlds supply biome materials and Ordinal Crystal Ore, which combine into crafted cores. Reversible enhancement supports equipment and held Denxi Manuscripts, whose passive effects work in either hand with offhand priority. Use the inventory **Book** button to edit an offhand manuscript; changes apply when its menu closes. No bosses are included.
 
@@ -30,7 +35,7 @@ Version 0.5.5 passed a local 26.2 dedicated Fabric server check with a separate 
 
 A separate local test with Voxy World Gen V2 2.4.3 on the server and Voxy 0.2.19-beta on the client passed distant-data reception, return trips and fresh-client reception after restart in all three additional dimensions. The server does not need the Voxy renderer. Tested at 32-chunk radius/2 active tasks; cold generation causes substantial load. See [the LOD multiplayer test](docs/DEDICATED-VOXY-055.md).
 
-The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Version 0.6.3 retains those compatibility fixes, but Connector was not rerun for this update. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
+The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinytra Connector beta.16 and Forgified Fabric API (beta.17 was also tested with 0.5.2). Those compatibility fixes remain included, but Connector was not rerun for 0.7.0. Use Forgified Fabric API instead of ordinary Fabric API in that setup. Connector is optional; see [tested dependencies and scope](docs/CONNECTOR-COMPATIBILITY.md).
 
 | Minecraft | Java | Fabric Loader | Fabric API used for builds |
 |---|---|---|---|
@@ -39,13 +44,11 @@ The same 1.21.1 JAR for version 0.5.3 was tested on NeoForge 21.1.248 with Sinyt
 | 26.2 | 25+ | 0.19.3+ | 0.153.0+26.2 |
 | 26.3 | 25+ | 0.19.3+ | 0.161.0+26.3 |
 
-The internal mod ID is `guogaology` starting with 0.5.0. Version 0.6.11 retains saved identities, arrow data formats and 0.6.4's Lv1 Absence Core component cleanup; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility are separate projects and are not required.
+The internal mod ID is `guogaology` starting with 0.5.0. Existing saved identities, arrow formats and the Lv1 Absence Core compatibility cleanup remain; migration or aliases for the older `googology` namespace are not provided. The standalone core gallery and flight-speed utility remain separate projects and are not required.
 
-All four 0.6.11 targets build and pass save-surface audits; 131 Python and 2,321 pure Java checks pass. Primary 26.3 and focused 26.2 runs each pass 1,590 combat checks, including 144 real arrows, 90 melee attacks and 48 native criticals, plus the 0.6.10 repair regressions. Simulator/Java comparisons and real browser checks also pass. Only innate manuscript attack increases: protection, healing, mining and other innate channels remain unchanged. Enchanting and core sockets remain mutually exclusive. See the [current validation record](docs/WORK-0611.md).
+Version 0.7.0 rebuilds the verified 0.6.16 content. Four-target build/package checks and primary 26.3/focused 26.2 functional tests belong to the corresponding stages: [0.6.12 mining](docs/WORK-0612.md), [0.6.13 visuals](docs/WORK-0613.md), [0.6.14 lights/floor/native behavior](docs/WORK-0614.md), [0.6.15 tooltips](docs/WORK-0615.md) and [0.6.16 catalog](docs/WORK-0616.md); these are not a full 0.7.0 rerun. A separate exact-0.7.0 check uses fresh 26.3/26.2 worlds for the catalog, natural-table generation and live playback; results are in the [publication record](docs/WORK-070.md). The 1.21.x targets have build/static coverage. No new Connector, Voxy or mixed-version networking certification is claimed.
 
-The 1.21.x targets have build/static coverage only this round. Version 0.6.11 checks constructed old-item/arrow compressed NBT roundtrips, but does not repeat a whole old-world upgrade. The real old-save upgrade/reopen and two JEI networking modes in 0.6.10 are [historical results](docs/WORK-0610.md), not new 0.6.11 tests. Connector, Voxy and mixed Mod-version networking were not rerun, and arbitrary damaged saves are not promised recoverable. Update both clients and servers.
-
-Historical validation: all four 0.6.5 targets built and 88 Python checks passed. Isolated 26.2 tests for that version in both languages verified 1900 crafts, 8192 native chest fills, 6144 entity-loot draws, recipe-book search/filtering, narrow layout and the 2×2 inventory. Other targets were built only then. Raw stability classes and existing resource entrypoints were preserved; the real saved-world upgrade tests from 0.6.4 remain historical evidence. See [0.6.5 evidence](docs/WORK-065.md) and [0.6.4 evidence](docs/WORK-064.md).
+Generated chunks are not rewritten. The new Underworld floor and tree lights affect new generation only. iBLP variants within a size change; complete old tables retain their blocks and live playback, but a partially generated table crossing an old/new chunk frontier can have different cells, marks or steps across the seam. Focused on-disk old-chunk/table upgrade checks are not certification of arbitrary complete saves. See the [release scope](docs/RELEASE-0.7.0.md#english).
 
 ## Language
 
@@ -116,13 +119,13 @@ For a single version:
 ./ports/gradlew -p ports -Ptarget=26.2 -PportPython=python :26.2:build
 ```
 
-The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.6.11/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
+The batch build writes JARs, dependencies, and SHA-256 checksums to `build/releases/0.7.0/`. Models, textures, and notation datasets are included in this repository. Building does not require the author's spreadsheets, launcher profile, or historical work files.
 
 Run `python tools/audit_resources.py --check` and `python tools/audit_localization.py --check` to check assets and both languages. The four-target GitHub Actions workflow runs these checks as well.
 
 `src/main` and `src/client` provide the 1.21.1 implementation. `ports/common` and target-specific overrides adapt modern APIs; `ports/shared-sources.txt` lists shared algorithms. Edit source files, not generated build directories. The logo can be rebuilt with `tools/generate_brand.py` and the optional Pillow dependency.
 
-Version 0.6.11's scope and actual validation are tracked in [the work record](docs/WORK-0611.md). The published [v0.6.9](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.9) and its [historical validation record](docs/WORK-069.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
+Version 0.7.0's changes and validation boundaries are summarized in [the release notes](docs/RELEASE-0.7.0.md#english), with functional evidence in the linked 0.6.12–0.6.16 records. The published [v0.6.9](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.6.9) and its [historical validation record](docs/WORK-069.md) remain available. Historical results do not describe additional tests for this update. Install the Python test dependencies with `python -m pip install -r requirements-dev.txt` before running the test suite.
 
 ## License
 
@@ -132,4 +135,4 @@ Earlier copies distributed under MIT retain their original license. Third-party 
 
 [GPL v3](LICENSE) · [Copyright and scope](COPYRIGHT) · [Third-party notices](THIRD_PARTY.md)
 
-[0.6.11 release notes](docs/RELEASE-0.6.11.md#english) · [Validation record](docs/WORK-0611.md) · [Offline enhancement simulator](docs/enhancement-simulator.html?lang=en) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md)
+[0.7.0 release notes](docs/RELEASE-0.7.0.md#english) · [Latest functional validation](docs/WORK-0616.md) · [Offline enhancement simulator](docs/enhancement-simulator.html?lang=en) · [Current survival guide](docs/SURVIVAL-GUIDE.en.md)
