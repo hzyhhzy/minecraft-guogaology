@@ -1,5 +1,6 @@
 package dev.guogaology.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.guogaology.GuogaologyMod;
 import net.minecraft.client.gui.components.Button;
 import dev.guogaology.mining.*;
@@ -72,11 +73,11 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
     }
     private boolean patternClick(double mouseX,double mouseY,int button){
         if(!patternModal())return false;
-        if(button==0&&mouseX>=panelX()+192&&mouseX<panelX()+268&&mouseY>=panelY()+194&&mouseY<panelY()+212){closePattern();return true;}
+        if(button==InputConstants.MOUSE_BUTTON_LEFT&&mouseX>=panelX()+192&&mouseX<panelX()+268&&mouseY>=panelY()+194&&mouseY<panelY()+212){closePattern();return true;}
         if(!menu.patternEditorOpen())return true;
         int cell=gridCell(mouseX,mouseY);
-        if(cell>=0){if(button==0||button==1)send((button==0?100:200)+cell);return true;}
-        if(button==0&&mouseY>=panelY()+194&&mouseY<panelY()+212){
+        if(cell>=0){if(button==InputConstants.MOUSE_BUTTON_LEFT||button==InputConstants.MOUSE_BUTTON_RIGHT)send((button==InputConstants.MOUSE_BUTTON_LEFT?100:200)+cell);return true;}
+        if(button==InputConstants.MOUSE_BUTTON_LEFT&&mouseY>=panelY()+194&&mouseY<panelY()+212){
             int dx=(int)mouseX-panelX();
             if(dx>=16&&dx<92)send(3);
             else if(dx>=104&&dx<180)send(4);
@@ -125,7 +126,7 @@ public final class EnhancementScreen extends AbstractContainerScreen<Enhancement
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean doubleClick){return patternClick(event.x(),event.y(),event.button())||super.mouseClicked(event,doubleClick);}
     @Override public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event){return patternModal()||super.mouseReleased(event);}
     @Override public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event,double dx,double dy){return patternModal()||super.mouseDragged(event,dx,dy);}
-    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){if(patternModal()){if(event.key()==256)closePattern();return true;}return super.keyPressed(event);}
+    @Override public boolean keyPressed(net.minecraft.client.input.KeyEvent event){if(patternModal()){if(event.isEscape()||minecraft.options.keyInventory.matches(event))closePattern();return true;}return super.keyPressed(event);}
     @Override public void onClose(){if(patternModal())closePattern();else super.onClose();}
     @Override public boolean mouseScrolled(double mouseX,double mouseY,double horizontal,double vertical){return patternModal()||super.mouseScrolled(mouseX,mouseY,horizontal,vertical);}
     private void line(GuiGraphics graphics,Component text,int y,int color){graphics.drawString(font,font.plainSubstrByWidth(text.getString(),156),194,y,color,false);}

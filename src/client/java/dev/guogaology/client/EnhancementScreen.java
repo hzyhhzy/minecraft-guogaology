@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.entity.player.PlayerInventory;
+import org.lwjgl.glfw.GLFW;
 
 /** Ten real sockets with live, server-authoritative equipment statistics. */
 public final class EnhancementScreen extends HandledScreen<EnhancementMenu> {
@@ -70,11 +71,11 @@ public final class EnhancementScreen extends HandledScreen<EnhancementMenu> {
     }
     private boolean patternClick(double mouseX,double mouseY,int button){
         if(!patternModal())return false;
-        if(button==0&&mouseX>=panelX()+192&&mouseX<panelX()+268&&mouseY>=panelY()+194&&mouseY<panelY()+212){closePattern();return true;}
+        if(button==GLFW.GLFW_MOUSE_BUTTON_LEFT&&mouseX>=panelX()+192&&mouseX<panelX()+268&&mouseY>=panelY()+194&&mouseY<panelY()+212){closePattern();return true;}
         if(!handler.patternEditorOpen())return true;
         int cell=gridCell(mouseX,mouseY);
-        if(cell>=0){if(button==0||button==1)send((button==0?100:200)+cell);return true;}
-        if(button==0&&mouseY>=panelY()+194&&mouseY<panelY()+212){
+        if(cell>=0){if(button==GLFW.GLFW_MOUSE_BUTTON_LEFT||button==GLFW.GLFW_MOUSE_BUTTON_RIGHT)send((button==GLFW.GLFW_MOUSE_BUTTON_LEFT?100:200)+cell);return true;}
+        if(button==GLFW.GLFW_MOUSE_BUTTON_LEFT&&mouseY>=panelY()+194&&mouseY<panelY()+212){
             int dx=(int)mouseX-panelX();
             if(dx>=16&&dx<92)send(3);
             else if(dx>=104&&dx<180)send(4);
@@ -123,7 +124,7 @@ public final class EnhancementScreen extends HandledScreen<EnhancementMenu> {
     @Override public boolean mouseClicked(double mouseX,double mouseY,int button){return patternClick(mouseX,mouseY,button)||super.mouseClicked(mouseX,mouseY,button);}
     @Override public boolean mouseReleased(double mouseX,double mouseY,int button){return patternModal()||super.mouseReleased(mouseX,mouseY,button);}
     @Override public boolean mouseDragged(double mouseX,double mouseY,int button,double dx,double dy){return patternModal()||super.mouseDragged(mouseX,mouseY,button,dx,dy);}
-    @Override public boolean keyPressed(int key,int scan,int modifiers){if(patternModal()){if(key==256)closePattern();return true;}return super.keyPressed(key,scan,modifiers);}
+    @Override public boolean keyPressed(int key,int scan,int modifiers){if(patternModal()){if(key==GLFW.GLFW_KEY_ESCAPE||client.options.inventoryKey.matchesKey(key,scan))closePattern();return true;}return super.keyPressed(key,scan,modifiers);}
     @Override public void close(){if(patternModal())closePattern();else super.close();}
     @Override public boolean mouseScrolled(double mouseX,double mouseY,double horizontal,double vertical){return patternModal()||super.mouseScrolled(mouseX,mouseY,horizontal,vertical);}
     private void line(DrawContext graphics,Text text,int y,int color){graphics.drawText(textRenderer,textRenderer.trimToWidth(text.getString(),156),194,y,color,false);}

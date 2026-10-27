@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.7.0 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.7.0)
+**v0.7.1 · Minecraft Java / Fabric** · [Downloads and release notes](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.7.1)
 
-This release comes from the merged `main` branch and collects the completed 0.6.12–0.6.16 updates since published v0.6.11. Version 0.7.0 rebuilds that verified content under the new number, without additional gameplay or balance changes. See the [release notes](docs/RELEASE-0.7.0.md#english).
+Version 0.7.1 repairs exiting, left/right clicks, Clear and Reset in the 26.3 mining-pattern editor, and supports returning with the player's rebound inventory key. It uses native input handling for each supported version without changing saved formats or gameplay values. See the [release notes](docs/RELEASE-0.7.1.md#english) and [validation record](docs/WORK-071.md). The following 0.7.0 features remain included.
 
 - **Custom mining patterns:** choose a vertical 5×5 pattern and reference cell in the enhancement station. Matrix grades grant 1/2/4 extra-cell budget in every realm; a changed budget resets to its default pattern.
 - **Bow and Shaper repairs:** correct bow draw sprites, arrow motion and first-person hand selection; make the right die square and clean overlapping faces.

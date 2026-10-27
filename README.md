@@ -4,9 +4,9 @@
 
 ![Guogaology](docs/branding/guogaology-mark.png)
 
-**v0.7.0 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.7.0)
+**v0.7.1 · Minecraft Java / Fabric** · [下载与发行说明](https://github.com/hzyhhzy/minecraft-guogaology/releases/tag/v0.7.1)
 
-本版从合并后的真实`main`主分支发布，汇总自v0.6.11以来，0.6.12～0.6.16已完成的更新；0.7.0本身只做版本重建，不另加玩法或数值。详见[本版发行说明](docs/RELEASE-0.7.0.md)。
+本版修复26.3挖掘图案窗口的退出、左右键、清空及重置操作，并支持用改绑后的背包键返回。使用各版本原生输入判断，保存格式和玩法数值不变。详见[本版发行说明](docs/RELEASE-0.7.1.md)及[验证记录](docs/WORK-071.md)。下列0.7.0内容继续保留。
 
 - **自定义连锁挖掘**：在强化台选择竖直5×5图案和参考格；矩阵晶核单颗额外预算为1／2／4，表里一致，额度变化自动恢复对应默认图案。
 - **弓与塑形台修复**：修正拉弓图案、箭的移动和第一人称手部显隐；塑形台右模具方正并清理叠面。
